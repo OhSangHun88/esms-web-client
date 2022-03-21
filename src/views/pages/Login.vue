@@ -221,6 +221,30 @@ export default {
 
   },
   methods: {
+   
+    login () {
+      let url = this.$store.state.serverApi + this.$store.state.moduleName + '/auths/login';
+      let data = { userId : this.userId, password : this.password };
+      axios.post(url, data)
+      .then(function (res) {
+        console.log("==== res: ", res);
+        if(res.status==200) {
+          console.log("==== res.data.token: ", res.data.token);
+          sessionStorage.setItem("token", res.data.token);
+          console.log(sessionStorage.getItem("token"));
+          router.push({ path: '../dashboard/allView' });
+        }
+        else {
+          alert('등록된 사용자가 아니거나 비밀번호가 맞지 않습니다.');
+        }
+      })
+      .catch(function (err) {
+        console.log(err.message);
+        alert(err.message);
+      });
+    },
+
+/*    
     login () {
       let uri = this.$store.state.serverApi + this.$store.state.moduleName + '/auths/login';
       let data = { userId : this.userId, password : this.password };
@@ -247,6 +271,7 @@ export default {
         alert(err.message);
       });
     },
+  */
 /*
     login () {
       let data = { userId : this.userId, password : this.password };

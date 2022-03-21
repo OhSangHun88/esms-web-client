@@ -5,9 +5,9 @@ Vue.use(Vuex)
 const state = {
   sidebarShow: 'responsive',
   sidebarMinimize: false,
-  //serverApi:'http://210.122.45.98:8080',
-  serverApi:'http://localhost:8080',
-  moduleName:'/',
+  //serverApi:'http://localhost:8080',
+  serverApi:'http://210.122.45.62:8080',
+  moduleName:'/admin',
 }
 
 const mutations = {
