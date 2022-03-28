@@ -120,11 +120,11 @@ export default {
   },
   methods: {
     getEmergencyData() {
-      let uri = this.$store.state.serverApi + "/emergencys?";
-      uri += "occurStartDate=" + this.s_date;
-      uri += "&occurEndDate=" + this.e_date;
+      let url = "/admin/emergencys?";
+      url += "occurStartDate=" + this.s_date;
+      url += "&occurEndDate=" + this.e_date;
 
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.emergencyItems = [];
             for(let i=0; i<response.data.data.length; i++) {
@@ -148,12 +148,12 @@ export default {
           });
     },
     getEmergencyOutEventData() {
-      let url = this.$store.state.serverApi + "/emergencys/out-events?";
+      let url = "/admin/emergencys/out-events?";
       url += "occurStartDate=" + this.s_date;
       url += "&occurEndDate=" + this.e_date;
 
       axios.get(url, {
-        headers: { "Authorization": "Bearer " + sessionStorage.getItem("token") }})
+        headers: { "Authorization": sessionStorage.getItem("token") }})
           .then(response => {
             this.outEventsItems = [];
             for(let i=0; i<response.data.data.length; i++) {
@@ -172,11 +172,11 @@ export default {
           });
     },
     getEmergencyUnsensingData() {
-      let uri = this.$store.state.serverApi + "/emergencys/active-unsensing-events?";
-      uri += "occurStartDate=" + this.s_date;
-      uri += "&occurEndDate=" + this.e_date;
+      let url = "/admin/emergencys/active-unsensing-events?";
+      url += "occurStartDate=" + this.s_date;
+      url += "&occurEndDate=" + this.e_date;
 
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.unsensingItems = [];
             for(let i=0; i<response.data.data.length; i++) {
@@ -194,11 +194,11 @@ export default {
           });
     },
     getEmergencyEquipmentData() {
-      let uri = this.$store.state.serverApi + "/emergencys/equipment-faults?";
-      uri += "occurStartDate=" + this.s_date;
-      uri += "&occurEndDate=" + this.e_date;
+      let url = "/admin/emergencys/equipment-faults?";
+      url += "occurStartDate=" + this.s_date;
+      url += "&occurEndDate=" + this.e_date;
 
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.equipmentItems = [];
             for(let i=0; i<response.data.data.length; i++) {
@@ -208,6 +208,7 @@ export default {
                 recipientId:response.data.data[i].recipientId,
               })
             }
+           console.log("===res");
           })
           .catch(error => {
             this.errorMessage = error.message;
