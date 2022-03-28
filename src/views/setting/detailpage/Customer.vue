@@ -145,14 +145,14 @@ export default {
     downloadExcel() {
       let uri
       if(this.selOption == '1') {
-        uri = this.$store.state.serverApi + "/tablets/excel/download";
+        uri = "/admin/tablets/excel/download";
       } else {
-        uri = this.$store.state.serverApi + "/tablets/excel/download";
+        uri = "/admin/tablets/excel/download";
       }
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}});
+      axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}});
     },
     getOrgmData() {
-      axios.get(this.$store.state.serverApi + "/organizations/all", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      axios.get("/admin/organizations/all", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.orgmItems=[];
             this.orgmItems.push({label: '전체', value: ''});
@@ -169,7 +169,7 @@ export default {
           });
     },
     getStatusData() {
-      axios.get(this.$store.state.serverApi + "/codes?cmmnCdGroup=EMPLOY.STATECD", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      axios.get("/admin/codes?cmmnCdGroup=EMPLOY.STATECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.statusItems=[];
             this.statusItems.push({label: '전체', value: ''});
@@ -188,11 +188,11 @@ export default {
     getPartsData() {
       let uri = '';
       if(this.selOption == '1') {
-        uri = this.$store.state.serverApi + "/codes?cmmnCdGroup=USER.TYPECD";
+        uri = "/admin/codes?cmmnCdGroup=USER.TYPECD";
       } else {
-        uri = this.$store.state.serverApi + "/codes?cmmnCdGroup=ORGANIZATION.TYPECD";
+        uri = "/admin/codes?cmmnCdGroup=ORGANIZATION.TYPECD";
       }
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.partsItems=[];
             this.partsItems.push({label: '전체', value: ''});
@@ -202,6 +202,7 @@ export default {
                 value: response.data.data[i].cmmnCd
               });
             }
+            console.log("===click");
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -209,7 +210,7 @@ export default {
           });
     },
     getUserData() {
-      let uri = this.$store.state.serverApi + "/users?1=1";
+      let uri = "/admin/users?1=1";
       if(this.orgCode != '') {
         uri += "&orgId="+this.orgCode;
       }
@@ -222,7 +223,7 @@ export default {
       if(this.cusNm != '') {
         uri += "&userNm="+this.cusNm;
       }
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.userItems = [];
             for(let i=0; i<response.data.data.length; i++) {
@@ -239,6 +240,7 @@ export default {
                 delete:''
               })
             }
+            console.log("===search")
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -246,7 +248,7 @@ export default {
           });
     },
     getOrganizationsData() {
-      let uri = this.$store.state.serverApi + "/organizations?1=1";
+      let uri = "/admin/organizations?1=1";
       if(this.orgCode != '') {
         uri += "&orgId="+this.orgCode;
       }
@@ -259,7 +261,7 @@ export default {
       if(this.cusNm != '') {
         uri += "&userNm="+this.cusNm;
       }
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.organiItems = [];
             for(let i=0; i<response.data.data.length; i++) {
@@ -275,6 +277,7 @@ export default {
                 delete:''
               })
             }
+            console.log("===search")
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -286,10 +289,10 @@ export default {
       if(returnValue) {
         const headers = {
           'Content-Type': 'multipart/form-data',
-          'Authorization': "Bearer " + sessionStorage.getItem("token")
+          'Authorization': sessionStorage.getItem("token")
         }
 
-        axios.delete(this.$store.state.serverApi + "/users", {
+        axios.delete("/admin/users", {
           headers: headers,
           data: {
             userId: userId
@@ -301,9 +304,9 @@ export default {
     },
     getUser(userId) {
       //this.selectnId = nId;
-      let url = this.$store.state.serverApi + "/users/" + userId;
+      let url = "/admin/users/" + userId;
       axios.get(url, {
-        headers: { "Authorization": "Bearer " + sessionStorage.getItem("token") }})
+        headers: { "Authorization": sessionStorage.getItem("token") }})
               .then(response => {
                 // this.modelTitle = response.data.data.title;
                 // this.modelContent = response.data.data.details;
@@ -325,10 +328,10 @@ export default {
       if(returnValue) {
         const headers = {
           'Content-Type': 'multipart/form-data',
-          'Authorization': "Bearer " + sessionStorage.getItem("token")
+          'Authorization': sessionStorage.getItem("token")
         }
 
-        axios.delete(this.$store.state.serverApi + "/organizations", {
+        axios.delete("/admin/organizations", {
           headers: headers,
           data: {
             orgId: orgId
@@ -340,9 +343,9 @@ export default {
     },
     getParts(orgId) {
       //this.selectnId = nId;
-      let url = this.$store.state.serverApi + "/organizations/" + orgId;
+      let url = "/admin/organizations/" + orgId;
       axios.get(url, {
-      headers: { "Authorization": "Bearer " + sessionStorage.getItem("token") }})
+      headers: { "Authorization": sessionStorage.getItem("token") }})
       .then(response => {
         // this.modelTitle = response.data.data.title;
         // this.modelContent = response.data.data.details;
