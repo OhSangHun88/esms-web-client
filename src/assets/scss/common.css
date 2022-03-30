@@ -1,0 +1,171 @@
+@charset "UTF-8";
+
+/* CSS Document */
+*{margin:0; padding:0;}
+*, *:before, *:after{-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+div{box-sizing: border-box;}
+html{-webkit-text-size-adjust:100%;height:100%;-webkit-overflow-scrolling:touch;}
+body{font-family: 'Noto Sans', sans-serif !important;font-size:14px;font-weight: 400;;color:#000;height:100%;-webkit-overflow-scrolling:touch;background-color: #3C4858;}
+ul,ol,li{list-style:none;margin: 0;}
+img,hr{border:none;}
+img{height: auto;vertical-align: top}
+a{vertical-align:top; color:#000;}
+
+a:link{text-decoration:none; color:inherit;}
+a:visited{text-decoration:none; color:inherit;}
+a:active{text-decoration:none; color:inherit;}
+a:hover{text-decoration:none; color:inherit;}
+table{width:100%; border-spacing:0; table-layout:fixed;border-collapse:collapse;}
+table td img	{vertical-align:middle;}
+article,aside,bdi,details,dialog,figcaption,figure,footer,header,main,mark,menuitem,meter,nav,progress,rp,rt,ruby,section,summary,time,wbr,
+body,p,div,ul,li,dl,dt,dd,ol,fieldset,textarea,input,select,table,th,td,address,cite,h1,h2,h3,h4,h5,h6,strong,b,label,pre {font-size:inherit; color:inherit;}
+strong,h1,h2,h3,h4,h5,h6,th,b,dt {font-weight: 600;}
+input,select{vertical-align: middle;}
+input[type=text],
+input[type=number],
+input[type=email],
+input[type=tel],
+input[type=date],
+input[type=password]{display:inline-block; width:100%; font-size:16px; height:42px; padding:5px 10px; color: #fff; border: none;
+background:#384358; box-sizing:border-box;-webkit-border-radius: 8px;
+-moz-border-radius: 8px;
+border-radius: 8px;}
+select{display:inline-block; width:100%; height:42px; padding:0 0 0 10px; font-size: 16px; color: #fff; background-color:#384358; font-family: 'Noto Sans', sans-serif;
+-webkit-appearance: none;-moz-appearance: none; appearance: none; background-position: right 10px center;background-repeat: no-repeat; background-image: url(../../assets/images/ico_arrow_select.png);
+-webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; box-sizing:border-box; cursor:pointer;border: none;}
+select::-ms-expand { display: none; }
+textarea	{display:inline-block; width:100%; padding:10px; border:1px solid #ddd; background:#fff; box-sizing:border-box;font-family:'Noto Sans', sans-serif;}
+input[type=file],input[type=image],input[type=reset],input[type=button],input[type=submit] {cursor:pointer;}
+input::placeholder {font-family: inherit;color: inherit;}
+button {border:0; background:transparent; cursor:pointer;font-family:'Noto Sans', sans-serif;outline: none;}
+caption{position: relative; overflow: hidden; width: 0px; height: 0px; font-size: 0; line-height: 0;}
+legend{position:absolute; height:0; font-size:0; line-height:0; overflow:hidden; text-indent: -9999px;}
+address,cite,em,i{font-style:normal;}
+fieldset,iframe{border:0;}
+label{cursor:pointer;}
+figure {margin:0;padding:0;}
+sup,sub	{line-height:1;}
+textarea { width: 100%; resize: none; font-size: 14px;font-weight: 200; color: #090909; line-height: 1.3; border: 1px solid #ddd; padding: 10px 20px;}
+
+/* input[type=checkbox]:focus + .chk{border: 1px solid #A5C7FE; border-radius: 3px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;} */
+i{display: inline-block;vertical-align: middle;}
+.align_r{text-align:right;}
+.align_c{text-align:center;}
+.align_l{text-align:left;}
+.fl_l {float:left;}
+.fl_r {float:right;}
+.blind{display: block; overflow: hidden; position: absolute; top: -1000em; left: 0;}
+.btn{display: inline-block; background-color: transparent; border: none; text-align: center; margin: 0;vertical-align: middle;text-decoration: none; overflow: visible; zoom: 1;word-wrap: normal;word-break: normal;box-sizing: border-box;font-family:inherit;}
+.pb18{padding-bottom: 18px;}
+.pt0{padding-top: 0px !important;}
+.pt20{padding-top: 20px !important;}
+.pt60{padding-top: 60px !important;}
+.mt80{margin-top:  80px !important;}
+
+input[type=text].w_310{width: 310px;}
+input[type=text].w_160{width: 160px;}
+input[type=text].w40{width: 40%;}
+input[type=text].w18_7{width: 18.7%;}
+input[type="date"]{position: relative;height: 42px;padding: 10px 12px;font-size:14px;}
+input[type="date"]::-webkit-clear-button,
+input[type="date"]::-webkit-inner-spin-button {display: none;} 
+input[type="date"]::-webkit-calendar-picker-indicator {background: transparent; z-index: 1;} 
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 100;
+    src: local('Noto Sans Thin'), local('Noto Sans Thin'), local('Noto Sans Thin');
+    src: url(../../assets/font/NotoSans-Thin.eot);
+    src: url(../../assets/font/NotoSans-Thin.eot?#iefix) format('embedded-opentype'),
+    url(../../assets/font/NotoSans-Thin.woff) format('woff'),
+    url(../../assets/font/NotoSans-Thin.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Noto Sans DemiLight'), local('Noto Sans DemiLight'), local('Noto Sans DemiLight');
+    src: url(../../assets/font/NotoSans-DemiLight.eot);
+    src: url(../../assets/font/NotoSans-DemiLight.eot?#iefix) format('embedded-opentype'),
+    url(../../assets/font/NotoSans-DemiLight.woff) format('woff'),
+    url(../../assets/font/NotoSans-DemiLight.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Noto Sans Regular'), local('Noto Sans Regular'), local('Noto Sans Regular');
+    src: url(../../assets/font/NotoSans-Regular.eot);
+    src: url(../../assets/font/NotoSans-Regular.eot?#iefix) format('embedded-opentype'),
+    url(../../assets/font/NotoSans-Regular.woff) format('woff'),
+    url(../../assets/font/NotoSans-Regular.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Noto Sans Medium'), local('Noto Sans Medium'), local('Noto Sans Medium');
+    src: url(../../assets/font/NotoSans-Medium.eot);
+    src: url(../../assets/font/NotoSans-Medium.eot?#iefix) format('embedded-opentype'),
+    url(../../assets/font/NotoSans-Medium.woff) format('woff'),
+    url(../../assets/font/NotoSans-Medium.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 600;
+    src: local('Noto Sans Bold'), local('Noto Sans Bold'), local('Noto Sans Bold');
+    src: url(../../assets/font/NotoSans-Bold.eot);
+    src: url(../../assets/font/NotoSans-Bold.eot?#iefix) format('embedded-opentype'),
+    url(../../assets/font/NotoSans-Bold.woff) format('woff'),
+    url(../../assets/font/NotoSans-Bold.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 800;
+    src: local('Noto Sans Black'), local('Noto Sans Black'), local('Noto Sans Black');
+    src: url(../../assets/font/NotoSans-Black.eot);
+    src: url(../../assets/font/NotoSans-Black.eot?#iefix) format('embedded-opentype'),
+    url(../../assets/font/NotoSans-Black.woff) format('woff'),
+    url(../../assets/font/NotoSans-Black.otf) format('opentype');
+}
+
+
+/* roboto */
+@font-face {
+    font-family: 'roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto-Regular'), local('Roboto-Regular'), local('Roboto-Regular');
+    src: url(../../assets/font/Roboto-Regular.eot);
+    src: url(../../assets/font/Roboto-Regular.eot?#iefix) format('embedded-opentype'),
+    url(../../assets/font/Roboto-Regular.ttf) format('truetype'),
+    url(../../assets/font/Roboto-Regular.otf) format('opentype');
+}
+@font-face {
+    font-family: 'roboto';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Roboto-Medium'), local('Roboto-Medium'), local('Roboto-Medium');
+    src: url(../../assets/font/Roboto-Medium.eot);
+    src: url(../../assets/font/Roboto-Medium.eot?#iefix) format('embedded-opentype'),
+    url(../../assets/font/Roboto-Medium.ttf) format('truetype'),
+    url(../../assets/font/Roboto-Medium.otf) format('opentype');
+}
+@font-face {
+    font-family: 'roboto';
+    font-style: normal;
+    font-weight: 600;
+    src: local('Roboto-Bold'), local('Roboto-Bold'), local('Roboto-Bold');
+    src: url(../../assets/font/Roboto-Bold.eot);
+    src: url(../../assets/font/Roboto-Bold.eot?#iefix) format('embedded-opentype'),
+    url(../../assets/font/Roboto-Bold.ttf) format('truetype'),
+    url(../../assets/font/Roboto-Bold.otf) format('opentype');
+}

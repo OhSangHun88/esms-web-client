@@ -11,14 +11,14 @@
     </div>
     <nav id="gnb">
       <ul>
-        <li class="on"><a href="#"><i class="ico-1"></i>모니터링</a></li>
-        <li><a href="#"><i class="ico-2"></i>대상자 관리</a></li>
-        <li><a href="#"><i class="ico-3"></i>이벤트 리포트</a></li>
-        <li><a href="#"><i class="ico-4"></i>관리</a></li>
-        <li><a href="#"><i class="ico-5"></i>A/S</a></li>
+        <li class="on"><router-link to="/dashboard/allView" ><i class="ico-1"></i>모니터링</router-link></li>
+        <li class=""><router-link to="/customer/allView" ><i class="ico-2"></i>대상자 관리</router-link></li>
+        <li class=""><router-link to="/emevent/allView" ><i class="ico-3"></i>이벤트 리포트</router-link></li>
+        <li class=""><router-link to="/setting/allView" ><i class="ico-4"></i>관리</router-link></li>
+        <li class=""><router-link to="" ><i class="ico-5"></i>A/S</router-link></li>
       </ul>
       <div class="emerg_area">
-        <button type="button" class="btn"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
+        <button type="button" class="btn on"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
       </div>
     </nav>
   </header>
@@ -35,11 +35,7 @@ export default {
 
   },
   methods:{
-    goToMonitering(){
-        this.$router.push({
-                path : `/monitering`
-        })
-    },
+    
   },
 
 
