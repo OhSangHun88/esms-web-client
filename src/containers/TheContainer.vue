@@ -2,7 +2,7 @@
   <div class="c-app">
     <TheSidebar/>
     <CWrapper>
-      <TheHeader/>
+      <topMenu />
       <div class="c-body">
         <main class="c-main">
           <CContainer fluid>
