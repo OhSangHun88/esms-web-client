@@ -1,4 +1,7 @@
 module.exports = {
+  devServer: {
+    proxy: 'http://210.122.45.62:8080'
+  },
   lintOnSave: false,
   runtimeCompiler: true,
   configureWebpack: {

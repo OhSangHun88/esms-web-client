@@ -28,7 +28,7 @@
               class="paddingSel"
               label="내용"
               v-model="txt_details"
-          />
+          /> 
           <CButton block color="primary" class="searchBtn" v-on:click="manageInquiry">검색</CButton>
           <CButton block variant="outline" color="primary" class="initBtn"  v-on:click="initSet">초기화</CButton>
         </div>
@@ -49,7 +49,6 @@
             :fields="tableFields"
             head-color="light"
             sorting >
-
           <td slot="change" style="text-align: center;width: 90px;" slot-scope="{item}">
             <CButton color="info" variant="outline" v-on:click="getNotice(item.noticeId)">수정</CButton>
           </td>
@@ -107,7 +106,7 @@ export default {
   name: "Notice",
   methods: {
     getOrgmData() {
-      axios.get(this.$store.state.serverApi + "/organizations/all", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      axios.get("/admin/organizations/all", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.orgmItems=[];
             this.orgmItems.push({label: '전체', value: ''});
@@ -120,18 +119,19 @@ export default {
           })
           .catch(error => {
             this.errorMessage = error.message;
+            console.log()
             console.error("There was an error!", error);
           });
     },
     getData(typeCd) {
-      let url = this.$store.state.serverApi + "/notices?typeCd=" + typeCd;
+      let url = "/admin/notices?typeCd=" + typeCd;
       if(this.txt_title != '') {
         url += "&title="+this.txt_title;
       }
       if(this.txt_details != '') {
         url += "&details="+this.txt_details;
       }
-      axios.get(url, {headers: { "Authorization": "Bearer " + sessionStorage.getItem("token") }})
+      axios.get(url, {headers: { "Authorization": sessionStorage.getItem("token") }})
       .then(response => {
         this.tableItems = [];
         for(let i=0; i<response.data.data.length; i++) {
@@ -164,10 +164,10 @@ export default {
     deleteNotice(nId) {
       let returnValue = confirm('정말 삭제하시겠습니까?');
       if(returnValue) {
-        let url = this.$store.state.serverApi + "/notices/" + nId;
+        let url = "/admin/notices/" + nId;
 
         axios.delete(url, {
-          headers: { "Authorization": "Bearer " + sessionStorage.getItem("token") }})
+          headers: { "Authorization": sessionStorage.getItem("token") }})
         .then(response => {
           if(response.data.totalCount == 0) {
             alert("삭제가 성과적으로 되었습니다.");
@@ -188,9 +188,9 @@ export default {
     },
     getNotice(nId) {
       this.selectnId = nId;
-      let url = this.$store.state.serverApi + "/notices/" + nId;
+      let url = "/admin/notices/" + nId;
       axios.get(url, {
-        headers: { "Authorization": "Bearer " + sessionStorage.getItem("token") }})
+        headers: { "Authorization": sessionStorage.getItem("token") }})
         .then(response => {
           this.modelTitle = response.data.data.title;
           this.modelContent = response.data.data.details;
@@ -238,12 +238,12 @@ export default {
 
       const headers = {
         'Content-Type': 'multipart/form-data',
-        'Authorization': "Bearer " + sessionStorage.getItem("token")
+        'Authorization': sessionStorage.getItem("token")
       }
       let self = this;
       axios({
         method: "post",
-        url: this.$store.state.serverApi + '/notices',
+        url: '/admin/notices',
         data: bodyFormData,
         headers: headers,
       })
@@ -289,12 +289,12 @@ export default {
 
       const headers = {
         'Content-Type': 'multipart/form-data',
-        'Authorization': "Bearer " + sessionStorage.getItem("token")
+        'Authorization': sessionStorage.getItem("token")
       }
       let self = this;
       axios({
         method: "post",
-        url: this.$store.state.serverApi + '/notices/' + this.selectnId,
+        url: '/admin/notices/' + this.selectnId,
         data: bodyFormData,
         headers: headers,
       })
@@ -348,6 +348,13 @@ export default {
         {key: 'regDtime', label: '등록일자', _classes: 'text-center'},
         {key: 'change',label: '',_classes: 'text-center'},
         {key: 'delete', label: '', _classes: 'text-center'},
+      ],
+      noticesFields: [
+        {key: 'status', lalbel: '상태', _classes: 'text-center'},
+        {key: 'code', lalbel: '코드', _classes: 'text-center'},
+        {key: 'error', lalbel: '에러', _classes: 'text-center'},
+        {key: 'message', lalbel: '메시지', _classes: 'text-center'},
+        {key: 'errors', lalbel: '에러들', _classes: 'text-center'},
       ],
     }
   }

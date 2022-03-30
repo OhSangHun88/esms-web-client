@@ -86,6 +86,7 @@ export default {
         {key: 'applicationNm', label: '구분', _classes: 'text-center'},
         {key: 'accessIp', label: 'IP', _classes: 'text-center'},
         {key: 'logDetails', label: '내용', _classes: 'text-center'},
+        {key: 'actionDetails', label: '동작', _classes: 'text-center'}
       ],
       comLogFields: [
         {key: 'logDtime', label: '로그일', _classes: 'text-center'},
@@ -114,20 +115,22 @@ export default {
       }
     },
     getLogtData() {
-      let uri = this.$store.state.serverApi + "/logs/servers?startDate="+this.s_date+"&endDate="+this.e_date;
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      let url = "/admin/logs/servers?startDate="+this.s_date+"&endDate="+this.e_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.logItems = [];
             for(let i=0; i<response.data.data.length; i++) {
               this.logItems.push({
-                seq:response.data.data[i].seq,
-                logDtime:response.data.data[i].logDtime,
-                userId:response.data.data[i].userId,
-                applicationNm:response.data.data[i].applicationNm,
                 accessIp:response.data.data[i].accessIp,
-                logDetails:response.data.data[i].logDetails
+                actionDetails:response.data.data[i].actionDetails,
+                applicationNm:response.data.data[i].applicationNm,
+                logDetails:response.data.data[i].logDetails,
+                logDtime:response.data.data[i].logDtime,
+                seq:response.data.data[i].seq,
+                userId:response.data.data[i].userId,
               })
             }
+            console.log("==== res");
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -135,11 +138,11 @@ export default {
           });
     },
     getEquLogtData() {
-      let uri=this.$store.state.serverApi + "/logs/equipments?startDate="+this.s_date+"&endDate="+this.e_date;
-      if(this.tabletId != '') uri+="&tabletId=" + this.tabletId;
-      if(this.recipientId != '') uri+="&tabletId=" + this.recipientId;
+      let url="/admin/logs/equipments?startDate="+this.s_date+"&endDate="+this.e_date;
+      if(this.tabletId != '') url+="&tabletId=" + this.tabletId;
+      if(this.recipientId != '') url+="&recipientId=" + this.recipientId;
 
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.comLogItems = [];
             for(let i=0; i<response.data.data.length; i++) {
@@ -153,6 +156,7 @@ export default {
                 logDetails:response.data.data[i].logDetails
               })
             }
+            console.log("==== res");
           })
           .catch(error => {
             this.errorMessage = error.message;
