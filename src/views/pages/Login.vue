@@ -1,7 +1,17 @@
 <template>
-  <div class="c-app flex-row align-items-center lgbg">
-
-      <CRow class="justify-content-center" style="width: 100%;">
+  <div class="login_wrap">
+    <div class="lgin_box">
+      <h1 class="logo">아이오비</h1>
+      <p class="login_title"><em>응급안전안심서비스</em>에 오신것을 환영합니다.</p>
+      <div class="input_area">
+        <input type="text" v-model="userId" placeholder="아이디를 입력해주세요." class="input_id">
+        <input type="password" v-model="password" placeholder="비밀번호를 입력해주세요." class="input_pw">
+      </div>
+      <div class="btn_area">
+        <button type="button" class="lgBtn" v-on:click="login">로그인</button>
+      </div>
+    </div>
+      <!-- <CRow class="justify-content-center" style="width: 100%;">
         <CCol md="8">
           <CCardGroup>
 
@@ -143,7 +153,7 @@
           </CCard>
         </CContainer>
       </div>
-    </CModal>
+    </CModal> -->
   </div>
 </template>
 
@@ -322,86 +332,7 @@ export default {
 }
 </script>
 <style>
-.customInput {
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid;
-  border-color: #5d66ff;
-  border-radius: 3px;
-  height: 37px;
-  width: 242px;
-  cursor: pointer;
-}
-.cusInput .form-control{
-  border: none;
-  width: 140px;
-}
-.Rectangle {
-  width: 102px;
-  margin: 3px;
-  border-radius: 2px;
-  background-color: #e7eaff;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.cardModal {
-  border: none;
-}
-.mCustomer .modal-dialog{
-  max-width: 800px;
-}
-.lgbg {
-  height: 100vh;
-  background-image: url("../../assets/images/bg.jpg");
-  background-repeat : no-repeat;
-  background-size : cover;
-}
-.fgroup {
-  position: absolute;
-  margin-top: -95px;
-}
-.reInput .form-control  {
-  height: 49px;
-  width: 328px;
-  border-color: #5d66ff;
-  border-radius: 3px;
-  margin-left: 132px;
-  margin-top: -10px;
-}
-.modalInput .form-control{
-  border-color: #5d66ff;
-  border-radius: 3px;
-  height: 37px;
-}
-.form-group {
-  margin-bottom: 1.4rem;
-}
-.colText{
-  margin-top: 8px;
-  padding-left: 13px;
-  padding-right: 13px;
-}
-
-.tText {
-  margin-left: 132px;
-  margin-top: -34px;
-  margin-bottom: 40px;
-}
-.lgBtn {
-  margin-left: 131px;
-  width: 327px;
-  height: 45px;
-}
-.linkText {
-  font-size: 12px;
-  margin-top: 14px;
-}
-.modal-title {
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-}
+@import '../../assets/scss/common.css';
+@import '../../assets/scss/sub.css';
 </style>
 
