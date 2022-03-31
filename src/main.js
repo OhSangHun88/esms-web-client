@@ -6,10 +6,11 @@ import CoreuiVue from '@coreui/vue'
 import { iconsSet as icons } from './assets/icons/icons.js'
 import store from './store'
 import axios from 'axios'
+import moment from 'vue-moment'
 const topMenu = () => import('@/containers/TopMenu.vue')
 
 
-
+Vue.use(moment)
 
 
 Vue.config.performance = true
