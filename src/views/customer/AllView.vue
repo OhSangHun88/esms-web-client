@@ -2,16 +2,154 @@
   <div>
     <div class="menuTitle">
       <slot name="header">
-        <strong style="font-size: large;">고객관리</strong>
+        <strong style="font-size: large;">대상자 관리</strong>
         <div>
-          <div class="abtn"><CButton color="primary" @click="openUploadPopup" class="mr-1">엑셀 업로드</CButton></div>
+          
+          <!-- <div class="abtn"><CButton color="primary" @click="openUploadPopup" class="mr-1">엑셀 업로드</CButton></div>
           <div class="abtn"><CButton color="primary" @click="excelDownload" class="mr-1">엑셀 다운로드</CButton></div>
           <div class="abtn">
             <CButton color="primary" @click="addCustomer = true" class="mr-1">고객추가</CButton>
-          </div>
+          </div> -->
         </div>
       </slot>
     </div>
+    <div class="container">
+      
+            <div class="box_search_wrap add_btn box_style">
+                <div class="table_wrap">
+                    <table>
+                        <colgroup>
+                            <col style="width:23.18%;">
+                            <col style="width:23.18%;">
+                            <col style="width:auto">
+                            <col style="width:23.18%;">
+                            <col style="width:23.18%;">
+                        </colgroup>
+                        <thead>
+                            <th scope="row">시/도</th>
+                            <th scope="row">시/군/구</th>
+                            <th scope="row">성별</th>
+                            <th scope="row">관리기관</th>
+                            <th scope="row">대상자 이름</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select name="" id="">
+                                        <option value="">서울시</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="" id="">
+                                        <option value="">동대문구</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="btn_area">
+                                        <button type="button" class="btn on">남</button>
+                                        <button type="button" class="btn">여</button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" value="경기도 용인시 사회복지관 2관">
+                                </td>
+                                <td>
+                                    <input type="text" value="홍길동">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn_area">
+                    <button type="button" class="btn">조회</button>
+                </div>
+            </div>
+            <div class="one_box box_style">
+                <div class="result_txt">
+                    <p>조회결과 : <strong>5,324</strong>건</p>
+                </div>
+                <div class="list result">
+                    <table>
+                        <colgroup>
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:5%;">
+                            <col style="width:10%;"><!--전번-->
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:auto;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:10%;"><!--등록시간-->
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th scope="col">이름</th>
+                                <th scope="col">생년월일</th>
+                                <th scope="col">나이</th>
+                                <th scope="col">성별</th>
+                                <th scope="col">전화번호</th>
+                                <th scope="col">구분</th>
+                                <th scope="col">상태</th>
+                                <th scope="col">주소</th>
+                                <th scope="col">관리기관</th>
+                                <th scope="col">생활관리사</th>
+                                <th scope="col">등록시간</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="tbody">
+                        <table>
+                            <colgroup>
+                                <col style="width:8%;">
+                                <col style="width:8%;">
+                                <col style="width:8%;">
+                                <col style="width:5%;">
+                                <col style="width:10%;"><!--전번-->
+                                <col style="width:8%;">
+                                <col style="width:8%;">
+                                <col style="width:auto;">
+                                <col style="width:8%;">
+                                <col style="width:8%;">
+                                <col style="width:10%;"><!--등록시간-->
+                            </colgroup>
+                            <tbody>
+                                <tr v-for="(item,index) in recipientItems" v-bind:key="index">
+                                    <td><a href="#">{{item.recipientNm}}</a></td>
+                                    <td><a href="#">{{item.birthday}}</a></td>
+                                    <td><a href="#">83(가)</a></td>
+                                    <td><a href="#">{{item.sex==="M"?'남':'여'}}</a></td>
+                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
+                                    <td><a href="#">{{item.typeNm}}</a></td>
+                                    <td><a href="#">{{item.stateNm}}</a></td>
+                                    <td><a href="#">{{item.addr}}</a></td>
+                                    <td><a href="#">{{item.orgNm}}</a></td>
+                                    <td><a href="#">{{item.managerNm}}</a></td>
+                                    <td><a href="#">{{$moment(item.regDtime).format('YYYY-MM-DD')}}</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="pagination mt0">
+					<a href="#" class="front">첫 페이지</a>
+					<a href="#" class="prev">이전 페이지</a>
+					<a href="#" class="on">1</a>
+					<a href="#">2</a>
+					<a href="#">3</a>
+					<a href="#">4</a>
+					<a href="#">5</a>
+					<a href="#">6</a>
+					<a href="#">7</a>
+					<a href="#">8</a>
+					<a href="#">9</a>
+					<a href="#">10</a>
+					<a href="#" class="next">다음 페이지</a>
+					<a href="#" class="back">마지막 페이지</a>
+				</div>
+            </div>
+        </div>
     <CRow>
       <CCol>
         <CCard>
@@ -233,6 +371,7 @@ import moment from "moment";
 
 export default {
   name: "AllView",
+
   data () {
     return {
       cName: '', cBirthday: '', cPhone: '', cSex: '', cSocial: '', cPart: '', cStatus: '', cCycle: '', cAddr: '', cDetail: '',
@@ -252,16 +391,28 @@ export default {
         { key: 'addr', label: '주소', _classes: 'text-center' },
         { key: 'careLevelNm', label: '기기', _classes: 'text-center' },
         { key: 'managerNm', label: '사회복지사', _classes: 'text-center' },
+        { key: 'birthday', label: '생일', _classes: 'text-center' },
+      
         { key: 'detail', label: '', _classes: 'text-center' },
-        { key: 'delete', label: '', _classes: 'text-center' },
+        { key: 'delete', label: '', _classes: 'text-center' },    
       ],
       addCustomer: false, fileUpload: false,
 
     }
   },
+  created() {
+    
+    this.getRecipientData();
+    this.getOrgmData();
+    this.getPartData();
+    this.getStatusData();
+    this.getCycleData();
+    this.cBirthday=moment().format('YYYY-MM-DD');
+    
+  },
   methods: {
-    getOrgmData() {
-      axios.get(this.$store.state.serverApi + "/organizations/all", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+   async getOrgmData() {
+     await axios.get(this.$store.state.serverApi + "/organizations/all", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.orgmItems=[];
             this.orgmItems.push({label: '전체', value: ''});
@@ -280,9 +431,9 @@ export default {
     getRecipientData() {
       let uri = '';
       if(this.orgCode == '' && this.partCode == '' && this.statusCode == '' && this.modelName == '') {
-        uri = this.$store.state.serverApi + "/recipients";
+        uri = this.$store.state.serverApi + "/admin/recipients";
       } else {
-        uri = this.$store.state.serverApi + "/recipients?";
+        uri = this.$store.state.serverApi + "/admin/recipients?";
         if(this.orgCode != '') uri += "&orgId=" + this.orgCode;
         if(this.partCode != '') uri += "&typeCd=" + this.partCode;
         if(this.statusCode != '') uri += "&stateCd=" + this.statusCode;
@@ -293,32 +444,40 @@ export default {
         uriArray.splice(fIdx, 1);
         uri = uriArray.join('');
       }
+      console.log(uri)
 
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
-            this.recipientItems = [];
-            for(let i=0; i<response.data.data.length; i++) {
-              this.recipientItems.push({
-                recipientId:response.data.data[i].recipientId,
-                orgNm:response.data.data[i].orgNm,
-                typeNm:response.data.data[i].typeNm,
-                stateNm:response.data.data[i].stateNm,
-                activeUnsensingCycle:response.data.data[i].activeUnsensingCycle,
-                recipientNm:response.data.data[i].recipientNm,
-                sex:response.data.data[i].sex,
-                addr:response.data.data[i].addr,
-                careLevelNm:response.data.data[i].careLevelNm,
-                managerNm:response.data.data[i].managerNm,
-                detail:'',
-                delete:''
-              })
-            }
+            this.recipientItems = response.data.data
+            // this.recipientItems = [];
+            // for(let i=0; i<response.data.data.length; i++) {
+            //   this.recipientItems.push({
+            //     recipientId:response.data.data[i].recipientId,
+            //     orgNm:response.data.data[i].orgNm,
+            //     typeNm:response.data.data[i].typeNm,
+            //     stateNm:response.data.data[i].stateNm,
+            //     activeUnsensingCycle:response.data.data[i].activeUnsensingCycle,
+            //     recipientNm:response.data.data[i].recipientNm,
+            //     sex:response.data.data[i].sex,
+            //     addr:response.data.data[i].addr,
+            //     careLevelNm:response.data.data[i].careLevelNm,
+            //     managerNm:response.data.data[i].managerNm,
+            //     detail:'',
+            //     delete:''
+            //   })
+            // }
           })
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
     },
+    changeRecipientPhoneno(phone){
+      let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+      return changeNumber
+    },
+
+
     getPartData() {
       axios.get(this.$store.state.serverApi + "/codes?cmmnCdGroup=RECIPIENT.TYPECD", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
@@ -504,17 +663,12 @@ export default {
       this.addCustomer=false;
     }
   },
-  created() {
-    this.getRecipientData();
-    this.getOrgmData();
-    this.getPartData();
-    this.getStatusData();
-    this.getCycleData();
-    this.cBirthday=moment().format('YYYY-MM-DD');
-  }
+  
 }
 </script>
 <style>
+@import '../../assets/scss/common.css';
+@import '../../assets/scss/sub.css';
 .tdBorder table td {
   border-top: 0px;
   border-bottom: 1px solid;
