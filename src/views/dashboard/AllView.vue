@@ -1,32 +1,32 @@
 <template>
   <div>
-    <div class="menuTitle">
-      <slot name="header">
-        <strong style="font-size: large;">대쉬보드</strong>
-      </slot>
+    <div class="modal-mask" v-if="isLoading === true">
+    <div class="loading">
+      <vue-loading type="spin" color="#365" :size="{ width: '100px', height: '50px'}"></vue-loading>
     </div>
-    <CRow>
-      <CCol sm="6" lg="5">
-        <CChartLine/>
-      </CCol>
-      <CCol sm="6" lg="3">
-        <CMsocilaWork/>
-      </CCol>
-      <CCol sm="6" lg="4">
-        <CSocilaWorkManage/>
-      </CCol>
+  </div>
+  <div class="one_box box_style" style="margin-top : 20px; ">
+   <CLookUp/>
+  </div>
+    <CRow >
+      <div class="one_box box_style" style="margin-right : 10px; margin-left : 15px;">
+        <CChartLine style="padding : 0px; " />
+      </div>
+      <div class="one_box box_style" style="margin-right : 10px; margin-left : 10px;">
+        <CEventStatus style="padding : 0px; " />
+      </div>
+      <div class="one_box box_style" style="margin-right : 0px; margin-left : 10px;">
+        <CASStatus style="padding : 0px; " />
+      </div>
     </CRow>
 
     <CRow>
-      <CCol sm="6" lg="5">
-        <CCustomerManage/>
-      </CCol>
-      <CCol sm="6" lg="3">
-        <CRecentEmergencyEvent/>
-      </CCol>
-      <CCol sm="6" lg="4">
-        <CNotice/>
-      </CCol>
+      <div class="one_box box_style" style="margin-top : 10px; margin-bottom : 20px; margin-margin-right : 15px; margin-left : 15px;">
+        <CBattery style="padding : 0px; " />
+      </div>
+      <div class="one_box box_style" style="margin-top : 10px; margin-bottom : 20px; margin-right : 15px; margin-left : 15px;">
+        <CPowerConnect style="padding : 0px; " />
+      </div>
     </CRow>
   </div>
 </template>
@@ -38,6 +38,13 @@ import CSocilaWorkManage from './SocilaWorkManage.vue'
 import CCustomerManage from './CustomerManage.vue'
 import CNotice from './Notice.vue'
 import CRecentEmergencyEvent from './RecentEmergencyEvent.vue'
+import CLookUp from './LookUp.vue'
+import { VueLoading } from 'vue-loading-template';
+import CEventStatus from './EventStatus.vue'
+import CASStatus from './ASStatus.vue'
+import CBattery from './Battery.vue'
+import CPowerConnect from './PowerConnection.vue'
+
 
 export default {
   name: 'AllView',
@@ -47,11 +54,34 @@ export default {
     CSocilaWorkManage,
     CCustomerManage,
     CNotice,
-    CRecentEmergencyEvent
+    CRecentEmergencyEvent,
+    CLookUp,
+    VueLoading,
+    CEventStatus,
+    CASStatus,
+    CBattery,
+    CPowerConnect,
   },
+  props: {
+      isLoading: Boolean,
+    },
   methods: {
 
   }
 }
 </script>
 
+<style scoped>
+.modal-mask {
+  z-index:1;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color:rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

@@ -1,11 +1,11 @@
 <template>
 <div class="container">
   <div class="one_box box_style">
-    <div class="result_txt">
-      <p>장비가동률</p>
+    <div class>
+      <p>A/S현황</p>
     </div>
     <div>
-      <canvas class="statistics-charts-line" ref="lineChart" width="470" height="250"></canvas>
+      <canvas class="statistics-charts-line" ref="" width="470" height="240"></canvas>
     </div>
   </div>
 </div>
@@ -27,7 +27,6 @@ export default {
         backgroundColor:'rgba(255, 255, 255, 1)',
         borderColor:'rgba(17, 183, 135, 1)',
         borderWidth: 3.5,
-        
       }]
     },
     options: {
@@ -35,11 +34,6 @@ export default {
         y: {
           beginAtZero: true
         }
-      },
-      plugins:{
-        legend: {
-		                display: false
-		    },
       }
     }
   }),
