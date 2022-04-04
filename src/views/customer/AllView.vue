@@ -14,7 +14,7 @@
       </slot>
     </div>
     <div class="container">
-      
+       {{this.recipientItems}}
             <div class="box_search_wrap add_btn box_style">
                 <div class="table_wrap">
                     <table>
@@ -115,10 +115,10 @@
                                 <col style="width:10%;"><!--등록시간-->
                             </colgroup>
                             <tbody>
-                                <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                    <td><a href="#">{{item.recipientNm}}</a></td>
+                                <tr v-for="(item,index) in recipientItems" v-bind:key="index" @click="goToDetailView(item.recipientId)">
+                                    <td><a href="#" >{{item.recipientNm}}</a></td>
                                     <td><a href="#">{{item.birthday}}</a></td>
-                                    <td><a href="#">83(가)</a></td>
+                                    <td><a href="#">{{makeAge(item.birthday) }}</a></td>
                                     <td><a href="#">{{item.sex==="M"?'남':'여'}}</a></td>
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{item.typeNm}}</a></td>
@@ -376,7 +376,7 @@ export default {
     return {
       cName: '', cBirthday: '', cPhone: '', cSex: '', cSocial: '', cPart: '', cStatus: '', cCycle: '', cAddr: '', cDetail: '',
       caption: '', fileName: '',
-      counter: 0,
+      counter: 0,pageIndex: 1,
       orgmItems: [], partItems: [], statusItems: [], cycleItems: [], sexItems:[{label: '남', value: 'M'}, {label: '여', value: 'F'}],
       orgCode: '', partCode: '', statusCode: '', sexCode: '', cycleCode: '',
       modelOrg: '', modelPart: '', modelStatus: '', modelName: '',
@@ -431,9 +431,9 @@ export default {
     getRecipientData() {
       let uri = '';
       if(this.orgCode == '' && this.partCode == '' && this.statusCode == '' && this.modelName == '') {
-        uri = this.$store.state.serverApi + "/admin/recipients";
+        uri = this.$store.state.serverApi + "/admin/recipients?pageIndex=1&recordCountPerPage=100";
       } else {
-        uri = this.$store.state.serverApi + "/admin/recipients?";
+        uri = this.$store.state.serverApi + "/admin/recipients?pageIndex=1&recordCountPerPage=100";
         if(this.orgCode != '') uri += "&orgId=" + this.orgCode;
         if(this.partCode != '') uri += "&typeCd=" + this.partCode;
         if(this.statusCode != '') uri += "&stateCd=" + this.statusCode;
@@ -473,8 +473,13 @@ export default {
           });
     },
     changeRecipientPhoneno(phone){
-      let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
-      return changeNumber
+      if(phone){
+        let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+        return changeNumber
+      }else{
+        return ''
+      }
+      
     },
 
 
@@ -661,6 +666,17 @@ export default {
     },
     customCancel() {
       this.addCustomer=false;
+    },
+    makeAge(birthDay){
+      let tmp1 = this.$moment(birthDay).format('YYYY')
+      
+      let tmp2 = this.$moment()
+      return tmp2.diff(tmp1, 'years');
+    },
+    goToDetailView(recipientId) {
+      this.$router.push({
+                path : `/customer/DetailView/${recipientId}`
+        })
     }
   },
   
