@@ -1,55 +1,84 @@
 <template>
-<div class="container">
-  <div class="one_box box_style">
-    <div class>
-      <p>A/S현황</p>
+
+  <div class="box_col3 box_style">
+    <div>
+      <colgroup>
+        <col style="width:2%; margin-left:15px;" >
+        <col style="width:1.5%;">
+        <col style="width:1.5%;">
+        <col style="width:1%;">
+      </colgroup>
+      <thead>
+      <tr>
+        <th>구분</th>
+        <th>A/S 요청</th>
+        <th>A/S 접수</th>
+        <th>A/S 완료</th>
+      </tr>
+      <br>
+      </thead>
+      <div class="tbody">
+        <colgroup>
+         <col style="width:2%;" >
+         <col style="width:1.5%;">
+         <col style="width:1.5%;">
+         <col style="width:1%;">
+        </colgroup>
+        <tbody>
+          <tr>
+            <th scope="col">게이트웨이</th>
+            <th scope="col">1</th>
+            <th scope="col">1</th>
+            <th scope="col">1</th>
+          </tr>
+          <br>
+          <tr>
+            <th scope="col">응급호출기</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+          </tr>
+          <br>
+          <tr>
+            <th scope="col">화재감지기</th>
+            <th scope="col">10</th>
+            <th scope="col">5</th>
+            <th scope="col">15</th>
+          </tr>
+          <br>
+          <tr>
+            <th scope="col">활동감지기</th>
+            <th scope="col">20</th>
+            <th scope="col">30</th>
+            <th scope="col">10</th>
+          </tr>
+          <br>
+          <tr>
+            <th scope="col">출입문센서</th>
+            <th scope="col">7</th>
+            <th scope="col">4</th>
+            <th scope="col">5</th>
+          </tr>
+          <br>
+          <tr>
+            <th scope="col">생활정보센서</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+          </tr>
+        </tbody>
+        </div>
     </div>
     <div>
-      <canvas class="statistics-charts-line" ref="" width="470" height="240"></canvas>
+      <canvas width="470" height="1">
+      </canvas>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import { Chart, registerables } from 'chart.js'
-Chart.register(...registerables)
-
 export default {
-  data:() => ({
-    type: 'line',
-    data: {
-      labels: [ '3월 1일', '3월 2일', '3월 3일', '3월 4일', '3월 5일', '3월 6일', '3월 7일' ],
-      labelsColor: 'white',
-      datasets: [{
-        label: '# of Votes',
-        data: [ 12, 19, 3, 5, 2, 3, 7 ],
-        backgroundColor:'rgba(255, 255, 255, 1)',
-        borderColor:'rgba(17, 183, 135, 1)',
-        borderWidth: 3.5,
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  }),
-  mounted(){
-    this.createChart()
-  },
-  methods:{
-    createChart(){
-      new Chart(this.$refs.lineChart, {
-        type:'line',
-        data:this.data,
-        options:this.options
-      })
 
-    }
-  }
 }
 </script>
 

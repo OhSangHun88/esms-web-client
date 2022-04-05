@@ -1,87 +1,66 @@
 <template>
-  <div>
-    <div class="modal-mask" v-if="isLoading === true">
-    <div class="loading">
-      <vue-loading type="spin" color="#365" :size="{ width: '100px', height: '50px'}"></vue-loading>
-    </div>
-  </div>
-  <div class="one_box box_style" style="margin-top : 20px; ">
-   <CLookUp/>
-  </div>
-    <CRow >
-      <div class="one_box box_style" style="margin-right : 10px; margin-left : 15px;">
-        <CChartLine style="padding : 0px; " />
-      </div>
-      <div class="one_box box_style" style="margin-right : 10px; margin-left : 10px;">
-        <CEventStatus style="padding : 0px; " />
-      </div>
-      <div class="one_box box_style" style="margin-right : 0px; margin-left : 10px;">
-        <CASStatus style="padding : 0px; " />
-      </div>
-    </CRow>
-
-    <CRow>
-      <div class="one_box box_style" style="margin-top : 10px; margin-bottom : 20px; margin-margin-right : 15px; margin-left : 15px;">
-        <CBattery style="padding : 0px; " />
-      </div>
-      <div class="one_box box_style" style="margin-top : 10px; margin-bottom : 20px; margin-right : 15px; margin-left : 15px;">
-        <CPowerConnect style="padding : 0px; " />
-      </div>
-    </CRow>
+    <div class="wrap">
+        <HeaderComp></HeaderComp>
+        <!-- <HeaderComp2></HeaderComp2> -->
+        <div class="container type-02">
+            <LookUp/>
+          <div class="box_wrap">
+            <ChartLine/>
+            <EventStatus/>
+            <ASStatus/>
+          </div>
+          <div class="box_wrap">
+            <Battery/>
+            <PowerConnection/>
+          </div>
+        </div>
   </div>
 </template>
+<style lang="scss">
+@import '../../assets/scss/common.css';
+@import '../../assets/scss/sub.css';
 
+</style>
 <script>
-import CChartLine from './ChartLine.vue'
-import CMsocilaWork from './RecentSocialWorker.vue'
-import CSocilaWorkManage from './SocilaWorkManage.vue'
-import CCustomerManage from './CustomerManage.vue'
-import CNotice from './Notice.vue'
-import CRecentEmergencyEvent from './RecentEmergencyEvent.vue'
-import CLookUp from './LookUp.vue'
-import { VueLoading } from 'vue-loading-template';
-import CEventStatus from './EventStatus.vue'
-import CASStatus from './ASStatus.vue'
-import CBattery from './Battery.vue'
-import CPowerConnect from './PowerConnection.vue'
+import LookUp from './LookUp.vue'
+import ChartLine from './ChartLine.vue'
+import ASStatus from './ASStatus.vue'
+import EventStatus from './EventStatus.vue'
+import Battery from './Battery.vue'
+import PowerConnection from './PowerConnection.vue'
 
 
 export default {
-  name: 'AllView',
-  components: {
-    CChartLine,
-    CMsocilaWork,
-    CSocilaWorkManage,
-    CCustomerManage,
-    CNotice,
-    CRecentEmergencyEvent,
-    CLookUp,
-    VueLoading,
-    CEventStatus,
-    CASStatus,
-    CBattery,
-    CPowerConnect,
-  },
-  props: {
-      isLoading: Boolean,
+    name: 'UserDataComponent',
+    data() {
+    return {
+        taptoggle:1,
+        }
     },
-  methods: {
+    components : {
+      LookUp,
+      ChartLine,
+      ASStatus,
+      EventStatus,
+      Battery,
+      PowerConnection,
+    },
+    props: {
+    
+    },
+    methods:{
+        tap(value){
+            switch (value){
+                case 1 : this.taptoggle=1 ;break;
+                case 2 : this.taptoggle=2 ;break;
+                case 3 : this.taptoggle=3 ;break;
 
-  }
+            }
+                
+        }
+    }
 }
 </script>
+<style>
 
-<style scoped>
-.modal-mask {
-  z-index:1;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background-color:rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 </style>

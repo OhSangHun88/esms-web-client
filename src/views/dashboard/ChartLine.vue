@@ -1,14 +1,10 @@
 <template>
-<div class="container">
-  <div class="one_box box_style">
-    <div class="result_txt">
-      <p>장비가동률</p>
-    </div>
-    <div>
-      <canvas class="statistics-charts-line" ref="lineChart" width="470" height="250"></canvas>
+  <div class="box_col3 box_style">
+    <p>장비가동률</p>    
+   <div>
+      <canvas class="statistics-charts-line" ref="lineChart" width="470" height="300"></canvas>
     </div>
   </div>
-</div>
 </template>
 
 <script>
