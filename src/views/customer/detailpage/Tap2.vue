@@ -48,12 +48,12 @@
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in emergencys" v-bind:key="index">
-                                    <td>구분</td>
-                                    <td>상태</td>
-                                    <td>{{item.testYn}}</td> 
+                                    <td>{{item.signalStateNm}}</td>
+                                    <td>{{item.typeNm}}</td>
+                                    <td>{{!item.testYn ? '테스트':'실제상황'}}</td> 
                                     <td>{{item.occurDtime}}</td>
                                     <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
+                                    <td>{{item.rcvDtime}}</td>
                                     <td>조치내용</td>
                                 </tr>   
                                 

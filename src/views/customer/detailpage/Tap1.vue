@@ -6,21 +6,21 @@
                     <i class="search_ico"></i>
                     <div class="fillter_wrap">
                         <div class="select_area">
-                            <select name="" id="">
+                            <select name="code1" id="code1" v-model="code1">
                                 <option value="">환경정보</option>
                                 <option value="">전체</option>
-                                <option value="">온도</option>
-                                <option value="">조도</option>
-                                <option value="">습도</option>
+                                <option value="TPE006">온도</option>
+                                <option value="TPE008">조도</option>
+                                <option value="TPE007">습도</option>
                             </select>
                         </div>
                         <div class="select_area">
                             <select name="" id="">
                                 <option value="">바이탈 정보</option>
                                 <option value="">전체</option>
-                                <option value="">심장박동</option>
-                                <option value="">호흡</option>
-                                <option value="">활동량</option>
+                                <option value="TPE005">심장박동</option>
+                                <option value="TPE011 ">호흡</option>
+                                <option value="TPE012 ">활동량</option>
                             </select>
                         </div>
                         <div class="select_area">
@@ -62,7 +62,7 @@
                                 <th scope="col">{{recipientId}}설치장소</th>
                                 <th scope="col">측정일시</th>
                                 <th scope="col">보고일시</th>
-                                <th scope="col">조도</th>
+                                <th scope="col">온도</th>
                             </tr>
                         </thead>
                     </table>
@@ -78,9 +78,9 @@
                             <tbody>
                                 <tr v-for="(item,index) in sensorsData" v-bind:key="index">
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>506 lx</td>
+                                    <td>{{item.measureDtime}}</td>
+                                    <td>{{item.regDtime}}</td>
+                                    <td>{{item.measureValue}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -92,6 +92,7 @@
 </template>
 <script>
 import axios from "axios";
+import moment from "moment";
 
  export default {
    name: "Tap1",
@@ -100,19 +101,71 @@ import axios from "axios";
    },
    data () {
      return {
-      sensorsData: null,
+      sensorsData: [],
+      code1: '',
+
 
      }
    },
   methods: {
-    async getSensorsData(){
-        const url  = `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=TPE006&measureStartDate=2022-03-30&measureEndDate=2022-04-04`
+    async getSensorsData(input){
+        //TPE011
+        //${input}
+        const url  = `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${input}&measureStartDate=2022-03-30&measureEndDate=2022-04-04`
+        //const url  = `/admin/recipients/${this.recipientId}/sensors`
         
-        console.log("sensorsData is ")
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
+            let tmpData = res.data.data[0]
+            console.log("tmpData")
+            console.log(tmpData)
+            
+            let tmp = res.data.data[0].measureValue
+            tmpData.measureValue = tmp.split(',')
+            if(input==="TPE006"||input==="TPE007"||input==="TPE008"){
+                for(let i=0; i <tmpData.measureValue.length ;i++ ){
+                    this.sensorsData.push({
+                        sensorId: tmpData.sensorId,
+                        sensorTypeCd: tmpData.sensorTypeCd,
+                        measureValue: tmpData.measureValue[i],
+                        testYn: tmpData.testYn,
+                        sensorLocCd: tmpData.sensorLocCd,
+                        measureDtime: moment(tmpData.measureDtime).subtract( 10*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                        regDtime : moment(tmpData.regDtime).subtract( 10*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                    })
+                }
+            }else if(input==="TPE005"||input==="TPE011"){
+                for(let i=0; i <tmpData.measureValue.length ;i++ ){
+                    this.sensorsData.push({
+                        sensorId: tmpData.sensorId,
+                        sensorTypeCd: tmpData.sensorTypeCd,
+                        measureValue: tmpData.measureValue[i],
+                        testYn: tmpData.testYn,
+                        sensorLocCd: tmpData.sensorLocCd,
+                        measureDtime: moment(tmpData.measureDtime).subtract( 1*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                        regDtime : moment(tmpData.regDtime).subtract( 1*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                    })
+                }
+            }
+            
+            console.log("sensorsData is ")
+            console.log(this.sensorsData)
+
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getfilteringData(){
+        const url  = `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=TPE006&measureStartDate=2022-03-30&measureEndDate=2022-04-04`
+        //const url  = `/admin/recipients/${this.recipientId}/sensors`
+        
+        axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
             this.sensorsData = res.data.data
-            console.log("aa ")
+            
             console.log(this.sensorsData)
           })
           .catch(error => {
@@ -132,8 +185,8 @@ import axios from "axios";
           case "LOC006" : result="화장실2" ;break;
           case "LOC007" : result="현관1" ;break;
           case "LOC008" : result="현관2" ;break;
-          case "LOC009" : result="부엌1" ;break;
-          case "LOC010" : result="부엌2" ;break;
+          case "LOC009" : result="주방1" ;break;
+          case "LOC010" : result="주방2" ;break;
           case "LOC011" : result="작은방1" ;break;
           case "LOC012" : result="작은방2" ;break;
       }
@@ -142,7 +195,7 @@ import axios from "axios";
 
    },
    created() {
-    this.getSensorsData();
+    this.getSensorsData('TPE006');
   }
  }
  </script>

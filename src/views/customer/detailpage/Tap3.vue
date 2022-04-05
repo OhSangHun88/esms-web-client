@@ -41,110 +41,12 @@
                                 <col style="width:20%;">
                             </colgroup>
                             <tbody>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                </tr>
-                                <tr>
-                                    <td>통화구분</td>
-                                    <td>010-1234-1234</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
-                                    <td>2021-03-04 16:49:03</td>
+                                <tr v-for="(item,index) in call_historys" v-bind:key="index">
+                                    <td>{{item.callTypeNm}}</td>
+                                    <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
+                                    <td>{{item.startTime}}</td>
+                                    <td>{{item.endTime}}</td>
+                                    <td>{{item.callDuration}} 초</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -154,5 +56,56 @@
         </div>
     </div>
 </template>
+<script>
+import axios from "axios";
+
+ export default {
+   name: "Tap3",
+   props:{
+     recipientId: String
+   },
+   data () {
+     return {
+      call_historys: null,
+
+     }
+   },
+  methods: {
+    async getCall_historysData(){
+
+
+        const url  = `/admin/recipients/${this.recipientId}/call-historys?pageIndex=1&recordCountPerPage=100&callStartDate=2022-03-01&callEndDate=2022-04-05`
+        
+        console.log("call_historys is ")
+        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.call_historys = res.data.data
+            console.log("aa ")
+            console.log(this.call_historys)
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    changeRecipientPhoneno(phone){
+      if(phone){
+        let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+        return changeNumber
+      }else{
+        return ''
+      }
+      
+    },
+    
+
+   },
+   created() {
+    this.getCall_historysData();
+  }
+ }
+</script>
+
                 
             

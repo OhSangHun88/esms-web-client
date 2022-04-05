@@ -162,7 +162,7 @@
                       </ul>
                       <tap1 v-if="this.taptoggle===1" :recipientId="this.recipientId"></tap1>
                       <tap2 v-if="this.taptoggle===2" :recipientId="this.recipientId"></tap2>
-                      <tap3 v-if="this.taptoggle===3"></tap3>
+                      <tap3 v-if="this.taptoggle===3" :recipientId="this.recipientId"></tap3>
                   </div><!--tab-->
               </div>
           </div>
