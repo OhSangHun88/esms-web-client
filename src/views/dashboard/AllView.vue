@@ -49,15 +49,7 @@ export default {
     
     },
     methods:{
-        tap(value){
-            switch (value){
-                case 1 : this.taptoggle=1 ;break;
-                case 2 : this.taptoggle=2 ;break;
-                case 3 : this.taptoggle=3 ;break;
 
-            }
-                
-        }
     }
 }
 </script>
