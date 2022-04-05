@@ -19,43 +19,53 @@ export default {
   data:() => ({
     type: 'bar',
     data: {
-      labels: [ '3월 1일', '3월 2일', '3월 3일', '3월 4일', '3월 5일', '3월 6일', '3월 7일' ],
-      labelsColor: 'white',
+      labels: [ '게이트웨이', '응급호출기', '화재감지기', '도어센서', '활동감지센서', '생활안심센서'],
       datasets: [{
-        label: '# of Votes',
-        data: [ 12, 19, 3, 5, 2, 3, 7 ],
+        label: '충만',
+        maxBarThickness: 12,  
+        data: [ 12, 19, 11, 13, 12, 15],
         backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-            "rgba(255, 159, 64, 0.2)",
-            "rgba(255, 159, 64, 0.2)",
+          "rgba(17, 135, 183, 0.8)",
           ],
-          borderColor: [
-            "rgba(255,99,132,1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
-            "rgba(153, 102, 255, 1)",
-            "rgba(255, 159, 64, 1)",
-            "rgba(255, 159, 64, 1)",
+      },{
+        label: '부족',
+        maxBarThickness: 12,
+        data: [ 8, 12, 10, 17, 7, 10],
+        backgroundColor: [
+          'rgba(17, 183, 135, 1)',
           ],
-        borderWidth: 3.5,
+      },{
+        label: '교체',
+        maxBarThickness: 12,
+        data: [ 16, 17, 13, 14, 9, 13],
+        backgroundColor: [
+          "rgba(183, 17, 135, 0.8)",
+          ],
       }]
     },
     options: {
-      scales: {
+      scales: [{
         y: {
-          beginAtZero: true
+          beginAtZero: true,
+          ticks: {
+            fontFamily: "noto-fonts",
+            fontColor: '#a5a5a5'
+          }
         }
-      },
+      }],
       plugins:{
         legend: {
-		                display: false
+		      display: true,
+          fontColor: "#959dad",
+          position: 'top',
+          align: 'end',
+          labels: {
+            fontColor: 'rgba(255, 255, 255, 1)',
+            boxWidth: 8,
+            usePointStyle: true
+          },
 		    },
-      }
+      },
     }
   }),
   mounted(){
