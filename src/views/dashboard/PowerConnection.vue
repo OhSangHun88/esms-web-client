@@ -1,5 +1,5 @@
 <template>
-  <div class="box_style box_r" style="height: 280px;">
+  <div class="box_style box_r" style="height: 242px;">
     <div class="result_txt">
       <p>전원연결</p>
     </div>

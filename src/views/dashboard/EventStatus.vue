@@ -1,6 +1,6 @@
 <template>
 
-  <div class="box_col3 box_style">
+  <div class="box_col3 box_style" style="width:150px;">
     <div>
       <p>오늘 이벤트 현황</p>
     </div>
@@ -8,7 +8,7 @@
       <p>응급 이벤트 현황</p>
     </div>
     <div>
-      <canvas ref="barChart" width="470" height="257"/>
+      <canvas ref="barChart" width="470" height="237"/>
     </div>
   </div>
 </template>
@@ -56,7 +56,7 @@ mounted(){
         maxBarThickness: 10,    
         backgroundColor: [
           "rgba(17, 135, 183, 0.8)",
-        ],  
+        ],
         },{
         label: '응급',
         data: this.EchangingData,
