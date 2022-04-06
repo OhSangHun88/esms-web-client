@@ -19,17 +19,17 @@
                 <tr>
                   <td>
                     <select @change="onChangeSgg($event)">
-                      <option v-for="sido in sidoItems" :value.sync="sido.value">{{sido.label}}</option>
+                      <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                     </select> 
                   </td>
                   <td>
                     <select @change="onChangeOrg($event)">
-                      <option v-for="sgg in sggItems" :value="sgg.value">{{sgg.label}}</option>
+                      <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                     </select>
                   </td>
                   <td>
                     <select>
-                      <option v-for="orgm in orgmItems" :value="orgm.value">{{orgm.label}}</option>
+                      <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                     </select>
                   </td>
                   <td>

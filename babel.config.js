@@ -7,5 +7,14 @@ module.exports = {
         corejs: 3
       }
     ]
-  ]
+  ],
+  "plugins": [
+    [
+        "@babel/plugin-transform-runtime",
+        {
+            "regenerator": true
+        }
+    ],
+    // 생략
+],
 }

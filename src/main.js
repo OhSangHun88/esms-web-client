@@ -8,6 +8,7 @@ import 'regenerator-runtime/runtime'
 import store from './store'
 import axios from 'axios'
 import moment from 'vue-moment'
+//import CoreuiVue from '@coreui/vue'
 const topMenu = () => import('@/containers/TopMenu.vue')
 
 

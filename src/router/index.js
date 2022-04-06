@@ -60,7 +60,7 @@ const User = () => import('@/views/users/User')
 
 //Customer
 const CustomerAllView = () => import('@/views/customer/AllView')
-const CustomerDetailAllView = () => import('@/views/customer/DetailView')
+const CustomerDetailAllView = () => import('@/views/customer/DetailView/')
 const CEmPerson = () => import('@/views/customer/detailpage/EmPerson')
 
 //Emevent
@@ -144,7 +144,7 @@ function configRoutes () {
               component: CustomerAllView
             },
             {
-              path: 'detailView',
+              path: 'detailView/:recipientId',
               name: 'DetailView',
               component: CustomerDetailAllView
             },
