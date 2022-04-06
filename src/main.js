@@ -2,7 +2,7 @@ import 'core-js/stable'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+//import CoreuiVue from '@coreui/vue'
 import { iconsSet as icons } from './assets/icons/icons.js'
 import 'regenerator-runtime/runtime'
 import store from './store'

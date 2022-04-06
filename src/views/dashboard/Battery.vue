@@ -1,14 +1,14 @@
 <template>
-<div class="container">
-  <div class="one_box box_style">
+
+  <div class="box_l chart box_style">
     <div class="result_txt">
       <p>배터리</p>
     </div>
     <div>
-      <canvas ref="barChart" width="450" height="210"/>
+      <canvas ref="barChart"/>
     </div>
   </div>
-</div>
+
 </template>
 
 <script>

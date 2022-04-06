@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <CWrapper>
       <topMenu />
       <div class="c-body">

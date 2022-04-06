@@ -1,100 +1,76 @@
 <template>
   <div>
-    <div class="container">
-      <div class="box_search_wrap add_btn box_style">
-          <div class="table_wrap">
+      <div class="box_wrap">
+          <div class="box_search_wrap box_style type_db">
             <table>
-                  <colgroup>
-                      <col style="width:23.18%;">
-                      <col style="width:23.18%;">
-                      <col style="width:23.18%;">
-                      <col style="width:13.18%;">
-                      <col style="width:13.18%;">
-                  </colgroup>
-                  <thead>
-                      <th scope="row">시/도</th>
-                      <th scope="row">시/군/구</th>
-                      <th scope="row">관리기관</th>
-                      
-                  </thead>
-                  <tbody>
-                      <tr>
-                          <td>
-                              <select @change="onChangeSgg($event)">
-                                <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
-                              </select> 
-                          </td>
-                          <td>
-                              <select @change="onChangeOrg($event)">
-                                <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
-                              </select>
-                          </td>
-                          <td>
-                              <select>
-                                <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
-                              </select>
-                          </td>
-                          <td>
-                            <input type="date" v-model="s_date" />
-                          </td>
-                          <td>
-                            <input type="date" v-model="e_date" />
-                          </td>
-                      </tr>
-                  </tbody>
-              </table>
+              <colgroup>
+                <col style="width:16%;">
+                <col style="width:16%;">
+                <col style="width:26%;">
+                <col style="width:auto;">
+              </colgroup>
+              <thead>
+                <th scope="row">시/도</th>
+                <th scope="row">시/군/구</th>
+                <th scope="row">관리기관</th>
+                <th scope="row"></th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <select @change="onChangeSgg($event)">
+                      <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                    </select> 
+                  </td>
+                  <td>
+                    <select @change="onChangeOrg($event)">
+                      <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select>
+                      <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <div class="date_warp">
+                      <div class="customerBts" style="justify-content: flex-start;">
+                        <input type="date" v-model="s_date"/>
+                        <span class="tilde">~</span>
+                        <input type="date" v-model="e_date"/>
+                        <button type="button" class="btn">조회</button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="btn_area">
-              <button type="button" class="btn">조회</button>
+          <div class="top_info box_style">
+            <i class="ico_info_1"></i>
+              <div class="txt_area">
+                <p class="tit">총 설치 가구수</p>
+                <strong class="num">{{!this.setCount? 0 : this.setCount}}</strong>
+              </div>
           </div>
-      </div>
-          <!-- 
-          <CSelect
-              class="paddingSel"
-              style="width: 300px"
-              label="시/도"
-              @change="onChangeSido($event)"
-              :options="sidoItems"
-              :value.sync="sidoCd"
-              v-show="isSido"
-          />
-          :value.sync="modelSido"
-          <CSelect
-              class="paddingSel"
-              style="width: 300px"
-              label="시/군/구"
-              @change="getOrgmData()"
-              :options="sggItems"
-              :value.sync="sggCd"
-              v-show="isSgg"
-          />
-          <CSelect
-              class="paddingSel"
-              style="width: 300px"
-              label="관리기관"
-              @change="onChangeOrg($event)"
-              :options="orgmItems"
-              :value.sync="orgId"
-              v-show="isOrg"
-          />
-          <CInput
-              type="date"
-              label="시작일"
-              v-model="s_date"
-              class="paddingSel"
-          />
-          <CInput
-              type="date"
-              label="마감일"
-              :value.sync="e_date"
-              class="paddingSel"
-          />
-          <CButton block color="primary" class="searchBtn" v-on:click="manageInquiry">조회</CButton> 
-          -->
+          <div class="top_info type-l box_style">
+            <div class="top_half">
+              <i class="ico_info_2"></i>
+                <div class="txt_area">
+                  <p class="tit">응급관리요원</p>
+                  <strong class="num">{{!this.setEMCount? 0 : this.setEMCount}}</strong>
+                </div>  
+            </div>
+            <div class="top_half">
+              <i class="ico_info_3"></i>
+                <div class="txt_area">
+                  <p class="tit">생활관리사</p>
+                  <strong class="num">{{!this.setLMCount? 0 : this.setLMCount}}</strong>
+                </div>
+            </div>
         </div>
       </div>
-      
-
+    </div>
 </template>
 
 <script>
@@ -106,9 +82,10 @@ export default {
   data () {
     return {
       modelSido:'', modelSgg:'', modelOrg:'', orgNm:'', orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-      sidoItems:[], sggItems:[], orgmItems:[],
+      sidoItems:[], sggItems:[], orgmItems:[], totalItems:[],
       isSido:true, isSgg:true, isOrg:true,
       orgSido:'', orgSgg:'', orgCode:'',
+      setCount: 0, setEMCount: 0, setLMCount: 0,
     }
   },
   methods:{
@@ -178,7 +155,7 @@ export default {
     },
 
     // 관리 기관 목록
-    async getOrgmData() {
+     getOrgmData() {
     let url = "/admin/organizations";
         if(this.sggCd != ''){
             url += "?sggCd="+this.sggCd;
@@ -190,7 +167,7 @@ export default {
         console.log(this.sggCd)
         console.log(url)
     
-      await axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             const tempArr = [];
             this.orgmItems=[];
@@ -246,7 +223,7 @@ export default {
       this.modelSido="전체";
       this.modelSgg="전체";
       this.modelOrg="전체";
-      this.s_date=moment().format('YYYY-MM-DD');
+      this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
       this.e_date=moment().format('YYYY-MM-DD');
     },
 
@@ -257,13 +234,63 @@ export default {
         this.getOrganizationsData();
       }
     },
+    getTotalCount(){
+      let url = "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let totalCData = response.data.data
+            let totalCArrToString = ''
+            totalCArrToString = totalCData.filter(cd=>{
+            return cd.typeCd ==="1"
+            })
+            this.setCount =totalCArrToString[0].typeCnt
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getEMCount(){
+      let url = "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let EMCData = response.data.data
+            let EMCArrToString = ''
+            EMCArrToString = EMCData.filter(cd=>{
+            return cd.typeCd ==="2"
+            })
+            this.setEMCount =EMCArrToString[0].typeCnt
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },getLMCount(){
+      let url = "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let LMCData = response.data.data
+            let LMCArrToString = ''
+            LMCArrToString = LMCData.filter(cd=>{
+            return cd.typeCd ==="3"
+            })
+            this.setLMCount =LMCArrToString[0].typeCnt
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    }
   },
   created(){
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
-    this.s_date=moment().format('YYYY-MM-DD');
+    this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
+    this.getTotalCount();
+    this.getEMCount();
+    this.getLMCount();
   }
 }
 </script>
