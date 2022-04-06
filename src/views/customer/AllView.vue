@@ -14,7 +14,6 @@
       </slot>
     </div>
     <div class="container">
-       {{this.recipientItems}}
             <div class="box_search_wrap add_btn box_style">
                 <div class="table_wrap">
                     <table>

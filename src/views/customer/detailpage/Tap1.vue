@@ -6,7 +6,7 @@
                     <i class="search_ico"></i>
                     <div class="fillter_wrap">
                         <div class="select_area">
-                            <select name="code1" id="code1" v-model="code1">
+                            <select name="code1" id="code1" v-model="code1" @change="getSensorsData(code1)">
                                 <option value="">환경정보</option>
                                 <option value="">전체</option>
                                 <option value="TPE006">온도</option>
@@ -15,7 +15,7 @@
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="" id="">
+                            <select name="code1" id="code2" v-model="code1" @change="getSensorsData(code1)">
                                 <option value="">바이탈 정보</option>
                                 <option value="">전체</option>
                                 <option value="TPE005">심장박동</option>
@@ -42,9 +42,9 @@
                     </div>
                     <div class="date_warp">
                         <div class="customerBts" style="justify-content: flex-start;">
-                            <input type="date"/>
+                            <input type="date" v-model="measureStartDate" @change="getSensorsData(code1)" />
                             <span class="tilde">~</span>
-                            <input type="date"/>
+                            <input type="date" v-model="measureEndDate" @change="getSensorsData(code1)"/>
                             <button type="button" class="btn">조회</button>
                         </div>
                     </div>
@@ -103,24 +103,34 @@ import moment from "moment";
      return {
       sensorsData: [],
       code1: '',
+      code2: '',
+      measureStartDate:moment().subtract(7,'days').format('YYYY-MM-DD'),
+      measureEndDate: moment().format('YYYY-MM-DD'),
 
 
      }
    },
   methods: {
     async getSensorsData(input){
+        if(!input){
+            input = 'TPE006'
+        }
+        
         //TPE011
         //${input}
-        const url  = `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${input}&measureStartDate=2022-03-30&measureEndDate=2022-04-04`
+        const url  = `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${input}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
         //const url  = `/admin/recipients/${this.recipientId}/sensors`
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
-            let tmpData = res.data.data[0]
+            let tmpData = []
+            let tmp = []
+            this.sensorsData = []
+            tmpData = res.data.data[0]
             console.log("tmpData")
             console.log(tmpData)
             
-            let tmp = res.data.data[0].measureValue
+            tmp = res.data.data[0].measureValue
             tmpData.measureValue = tmp.split(',')
             if(input==="TPE006"||input==="TPE007"||input==="TPE008"){
                 for(let i=0; i <tmpData.measureValue.length ;i++ ){
@@ -135,6 +145,18 @@ import moment from "moment";
                     })
                 }
             }else if(input==="TPE005"||input==="TPE011"){
+                for(let i=0; i <tmpData.measureValue.length ;i++ ){
+                    this.sensorsData.push({
+                        sensorId: tmpData.sensorId,
+                        sensorTypeCd: tmpData.sensorTypeCd,
+                        measureValue: tmpData.measureValue[i],
+                        testYn: tmpData.testYn,
+                        sensorLocCd: tmpData.sensorLocCd,
+                        measureDtime: moment(tmpData.measureDtime).subtract( 1*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                        regDtime : moment(tmpData.regDtime).subtract( 1*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                    })
+                }
+            }else if(input==="TPE012"){
                 for(let i=0; i <tmpData.measureValue.length ;i++ ){
                     this.sensorsData.push({
                         sensorId: tmpData.sensorId,
@@ -191,10 +213,15 @@ import moment from "moment";
           case "LOC012" : result="작은방2" ;break;
       }
         return result
-    }
+    },
+    makeTime(){
+        //measureStartDate, measureEndDate
+    },
+    
 
    },
    created() {
+       
     this.getSensorsData('TPE006');
   }
  }
