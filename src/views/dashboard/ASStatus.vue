@@ -1,6 +1,6 @@
 <template>
 
-  <div class="box_col3 box_style">
+  <div class="box_col3 box_style" sytle="margin-left: 20px;">
     <div>
       <colgroup>
         <col style="width:2%; margin-left:15px;" >
@@ -110,34 +110,51 @@ export default {
             let gwcpCArrToString = ''
             let fgwcpCArrToString = ''
 
+            // 요청
             gwrqCArrToString = gwrqData.filter(cd=>{
             return cd.typeCd ==="TPE000"
             })
+            if(gwrqCArrToString.length != ''){
             fgwrqCArrToString = gwrqCArrToString.filter(cd=>{
               return cd.stateCd === "STE001"
             })
-            this.gwrqCount =fgwrqCArrToString[0].typeCnt
-            !this.gwrqCount? 0 : this.gwrqCount
-            
-
-
+            if(fgwrqCArrToString.length != ''){
+            this.gwrqCount = fgwrqCArrToString[0].typeCnt
+            }else{
+              this.gwrqCount = '0';
+            }}else{
+              this.gwrqCount = '0';
+            }
+            // 접수
             gwrcCArrToString = gwrcData.filter(cd=>{
             return cd.typeCd ==="TPE000"
             })
+            if(gwrcCArrToString != ''){
             fgwrcCArrToString = gwrcCArrToString.filter(cd=>{
               return cd.stateCd === "STE002"
             })
-            !this.gwrcCount? 0 : this.gwrcCount= fgwrcCArrToString[0].typeCnt
-            
-            console.log(this.gwrcCount)
-
+            if(fgwrcCArrToString != ''){
+            this.gwrcCount = fgwrcCArrToString[0].typeCnt
+            }else{
+              this.gwrcCount = '0';
+            }}else{
+              this.gwrcCount = '0';
+            }
+            // 완료
             gwcpCArrToString = gwcpData.filter(cd=>{
             return cd.typeCd ==="TPE000"
             })
+            if(gwcpCArrToString != ''){
             fgwcpCArrToString = gwcpCArrToString.filter(cd=>{
               return cd.stateCd === "STE003"
             })
+            if(fgwcpCArrToString != ''){
             this.gwcpCount =fgwcpCArrToString[0].typeCnt
+            }else{
+              this.gwcpCount = '0';
+            }}else{
+              this.gwcpCount = '0';
+            }
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -160,31 +177,319 @@ export default {
             let emcpCArrToString = ''
             let femcpCArrToString = ''
 
+            // 요청
             emrqCArrToString = emrqData.filter(cd=>{
             return cd.typeCd ==="TPE001"
             })
+            if(emrqCArrToString.length != ''){
             femrqCArrToString = emrqCArrToString.filter(cd=>{
               return cd.stateCd === "STE001"
             })
-            !this.emrqCount? 0 : this.emrqCount =femrqCArrToString[0].typeCnt
-
-
+            if(femrqCArrToString.length != ''){
+            this.emrqCount = femrqCArrToString[0].typeCnt
+            }else{
+              this.emrqCount = '0';
+            }}else{
+              this.emrqCount = '0';
+            }
+            // 접수
             emrcCArrToString = emrcData.filter(cd=>{
             return cd.typeCd ==="TPE001"
             })
+            if(emrcCArrToString != ''){
             femrcCArrToString = emrcCArrToString.filter(cd=>{
               return cd.stateCd === "STE002"
             })
-            !this.emrcCount? 0 : this.emrcCount =femrcCArrToString[0].typeCnt
-
-
+            if(femrcCArrToString != ''){
+            this.emrcCount = femrcCArrToString[0].typeCnt
+            }else{
+              this.emrcCount = '0';
+            }}else{
+              this.emrcCount = '0';
+            }
+            // 완료
             emcpCArrToString = emcpData.filter(cd=>{
             return cd.typeCd ==="TPE001"
             })
+            if(emcpCArrToString != ''){
             femcpCArrToString = emcpCArrToString.filter(cd=>{
               return cd.stateCd === "STE003"
             })
-            !this.emrqCount? 0 : this.emrqCount =femcpCArrToString[0].typeCnt
+            if(femcpCArrToString != ''){
+            this.emcpCount =femcpCArrToString[0].typeCnt
+            }else{
+              this.emcpCount = '0';
+            }}else{
+              this.emcpCount = '0';
+            }
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getAcCount(){
+      let url = "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let acrqData = response.data.data
+            let acrqCArrToString = ''
+            let facrqCArrToString = ''
+
+            let acrcData = response.data.data
+            let acrcCArrToString = ''
+            let facrcCArrToString = ''
+
+            let accpData = response.data.data
+            let accpCArrToString = ''
+            let faccpCArrToString = ''
+
+            // 요청
+            acrqCArrToString = acrqData.filter(cd=>{
+            return cd.typeCd ==="TPE002"
+            })
+            if(acrqCArrToString.length != ''){
+            facrqCArrToString = acrqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE001"
+            })
+            if(facrqCArrToString.length != ''){
+            this.acrqCount = facrqCArrToString[0].typeCnt
+            }else{
+              this.acrqCount = '0';
+            }}else{
+              this.acrqCount = '0';
+            }
+            // 접수
+            acrcCArrToString = acrcData.filter(cd=>{
+            return cd.typeCd ==="TPE002"
+            })
+            if(acrcCArrToString != ''){
+            facrcCArrToString = acrcCArrToString.filter(cd=>{
+              return cd.stateCd === "STE002"
+            })
+            if(facrcCArrToString != ''){
+            this.acrcCount = facrcCArrToString[0].typeCnt
+            }else{
+              this.acrcCount = '0';
+            }}else{
+              this.acrcCount = '0';
+            }
+            // 완료
+            accpCArrToString = accpData.filter(cd=>{
+            return cd.typeCd ==="TPE002"
+            })
+            if(accpCArrToString != ''){
+            faccpCArrToString = accpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE003"
+            })
+            if(faccpCArrToString != ''){
+            this.accpCount =faccpCArrToString[0].typeCnt
+            }else{
+              this.accpCount = '0';
+            }}else{
+              this.accpCount = '0';
+            }
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getFiCount(){
+      let url = "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let firqData = response.data.data
+            let firqCArrToString = ''
+            let ffirqCArrToString = ''
+
+            let fircData = response.data.data
+            let fircCArrToString = ''
+            let ffircCArrToString = ''
+
+            let ficpData = response.data.data
+            let ficpCArrToString = ''
+            let fficpCArrToString = ''
+
+            // 요청
+            firqCArrToString = firqData.filter(cd=>{
+            return cd.typeCd ==="TPE003"
+            })
+            if(firqCArrToString.length != ''){
+            ffirqCArrToString = firqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE001"
+            })
+            if(ffirqCArrToString.length != ''){
+            this.firqCount = ffirqCArrToString[0].typeCnt
+            }else{
+              this.firqCount = '0';
+            }}else{
+              this.firqCount = '0';
+            }
+            // 접수
+            fircCArrToString = fircData.filter(cd=>{
+            return cd.typeCd ==="TPE003"
+            })
+            if(fircCArrToString != ''){
+            ffircCArrToString = fircCArrToString.filter(cd=>{
+              return cd.stateCd === "STE002"
+            })
+            if(ffircCArrToString != ''){
+            this.fircCount = ffircCArrToString[0].typeCnt
+            }else{
+              this.fircCount = '0';
+            }}else{
+              this.fircCount = '0';
+            }
+            // 완료
+            ficpCArrToString = ficpData.filter(cd=>{
+            return cd.typeCd ==="TPE003"
+            })
+            if(ficpCArrToString != ''){
+            fficpCArrToString = ficpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE003"
+            })
+            if(fficpCArrToString != ''){
+            this.ficpCount =fficpCArrToString[0].typeCnt
+            }else{
+              this.ficpCount = '0';
+            }}else{
+              this.ficpCount = '0';
+            }
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getDoCount(){
+      let url = "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let dorqData = response.data.data
+            let dorqCArrToString = ''
+            let fdorqCArrToString = ''
+
+            let dorcData = response.data.data
+            let dorcCArrToString = ''
+            let fdorcCArrToString = ''
+
+            let docpData = response.data.data
+            let docpCArrToString = ''
+            let fdocpCArrToString = ''
+
+            // 요청
+            dorqCArrToString = dorqData.filter(cd=>{
+            return cd.typeCd ==="TPE004"
+            })
+            if(dorqCArrToString.length != ''){
+            fdorqCArrToString = dorqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE001"
+            })
+            if(fdorqCArrToString.length != ''){
+            this.dorqCount = fdorqCArrToString[0].typeCnt
+            }else{
+              this.dorqCount = '0';
+            }}else{
+              this.dorqCount = '0';
+            }
+            // 접수
+            dorcCArrToString = dorcData.filter(cd=>{
+            return cd.typeCd ==="TPE004"
+            })
+            if(dorcCArrToString != ''){
+            fdorcCArrToString = dorcCArrToString.filter(cd=>{
+              return cd.stateCd === "STE002"
+            })
+            if(fdorcCArrToString != ''){
+            this.dorcCount = fdorcCArrToString[0].typeCnt
+            }else{
+              this.dorcCount = '0';
+            }}else{
+              this.dorcCount = '0';
+            }
+            // 완료
+            docpCArrToString = docpData.filter(cd=>{
+            return cd.typeCd ==="TPE004"
+            })
+            if(docpCArrToString != ''){
+            fdocpCArrToString = docpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE003"
+            })
+            if(fdocpCArrToString != ''){
+            this.docpCount =fdocpCArrToString[0].typeCnt
+            }else{
+              this.docpCount = '0';
+            }}else{
+              this.docpCount = '0';
+            }
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getLiCount(){
+      let url = "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let lirqData = response.data.data
+            let lirqCArrToString = ''
+            let flirqCArrToString = ''
+
+            let lircData = response.data.data
+            let lircCArrToString = ''
+            let flircCArrToString = ''
+
+            let licpData = response.data.data
+            let licpCArrToString = ''
+            let flicpCArrToString = ''
+
+            // 요청
+            lirqCArrToString = lirqData.filter(cd=>{
+            return cd.typeCd ==="TPE005"
+            })
+            if(lirqCArrToString.length != ''){
+            flirqCArrToString = lirqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE001"
+            })
+            if(flirqCArrToString.length != ''){
+            this.lirqCount = flirqCArrToString[0].typeCnt
+            }else{
+              this.lirqCount = '0';
+            }}else{
+              this.lirqCount = '0';
+            }
+            // 접수
+            lircCArrToString = lircData.filter(cd=>{
+            return cd.typeCd ==="TPE005"
+            })
+            if(lircCArrToString != ''){
+            flircCArrToString = lircCArrToString.filter(cd=>{
+              return cd.stateCd === "STE002"
+            })
+            if(flircCArrToString != ''){
+            this.lircCount = flircCArrToString[0].typeCnt
+            }else{
+              this.lircCount = '0';
+            }}else{
+              this.lircCount = '0';
+            }
+            // 완료
+            licpCArrToString = licpData.filter(cd=>{
+            return cd.typeCd ==="TPE005"
+            })
+            if(licpCArrToString != ''){
+            flicpCArrToString = licpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE003"
+            })
+            if(flicpCArrToString != ''){
+            this.licpCount =flicpCArrToString[0].typeCnt
+            }else{
+              this.licpCount = '0';
+            }}else{
+              this.licpCount = '0';
+            }
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -197,6 +502,10 @@ export default {
     this.e_date=moment().format('YYYY-MM-DD');
     this.getGwCount();
     this.getEmCount();
+    this.getAcCount();
+    this.getFiCount();
+    this.getDoCount();
+    this.getLiCount();
   }
 }
 </script>
