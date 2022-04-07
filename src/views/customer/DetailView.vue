@@ -1,5 +1,6 @@
 <template>
   <div class="wrap">
+    <HeaderComp></HeaderComp>
     <div class="container">
       
       <div class="box_search_wrap box_style">
@@ -274,6 +275,7 @@ import CCallHistory from "./detailpage/CallHistory";
 import CConnectDevice from "./detailpage/ConnectDevice";
 import CCycleSetting from "./detailpage/CycleSetting";
 import axios from "axios";
+import HeaderComp from "../pages/HeaderComp.vue";
 import tap1 from "./detailpage/Tap1.vue";
 import tap2 from "./detailpage/Tap2.vue";
 import tap3 from "./detailpage/Tap3.vue";
@@ -299,6 +301,7 @@ export default {
     CCallHistory,
     CConnectDevice,
     CCycleSetting,
+    HeaderComp,
     tap1,
     tap2,
     tap3,

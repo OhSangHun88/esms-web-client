@@ -1,138 +1,143 @@
 <template>
   <div>
     <HeaderComp></HeaderComp>
-    <div class="menuTitle">
-      <slot name="header">
-        <strong style="font-size: large;">대상자 관리</strong>
-        <div>
-          
           <!-- <div class="abtn"><CButton color="primary" @click="openUploadPopup" class="mr-1">엑셀 업로드</CButton></div>
           <div class="abtn"><CButton color="primary" @click="excelDownload" class="mr-1">엑셀 다운로드</CButton></div>
           <div class="abtn">
             <CButton color="primary" @click="addCustomer = true" class="mr-1">고객추가</CButton>
           </div> -->
-        </div>
-      </slot>
-    </div>
     <div class="container">
-            <div class="box_search_wrap add_btn box_style">
-                <div class="table_wrap">
-                    <table>
-                        <colgroup>
-                            <col style="width:23.18%;">
-                            <col style="width:23.18%;">
-                            <col style="width:auto">
-                            <col style="width:23.18%;">
-                            <col style="width:23.18%;">
-                        </colgroup>
-                        <thead>
-                            <th scope="row">시/도</th>
-                            <th scope="row">시/군/구</th>
-                            <th scope="row">성별</th>
-                            <th scope="row">관리기관</th>
-                            <th scope="row">대상자 이름</th>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <select name="" id="">
-                                        <option value="">서울시</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select name="" id="">
-                                        <option value="">동대문구</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <div class="btn_area">
-                                        <button type="button" class="btn on">남</button>
-                                        <button type="button" class="btn">여</button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <input type="text" value="경기도 용인시 사회복지관 2관">
-                                </td>
-                                <td>
-                                    <input type="text" value="홍길동">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="btn_area">
-                    <button type="button" class="btn">조회</button>
-                </div>
+      <div class="list_title_wrap">
+        <span>대상자 관리</span>
+        <i class="ico_nav"></i>
+        <span class="on">리스트</span>
+      </div>
+      <div class="box_search_wrap add_btn box_style">
+        <div class="table_wrap">
+            <table>
+                <colgroup>
+                    <col style="width:15.6%;">
+                    <col style="width:15.6%;">
+                    <col style="width:15.6%">
+                    
+                    <col style="width:15.6%;">
+                    <col style="width:auto;">
+                </colgroup>
+                <thead>
+                    <th scope="row">시/도</th>
+                    <th scope="row">시/군/구</th>
+                    <th scope="row">관리기관</th>
+                    <th scope="row">대상자 이름</th>
+                    
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <select @change="onChangeSgg($event)">
+                                <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select @change="onChangeOrg($event)">
+                              <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select>
+                              <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" value="" placeholder="이름을 입력해 주세요">
+                        </td>
+                        
+                        <td>
+                            <div class="date_warp">
+                                <div class="customerBts" style="justify-content: flex-start;">
+                                    <input type="date" v-model="s_date"/>
+                                    <span class="tilde">~</span>
+                                    <input type="date" v-model="e_date"/>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="btn_area">
+            <button type="button" class="btn">조회</button>
+        </div>
+      </div>
+    <div class="one_box box_style">
+        <div class="result_txt">
+            <p>조회결과 : <strong>5,324</strong>건</p>
+        </div>
+        <div class="list result">
+            <table>
+                <colgroup>
+                    <col style="width:8%;">
+                    <col style="width:8%;">
+                    <col style="width:8%;">
+                    <col style="width:5%;">
+                    <col style="width:10%;"><!--전번-->
+                    <col style="width:8%;">
+                    <col style="width:8%;">
+                    <col style="width:auto;">
+                    <col style="width:8%;">
+                    <col style="width:8%;">
+                    <col style="width:10%;"><!--등록시간-->
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th scope="col">이름</th>
+                        <th scope="col">생년월일</th>
+                        <th scope="col">나이</th>
+                        <th scope="col">성별</th>
+                        <th scope="col">전화번호</th>
+                        <th scope="col">구분</th>
+                        <th scope="col">상태</th>
+                        <th scope="col">주소</th>
+                        <th scope="col">관리기관</th>
+                        <th scope="col">생활관리사</th>
+                        <th scope="col">등록시간</th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="tbody">
+                <table>
+                    <colgroup>
+                        <col style="width:8%;">
+                        <col style="width:8%;">
+                        <col style="width:8%;">
+                        <col style="width:5%;">
+                        <col style="width:10%;"><!--전번-->
+                        <col style="width:8%;">
+                        <col style="width:8%;">
+                        <col style="width:auto;">
+                        <col style="width:8%;">
+                        <col style="width:8%;">
+                        <col style="width:10%;"><!--등록시간-->
+                    </colgroup>
+                    <tbody>
+                        <tr v-for="(item,index) in recipientItems" v-bind:key="index" @click="goToDetailView(item.recipientId)">
+                            
+                            <td><a href="#" >{{item.recipientNm}}</a></td>
+                            <td><a href="#">{{item.birthday}}</a></td>
+                            <td><a href="#">{{makeAge(item.birthday) }}</a></td>
+                            <td><a href="#">{{item.sex==="M"?'남':'여'}}</a></td>
+                            <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
+                            <td><a href="#">{{item.typeNm}}</a></td>
+                            <td><a href="#">{{item.stateNm}}</a></td>
+                            <td><a href="#">{{item.addr}}</a></td>
+                            <td><a href="#">{{item.orgNm}}</a></td>
+                            <td><a href="#">{{item.managerNm}}</a></td>
+                            <td><a href="#">{{$moment(item.regDtime).format('YYYY-MM-DD')}}</a></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="one_box box_style">
-                <div class="result_txt">
-                    <p>조회결과 : <strong>5,324</strong>건</p>
-                </div>
-                <div class="list result">
-                    <table>
-                        <colgroup>
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:5%;">
-                            <col style="width:10%;"><!--전번-->
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:auto;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:10%;"><!--등록시간-->
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th scope="col">이름</th>
-                                <th scope="col">생년월일</th>
-                                <th scope="col">나이</th>
-                                <th scope="col">성별</th>
-                                <th scope="col">전화번호</th>
-                                <th scope="col">구분</th>
-                                <th scope="col">상태</th>
-                                <th scope="col">주소</th>
-                                <th scope="col">관리기관</th>
-                                <th scope="col">생활관리사</th>
-                                <th scope="col">등록시간</th>
-                            </tr>
-                        </thead>
-                    </table>
-                    <div class="tbody">
-                        <table>
-                            <colgroup>
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:5%;">
-                                <col style="width:10%;"><!--전번-->
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:auto;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:10%;"><!--등록시간-->
-                            </colgroup>
-                            <tbody>
-                                <tr v-for="(item,index) in recipientItems" v-bind:key="index" @click="goToDetailView(item.recipientId)">
-                                    <td><a href="#" >{{item.recipientNm}}</a></td>
-                                    <td><a href="#">{{item.birthday}}</a></td>
-                                    <td><a href="#">{{makeAge(item.birthday) }}</a></td>
-                                    <td><a href="#">{{item.sex==="M"?'남':'여'}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
-                                    <td><a href="#">{{item.typeNm}}</a></td>
-                                    <td><a href="#">{{item.stateNm}}</a></td>
-                                    <td><a href="#">{{item.addr}}</a></td>
-                                    <td><a href="#">{{item.orgNm}}</a></td>
-                                    <td><a href="#">{{item.managerNm}}</a></td>
-                                    <td><a href="#">{{$moment(item.regDtime).format('YYYY-MM-DD')}}</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="pagination mt0">
+        </div>
+        <div class="pagination mt0">
 					<a href="#" class="front">첫 페이지</a>
 					<a href="#" class="prev">이전 페이지</a>
 					<a href="#" class="on">1</a>
@@ -150,7 +155,7 @@
 				</div>
             </div>
         </div>
-    <CRow>
+    <!--<CRow>
       <CCol>
         <CCard>
           <CForm class="opt_select">
@@ -194,12 +199,12 @@
     <CRow>
       <CCol>
         <CCard>
-          <!--CCardHeader class="header-del">
+          CCardHeader class="header-del">
             <slot name="header">
               <strong style="color:#5d66ff;">{{caption}}</strong>
               <div class="pbtn">해제</div>
             </slot>
-          </CCardHeader-->
+          </CCardHeader
           <CCardBody>
             <CDataTable
                 class="mb-0 table-clear thBorder tdBorder thText"
@@ -360,7 +365,7 @@
           </CCardBody>
         </CCard>
       </CContainer>
-    </CModal>
+    </CModal>-->
   </div>
 
 </template>
@@ -383,7 +388,8 @@ export default {
       orgmItems: [], partItems: [], statusItems: [], cycleItems: [], sexItems:[{label: '남', value: 'M'}, {label: '여', value: 'F'}],
       orgCode: '', partCode: '', statusCode: '', sexCode: '', cycleCode: '',
       modelOrg: '', modelPart: '', modelStatus: '', modelName: '',
-      recipientItems: [],
+      orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
+      sidoItems:[], sggItems:[],  actItems:[], recipientItems:[], orgSido:'', orgSgg:'', 
       recipientFields: [
         { key: 'orgNm', label: '기관관리', _classes: 'text-center' },
         { key: 'typeNm', label: '구분', _classes: 'text-center' },
@@ -404,77 +410,184 @@ export default {
     }
   },
   created() {
+    this.getSidoData();
+    this.getSggData();
+    this.getOrgmData();
     
     this.getRecipientData();
-    this.getOrgmData();
     this.getPartData();
     this.getStatusData();
     this.getCycleData();
     this.cBirthday=moment().format('YYYY-MM-DD');
+    this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
+    this.e_date=moment().format('YYYY-MM-DD');
     
   },
   methods: {
-   async getOrgmData() {
-     await axios.get(this.$store.state.serverApi + "/organizations/all", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+    getSidoData() {
+      axios.get("/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          this.sidoItems=[];
+          this.sidoItems.push({label: '전체', value: ''});
+          for(let i=0; i<response.data.data.length; i++) {
+            this.sidoItems.push({
+              label: response.data.data[i].sido,
+              value: response.data.data[i].sidoCd
+            });
+          }  
+      })
+      .catch(error => {
+        this.errorMessage = error.message;
+        console.error("There was an error!", error);
+      });
+    },
+
+    // 시/군/구 목록
+    getSggData() {
+      let url = "/admin/address/sgg";
+      if(this.sidoCd != ''){
+          url += "?sidoCd="+this.sidoCd;
+      }else{
+          this.sggItems=[];
+          this.sggItems.push({label: '전체', value: ''});
+          return ; 
+      }
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            this.orgmItems=[];
-            this.orgmItems.push({label: '전체', value: ''});
+            const tempArr = [];
+            this.sggItems=[];
+            tempArr.push({label: '전체', value: ''});
             for(let i=0; i<response.data.data.length; i++) {
-              this.orgmItems.push({
+              tempArr.push({
+                label: response.data.data[i].sgg,
+                value: response.data.data[i].sggCd,
+                value2: response.data.data[i].sidoCd
+              });
+            } 
+            this.sggItems = tempArr.filter(cd=>{
+                return cd.value2 === this.sidoCd
+            });
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+
+    // 관리 기관 목록
+  getOrgmData() {
+    
+    let url = "/admin/organizations";
+        if(this.sggCd != ''){
+            url += "?sggCd="+this.sggCd;
+        }else{
+          this.orgmItems=[];
+          this.orgmItems.push({label: '전체', value: ''});
+          return ; 
+        }
+       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            const tempArr = [];
+            this.orgmItems=[];
+            tempArr.push({label: '전체', value: ''});
+            for(let i=0; i<response.data.data.length; i++) {
+              tempArr.push({
                 label: response.data.data[i].orgNm,
-                value: response.data.data[i].orgId
+                value: response.data.data[i].orgId,
+                value2: response.data.data[i].addrCd
               });
             }
+            this.orgmItems = tempArr.filter(cd=>{
+            return cd.value2 === this.sggCd
+            });
           })
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
     },
-    getRecipientData() {
-      let uri = '';
-      if(this.orgCode == '' && this.partCode == '' && this.statusCode == '' && this.modelName == '') {
-        uri = this.$store.state.serverApi + "/admin/recipients?pageIndex=1&recordCountPerPage=100";
-      } else {
-        uri = this.$store.state.serverApi + "/admin/recipients?pageIndex=1&recordCountPerPage=100";
-        if(this.orgCode != '') uri += "&orgId=" + this.orgCode;
-        if(this.partCode != '') uri += "&typeCd=" + this.partCode;
-        if(this.statusCode != '') uri += "&stateCd=" + this.statusCode;
-        if(this.modelName != '') uri += "&recipientNm=" + this.modelName;
+  onChangeSido(event){
+      console.log("====onChangeSido($event) execution")
+      this.getSggData()
+      this.orgSido = event.target.value;
+  },
+  onChangeSgg(event){
+      this.orgSgg = event.target.value;
+      this.sidoCd = event.target.value
+      this.getSggData()
+  },
+  onChangeOrg(event) {
+      console.log("onChangeOrg")
+      this.orgCode = event.target.value;
+      this.sggCd = event.target.value
+      this.getOrgmData()
+  },
+  onChangePart(event) {
+      this.partCode = event.target.value;
+  },
+  onChangeStatus(event) {
+      this.statusCode = event.target.value;
+  },
+  initSet() {
+      this.orgCode='';
+      this.partCode='';
+      this.statusCode='';
+      this.sexCode='';
+      this.cycleCode='';
+      this.modelName='';
+      this.modelOrg="전체";
+      this.modelPart="전체";
+      this.modelStatus="전체";
+  },
+  getFilteredRecipientData(){
+    this.recipientItems = this.recipientItems.filter(ri=>{
 
-        var fIdx = uri.indexOf("&", 0);
-        var uriArray = uri.split('');
-        uriArray.splice(fIdx, 1);
-        uri = uriArray.join('');
-      }
-      console.log(uri)
+    })
+  },
+  getRecipientData() {
+    let uri = '';
+    if(this.orgCode == '' && this.partCode == '' && this.statusCode == '' && this.modelName == '') {
+      uri = this.$store.state.serverApi + "/admin/recipients?pageIndex=1&recordCountPerPage=100";
+    } else {
+      uri = this.$store.state.serverApi + "/admin/recipients?pageIndex=1&recordCountPerPage=100";
+      if(this.orgCode != '') uri += "&orgId=" + this.orgCode;
+      if(this.partCode != '') uri += "&typeCd=" + this.partCode;
+      if(this.statusCode != '') uri += "&stateCd=" + this.statusCode;
+      if(this.modelName != '') uri += "&recipientNm=" + this.modelName;
 
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(response => {
-            this.recipientItems = response.data.data
-            // this.recipientItems = [];
-            // for(let i=0; i<response.data.data.length; i++) {
-            //   this.recipientItems.push({
-            //     recipientId:response.data.data[i].recipientId,
-            //     orgNm:response.data.data[i].orgNm,
-            //     typeNm:response.data.data[i].typeNm,
-            //     stateNm:response.data.data[i].stateNm,
-            //     activeUnsensingCycle:response.data.data[i].activeUnsensingCycle,
-            //     recipientNm:response.data.data[i].recipientNm,
-            //     sex:response.data.data[i].sex,
-            //     addr:response.data.data[i].addr,
-            //     careLevelNm:response.data.data[i].careLevelNm,
-            //     managerNm:response.data.data[i].managerNm,
-            //     detail:'',
-            //     delete:''
-            //   })
-            // }
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-    },
+      var fIdx = uri.indexOf("&", 0);
+      var uriArray = uri.split('');
+      uriArray.splice(fIdx, 1);
+      uri = uriArray.join('');
+    }
+    console.log(uri)
+
+    axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        .then(response => {
+          this.recipientItems = response.data.data
+          // this.recipientItems = [];
+          // for(let i=0; i<response.data.data.length; i++) {
+          //   this.recipientItems.push({
+          //     recipientId:response.data.data[i].recipientId,
+          //     orgNm:response.data.data[i].orgNm,
+          //     typeNm:response.data.data[i].typeNm,
+          //     stateNm:response.data.data[i].stateNm,
+          //     activeUnsensingCycle:response.data.data[i].activeUnsensingCycle,
+          //     recipientNm:response.data.data[i].recipientNm,
+          //     sex:response.data.data[i].sex,
+          //     addr:response.data.data[i].addr,
+          //     careLevelNm:response.data.data[i].careLevelNm,
+          //     managerNm:response.data.data[i].managerNm,
+          //     detail:'',
+          //     delete:''
+          //   })
+          // }
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+  },
     changeRecipientPhoneno(phone){
       if(phone){
         let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
@@ -545,9 +658,7 @@ export default {
       sessionStorage.setItem("orgm", orgm);
       this.$router.push('detailView');
     },
-    onChangeOrg(event) {
-      this.orgCode = event.target.value;
-    },
+    
     onChangePart(event) {
       this.partCode = event.target.value;
     },
@@ -577,99 +688,6 @@ export default {
       this.modelPart="전체";
       this.modelStatus="전체";
     },
-    openUploadPopup() {
-      this.fileUpload=true;
-    },
-    excelUpload() {
-      let bodyFormData = new FormData();
-      bodyFormData.append('file', this.fileName);
-
-      const headers = {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': "Bearer " + sessionStorage.getItem("token")
-      }
-      let self = this;
-      axios({
-        method: "post",
-        url: this.$store.state.serverApi + '/recipient/excel/upload',
-        data: bodyFormData,
-        headers: headers,
-      })
-      .then(function (response) {
-        if(response.data.data() == true){
-          self.fileUpload=false;
-        }
-        console.log(response);
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });
-
-    },
-    excelDownload() {
-      let uri = this.$store.state.serverApi + '/sensors/excel/download';
-      axios.get(uri, {
-        file_name: "test.xlsx"
-      }, {
-        responseType: 'blob'
-      }).then((response) => {
-
-        const url = URL.createObjectURL(new Blob([response.data], {
-          type: 'application/vnd.ms-excel'
-        }))
-        const link = document.createElement('a')
-        link.href = url
-        link.setAttribute('download', "test.xlsx")
-        document.body.appendChild(link)
-        link.click()
-      });
-    },
-    customAdd() {
-      if(this.orgCode == '') {
-        alert("관리기관을 선택하여 주세요.");
-        return;
-      }
-
-      let bodyFormData = new FormData();
-      bodyFormData.append('orgId', this.orgCode);
-      bodyFormData.append('recipientNm', this.cName);
-      bodyFormData.append('birthday', this.cBirthday);
-      bodyFormData.append('sex', this.sexCode);
-      bodyFormData.append('addr', this.cAddr);
-      bodyFormData.append('addrDetail', this.cDetail);
-      bodyFormData.append('recipientPhoneno', this.cPhone);
-      bodyFormData.append('typeCd', this.partCode);
-      bodyFormData.append('stateCd', this.statusCode);
-      bodyFormData.append('activeUnsensingCycle', this.cycleCode);
-      bodyFormData.append('sigunguCd', '????');
-
-      const headers = {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': "Bearer " + sessionStorage.getItem("token")
-      }
-      let self = this;
-      axios({
-        method: "post",
-        url: this.$store.state.serverApi + '/recipients',
-        data: bodyFormData,
-        headers: headers,
-      })
-      .then(function (response) {
-        if(response.data.totalCount > 0){
-          self.getRecipientData();
-          self.addCustomer=false;
-        }
-        console.log(response);
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });
-    },
-    customCancel() {
-      this.addCustomer=false;
-    },
     makeAge(birthDay){
       let tmp1 = this.$moment(birthDay).format('YYYY')
       let tmp2 = this.$moment()
@@ -680,6 +698,101 @@ export default {
                 path : `/customer/DetailView/${recipientId}`
         })
     }
+
+    // openUploadPopup() {
+    //   this.fileUpload=true;
+    // },
+    // excelUpload() {
+    //   let bodyFormData = new FormData();
+    //   bodyFormData.append('file', this.fileName);
+
+    //   const headers = {
+    //     'Content-Type': 'multipart/form-data',
+    //     'Authorization': "Bearer " + sessionStorage.getItem("token")
+    //   }
+    //   let self = this;
+    //   axios({
+    //     method: "post",
+    //     url: this.$store.state.serverApi + '/recipient/excel/upload',
+    //     data: bodyFormData,
+    //     headers: headers,
+    //   })
+    //   .then(function (response) {
+    //     if(response.data.data() == true){
+    //       self.fileUpload=false;
+    //     }
+    //     console.log(response);
+    //   })
+    //   .catch(function (response) {
+    //     //handle error
+    //     console.log(response);
+    //   });
+
+    // },
+    // excelDownload() {
+    //   let uri = this.$store.state.serverApi + '/sensors/excel/download';
+    //   axios.get(uri, {
+    //     file_name: "test.xlsx"
+    //   }, {
+    //     responseType: 'blob'
+    //   }).then((response) => {
+
+    //     const url = URL.createObjectURL(new Blob([response.data], {
+    //       type: 'application/vnd.ms-excel'
+    //     }))
+    //     const link = document.createElement('a')
+    //     link.href = url
+    //     link.setAttribute('download', "test.xlsx")
+    //     document.body.appendChild(link)
+    //     link.click()
+    //   });
+    // },
+    // customAdd() {
+    //   if(this.orgCode == '') {
+    //     alert("관리기관을 선택하여 주세요.");
+    //     return;
+    //   }
+
+    //   let bodyFormData = new FormData();
+    //   bodyFormData.append('orgId', this.orgCode);
+    //   bodyFormData.append('recipientNm', this.cName);
+    //   bodyFormData.append('birthday', this.cBirthday);
+    //   bodyFormData.append('sex', this.sexCode);
+    //   bodyFormData.append('addr', this.cAddr);
+    //   bodyFormData.append('addrDetail', this.cDetail);
+    //   bodyFormData.append('recipientPhoneno', this.cPhone);
+    //   bodyFormData.append('typeCd', this.partCode);
+    //   bodyFormData.append('stateCd', this.statusCode);
+    //   bodyFormData.append('activeUnsensingCycle', this.cycleCode);
+    //   bodyFormData.append('sigunguCd', '????');
+
+    //   const headers = {
+    //     'Content-Type': 'multipart/form-data',
+    //     'Authorization': "Bearer " + sessionStorage.getItem("token")
+    //   }
+    //   let self = this;
+    //   axios({
+    //     method: "post",
+    //     url: this.$store.state.serverApi + '/recipients',
+    //     data: bodyFormData,
+    //     headers: headers,
+    //   })
+    //   .then(function (response) {
+    //     if(response.data.totalCount > 0){
+    //       self.getRecipientData();
+    //       self.addCustomer=false;
+    //     }
+    //     console.log(response);
+    //   })
+    //   .catch(function (response) {
+    //     //handle error
+    //     console.log(response);
+    //   });
+    // },
+    // customCancel() {
+    //   this.addCustomer=false;
+    // },
+    
   },
   
 }
