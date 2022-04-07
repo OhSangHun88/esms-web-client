@@ -12,7 +12,7 @@ import * as VueGoogleMaps from "vue2-google-maps"
 
 
 //import CoreuiVue from '@coreui/vue'
-const topMenu = () => import('@/containers/TopMenu.vue')
+
 
 
 Vue.use(moment)
@@ -22,7 +22,7 @@ Vue.use(VueGoogleMaps, { load: { key: "AIzaSyAaffTZJsqPsb6aONllVOsz4-Kzotyyb7g",
 Vue.config.performance = true
 //Vue.use(CoreuiVue)
 Vue.prototype.$log = console.log.bind(console)
-Vue.component('topMenu', topMenu)
+
 
 new Vue({
   el: '#app',

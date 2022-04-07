@@ -28,10 +28,12 @@ import ASStatus from './ASStatus.vue'
 import EventStatus from './EventStatus.vue'
 import Battery from './Battery.vue'
 import PowerConnection from './PowerConnection.vue'
+import HeaderComp from "../pages/HeaderComp.vue";
 
 
 export default {
     name: 'UserDataComponent',
+
     data() {
     return {
         taptoggle:1,
@@ -44,6 +46,7 @@ export default {
       EventStatus,
       Battery,
       PowerConnection,
+      HeaderComp
     },
     props: {
     

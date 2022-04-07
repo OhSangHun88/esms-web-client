@@ -6,14 +6,16 @@
         <col style="width:2%; margin-left:15px;" >
         <col style="width:1.5%;">
         <col style="width:1.5%;">
+        <col style="width:1.5%;">
         <col style="width:1%;">
       </colgroup>
       <thead>
       <tr>
-        <th>구분</th>
+        <th>구 분</th>
         <th>A/S 요청</th>
         <th>A/S 접수</th>
         <th>A/S 완료</th>
+        <th>취  소</th>
       </tr>
       <br>
       </thead>
@@ -21,8 +23,9 @@
         <colgroup>
          <col style="width:2%;" >
          <col style="width:1.5%;">
-         <col style="width:1.5%;">
-         <col style="width:1%;">
+         <col style="width:1.4%;">
+         <col style="width:1.2%;">
+         <col style="width:0.7%;">
         </colgroup>
         <tbody>
           <tr>
@@ -30,6 +33,7 @@
             <th scope="col">{{this.gwrqCount}}</th>
             <th scope="col">{{this.gwrcCount}}</th>
             <th scope="col">{{this.gwcpCount}}</th>
+            <th scope="col">{{this.gwcaCount}}</th>
           </tr>
           <br>
           <tr>
@@ -37,6 +41,7 @@
             <th scope="col">{{this.emrqCount}}</th>
             <th scope="col">{{this.emrcCount}}</th>
             <th scope="col">{{this.emcpCount}}</th>
+            <th scope="col">{{this.emcaCount}}</th>
           </tr>
           <br>
           <tr>
@@ -44,6 +49,7 @@
             <th scope="col">{{this.acrqCount}}</th>
             <th scope="col">{{this.acrcCount}}</th>
             <th scope="col">{{this.accpCount}}</th>
+            <th scope="col">{{this.accaCount}}</th>
           </tr>
           <br>
           <tr>
@@ -51,6 +57,7 @@
             <th scope="col">{{this.firqCount}}</th>
             <th scope="col">{{this.fircCount}}</th>
             <th scope="col">{{this.ficpCount}}</th>
+            <th scope="col">{{this.ficaCount}}</th>
           </tr>
           <br>
           <tr>
@@ -58,6 +65,7 @@
             <th scope="col">{{this.dorqCount}}</th>
             <th scope="col">{{this.dorcCount}}</th>
             <th scope="col">{{this.docpCount}}</th>
+            <th scope="col">{{this.docaCount}}</th>
           </tr>
           <br>
           <tr>
@@ -65,6 +73,7 @@
             <th scope="col">{{this.lirqCount}}</th>
             <th scope="col">{{this.lircCount}}</th>
             <th scope="col">{{this.licpCount}}</th>
+            <th scope="col">{{this.licaCount}}</th>
           </tr>
         </tbody>
         </div>
@@ -84,12 +93,12 @@ import moment from "moment";
 export default {
   data() {
     return{
-      gwrqCount: 0, gwrcCount: 0, gwcpCount: 0,
-      emrqCount: 0, emrcCount: 0, emcpCount: 0,
-      acrqCount: 0, acrcCount: 0, accpCount: 0,
-      firqCount: 0, fircCount: 0, ficpCount: 0,
-      dorqCount: 0, dorcCount: 0, docpCount: 0,
-      lirqCount: 0, lircCount: 0, licpCount: 0,
+      gwrqCount: 0, gwrcCount: 0, gwcpCount: 0, gwcaCount: 0,
+      emrqCount: 0, emrcCount: 0, emcpCount: 0, emcaCount: 0,
+      acrqCount: 0, acrcCount: 0, accpCount: 0, accaCount: 0,
+      firqCount: 0, fircCount: 0, ficpCount: 0, ficaCount: 0,
+      dorqCount: 0, dorcCount: 0, docpCount: 0, docaCount: 0,
+      lirqCount: 0, lircCount: 0, licpCount: 0, licaCount: 0,
     }
   },
   methods:{
@@ -109,6 +118,10 @@ export default {
             let gwcpData = response.data.data
             let gwcpCArrToString = ''
             let fgwcpCArrToString = ''
+
+            let gwcaData = response.data.data
+            let gwcaCArrToString = ''
+            let fgwcaCArrToString = ''
 
             // 요청
             gwrqCArrToString = gwrqData.filter(cd=>{
@@ -155,6 +168,21 @@ export default {
             }}else{
               this.gwcpCount = '0';
             }
+            // 취소
+            gwcaCArrToString = gwcaData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(gwcaCArrToString != ''){
+            fgwcaCArrToString = gwcaCArrToString.filter(cd=>{
+              return cd.stateCd === "STE004"
+            })
+            if(fgwcaCArrToString != ''){
+            this.gwcaCount =fgwcaCArrToString[0].typeCnt
+            }else{
+              this.gwcaCount = '0';
+            }}else{
+              this.gwcaCount = '0';
+            }
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -176,6 +204,10 @@ export default {
             let emcpData = response.data.data
             let emcpCArrToString = ''
             let femcpCArrToString = ''
+
+            let emcaData = response.data.data
+            let emcaCArrToString = ''
+            let femcaCArrToString = ''
 
             // 요청
             emrqCArrToString = emrqData.filter(cd=>{
@@ -222,6 +254,21 @@ export default {
             }}else{
               this.emcpCount = '0';
             }
+            // 취소
+            emcaCArrToString = emcaData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(emcaCArrToString != ''){
+            femcaCArrToString = emcaCArrToString.filter(cd=>{
+              return cd.stateCd === "STE004"
+            })
+            if(femcaCArrToString != ''){
+            this.emcaCount =femcaCArrToString[0].typeCnt
+            }else{
+              this.emcaCount = '0';
+            }}else{
+              this.emcaCount = '0';
+            }
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -243,6 +290,10 @@ export default {
             let accpData = response.data.data
             let accpCArrToString = ''
             let faccpCArrToString = ''
+
+            let accaData = response.data.data
+            let accaCArrToString = ''
+            let faccaCArrToString = ''
 
             // 요청
             acrqCArrToString = acrqData.filter(cd=>{
@@ -289,6 +340,21 @@ export default {
             }}else{
               this.accpCount = '0';
             }
+            // 취소
+            accaCArrToString = accaData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(accaCArrToString != ''){
+            faccaCArrToString = accaCArrToString.filter(cd=>{
+              return cd.stateCd === "STE004"
+            })
+            if(faccaCArrToString != ''){
+            this.accaCount =faccaCArrToString[0].typeCnt
+            }else{
+              this.accaCount = '0';
+            }}else{
+              this.accaCount = '0';
+            }
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -310,6 +376,10 @@ export default {
             let ficpData = response.data.data
             let ficpCArrToString = ''
             let fficpCArrToString = ''
+
+            let ficaData = response.data.data
+            let ficaCArrToString = ''
+            let fficaCArrToString = ''
 
             // 요청
             firqCArrToString = firqData.filter(cd=>{
@@ -356,6 +426,21 @@ export default {
             }}else{
               this.ficpCount = '0';
             }
+            // 취소
+            ficaCArrToString = ficaData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(ficaCArrToString != ''){
+            fficaCArrToString = ficaCArrToString.filter(cd=>{
+              return cd.stateCd === "STE004"
+            })
+            if(fficaCArrToString != ''){
+            this.ficaCount =fficaCArrToString[0].typeCnt
+            }else{
+              this.ficaCount = '0';
+            }}else{
+              this.ficaCount = '0';
+            }
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -377,6 +462,10 @@ export default {
             let docpData = response.data.data
             let docpCArrToString = ''
             let fdocpCArrToString = ''
+
+            let docaData = response.data.data
+            let docaCArrToString = ''
+            let fdocaCArrToString = ''
 
             // 요청
             dorqCArrToString = dorqData.filter(cd=>{
@@ -423,6 +512,21 @@ export default {
             }}else{
               this.docpCount = '0';
             }
+            // 취소
+            docaCArrToString = docaData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(docaCArrToString != ''){
+            fdocaCArrToString = docaCArrToString.filter(cd=>{
+              return cd.stateCd === "STE004"
+            })
+            if(fdocaCArrToString != ''){
+            this.docaCount =fdocaCArrToString[0].typeCnt
+            }else{
+              this.docaCount = '0';
+            }}else{
+              this.docaCount = '0';
+            }
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -444,6 +548,10 @@ export default {
             let licpData = response.data.data
             let licpCArrToString = ''
             let flicpCArrToString = ''
+
+            let licaData = response.data.data
+            let licaCArrToString = ''
+            let flicaCArrToString = ''
 
             // 요청
             lirqCArrToString = lirqData.filter(cd=>{
@@ -489,6 +597,21 @@ export default {
               this.licpCount = '0';
             }}else{
               this.licpCount = '0';
+            }
+            // 취소
+            licaCArrToString = licaData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(licaCArrToString != ''){
+            flicaCArrToString = licaCArrToString.filter(cd=>{
+              return cd.stateCd === "STE004"
+            })
+            if(flicaCArrToString != ''){
+            this.licaCount =flicaCArrToString[0].typeCnt
+            }else{
+              this.licaCount = '0';
+            }}else{
+              this.licaCount = '0';
             }
           })
           .catch(error => {

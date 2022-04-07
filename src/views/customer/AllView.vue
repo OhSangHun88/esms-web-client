@@ -1,5 +1,6 @@
 <template>
   <div>
+    <HeaderComp></HeaderComp>
     <div class="menuTitle">
       <slot name="header">
         <strong style="font-size: large;">대상자 관리</strong>
@@ -367,10 +368,13 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import HeaderComp from "../pages/HeaderComp.vue";
 
 export default {
   name: "AllView",
-
+  components :{
+    HeaderComp
+  },
   data () {
     return {
       cName: '', cBirthday: '', cPhone: '', cSex: '', cSocial: '', cPart: '', cStatus: '', cCycle: '', cAddr: '', cDetail: '',
@@ -668,7 +672,6 @@ export default {
     },
     makeAge(birthDay){
       let tmp1 = this.$moment(birthDay).format('YYYY')
-      
       let tmp2 = this.$moment()
       return tmp2.diff(tmp1, 'years');
     },

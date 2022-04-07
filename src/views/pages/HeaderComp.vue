@@ -1,0 +1,110 @@
+<template>
+  <header id="header">
+    <div class="header_top">
+      <h1><img alt="Vue logo" src="../../assets/images/logo_ib.png">IB-Care System</h1>
+      <div class="util_wrap">
+        <div class="user_name">
+          <i class="pf_img" style="background-image: url(../assets/images/img_profile.png)"></i>
+          <a href="#" class="name"><em>admin</em> 님</a>
+        </div>
+      </div>
+    </div>
+    <nav id="gnb">
+      <ul>
+        <li class="on"><a href="#"><router-link to="/dashboard/allView" ><i class="ico-1"></i>모니터링</router-link></a></li>
+        <li><a href="#"><router-link to="/customer/allView" ><i class="ico-2"></i>대상자 관리</router-link></a></li>
+        <li class="drop"> <!-- gnb li에 마우스 오버시 드랍메뉴 on -->
+          <a href="#"><router-link to="/emevent/allView" ><i class="ico-3"></i>이벤트 리포트</router-link></a>
+          <ul class="sub_menu">
+            <li><a href="#"><router-link to ="/emevent/allView">응급알람</router-link></a></li>
+            <li><a href="#"><router-link to ="/emevent/outingEvent">외출이벤트</router-link></a></li>
+            <li><a href="#"><router-link to ="/emevent/activityDetection">활동 미감지</router-link></a></li>
+            <li><a href="#"><router-link to ="/emevent/equipmentFailure">장비 장애</router-link></a></li>
+          </ul>
+        </li>
+        <li class="drop">
+          <a href="#"><router-link to="/setting/allView" ><i class="ico-4"></i>관리</router-link></a>
+          <ul class="sub_menu">
+            <li><a href="#">장비관리</a></li>
+            <li><a href="#">로그관리</a></li>
+            <li><a href="#">IP-PBX 관리</a></li>
+            <li><a href="#">Firmware 관리</a></li>
+            <li><a href="#">관리자 목록</a></li>
+          </ul>
+        </li>
+        <li class="drop">
+          <a href="#"><router-link to="" ><i class="ico-5"></i>A/S</router-link></a>
+          <ul class="sub_menu">
+            <li><a href="#">A/S 현황</a></li>
+            <li><a href="#">A/S 접수 요청</a></li>
+            <li><a href="#">장비 입고</a></li>
+            <li><a href="#">A/S 완료</a></li>
+            <li><a href="#">장비 배송</a></li>
+            <li><a href="#">A/S 접수 취소</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="emerg_area">
+        <button type="button" class="btn"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
+      </div>
+    </nav>
+  </header>
+</template>
+
+<script>
+export default {
+  name: 'HeaderComp',
+  props: {
+    msg: String
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+#header{/*position:absolute; top:0; left:0; */width:100%;}
+#header .header_top{height:80px;display: flex;background: transparent linear-gradient(270deg, #151A1D 0%, #2A363E 100%) 0% 0% no-repeat padding-box; color: #fff; padding: 0 60px;justify-content: space-between;align-items: center;}
+#header .header_top h1{font-size: 0;}
+#header .header_top .util_wrap{font-size: 0;}
+#header .header_top .user_name{display: inline-block;vertical-align: top;}
+#header .header_top .user_name i.pf_img{display: inline-block;vertical-align: middle;margin: 0 10px 0 0;width: 40px;height: 40px;background-repeat: no-repeat;background-position: center;background-size: cover;border-radius: 50%;background-color: #fff;}
+#header .header_top .user_name .name{display: inline-block;vertical-align: middle;font-weight: 600;font-size: 16px;}
+#header .header_top .user_name .name em{font-weight: 300;}
+#gnb{display: flex;align-items: center;justify-content: space-between;height: 80px;background-color: #2A363E;box-shadow: 0px 3px 10px #00000012;padding: 0 60px;}
+#gnb > ul{margin-left: -60px;}
+#gnb > ul > li{display: inline-block;margin: 0 0 0 60px;}
+#gnb > ul > li > a{color: #ADB0BB;font-weight: 500;height: 80px;line-height: 80px;display: block;}
+#gnb > ul > li > a i{display: inline-block;width: 24px;height: 24px;background-repeat: no-repeat;background-position: center;background-size: contain;margin: 0 10px 0 0;}
+#gnb > ul > li > a i.ico-1{background-image: url(../../assets/images/menu_01.png);}
+#gnb > ul > li > a i.ico-2{background-image: url(../../assets/images/menu_02.png);}
+#gnb > ul > li > a i.ico-3{background-image: url(../../assets/images/menu_03.png);}
+#gnb > ul > li > a i.ico-4{background-image: url(../../assets/images/menu_04.png);}
+#gnb > ul > li > a i.ico-5{background-image: url(../../assets/images/menu_05.png);}
+#gnb > ul > li:hover > a{color: #11B787;}
+#gnb > ul > li:hover > a i.ico-1{background-image: url(../../assets/images/menu_01_on.png);}
+#gnb > ul > li:hover > a i.ico-2{background-image: url(../../assets/images/menu_02_on.png);}
+#gnb > ul > li:hover > a i.ico-3{background-image: url(../../assets/images/menu_03_on.png);}
+#gnb > ul > li:hover > a i.ico-4{background-image: url(../../assets/images/menu_04_on.png);}
+#gnb > ul > li:hover > a i.ico-5{background-image: url(../../assets/images/menu_05_on.png);}
+#gnb > ul > li.on > a{color: #11B787;}
+#gnb > ul > li.on > a i.ico-1{background-image: url(../../assets/images/menu_01_on.png);}
+#gnb > ul > li.on > a i.ico-2{background-image: url(../../assets/images/menu_02_on.png);}
+#gnb > ul > li.on > a i.ico-3{background-image: url(../../assets/images/menu_03_on.png);}
+#gnb > ul > li.on > a i.ico-4{background-image: url(../../assets/images/menu_04_on.png);}
+#gnb > ul > li.on > a i.ico-5{background-image: url(../../assets/images/menu_05_on.png);}
+#gnb > ul > li.drop{padding: 0 18px 0 0;background-image: url(../../assets/images/ico_menu_drop.png);background-repeat: no-repeat;background-position: right center;position: relative;}
+#gnb > ul > li.drop:hover{background-image: url(../../assets/images/ico_menu_drop_on.png);}
+#gnb > ul > li.drop.on{background-image: url(../../assets/images/ico_menu_drop_on.png);}
+#gnb > ul > li.drop > .sub_menu{display: none;position: absolute;left: 0;top: 80px;width: 100%;min-width: 173px;background-color: #2A363E;border-radius: 0px 0px 10px 10px;padding: 30px 22px 30px 30px;z-index: 20;}
+#gnb > ul > li.drop:hover > .sub_menu{display: block;}
+#gnb > ul > li.drop > .sub_menu li{display: block;margin: 0 0 20px 0;}
+#gnb > ul > li.drop > .sub_menu li:last-child{margin: 0;}
+#gnb > ul > li.drop > .sub_menu li a{display: inline-block;color: #fff;position: relative;font-weight: 300;}
+#gnb > ul > li.drop > .sub_menu li:hover a{font-weight: 500;}
+#gnb > ul > li.drop > .sub_menu li:hover a::after{content: '';width: 12px;height: 4px;background-color: #11B787;border-radius: 2px;position: absolute;right: -20px;top: 50%;margin-top: -2px;}
+#gnb > ul > li.drop > .sub_menu li.on a{font-weight: 500;}
+#gnb > ul > li.drop > .sub_menu li.on a::after{content: '';width: 12px;height: 4px;background-color: #11B787;border-radius: 2px;position: absolute;right: -20px;top: 50%;margin-top: -2px;}
+#gnb .emerg_area .btn{display: inline-block;padding: 0 20px;height: 40px;line-height: 40px;font-size: 16px;color: #fff;border-radius: 50px;background-color: #3C4858;}
+#gnb .emerg_area .btn.on{background-color: #F61919;}
+#gnb .emerg_area .btn i{display: inline-block;vertical-align: top;width: 19px;height: 23px;background-image: url(../../assets/images/ico_emerg.png);;background-repeat: no-repeat;background-position: center;margin: 9px 10px 0 0;}
+</style>

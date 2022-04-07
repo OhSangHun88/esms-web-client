@@ -1,29 +1,27 @@
 <template>
     <div class="wrap">
-      <HeaderComp></HeaderComp>
+        <HeaderComp></HeaderComp>
         <div class="container type-02">
             <div class="list_title_wrap">
                 <span>이벤트 리포트</span>
                 <i class="ico_nav"></i>
-                <span class="on">응급 알람</span>
+                <span class="on">활동 미감지</span>
             </div>
             <div class="box_search_wrap add_btn box_style">
                 <div class="table_wrap">
                     <table>
                         <colgroup>
-                            <col style="width:15.6%;">
-                            <col style="width:15.6%;">
-                            <col style="width:15.6%">
-                            <col style="width:15.6%;">
-                            <col style="width:15.6%;">
-                            <col style="width:auto;">
+                            <col style="width:20%;">
+                            <col style="width:20%;">
+                            <col style="width:20%">
+                            <col style="width:20%;">
+                            <col style="width:20%;">
                         </colgroup>
                         <thead>
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
-                            <th scope="row">대상자 이름</th>
-                            <th scope="row">조치유형</th>
+                            <th scope="row">대상자 이름 입력</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -44,11 +42,6 @@
                                 </td>
                                 <td>
                                     <input type="text" value="홍길동">
-                                </td>
-                                <td>
-                                    <select name="" id="">
-                                      <option v-for="(act, index) in actItems" :value="act.value" v-bind:key="index">{{act.label}}</option>
-                                    </select>
                                 </td>
                                 <td>
                                     <div class="date_warp">
@@ -74,68 +67,44 @@
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:6%;">
-                            <col style="width:8%;">
-                            <col style="width:6%;">
+                            <col style="width:12%;">
+                            <col style="width:12%;">
+                            <col style="width:12%;">
                             <col style="width:auto;">
-                            <col style="width:6%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
+                            <col style="width:auto;">
+                            <col style="width:12%;">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th scope="col">이름</th>
-                                <th scope="col">대상자 전화번호</th>
+                                <th scope="col">전화번호</th>
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
-                                <th scope="col">이름</th>
-                                <th scope="col">생활관리사 전화번호</th>
-                                <th scope="col">종류</th>
                                 <th scope="col">발생일시</th>
-                                <th scope="col">테스트 모드</th>
-                                <th scope="col">조치유형</th>
-                                <th scope="col">조치일시</th>
-                                <th scope="col">조치내역</th>
+                                <th scope="col">미감지 지속 시간</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <col style="width:6%;">
-                                <col style="width:8%;">
-                                <col style="width:6%;">
+                                <col style="width:12%;">
+                                <col style="width:12%;">
+                                <col style="width:12%;">
                                 <col style="width:auto;">
-                                <col style="width:6%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
+                                <col style="width:auto;">
+                                <col style="width:12%;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                    <td><a href="#">{{item.recipientNm}}</a></td>
+                                    <td><a href="#" >{{item.recipientNm}}</a></td>
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
                                     <td><a href="#">{{item.addr}}</a></td>
-                                    <td><a href="#">{{item.managerNm}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.managerMobileNumber)}}</a></td>
-                                    <td><a href="#">{{item.typeNm}}</a></td>
                                     <td><a href="#">{{item.occurDtime}}</a></td>
                                     <td><a href="#">{{item.testYn}}</a></td>
-                                    <td><a href="#">{{item.actionTypeNm}}</a></td>
-                                    <td><a href="#">{{item.actionDtime}}</a></td>
-                                    <td><a href="#">{{item.actionDetails}}</a></td>
                                 </tr>                                
-                              </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -170,7 +139,7 @@ import moment from "moment";
 import HeaderComp from "../pages/HeaderComp.vue";
 
 export default {
-    name: 'UserListComponent',
+    name: 'ActivityDetection',
     components :{
       HeaderComp
     },
@@ -178,7 +147,7 @@ export default {
       return{
         orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
         partCode: '', statusCode: '', modelName: '',
-        sidoItems:[], sggItems:[], orgmItems:[], actItems:[], recipientItems:[],
+        sidoItems:[], sggItems:[], orgmItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '',
       }
@@ -187,10 +156,10 @@ export default {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
-    this.getActData();
     this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.getRecipientData();
+    this.getOrgmData();
     this.getPartData();
     this.getStatusData();
     this.getCycleData();
@@ -280,32 +249,12 @@ export default {
             console.error("There was an error!", error);
           });
     },
-
-    //조치유형 목록
-    getActData() {
-    axios.get("/admin/codes?cmmnCdGroup=action", {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            this.actItems=[];
-            this.actItems.push({label: '전체', value: ''});
-            for(let i=0; i<response.data.data.length; i++) {
-              this.actItems.push({
-                label: response.data.data[i].cmmnCdNm,
-                value: response.data.data[i].cmmnCd
-              });
-            }  
-            console.log(this.actItems)
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-    },
     getRecipientData() {
       let uri = '';
       if(this.orgCode == '' && this.partCode == '' && this.statusCode == '' && this.modelName == '') {
-        uri = this.$store.state.serverApi + "/admin/emergencys?pageIndex=1&recordCountPerPage=100";
+        uri = this.$store.state.serverApi + "/admin/emergencys/active-unsensing-events?pageIndex=1&recordCountPerPage=100";
       } else {
-        uri = this.$store.state.serverApi + "/admin/emergencys?pageIndex=1&recordCountPerPage=100";
+        uri = this.$store.state.serverApi + "/admin/emergencys/active-unsensing-events?pageIndex=1&recordCountPerPage=100";
         if(this.orgCode != '') uri += "&orgId=" + this.orgCode;
         if(this.partCode != '') uri += "&typeCd=" + this.partCode;
         if(this.statusCode != '') uri += "&stateCd=" + this.statusCode;
