@@ -92,7 +92,7 @@
                                       <li>
                                           <i class="ico03"></i>
                                           <div class="txt">
-                                              <strong>135</strong>
+                                              <strong>{{this.reportMeasureData.TPE012}}</strong>
                                               <p>활동량</p>
                                           </div>
                                       </li>
@@ -143,7 +143,7 @@
                   </ul>
               </div>
               <div class="box_style box_col">
-                  <gmap-map :zoom="14" :center="makeMapData()" style="width:100%; height: 320px;" > </gmap-map>
+                  <div id="map"></div>
               </div>
           </div>
           <div class="box_style box_r">
@@ -153,12 +153,14 @@
                           <li class="active"><a href="#" @click="tap(1)">수집정보</a></li>
                           <li><a href="#" @click="tap(2)">응급신호</a></li>
                           <li><a href="#" @click="tap(3)">통화이력</a></li>
-                          <li><a href="#">연결장비</a></li>
-                          <li><a href="#">주기설정</a></li>
+                          <li><a href="#" @click="tap(4)">연결장비</a></li>
+                          <li><a href="#" @click="tap(5)">주기설정</a></li>
                       </ul>
                       <tap1 v-if="this.taptoggle===1" :recipientId="this.recipientId"></tap1>
                       <tap2 v-if="this.taptoggle===2" :recipientId="this.recipientId"></tap2>
                       <tap3 v-if="this.taptoggle===3" :recipientId="this.recipientId"></tap3>
+                      <tap4 v-if="this.taptoggle===4" :recipientId="this.recipientId"></tap4>
+                      <tap5 v-if="this.taptoggle===5" :recipientId="this.recipientId"></tap5>
                   </div><!--tab-->
               </div>
           </div>
@@ -275,6 +277,8 @@ import axios from "axios";
 import tap1 from "./detailpage/Tap1.vue";
 import tap2 from "./detailpage/Tap2.vue";
 import tap3 from "./detailpage/Tap3.vue";
+import tap4 from "./detailpage/Tap4.vue";
+import tap5 from "./detailpage/Tap5.vue";
 
 export default {
   name: "DetailView",
@@ -298,6 +302,8 @@ export default {
     tap1,
     tap2,
     tap3,
+    tap4,
+    tap5,
   },
   methods: {
     getRecipientInfo() {
@@ -356,7 +362,7 @@ export default {
             TPE006: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE006"}).measureValue.split(',').slice(-1)[0],//온도
             TPE008: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE008"}).measureValue.split(',').slice(-1)[0],//조도
             TPE007: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE007"}).measureValue.split(',').slice(-1)[0],//습도
-            TPE012: 0//!lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}) ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}).measureValue.split(',').slice(-1)[0],//활동량
+            TPE012: !lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}) ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}).measureValue.split(',').slice(-1)[0],//활동량
           }
           console.log(this.reportMeasureData)
         }).catch(error => {
@@ -373,26 +379,33 @@ export default {
       return tmp2.diff(tmp1, 'years');
     },
     makeMapData(){
-        const url  = `https://maps.googleapis.com/maps/api/geocode/json?address=${this.bodyData.addr} ${this.bodyData.addrDetail}&key=AIzaSyAaffTZJsqPsb6aONllVOsz4-Kzotyyb7g`
-        console.log(url)
-      axios.get(url)
-        .then(res => {
-          console.log("map")
-          console.log(res.data)
-        }).catch(error => {
-            console.log("fail to load map")
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
+        const container = document.getElementById("map");
+        const mapOptions = {
+          center: new kakao.maps.LatLng(33.450701, 126.570667, 16),
+          level: 5
+        }
+        let map = new kakao.maps.Map(container, mapOptions)
 
-
-      // let center = {
-      //   lat: this.bodyData.addrXCoordinate,
-      //   lng: this.bodyData.addrYCoordinate,
-      // }
-      // console.log("center")
-      // console.log(center)
-      // return center
+        let geocoder = new kakao.maps.services.Geocoder();
+//${this.bodyData.addr} ${this.bodyData.addrDetail}
+        geocoder.addressSearch(`경기도 용인시 기흥구 중부대로 735 대우아파트 103동`, (result, status)=>{
+          if(status === kakao.maps.services.Status.OK){
+            let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            console.log("coords")
+            console.log(coords)
+            let marker = new kakao.maps.Marker({
+                map: map,
+                position: coords
+            });
+            let infowindow = new kakao.maps.InfoWindow({
+                content: `'<div style="width:150px;text-align:center;padding:6px 0;">${this.bodyData.recipientNm}</div>'`
+            });
+            infowindow.open(map, marker);
+            map.setCenter(coords);
+          }
+          else
+            console.log("fail")
+        })
     }
   },
   created() {
@@ -401,13 +414,25 @@ export default {
     console.log(this.recipientId);
     this.getRecipientInfo();
     this.getMeasuresData();
-    this.makeMapData()
+  },
+  mounted(){
+    const script = document.createElement("script");
+    script.src="//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=dafa9c5bd954ba036f344060208e1e83";
+    script.addEventListener("load", ()=>{
+      kakao.maps.load(this.makeMapData)
+    })
+    document.head.appendChild(script);
+    
   }
+
 }
 </script>
 
 <style scoped>
 @import '../../assets/scss/common.css';
 @import '../../assets/scss/sub.css';
-
+#map{
+  width : 710px;
+  height : 300px;
+}
 </style>

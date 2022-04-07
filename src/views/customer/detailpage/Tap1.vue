@@ -6,7 +6,7 @@
                     <i class="search_ico"></i>
                     <div class="fillter_wrap">
                         <div class="select_area">
-                            <select name="code1" id="code1" v-model="code1" @change="getSensorsData(code1)">
+                            <select name="code1" id="code1" v-model="code1" @change="getSensorsData(code1,code2)">
                                 <option value="">환경정보</option>
                                 <option value="">전체</option>
                                 <option value="TPE006">온도</option>
@@ -15,7 +15,7 @@
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="code1" id="code2" v-model="code1" @change="getSensorsData(code1)">
+                            <select name="code1" id="code2" v-model="code1" @change="getSensorsData(code1,code2)">
                                 <option value="">바이탈 정보</option>
                                 <option value="">전체</option>
                                 <option value="TPE005">심장박동</option>
@@ -24,15 +24,15 @@
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="" id="">
+                            <select name="code3" id="code3" v-model="code2">
                                 <option value="">활동감지기(P)정보</option>
                                 <option value="">전체</option>
                                 <option value="">화장실</option>
-                                <option value="">작은방</option>                                                    
+                                <option value="">거실</option>                                                    
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="" id="">
+                            <select name="code4" id="code4" v-model="code2">
                                 <option value="">도어감지기 정보</option>
                                 <option value="">전체</option>
                                 <option value="">뒷문</option>
@@ -59,7 +59,7 @@
                         </colgroup>
                         <thead>
                             <tr>
-                                <th scope="col">{{recipientId}}설치장소</th>
+                                <th scope="col">설치장소</th>
                                 <th scope="col">측정일시</th>
                                 <th scope="col">보고일시</th>
                                 <th scope="col">온도</th>
@@ -111,14 +111,14 @@ import moment from "moment";
      }
    },
   methods: {
-    async getSensorsData(input){
+    async getSensorsData(input,input2){
         if(!input){
             input = 'TPE006'
         }
         
         //TPE011
         //${input}
-        const url  = `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${input}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
+        const url  = `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${input}&sensorLocCd=${input2}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
         //const url  = `/admin/recipients/${this.recipientId}/sensors`
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -141,7 +141,7 @@ import moment from "moment";
                         testYn: tmpData.testYn,
                         sensorLocCd: tmpData.sensorLocCd,
                         measureDtime: moment(tmpData.measureDtime).subtract( 10*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
-                        regDtime : moment(tmpData.regDtime).subtract( 10*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                        regDtime : tmpData.regDtime,
                     })
                 }
             }else if(input==="TPE005"||input==="TPE011"){
@@ -153,7 +153,7 @@ import moment from "moment";
                         testYn: tmpData.testYn,
                         sensorLocCd: tmpData.sensorLocCd,
                         measureDtime: moment(tmpData.measureDtime).subtract( 1*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
-                        regDtime : moment(tmpData.regDtime).subtract( 1*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                        regDtime : tmpData.regDtime,
                     })
                 }
             }else if(input==="TPE012"){
@@ -165,7 +165,7 @@ import moment from "moment";
                         testYn: tmpData.testYn,
                         sensorLocCd: tmpData.sensorLocCd,
                         measureDtime: moment(tmpData.measureDtime).subtract( 1*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
-                        regDtime : moment(tmpData.regDtime).subtract( 1*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                        regDtime : tmpData.regDtime,
                     })
                 }
             }
