@@ -68,81 +68,22 @@
                   <div class="info_wrap_1">
                       <div class="tab">
                           <ul class="tabnav">
-                              <li class="active"><a href="#tab01">현재상태</a></li>
-                              <li><a href="#tab02">응급요원</a></li>
-                              <li><a href="#tab03">가족</a></li>
-                              <li><a href="#tab04">생활관리사</a></li>
+                              <li class="active"><a href="#" @click="menu(1)">현재상태</a></li>
+                              <li><a href="#" @click="menu(2)">응급요원</a></li>
+                              <li><a href="#" @click="menu(3)">가족</a></li>
+                              <li><a href="#" @click="menu(4)">생활관리사</a></li>
                           </ul>
                           <div class="tabcontent">
-                              <div id="tab01" class="tabcnt01">
-                                  <ul>
-                                      <li>
-                                          <i class="ico01"></i>
-                                          <div class="txt">
-                                              <strong>{{this.reportMeasureData.TPE005}}</strong>
-                                              <p>심장박동</p>
-                                          </div>
-                                      </li>
-                                      <li>
-                                          <i class="ico02"></i>
-                                          <div class="txt">
-                                              <strong>{{this.reportMeasureData.TPE011}}</strong>
-                                              <p>호흡</p>
-                                          </div>
-                                      </li>
-                                      <li>
-                                          <i class="ico03"></i>
-                                          <div class="txt">
-                                              <strong>{{this.reportMeasureData.TPE012}}</strong>
-                                              <p>활동량</p>
-                                          </div>
-                                      </li>
-                                  </ul>
-                              </div>
-                              <div id="tab02" style="display:none;">tab2 content</div>
+                            <!-- :recipientId="this.recipientId" -->
+                            <menu1 :recipientId="this.recipientId" v-if="this.menutoggle===1"></menu1>
+                            <menu2 :recipientId="this.recipientId" v-if="this.menutoggle===2"></menu2>  
+                            <menu3 :recipientId="this.recipientId" v-if="this.menutoggle===3"></menu3>  
+                            <menu4 :recipientId="this.recipientId" v-if="this.menutoggle===4"></menu4>    
                           </div>
                       </div><!--tab-->
                   </div>
               </div>
-              <div class="box_style box_col">
-                  <ul class="info_list">
-                      <li>
-                          <i class="ico01"></i>
-                          <div class="txt">
-                              <strong>{{this.reportMeasureData.TPE007}}</strong>
-                              <p>습도</p>
-                          </div>
-                      </li> 
-                      <li>
-                          <i class="ico02"></i>
-                          <div class="txt">
-                              <strong>{{this.reportMeasureData.TPE006}}</strong>
-                              <p>온도</p>
-                          </div>
-                      </li> 
-                      <li>
-                          <i class="ico03"></i>
-                          <div class="txt">
-                              <strong>{{this.reportMeasureData.TPE008}}</strong>
-                              <p>조도</p>
-                          </div>
-                      </li> 
-                      <li>
-                          <i class="ico04"></i>
-                          <div class="txt">
-                              <strong>연결</strong>
-                              <p>전원연결</p>
-                          </div>
-                      </li> 
-                      <li>
-                          <i class="ico05"></i>
-                          <div class="txt">
-                              <strong>{{!this.reportMeasureData.TPE012? "미감지": "감지"}}</strong>
-                              <p>활동감지</p>
-                          </div>
-                      </li> 
-                  </ul>
-              </div>
+              
               <div class="box_style box_col">
                   <div id="map"></div>
               </div>
@@ -281,14 +222,18 @@ import tap2 from "./detailpage/Tap2.vue";
 import tap3 from "./detailpage/Tap3.vue";
 import tap4 from "./detailpage/Tap4.vue";
 import tap5 from "./detailpage/Tap5.vue";
+import menu1 from "./detailpage/Menu1.vue";
+import menu2 from "./detailpage/Menu2.vue";
+import menu3 from "./detailpage/Menu3.vue";
+import menu4 from "./detailpage/Menu4.vue";
 
 export default {
   name: "DetailView",
   data () {
     return {
       d_phone: '', d_sex: '', d_endcycle: '', d_part: '', d_status: '', d_zipCode: '', d_address: '', personinfo: '',
-      recipientId: '',taptoggle:1,bodyData : null,reportMeasureData: null,
-
+      recipientId: '',taptoggle:1, bodyData : null, reportMeasureData: { TPE005: 0,TPE011: 0,TPE006: 0,TPE008: 0,TPE007: 0,TPE012: 0 },
+      menutoggle: 1,
     }
   },
   components: {
@@ -307,16 +252,16 @@ export default {
     tap3,
     tap4,
     tap5,
+    menu1,
+    menu2,
+    menu3,
+    menu4,
   },
   methods: {
     getRecipientInfo() {
       
       //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");
       let uri = this.$store.state.serverApi + "/admin/recipients/" + this.recipientId
-      console.log("token and uri is ")
-      
-      console.log(uri)
-      console.log({headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.bodyData = res.data.data
@@ -351,14 +296,25 @@ export default {
 
       }
     },
-    getMeasuresData(){
+    menu(value){
+      switch (value){
+          case 1 : this.menutoggle=1 ;break;
+          case 2 : this.menutoggle=2 ;break;
+          case 3 : this.menutoggle=3 ;break;
+          case 4 : this.menutoggle=4 ;break;
+
+      }
+    },
+    async getMeasuresData(){
+      //여기
       const url  = `/admin/recipients/${this.recipientId}/sensors/lastmeasures`
-      axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
           let lastMeasures = res.data.data
           console.log("lastMeasures")
           console.log(lastMeasures)
           console.log("lastMeasures 가공")
+          //this.reportMeasureData => 선언 처리 수정
           this.reportMeasureData = {
             TPE005: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE005"}).measureValue.split(',').slice(-1)[0],//심박
             TPE011: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE011"}).measureValue.split(',').slice(-1)[0],//호흡

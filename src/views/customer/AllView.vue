@@ -16,11 +16,10 @@
         <div class="table_wrap">
             <table>
                 <colgroup>
-                    <col style="width:15.6%;">
-                    <col style="width:15.6%;">
-                    <col style="width:15.6%">
-                    
-                    <col style="width:15.6%;">
+                    <col style="width:23%;">
+                    <col style="width:23.6%;">
+                    <col style="width:23.6%">
+                    <col style="width:23.6%;">
                     <col style="width:auto;">
                 </colgroup>
                 <thead>
@@ -48,29 +47,20 @@
                             </select>
                         </td>
                         <td>
-                            <input type="text" value="" placeholder="이름을 입력해 주세요">
+                            <input type="text" value=" " v-model="filterName" placeholder="이름을 입력해 주세요">
                         </td>
                         
-                        <td>
-                            <div class="date_warp">
-                                <div class="customerBts" style="justify-content: flex-start;">
-                                    <input type="date" v-model="s_date"/>
-                                    <span class="tilde">~</span>
-                                    <input type="date" v-model="e_date"/>
-                                </div>
-                            </div>
-                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="btn_area">
-            <button type="button" class="btn">조회</button>
+            <button type="button" class="btn" @click="getFilteredRecipientData()">조회</button>
         </div>
       </div>
     <div class="one_box box_style">
         <div class="result_txt">
-            <p>조회결과 : <strong>5,324</strong>건</p>
+            <p>조회결과 : {{ recipientItems ? recipientItems.length : 0}}건</p>
         </div>
         <div class="list result">
             <table>
@@ -389,7 +379,7 @@ export default {
       orgCode: '', partCode: '', statusCode: '', sexCode: '', cycleCode: '',
       modelOrg: '', modelPart: '', modelStatus: '', modelName: '',
       orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-      sidoItems:[], sggItems:[],  actItems:[], recipientItems:[], orgSido:'', orgSgg:'', 
+      sidoItems:[], sggItems:[],  actItems:[], recipientItems:[], orgSido:'', orgSgg:'', filterName:'',
       recipientFields: [
         { key: 'orgNm', label: '기관관리', _classes: 'text-center' },
         { key: 'typeNm', label: '구분', _classes: 'text-center' },
@@ -540,9 +530,16 @@ export default {
       this.modelStatus="전체";
   },
   getFilteredRecipientData(){
-    this.recipientItems = this.recipientItems.filter(ri=>{
-
+    console.log("aa")
+    console.log(this.filterName)
+    
+    const regExp1 = this.filterName !=='' ? new RegExp(this.filterName, 'gi') : '';
+    if(this.filterName){
+      this.recipientItems = this.recipientItems.filter(ri=>{
+      return ri.recipientNm.match(regExp1)
     })
+    }else 
+      return this.recipientItems 
   },
   getRecipientData() {
     let uri = '';
@@ -565,6 +562,7 @@ export default {
     axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(response => {
           this.recipientItems = response.data.data
+          console.log(this.recipientItems)
           // this.recipientItems = [];
           // for(let i=0; i<response.data.data.length; i++) {
           //   this.recipientItems.push({
