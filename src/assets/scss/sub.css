@@ -16,7 +16,7 @@
 
 /* 공통 레이아웃 */
 .container{display: flex;padding: 40px 0;color: rgba(255, 255, 255, 0.8);max-width: 1800px;flex-direction: column;}
-.container.type-02{display: flex;padding: 40px 0;color: rgba(255, 255, 255, 0.8);max-width: 1800px;flex-direction: column;}
+.container.type-02{display: flex; padding: 20px 0;color: rgba(255, 255, 255, 0.8);max-width: 1800px;flex-direction: column;}
 .container .box_style{background-color: #4B556A;box-shadow: 0px 4px 12px #00000014;-webkit-border-radius: 20px;-moz-border-radius: 20px;border-radius: 20px;padding: 20px 30px;}
 .container .box_search_wrap{width: 100%;padding: 20px 30px 20px 10px;margin: 0 0 30px 0;height: 116px;}
 .container .box_search_wrap table th{padding: 0 0 10px 20px;text-align: left;color :rgba(255, 255, 255, 0.8);font-size: 16px;font-weight: 300;}
@@ -206,9 +206,9 @@ ul.info_list li .txt p{font-size: 12px;color: rgba(255, 255, 255, 0.8);padding: 
 .container .top_info .txt_area .tit{font-size: 16px;font-weight: 300;color: #BBBBBB;line-height: 1.2;margin: 0;}
 .container .top_info .txt_area .num{font-size: 36px;font-weight: 500;color: #fff;line-height: 1.5;margin: 0;}
 
-.container .box_style.box_col3{height:394px; flex:1;margin: 0 0 30px 30px;}
-.container .box_style.box_col3:first-child{margin: 0 0 30px 0;}
-.container .box_wrap .box_l.chart{width: 460px;}
+.container .box_style.box_col3{height:394px; flex:1;margin: 0 0 20px 20px;}
+.container .box_style.box_col3:first-child{margin: 0 0 20px 0;}
+.container .box_wrap .box_l.chart{height:270px; width: 460px;}
 
 /* 운영기관 관리(펌웨어) */
 .container .fw_info{width: 458px;height: 116px;margin: 0 30px 0 0;}

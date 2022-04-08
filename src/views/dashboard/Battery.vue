@@ -23,23 +23,23 @@ export default {
       datasets: [{
         label: '충만',
         maxBarThickness: 12,  
-        data: [ 12, 19, 11, 13, 12, 15],
+        data: [12, 19, 11, 13, 12, 15],
         backgroundColor: [
-          "rgba(17, 135, 183, 0.8)",
+          "rgba(19, 126, 255, 0.8)",
           ],
       },{
         label: '부족',
         maxBarThickness: 12,
-        data: [ 8, 12, 10, 17, 7, 10],
+        data: [8, 12, 10, 17, 7, 10],
         backgroundColor: [
           'rgba(17, 183, 135, 1)',
           ],
       },{
         label: '교체',
         maxBarThickness: 12,
-        data: [ 16, 17, 13, 14, 9, 13],
+        data: [16, 17, 13, 14, 9, 13],
         backgroundColor: [
-          "rgba(183, 17, 135, 0.8)",
+          "rgba(255, 60, 166, 0.8)",
           ],
       }]
     },

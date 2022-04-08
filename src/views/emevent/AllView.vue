@@ -83,9 +83,9 @@
                         <colgroup>
                             <col style="width:6%;">
                             <col style="width:7%;">
-                            <col style="width:9%;">
                             <col style="width:7%;">
                             <col style="width:auto;">
+                            <col style="width:11%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
                             <col style="width:11%;">
@@ -97,9 +97,9 @@
                             <tr>
                                 <th scope="col">순번</th>
                                 <th scope="col">이름</th>
-                                <th scope="col">대상자 전화번호</th>
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
+                                <th scope="col">대상자 전화번호</th>
                                 <th scope="col">구분</th>
                                 <th scope="col">상태</th>
                                 <th scope="col">발생일시</th>
@@ -113,9 +113,9 @@
                             <colgroup>
                               <col style="width:6%;">
                             <col style="width:7%;">
-                            <col style="width:9%;">
                             <col style="width:7%;">
                             <col style="width:auto;">
+                            <col style="width:11%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
                             <col style="width:11%;">
@@ -126,9 +126,9 @@
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                     <td><a href="#">{{index+1}}</a></td>
                                     <td><a href="#">{{item.recipientNm}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
                                     <td><a href="#">{{item.addr}}</a></td>
+                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{item.typeNm}}</a></td>
                                     <td><a href="#">{{item.signalStateNm}}</a></td>
                                     <td><a href="#">{{item.occurDtime}}</a></td>

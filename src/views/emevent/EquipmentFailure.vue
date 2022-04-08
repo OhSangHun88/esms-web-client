@@ -75,10 +75,10 @@
                     <table>
                         <colgroup>
                             <col style="width:6%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
+                            <col style="width:9%;">
+                            <col style="width:9%;">
                             <col style="width:auto;">
+                            <col style="width:10%;">
                             <col style="width:14%;">
                             <col style="width:17%;">
                         </colgroup>
@@ -86,9 +86,9 @@
                             <tr>
                                 <th scope="col">순번</th>
                                 <th scope="col">이름</th>
-                                <th scope="col">전화번호</th>
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
+                                <th scope="col">대상자 전화번호</th>
                                 <th scope="col">장비구분</th>
                                 <th scope="col">발생일자</th>
                             </tr>
@@ -98,10 +98,10 @@
                         <table>
                             <colgroup>
                                 <col style="width:6%;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
+                                <col style="width:9%;">
+                                <col style="width:9%;">
                                 <col style="width:auto;">
+                                <col style="width:10%;">
                                 <col style="width:14%;">
                                 <col style="width:17%;">
                             </colgroup>
@@ -109,9 +109,9 @@
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                     <td><a href="#">{{index+1}}</a></td>
                                     <td><a href="#">{{item.recipientNm}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
                                     <td><a href="#">{{item.addr}}</a></td>
+                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{item.equipTypeNm}}</a></td>
                                     <td><a href="#">{{item.updDtime}}</a></td>
                                 </tr>

@@ -54,7 +54,7 @@ export default {
         label: '화재',
         data: [ 12, 19, 7, 5, 8, 13, 7 ],
         maxBarThickness: 10,    
-        backgroundColor: ["rgba(17, 135, 183, 0.8)",]
+        backgroundColor: ["rgba(19, 126, 255, 0.8)",]
         },
         {
         label: '응급',
@@ -66,7 +66,7 @@ export default {
         label:'119',
         data:[5, 12, 10, 7, 7, 8, 17],
         maxBarThickness: 10,  
-        backgroundColor: ["rgba(183, 17, 135, 0.8)",],
+        backgroundColor: ["rgba(255, 60, 166, 0.8)",],
       }]
       }
     this.options={
@@ -77,7 +77,14 @@ export default {
       },
       plugins:{
         legend: {
-		      display: false,
+		      display: true,
+          position: 'top',
+          align: 'end',
+          labels: {
+            fontColor: 'rgba(255, 255, 255, 1)',
+            boxWidth: 8,
+            usePointStyle: true
+          },
 		    },
       }
     }
