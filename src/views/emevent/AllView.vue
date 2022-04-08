@@ -201,21 +201,21 @@ export default {
     methods:{
     // 시/도 목록
     getSidoData() {
-    axios.get("/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            this.sidoItems=[];
-            this.sidoItems.push({label: '전체', value: ''});
-            for(let i=0; i<response.data.data.length; i++) {
-              this.sidoItems.push({
-                label: response.data.data[i].sido,
-                value: response.data.data[i].sidoCd
-              });
-            }  
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
+      axios.get("/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          this.sidoItems=[];
+          this.sidoItems.push({label: '전체', value: ''});
+          for(let i=0; i<response.data.data.length; i++) {
+            this.sidoItems.push({
+              label: response.data.data[i].sido,
+              value: response.data.data[i].sidoCd
+            });
+          }  
+      })
+      .catch(error => {
+        this.errorMessage = error.message;
+        console.error("There was an error!", error);
+      });
     },
 
     // 시/군/구 목록
@@ -391,7 +391,7 @@ export default {
       this.modelPart="전체";
       this.modelStatus="전체";
     },
-    },
+  },
 }
 </script>
 <style>
