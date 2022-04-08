@@ -287,7 +287,7 @@ export default {
   data () {
     return {
       d_phone: '', d_sex: '', d_endcycle: '', d_part: '', d_status: '', d_zipCode: '', d_address: '', personinfo: '',
-      recipientId: '',taptoggle:1,bodyData : null,reportMeasureData: null,
+      recipientId: '',taptoggle:1,bodyData : null,reportMeasureData: { TPE005: 0,TPE011: 0,TPE006: 0,TPE008: 0,TPE007: 0,TPE012: 0 },
 
     }
   },
