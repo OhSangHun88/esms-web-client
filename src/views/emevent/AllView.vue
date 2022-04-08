@@ -11,11 +11,12 @@
                 <div class="table_wrap">
                     <table>
                         <colgroup>
-                            <col style="width:15.6%;">
-                            <col style="width:15.6%;">
-                            <col style="width:15.6%">
-                            <col style="width:15.6%;">
-                            <col style="width:15.6%;">
+                            <col style="width:14.6%;">
+                            <col style="width:14.6%;">
+                            <col style="width:14.6%">
+                            <col style="width:13%;">
+                            <col style="width:13%;">
+                            <col style="width:8%;">
                             <col style="width:auto;">
                         </colgroup>
                         <thead>
@@ -23,7 +24,8 @@
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
                             <th scope="row">대상자 이름</th>
-                            <th scope="row">조치유형</th>
+                            <th scope="row">구분</th>
+                            <th scope="row">상태</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -47,7 +49,12 @@
                                 </td>
                                 <td>
                                     <select name="" id="">
-                                      <option v-for="(act, index) in actItems" :value="act.value" v-bind:key="index">{{act.label}}</option>
+                                      <option v-for="(type, index) in typeItems" :value="type.value" v-bind:key="index">{{type.label}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="" id="">
+                                      <option v-for="(state, index) in stateItems" :value="state.value" v-bind:key="index">{{state.label}}</option>
                                     </select>
                                 </td>
                                 <td>
@@ -75,65 +82,58 @@
                     <table>
                         <colgroup>
                             <col style="width:6%;">
-                            <col style="width:8%;">
-                            <col style="width:6%;">
+                            <col style="width:7%;">
+                            <col style="width:9%;">
+                            <col style="width:7%;">
                             <col style="width:auto;">
-                            <col style="width:6%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
+                            <col style="width:7%;">
+                            <col style="width:7%;">
+                            <col style="width:11%;">
+                            <col style="width:11%;">
+                            <col style="width:7%;">
+                            
                         </colgroup>
                         <thead>
                             <tr>
+                                <th scope="col">순번</th>
                                 <th scope="col">이름</th>
                                 <th scope="col">대상자 전화번호</th>
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
-                                <th scope="col">이름</th>
-                                <th scope="col">생활관리사 전화번호</th>
-                                <th scope="col">종류</th>
+                                <th scope="col">구분</th>
+                                <th scope="col">상태</th>
                                 <th scope="col">발생일시</th>
+                                <th scope="col">종료일시</th>
                                 <th scope="col">테스트 모드</th>
-                                <th scope="col">조치유형</th>
-                                <th scope="col">조치일시</th>
-                                <th scope="col">조치내역</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <col style="width:6%;">
-                                <col style="width:8%;">
-                                <col style="width:6%;">
-                                <col style="width:auto;">
-                                <col style="width:6%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
+                              <col style="width:6%;">
+                            <col style="width:7%;">
+                            <col style="width:9%;">
+                            <col style="width:7%;">
+                            <col style="width:auto;">
+                            <col style="width:7%;">
+                            <col style="width:7%;">
+                            <col style="width:11%;">
+                            <col style="width:11%;">
+                            <col style="width:7%;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
+                                    <td><a href="#">{{index+1}}</a></td>
                                     <td><a href="#">{{item.recipientNm}}</a></td>
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
                                     <td><a href="#">{{item.addr}}</a></td>
-                                    <td><a href="#">{{item.managerNm}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.managerMobileNumber)}}</a></td>
                                     <td><a href="#">{{item.typeNm}}</a></td>
+                                    <td><a href="#">{{item.signalStateNm}}</a></td>
                                     <td><a href="#">{{item.occurDtime}}</a></td>
+                                    <td><a href="#">{{item.closeDtime}}</a></td>
                                     <td><a href="#">{{item.testYn}}</a></td>
-                                    <td><a href="#">{{item.actionTypeNm}}</a></td>
-                                    <td><a href="#">{{item.actionDtime}}</a></td>
-                                    <td><a href="#">{{item.actionDetails}}</a></td>
                                 </tr>                                
                               </tbody>
                         </table>
@@ -178,17 +178,18 @@ export default {
       return{
         orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
         partCode: '', statusCode: '', modelName: '',
-        sidoItems:[], sggItems:[], orgmItems:[], actItems:[], recipientItems:[],
+        sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], number:[], stateItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
-        cBirthday:'', cAddr: '',
+        cBirthday:'', cAddr: '', 
       }
     },
     created() {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
-    this.getActData();
-    this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
+    this.getTypeData();
+    this.getStateData();
+    this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.getRecipientData();
     this.getPartData();
@@ -281,25 +282,45 @@ export default {
           });
     },
 
-    //조치유형 목록
-    getActData() {
-    axios.get("/admin/codes?cmmnCdGroup=action", {headers: {"Authorization": sessionStorage.getItem("token")}})
+    //구분 목록
+    getTypeData() {
+    axios.get("/admin/codes?cmmnCdGroup=ALARM.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            this.actItems=[];
-            this.actItems.push({label: '전체', value: ''});
+            this.typeItems=[];
+            this.typeItems.push({label: '전체', value: ''});
             for(let i=0; i<response.data.data.length; i++) {
-              this.actItems.push({
+              this.typeItems.push({
                 label: response.data.data[i].cmmnCdNm,
                 value: response.data.data[i].cmmnCd
               });
             }  
-            console.log(this.actItems)
           })
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
     },
+
+    //상태 목록
+    getStateData() {
+    axios.get("/admin/codes?cmmnCdGroup=ALARM.STATECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            this.stateItems=[];
+            this.stateItems.push({label: '전체', value: ''});
+            for(let i=0; i<response.data.data.length; i++) {
+              this.stateItems.push({
+                label: response.data.data[i].cmmnCdNm,
+                value: response.data.data[i].cmmnCd
+              });
+            }  
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    
+
     getRecipientData() {
       let uri = '';
       if(this.orgCode == '' && this.partCode == '' && this.statusCode == '' && this.modelName == '') {

@@ -23,7 +23,7 @@
           </ul>
         </li>
         <li class="drop">
-          <a href="#"><router-link to="/setting/allView" ><i class="ico-4"></i>관리</router-link></a>
+          <a href="#"><router-link to="/setting/allView" ><i class="ico-4"></i>시스템관리</router-link></a>
           <ul class="sub_menu">
             <li><a href="#">장비관리</a></li>
             <li><a href="#">로그관리</a></li>
@@ -33,7 +33,7 @@
           </ul>
         </li>
         <li class="drop">
-          <a href="#"><router-link to="" ><i class="ico-5"></i>A/S</router-link></a>
+          <a href="#"><router-link to="" ><i class="ico-5"></i>A/S관리</router-link></a>
           <ul class="sub_menu">
             <li><a href="#">A/S 현황</a></li>
             <li><a href="#">A/S 접수 요청</a></li>
@@ -45,7 +45,7 @@
         </li>
       </ul>
       <div class="emerg_area">
-        <button type="button" class="btn"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
+        <button type="button" class="btn on"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
       </div>
     </nav>
   </header>

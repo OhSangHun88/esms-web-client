@@ -10,12 +10,45 @@
 <script>
 import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables)
-
+import moment from "moment";
 export default {
   data:() => ({ 
-    data: {
-      labels: [ '3월 1일', '3월 2일', '3월 3일', '3월 4일', '3월 5일', '3월 6일', '3월 7일' ],
-      labelsColor: 'white',
+    chartDays:[],
+    data: {},
+    options: {}
+  }),
+  created(){
+    this.createData()
+    this.createChartDateTime()
+  },
+  mounted(){
+    this.createChart()
+  },
+  methods:{
+    createChart(){
+      new Chart(
+        this.$refs.lineChart,{
+        type:'line',
+        data:this.data,
+        options:this.options
+      })
+    },
+    createChartDateTime(){
+      if(this.data){
+        let tmp = this.data.datasets[0].data.length
+        let nowDate = moment().add(1,'days').format('MM-DD');
+        let tmpArr = []
+        for(let i=tmp ; i>0; i--){
+          console.log(i)
+          tmpArr.push(moment(nowDate).subtract(1*i, 'days').format('MM-DD'))
+        }
+        this.data.labels = tmpArr
+      }
+    },
+    createData(){
+      this.data =  {
+      labels: [],
+      labelsColor: 'rgba(17, 183, 1, 1)',
       datasets: [
         {
         type: 'bar',
@@ -40,8 +73,8 @@ export default {
           easing: 'easeInOutQuart'
         }
         }]
-    },
-    options: {
+    }
+    this.options={
       scales: {
         y: {
           beginAtZero: true,
@@ -49,23 +82,12 @@ export default {
       },
       plugins:{
         legend: {
-		      display: false
+		      display: false,
 		    },
       }
     }
-  }),
-  mounted(){
-    this.createChart()
-  },
-  methods:{
-    createChart(){
-      new Chart(
-        this.$refs.lineChart,{
-        type:'line',
-        data:this.data,
-        options:this.options
-      })
     }
+
   }
 }
 </script>
