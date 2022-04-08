@@ -70,7 +70,7 @@
                           <ul class="tabnav">
                               <li class="active"><a href="#tab01">현재상태</a></li>
                               <li><a href="#tab02">응급요원</a></li>
-                              <li><a href="#tab03">가족</a></li>
+                              <li><a href="#tab03">말벗</a></li>
                               <li><a href="#tab04">생활관리사</a></li>
                           </ul>
                           <div class="tabcontent">
