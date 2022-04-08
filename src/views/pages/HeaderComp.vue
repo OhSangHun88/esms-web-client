@@ -45,7 +45,7 @@
         </li>
       </ul>
       <div class="emerg_area">
-        <button type="button" class="btn"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
+        <button type="button" class="btn on"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
       </div>
     </nav>
   </header>

@@ -14,8 +14,8 @@
                             <col style="width:20%;">
                             <col style="width:20%;">
                             <col style="width:20%">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
+                            <col style="width:15%;">
+                            <col style="width:auto;">
                         </colgroup>
                         <thead>
                             <th scope="row">시/도</th>
@@ -67,16 +67,18 @@
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:10%;">
+                            <col style="width:6%;">
+                            <col style="width:8%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
                             <col style="width:auto;">
-                            <col style="width:auto;">
-                            <col style="width:auto;">
+                            <col style="width:11%;">
+                            <col style="width:11%;">
                             <col style="width:10%;">
                         </colgroup>
                         <thead>
                             <tr>
+                                <th scope="col">순번</th>
                                 <th scope="col">이름</th>
                                 <th scope="col">전화번호</th>
                                 <th scope="col">나이</th>
@@ -90,16 +92,18 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <col style="width:10%;">
+                                <col style="width:6%;">
+                                <col style="width:8%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
                                 <col style="width:auto;">
-                                <col style="width:auto;">
-                                <col style="width:auto;">
+                                <col style="width:11%;">
+                                <col style="width:11%;">
                                 <col style="width:10%;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index" @click="goToDetailView(item.recipientId)">
+                                    <td><a href="#" >{{index+1}}</a></td>
                                     <td><a href="#" >{{item.recipientNm}}</a></td>
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
@@ -159,7 +163,7 @@ export default {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
-    this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
+    this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.getRecipientData();
     this.getOrgmData();

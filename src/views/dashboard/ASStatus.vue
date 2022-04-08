@@ -3,7 +3,7 @@
   <div class="box_col3 box_style" sytle="margin-left: 20px;">
     <div>
       <colgroup>
-        <col style="width:2%; margin-left:15px;" >
+        <col style="width:2%;" >
         <col style="width:1.5%;">
         <col style="width:1.5%;">
         <col style="width:1.5%;">

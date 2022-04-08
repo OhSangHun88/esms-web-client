@@ -11,12 +11,11 @@
                 <div class="table_wrap">
                     <table>
                         <colgroup>
-                            <col style="width:12%;">
-                            <col style="width:12%;">
+                            <col style="width:16%;">
+                            <col style="width:16%;">
                             <col style="width:16%">
-                            <col style="width:12%;">
-                            <col style="width:12%;">
-                            <col style="width:12%;">
+                            <col style="width:14%;">
+                            <col style="width:14%;">
                             <col style="width:auto;">
                         </colgroup>
                         <thead>
@@ -24,7 +23,6 @@
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
                             <th scope="row">장비구분</th>
-                            <th scope="row">장애 유형</th>
                             <th scope="row">대상자 이름 입력</th>
                         </thead>
                         <tbody>
@@ -46,12 +44,7 @@
                                 </td>
                                 <td>
                                     <select>
-                                      <option v-for="(equip, index) in equipItems"  v-bind:key="index">{{equip.label}}</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select>
-                                      <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                                      <option v-for="(type, index) in typeItems"  v-bind:key="index">{{type.label}}</option>
                                     </select>
                                 </td>
                                 <td>
@@ -81,50 +74,46 @@
                 <div class="list result">
                     <table>
                         <colgroup>
+                            <col style="width:6%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
                             <col style="width:auto;">
-                            <col style="width:12%;">
-                            <col style="width:12%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
+                            <col style="width:14%;">
+                            <col style="width:17%;">
                         </colgroup>
                         <thead>
                             <tr>
+                                <th scope="col">순번</th>
                                 <th scope="col">이름</th>
                                 <th scope="col">전화번호</th>
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">장비구분</th>
-                                <th scope="col">장애 유형</th>
-                                <th scope="col">응급요원</th>
-                                <th scope="col">전화번호</th>
+                                <th scope="col">발생일자</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody">
                         <table>
                             <colgroup>
+                                <col style="width:6%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
                                 <col style="width:auto;">
-                                <col style="width:12%;">
-                                <col style="width:12%;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
+                                <col style="width:14%;">
+                                <col style="width:17%;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
+                                    <td><a href="#">{{index+1}}</a></td>
                                     <td><a href="#">{{item.recipientNm}}</a></td>
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
                                     <td><a href="#">{{item.addr}}</a></td>
                                     <td><a href="#">{{item.equipTypeNm}}</a></td>
-                                    <td><a href="#">배터리 교체</a></td>
-                                    <td><a href="#">김창렬</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.managerMobileNumber)}}</a></td>
+                                    <td><a href="#">{{item.updDtime}}</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -168,7 +157,7 @@ export default {
       return{
         orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
         partCode: '', statusCode: '', modelName: '',
-        sidoItems:[], sggItems:[], orgmItems:[], equipItems:[], recipientItems:[],
+        sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '',
       }
@@ -177,8 +166,8 @@ export default {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
-    this.getEquipData();
-    this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
+    this.getTypeData();
+    this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.getRecipientData();
     this.getPartData();
@@ -271,19 +260,18 @@ export default {
           });
     },
 
-    // 구분
-    getEquipData() {
-    axios.get("/admin/emergencys/equipment-faults", {headers: {"Authorization": sessionStorage.getItem("token")}})
+    // 장비구분
+    getTypeData() {
+    axios.get("/admin/codes?cmmnCdGroup=SENSOR.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            this.equipItems=[];
-            this.equipItems.push({label: '전체', value: ''});
+            this.typeItems=[];
+            this.typeItems.push({label: '전체', value: ''});
             for(let i=0; i<response.data.data.length; i++) {
-              this.equipItems.push({
-                label: response.data.data[i].equipTypeNm,
-                value: response.data.data[i].equipTypeCd
+              this.typeItems.push({
+                label: response.data.data[i].cmmnCdNm,
+                value: response.data.data[i].cmmnCd
               });
-            }
-            console.log(this.equipItems)  
+            }  
           })
           .catch(error => {
             this.errorMessage = error.message;

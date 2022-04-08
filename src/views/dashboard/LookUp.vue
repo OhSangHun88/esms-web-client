@@ -223,7 +223,7 @@ export default {
       this.modelSido="전체";
       this.modelSgg="전체";
       this.modelOrg="전체";
-      this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
+      this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
       this.e_date=moment().format('YYYY-MM-DD');
     },
 
@@ -286,7 +286,7 @@ export default {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
-    this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
+    this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.getTotalCount();
     this.getEMCount();
