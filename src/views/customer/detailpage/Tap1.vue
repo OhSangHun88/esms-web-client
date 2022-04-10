@@ -16,11 +16,11 @@
                         </div>
                         <div class="select_area">
                             <select name="code1" id="code2" v-model="code1" @change="getSensorsData(code1,code2)">
-                                <option value="">바이탈 정보</option>
+                                <option value="">바이오 정보</option>
                                 <option value="">전체</option>
                                 <option value="TPE005">심장박동</option>
-                                <option value="TPE011 ">호흡</option>
-                                <option value="TPE012 ">활동량</option>
+                                <option value="TPE011">호흡</option>
+                                <option value="TPE012">활동량</option>
                             </select>
                         </div>
                         <div class="select_area">
@@ -62,7 +62,15 @@
                                 <th scope="col">설치장소</th>
                                 <th scope="col">측정일시</th>
                                 <th scope="col">보고일시</th>
-                                <th scope="col">온도</th>
+                                <th scope="col">{{
+                                    code1==="TPE006"? '온도' :
+                                    code1==="TPE008"? '조도' :
+                                    code1==="TPE007"? '습도' :
+                                    code1==="TPE005"? '심장박동' :
+                                    code1==="TPE011"? '호흡' :
+                                    code1==="TPE012"? '활동량' : '온도'
+                                    }}
+                                </th>
                             </tr>
                         </thead>
                     </table>
@@ -126,47 +134,62 @@ import moment from "moment";
             let tmpData = []
             let tmp = []
             this.sensorsData = []
-            tmpData = res.data.data[0]
-            console.log("tmpData")
-            console.log(tmpData)
-            
-            tmp = res.data.data[0].measureValue
-            tmpData.measureValue = tmp.split(',')
-            if(input==="TPE006"||input==="TPE007"||input==="TPE008"){
-                for(let i=0; i <tmpData.measureValue.length ;i++ ){
-                    this.sensorsData.push({
+            let lengthTmp = []
+            lengthTmp = res.data
+
+             if(input==="TPE006"||input==="TPE007"||input==="TPE008"){
+                for(let i=0; i <lengthTmp.totalCount ;i++ ){
+                    tmpData = res.data.data[i]
+                    tmp = res.data.data[i].measureValue.split(',')
+                    for(let j=0; j <tmp.length ;j++ ){
+                        this.sensorsData.push({
                         sensorId: tmpData.sensorId,
                         sensorTypeCd: tmpData.sensorTypeCd,
-                        measureValue: tmpData.measureValue[i],
+                        measureValue: tmp[j],
                         testYn: tmpData.testYn,
                         sensorLocCd: tmpData.sensorLocCd,
-                        measureDtime: moment(tmpData.measureDtime).subtract( 10*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                        measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
                         regDtime : tmpData.regDtime,
                     })
+                    
+                    }
+                    
                 }
-            }else if(input==="TPE005"||input==="TPE011"){
-                for(let i=0; i <tmpData.measureValue.length ;i++ ){
-                    this.sensorsData.push({
+              }else if(input==="TPE005"||input==="TPE011"){
+                for(let i=0; i <lengthTmp.totalCount ;i++ ){
+                    tmpData = res.data.data[i]
+                    tmp = res.data.data[i].measureValue.split(',')
+                    for(let j=0; j <tmp.length ;j++ ){
+                        this.sensorsData.push({
                         sensorId: tmpData.sensorId,
                         sensorTypeCd: tmpData.sensorTypeCd,
-                        measureValue: tmpData.measureValue[i],
+                        measureValue: tmp[j],
                         testYn: tmpData.testYn,
                         sensorLocCd: tmpData.sensorLocCd,
-                        measureDtime: moment(tmpData.measureDtime).subtract( 1*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                        measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
                         regDtime : tmpData.regDtime,
                     })
+                    
+                    }
+                    
                 }
             }else if(input==="TPE012"){
-                for(let i=0; i <tmpData.measureValue.length ;i++ ){
-                    this.sensorsData.push({
+                for(let i=0; i <lengthTmp.totalCount ;i++ ){
+                    tmpData = res.data.data[i]
+                    tmp = res.data.data[i].measureValue.split(',')
+                    for(let j=0; j <tmp.length ;j++ ){
+                        this.sensorsData.push({
                         sensorId: tmpData.sensorId,
                         sensorTypeCd: tmpData.sensorTypeCd,
-                        measureValue: tmpData.measureValue[i],
+                        measureValue: tmp[j],
                         testYn: tmpData.testYn,
                         sensorLocCd: tmpData.sensorLocCd,
-                        measureDtime: moment(tmpData.measureDtime).subtract( 1*i, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                        measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
                         regDtime : tmpData.regDtime,
                     })
+                    
+                    }
+                    
                 }
             }
             
