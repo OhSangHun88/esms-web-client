@@ -1,0 +1,164 @@
+<template>
+    <div class="wrap">
+        <HeaderComp></HeaderComp>
+        <div class="container type-02">
+            <div class="list_title_wrap">
+                <span>관리</span>
+                <i class="ico_nav"></i>
+                <span class="on">로그 관리</span>
+            </div>
+            <div class="box_search_wrap add_btn box_style">
+                <div class="table_wrap type-02">
+                    <table>
+                        <colgroup>
+                            <col style="width:48.5%;">
+                            <col style="width:15%;">
+                            <col style="width:15%;">
+                            <col style="width:23.5%">
+                        </colgroup>
+                        <thead>
+                            <th scope="row">로그</th>
+                            <th scope="row">태블릿 아이디</th>
+                            <th scope="row">고객 아이디</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="btn_area log">
+                                        <button type="button" @click="log(1)" class="btn on" value="1">로그</button>
+                                        <button type="button" @click="log(2)" class="btn " value="2">통신로그</button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" value="">
+                                </td>
+                                <td>
+                                    <input type="text" value="">
+                                </td>
+                                <td>
+                                    <div class="date_warp">
+                                        <div class="customerBts" style="justify-content: flex-start;">
+                                            <input type="date" v-model="s_date"/>
+                                            <span class="tilde">~</span>
+                                            <input type="date" v-model="e_date"/>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn_area">
+                    <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
+                    <button type="button" class="btn form2" v-on:click="initSet">초기화</button>
+                </div>
+            </div>
+            <div class="one_box box_style">
+                <div class="list result"><!-- 로그 선택시 -->
+                    <log1 :s_date="this.s_date" :e_date="this.e_date" v-if="this.logtoggle===1"></log1>
+                    <log2 :s_date="this.s_date" :e_date="this.e_date" v-if="this.logtoggle===2"></log2>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<style lang="scss">
+@import '../../assets/scss/common.css';
+@import '../../assets/scss/sub.css';
+</style>
+<script>
+import axios from "axios";
+import moment from "moment";
+import HeaderComp from "../pages/HeaderComp.vue";
+import log1 from "./detailpage/Log1.vue";
+import log2 from "./detailpage/Log2.vue";
+
+
+
+export default {
+    name: 'ManageLog',
+    components : {
+        HeaderComp,
+        log1,
+        log2,
+    },
+    data(){
+      return{
+        tabletId: '', recipientId: '', s_date: '', e_date: '', ls_date:'', le_date:'',
+        isTablet: false, isCustomer: false,
+        isLog: true, isComLog: false,
+        logItems: [], comLogItems: [],
+        logtoggle: 1,
+      }
+    },
+    created(){
+      this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
+      this.e_date=moment().format('YYYY-MM-DD');
+      this.getLogData();
+      this.getEquLogData();
+    },
+    methods:{
+      getLogData() {
+      let uri = this.$store.state.serverApi + "/admin/logs/servers?startDate="+this.s_date+"&endDate="+this.e_date;;
+      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(response => {
+            this.logItems = response.data.data
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+      },
+      getEquLogData() {
+      let uri = this.$store.state.serverApi + "/admin/logs/equipments?startDate="+this.s_date+"&endDate="+this.e_date;;
+      if(this.tabletId != '') uri+="&tabletId=" + this.tabletId;
+      if(this.recipientId != '') uri+="&recipientId=" + this.recipientId;
+
+      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(response => {
+            this.comLogItems = response.data.data
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+      },
+      onChange(event) {
+      let optionValue = event.target.value;
+      switch (optionValue) {
+        case "1":
+          this.isLog=true; this.isComLog=false;
+          this.isTablet=false; this.isCustomer=false;
+          this.getLogData();
+          break;
+        case "2":
+          this.isLog=false; this.isComLog=true;
+          this.isTablet=true; this.isCustomer=true;
+          this.getEquLogtData();
+          break;
+      }
+    },
+      manageInquiry() {
+      if(this.isLog==true){
+        this.getLogData();
+      } else {
+        this.getEquLogtData();
+      }
+    },
+      initSet() {
+      this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
+      this.e_date=moment().format('YYYY-MM-DD');
+      this.getLogData();
+      this.getEquLogData();
+    },
+    log(value){
+      switch (value){
+          case 1 : this.logtoggle=1 ;break;
+          case 2 : this.logtoggle=2 ;break;
+      }
+    },
+    }
+}
+</script>
+<style>
+</style>

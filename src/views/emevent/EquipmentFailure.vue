@@ -110,7 +110,7 @@
                                     <td><a href="#">{{index+1}}</a></td>
                                     <td><a href="#">{{item.recipientNm}}</a></td>
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
-                                    <td><a href="#">{{item.addr}}</a></td>
+                                    <td><a href="#" style="float:left">{{item.addr}}</a></td>
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{item.equipTypeNm}}</a></td>
                                     <td><a href="#">{{item.updDtime}}</a></td>

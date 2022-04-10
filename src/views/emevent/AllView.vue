@@ -111,7 +111,7 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
-                              <col style="width:6%;">
+                            <col style="width:6%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
                             <col style="width:auto;">
@@ -127,7 +127,7 @@
                                     <td><a href="#">{{index+1}}</a></td>
                                     <td><a href="#">{{item.recipientNm}}</a></td>
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
-                                    <td><a href="#">{{item.addr}}</a></td>
+                                    <td><a href="#" style="float:left">{{item.addr}}</a></td>
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{item.typeNm}}</a></td>
                                     <td><a href="#">{{item.signalStateNm}}</a></td>
