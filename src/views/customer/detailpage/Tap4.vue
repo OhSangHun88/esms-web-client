@@ -1,7 +1,12 @@
 <template>
     <div>
         <div class="tabcontent">
-            <div class="tablist">
+            <div class="toggle_btn">
+                <button type="button" class="btn on" @click="dataTogle(3)" >태블릿</button>
+                <button type="button" class="btn" @click="dataTogle(2)">게이트웨이</button>
+                <button type="button" class="btn" @click="dataTogle(1)">센서</button>
+            </div>
+            <div class="tablist" v-if="connectTap===3">
                 <div class="list_top">
                     <div class="title_area">
                         <p class="tit">Tablet PC</p>
@@ -52,7 +57,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tablist">
+            <div class="tablist" v-if="connectTap===2">
                 <div class="list_top">
                     <div class="title_area">
                         <p class="tit">게이트웨이</p>
@@ -91,18 +96,18 @@
                                 <col style="width:25%;">
                             </colgroup>
                             <tbody>
-                                <tr>
-                                    <td>gd23234474157445544</td>
-                                    <td>215148814748754215487a</td>
-                                    <td>0.2.1/0.2.1</td>
-                                    <td>0.2.1/0.2.1</td>
+                                <tr >
+                                    <td>{{this.getCGatewayData.serialNo}}</td>
+                                    <td>{{this.getCGatewayData.macAddr}}</td>
+                                    <td>{{this.getCGatewayData.firmwareVersion}}</td>
+                                    <td>{{this.getCGatewayData.hardwareVersion}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="tablist">
+            <div class="tablist" v-if="connectTap===1">
                 <div class="list_top">
                     <div class="title_area">
                         <p class="tit">센서</p>
@@ -212,5 +217,76 @@
         </div>
     </div>
 </template>
+<script>
+import axios from "axios";
+
+ export default {
+   name: "Tap2",
+   props:{
+     recipientId: String
+   },
+   data () {
+     return {
+      getCSensersData: null,
+      getCGatewayData: null,
+      getCTabletsData: null,
+      connectTap: 1,
+
+     }
+   },
+  methods: {
+    async getCGateway(){
+        const url  = `/admin/recipients/${this.recipientId}/gateways`
+        
+        console.log("emergencys is ")
+        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.getCGatewayData = res.data.data
+            console.log("getCGatewayData ")
+            console.log(this.getCGatewayData)
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    dataTogle(value){
+        switch (value){
+          case 1 : this.connectTap=1 ;break;
+          case 2 : this.connectTap=2 ;break;
+          case 3 : this.connectTap=3 ;break;
+
+      }
+    },
+    getSensersData(){
+      
+    },
+    async getCTablets(){
+      const url  = `/admin/recipients/${this.recipientId}/tablets`
+        
+        
+        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.getCTabletsData = res.data.data
+            console.log("tablets ")
+            console.log(this.getCTabletsData)
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+
+   },
+   created() {
+    this.getCGateway();
+    this.getCTablets()
+  }
+ }
+ </script>
+
+<style scoped>
                 
             

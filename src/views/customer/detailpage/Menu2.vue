@@ -4,10 +4,10 @@
             <div class="tabcnt01">
                 <div class="list_top">
                     <div class="btn_area">
-                        <button type="button" class="btn form2">추가</button>
+                        <!--<button type="button" class="btn form2">추가</button>
                         <button type="button" class="btn form2">저장</button>
                         <button type="button" class="btn form2">수정</button>
-                        <button type="button" class="btn form3">삭제</button>
+                        <button type="button" class="btn form3">삭제</button>-->
                     </div>
                 </div>
                 <div class="list">
@@ -36,42 +36,21 @@
                                 <col style="width:31.5%;">
                             </colgroup>
                             <tbody>
-                                <tr>
+                                <tr v-for="(item,index) in relationPhoneData" v-bind:key="index">
                                     <td>
                                         <div class="chk_area">
-                                            <input type="checkbox" name="chk" id="chk1_1" checked>
-                                            <label for="chk1_1" class="chk"><i class="ico_chk"></i></label>
+                                            <!--<input type="checkbox" name="chk" id="chk1_1" checked>
+                                            <label for="chk1_1" class="chk"><i class="ico_chk"></i></label>-->
                                         </div>
                                     </td>
                                     <td>
-                                        <input type="text" name="" id="" value="홍길동">
+                                        <input type="text" name="" id="" :value="item.relationNm">
                                     </td>
                                     <td>
-                                        <select name="" id="">
-                                            <option value="">아들</option>
-                                        </select>
+                                        <input type="text" name="" id="" :value="item.relationCdNm">
                                     </td>
                                     <td>
-                                        <input type="text" name="" id="" value="010-2222-2222">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="chk_area">
-                                            <input type="checkbox" name="chk" id="chk1_2">
-                                            <label for="chk1_2" class="chk"><i class="ico_chk"></i></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="" id="" value="홍길동">
-                                    </td>
-                                    <td>
-                                        <select name="" id="">
-                                            <option value="">아들</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="" id="" value="010-2222-2222">
+                                        <input type="text" name="" id="" :value="changeRecipientPhoneno(item.relationPhone)">
                                     </td>
                                 </tr>
                             </tbody>
@@ -82,3 +61,47 @@
         </div>
     </div>
 </template>
+<script>
+import axios from "axios";
+
+export default {
+    name: "Menu2",
+    props:{
+        recipientId: String
+    },
+    data () {
+        return {
+            relationPhoneData: null
+        }
+    },
+    created(){
+        this.getRelationPhoneData();
+    },
+    methods:{
+      async getRelationPhoneData(){
+          console.log("menu1")
+      //여기
+      const url  = `/admin/recipients/${this.recipientId}/phoneNumbers`
+      await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        .then(res => {
+          this.relationPhoneData  = res.data.data
+          console.log(this.relationPhoneData)
+        }).catch(error => {
+            console.log("fail to load")
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+
+    },
+    changeRecipientPhoneno(phone){
+            if(phone){
+                let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+                return changeNumber
+            }else{
+                return ''
+            }
+
+    },
+  }
+}
+</script>

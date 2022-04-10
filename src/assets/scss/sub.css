@@ -158,6 +158,8 @@ ul.info_list li .txt p{font-size: 12px;color: rgba(255, 255, 255, 0.8);padding: 
 .list table thead th:first-child{border-radius: 8px 0 0 8px;-webkit-border-radius: 8px 0 0 8px;-moz-border-radius: 8px 0 0 8px;}
 .list table thead th:last-child{border-radius: 0 8px 8px 0;-webkit-border-radius: 0 8px 8px 0;-moz-border-radius: 0 8px 8px 0;}
 .list table tbody tr{border-bottom: 1px solid #696E79;}
+.list table tbody tr:hover td{background-color: #626e87;}
+.list table tbody tr:nth-of-type(even):hover td{background-color: #626e87;}
 .list table td{height:50px;font-size: 14px;font-weight: 300;text-align:center;color: #fff;}
 
 /* 연결장비 */
@@ -218,3 +220,44 @@ ul.info_list li .txt p{font-size: 12px;color: rgba(255, 255, 255, 0.8);padding: 
 /* 운영기관 관리(펌웨어) */
 .container .fw_info{width: 458px;height: 116px;margin: 0 30px 0 0;}
 .container .box_search_wrap.type_fw {width: auto;max-width: 1312px;}
+
+/*=====팝업=====*/
+.popupLayer{position: fixed;top: 0;left: 0;background-color: rgba(0,0,0,0.5);display: flex;justify-content: center;align-items: center;width: 100%;height: 100vh;flex-direction: column;z-index: 11;}
+.popupLayer .popup_wrap{max-width: 1000px;width: 1000px;overflow:hidden;background-color: #2A363E;}
+.popupLayer .popup_wrap.type-02{width: 500px;}
+.popupLayer .title_wrap{display : flex;justify-content: space-between;align-items: center;height: 60px;padding : 0 50px;background-color: #263037;}
+.popupLayer .title_wrap .title{display: inline-block;font-size: 18px;line-height: 26px;font-weight: 500;color: #fff;}
+.popupLayer .title_wrap .btn_close{width: 20px;height: 20px;background-image: url(../../assets/images/btn_pop_close.png);;background-repeat: no-repeat;background-position: center;background-size: contain;font-size: 0;}
+.popupLayer .popup_cnt{padding: 40px 50px 0;}
+.popupLayer .popup_cnt .alert_txt{text-align: center;font-size: 20px;line-height: 29px;font-weight: 500;color: #fff;}
+.popupLayer .popup_cnt .input_wrap{font-size: 0;margin-left: -30px;margin-top: 20px;}
+.popupLayer .popup_cnt .input_wrap:first-child{margin-top: 0;}
+.popupLayer .popup_cnt .input_wrap .input_tit{font-size: 16px;font-weight: 300;color: #fff;}
+.popupLayer .popup_cnt .input_wrap .input_area{display: inline-block;width: calc(33.33% - 30px);margin: 0 0 0 30px;}
+.popupLayer .popup_cnt .input_wrap .input_area input{height: 50px;font-size: 16px;}
+.popupLayer .popup_cnt .input_wrap .input_area select{height: 50px;font-size: 16px;}
+.popupLayer .popup_cnt .input_wrap .input_area textarea{height: 154px;}
+.popupLayer .popup_cnt .input_wrap .input_area .tit_area .input_tit{display: inline-block;vertical-align: middle;margin: 0 0 10px 0;}
+.popupLayer .popup_cnt .input_wrap .input_area .tit_area .file_txt{display: inline-block;vertical-align: middle;font-size: 14px;color: #ADB0BB;margin: 0 0 10px 35px;}
+.popupLayer .popup_cnt .input_wrap .input_area .tit_area .file_txt i.ico_file{display: inline-block;vertical-align: top;background-repeat: no-repeat;background-position: center;width: 12px;height: 15px;background-image: url(../../assets/images/ico_file.png);margin: 4px 4px 0 6px;}
+.popupLayer .popup_cnt .input_wrap .input_area .tit_area .file_txt em{display: inline-block;vertical-align: top;}
+.popupLayer .popup_cnt .input_wrap.type-02 .input_area{width: calc(66.66% - 30px);}
+.popupLayer .popup_cnt .input_wrap.type-02 .input_area.size-s{width: calc(33.33% - 30px);}
+.popupLayer .popup_cnt .input_wrap.type-02 .btn_area{display: inline-block;width: calc(33.33% - 30px);margin: 0 0 0 30px;}
+.popupLayer .popup_cnt .input_wrap.type-02 .toggle_btn{overflow: hidden;border-radius: 8px;width: 100px;display: inline-block;vertical-align: middle;}
+.popupLayer .popup_cnt .input_wrap.type-02 .toggle_btn .btn{display: inline-block;width: 50%;height: 42px;background-color: #384358;color: #fff;font-weight: 300; border-radius: 0;font-size: 16px;padding: 0;}
+.popupLayer .popup_cnt .input_wrap.type-02 .toggle_btn .btn.on{background-color: #11B787;color: #fff;}
+.popupLayer .popup_cnt .input_wrap.type-03{margin-left: 0;}
+.popupLayer .popup_cnt .input_wrap.type-03 .input_area{width: 100%;margin: 0;}
+.popupLayer .popup_wrap .popbtn_wrap{padding: 0 50px;}
+.popupLayer .popup_wrap .popbtn_wrap::after{content: '';display: block;clear: both;}
+.popupLayer .popup_wrap .popbtn_wrap .popbtn_area.left{float: left;}
+.popupLayer .popup_wrap .popbtn_wrap .popbtn_area.right{float: right;}
+.popupLayer .popup_wrap .popbtn_area{text-align: center;padding: 50px 0 54px;}
+.popupLayer .popup_wrap .popbtn_area .btn{display: inline-block;width: 120px;height: 50px;line-height: 50px;font-size: 16px;font-weight: 500;color: #fff;background-color: #ADB0BB;text-align: center;margin: 0 0 0 20px;padding: 0;border-radius: 10px;}
+.popupLayer .popup_wrap .popbtn_area .btn:first-child{margin: 0;}
+.popupLayer .popup_wrap .popbtn_area .btn.form2{background-color: #11B787;}
+.popupLayer .popup_wrap .popbtn_area .input_area.file{display: inline-block;vertical-align: top;}
+.popupLayer .popup_wrap .popbtn_area .input_area input{width: 1px;height: 1px;position: absolute;opacity: 0;}
+.popupLayer .popup_wrap .popbtn_area .input_area .btn.file{display: inline-block;width: 120px;height: 50px;line-height: 50px;font-size: 16px;font-weight: 500;color: #fff;background-color: #ADB0BB;text-align: center;margin: 0 0 0 20px;padding: 0;border-radius: 10px;}
+.popupLayer .popup_wrap .popbtn_area.type-02{padding: 30px 0 62px;}

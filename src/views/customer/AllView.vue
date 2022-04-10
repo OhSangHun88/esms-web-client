@@ -586,15 +586,15 @@ export default {
           console.error("There was an error!", error);
         });
   },
-    changeRecipientPhoneno(phone){
-      if(phone){
-        let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
-        return changeNumber
-      }else{
-        return ''
-      }
-      
-    },
+  changeRecipientPhoneno(phone){
+    if(phone){
+      let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+      return changeNumber
+    }else{
+      return ''
+    }
+    
+  },
 
 
     getPartData() {

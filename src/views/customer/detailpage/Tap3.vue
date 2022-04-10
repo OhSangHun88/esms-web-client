@@ -5,9 +5,9 @@
                 <div class="list_top">
                     <div class="date_warp">
                         <div class="customerBts" style="justify-content: flex-start;">
-                            <input type="date"/>
+                            <input type="date" v-model="callStartDate"/>
                             <span class="tilde">~</span>
-                            <input type="date"/>
+                            <input type="date" v-model="callEndDate"/>
                             <button type="button" class="btn">조회</button>
                         </div>
                     </div>
@@ -67,14 +67,15 @@ import axios from "axios";
    data () {
      return {
       call_historys: null,
-
+      callStartDate: moment().subtract(7,'days').format('YYYY-MM-DD'),
+      callEndDate: moment().format('YYYY-MM-DD'),
      }
    },
   methods: {
     async getCall_historysData(){
 
 
-        const url  = `/admin/recipients/${this.recipientId}/call-historys?pageIndex=1&recordCountPerPage=100&callStartDate=2022-03-01&callEndDate=2022-04-05`
+        const url  = `/admin/recipients/${this.recipientId}/call-historys?pageIndex=1&recordCountPerPage=100&callStartDate=${callStartDate}&callEndDate=${callEndDate}`
         
         console.log("call_historys is ")
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
