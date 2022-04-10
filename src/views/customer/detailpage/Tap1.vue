@@ -6,7 +6,7 @@
                     <i class="search_ico"></i>
                     <div class="fillter_wrap">
                         <div class="select_area">
-                            <select name="code1" id="code1" v-model="code1" @change="getSensorsData(code1,code2)">
+                            <select name="code1" id="code1" v-model="code1">
                                 <option value="">환경정보</option>
                                 <option value="">전체</option>
                                 <option value="TPE006">온도</option>
@@ -15,7 +15,7 @@
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="code1" id="code2" v-model="code1" @change="getSensorsData(code1,code2)">
+                            <select name="code2" id="code2" v-model="code2">
                                 <option value="">바이탈 정보</option>
                                 <option value="">전체</option>
                                 <option value="TPE005">심장박동</option>
@@ -24,28 +24,28 @@
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="code3" id="code3" v-model="code2">
+                            <select name="code3" id="code3" v-model="code3">
                                 <option value="">활동감지기(P)정보</option>
                                 <option value="">전체</option>
-                                <option value="">화장실</option>
-                                <option value="">거실</option>                                                    
+                                <option value="LOC005">화장실</option>
+                                <option value="LOC001">거실</option>                                                    
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="code4" id="code4" v-model="code2">
+                            <select name="code4" id="code4" v-model="code4">
                                 <option value="">도어감지기 정보</option>
                                 <option value="">전체</option>
-                                <option value="">뒷문</option>
-                                <option value="">대문</option>
+                                <option value="LOC007">뒷문</option>
+                                <option value="LOC008">대문</option>
                             </select>
                         </div>
                     </div>
                     <div class="date_warp">
                         <div class="customerBts" style="justify-content: flex-start;">
-                            <input type="date" v-model="measureStartDate" @change="getSensorsData(code1)" />
+                            <input type="date" v-model="measureStartDate"  />
                             <span class="tilde">~</span>
-                            <input type="date" v-model="measureEndDate" @change="getSensorsData(code1)"/>
-                            <button type="button" class="btn">조회</button>
+                            <input type="date" v-model="measureEndDate" />
+                            <button type="button" class="btn" @click="getSensorsData(code1,code2,code3,code4)">조회</button>
                         </div>
                     </div>
                 </div>
@@ -83,12 +83,17 @@
                                 <col style="width:25%;">
                                 <col style="width:25%;">
                             </colgroup>
-                            <tbody>
-                                <tr v-for="(item,index) in sensorsData" v-bind:key="index">
+                            <tbody  v-if="sensorsData">
+                                <tr  v-for="(item,index) in sensorsData" v-bind:key="index">
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td>{{item.measureDtime}}</td>
                                     <td>{{item.regDtime}}</td>
                                     <td>{{item.measureValue}}</td>
+                                </tr>
+                            </tbody>
+                            <tbody  v-else>
+                                <tr  >
+                                    데이터가 존재하지 않습니다
                                 </tr>
                             </tbody>
                         </table>
@@ -112,6 +117,8 @@ import moment from "moment";
       sensorsData: [],
       code1: '',
       code2: '',
+      code3: '',
+      code4: '',
       measureStartDate:moment().subtract(7,'days').format('YYYY-MM-DD'),
       measureEndDate: moment().format('YYYY-MM-DD'),
 
@@ -119,14 +126,18 @@ import moment from "moment";
      }
    },
   methods: {
-    async getSensorsData(input,input2){
-        if(!input){
+    async getSensorsData(input,input2,input3,input4){
+
+        if(!input&&input2){
             input = 'TPE006'
         }
+
+        let code1 = input ? input : input2
+        let code2  = input3 ? input3 : input4
         
         //TPE011
         //${input}
-        const url  = `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${input}&sensorLocCd=${input2}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
+        const url  = `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${code1}&sensorLocCd=${code2}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
         //const url  = `/admin/recipients/${this.recipientId}/sensors`
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
