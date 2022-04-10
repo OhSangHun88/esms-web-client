@@ -15,8 +15,8 @@
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="code2" id="code2" v-model="code2">
-                                <option value="">바이탈 정보</option>
+                            <select name="code1" id="code2" v-model="code1">
+                                <option value="">바이오 정보</option>
                                 <option value="">전체</option>
                                 <option value="TPE005">심장박동</option>
                                 <option value="TPE011">호흡</option>

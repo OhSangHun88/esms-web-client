@@ -1,5 +1,5 @@
 <template>
-  <div class="box_col3 box_style" style="margin-left:20px">
+  <div class="box_col3 box_style">
     <p>장비가동률</p>    
    <div>
       <canvas class="statistics-charts-line" ref="lineChart" width="470" height="275"></canvas>

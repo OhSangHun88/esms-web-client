@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div class="box_wrap">
+      <div class="box_wrap" style="height: 134px;">
           <div class="box_search_wrap box_style type_db">
             <table>
               <colgroup>

@@ -69,7 +69,7 @@
           </tr>
           <br>
           <tr>
-            <th scope="col">생활정보센서</th>
+            <th scope="col">생활안심센서</th>
             <th scope="col">{{this.lirqCount}}</th>
             <th scope="col">{{this.lircCount}}</th>
             <th scope="col">{{this.licpCount}}</th>

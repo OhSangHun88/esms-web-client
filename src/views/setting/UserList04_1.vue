@@ -348,7 +348,7 @@
 @import '../../assets/scss/sub.css';
 </style>
 <script>
-import HeaderComp from "../pages/HeaderComp.vue";
+import HeaderComp from "./HeaderComp.vue";
 export default {
     name: 'UserListComponent',
     components : {

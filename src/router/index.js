@@ -74,6 +74,10 @@ const EmergencyAllView = () => import('@/views/emergency/AllView')
 
 //Setting
 const SettingAllView = () => import('@/views/setting/AllView')
+const SettingCustomer = () => import('@/views/setting/Customer')
+const SettingManageLog = () => import('@/views/setting/ManageLog')
+const SettingManageDevice = () => import('@/views/setting/ManageDevice')
+const SettingNotice = () => import('@/views/setting/Notice')
 
 Vue.use(Router)
 
@@ -230,7 +234,27 @@ function configRoutes () {
               path: 'allView',
               name: 'AllView',
               component: SettingAllView
-            }
+            },
+            {
+              path: 'customer',
+              name: 'Customer',
+              component: SettingCustomer
+            },
+            {
+              path: 'manageLog',
+              name: 'ManageLog',
+              component: SettingManageLog
+            },
+            {
+              path: 'manageDevice',
+              name: 'ManageDevice',
+              component: SettingManageDevice
+            },
+            {
+              path: 'notice',
+              name: 'Notice',
+              component: SettingNotice
+            },
           ]
         }
       ]
