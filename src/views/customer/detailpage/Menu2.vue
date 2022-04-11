@@ -84,7 +84,9 @@ export default {
       const url  = `/admin/recipients/${this.recipientId}/phoneNumbers`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
-          this.relationPhoneData  = res.data.data
+          this.relationPhoneData  = res.data.data.filter(pd =>{
+              return pd.typeCd === "TPE007"
+          })
           console.log(this.relationPhoneData)
         }).catch(error => {
             console.log("fail to load")

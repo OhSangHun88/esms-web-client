@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="tabcontent">
-            <div class="toggle_btn">
-                <button type="button" class="btn on" @click="dataTogle(3)" >태블릿</button>
-                <button type="button" class="btn" @click="dataTogle(2)">게이트웨이</button>
-                <button type="button" class="btn" @click="dataTogle(1)">센서</button>
+            <div class="toggle_btn2">
+                <button type="button" :class="connectTap===3?'btn on':'btn'" @click="dataTogle(3)" >태블릿</button>
+                <button type="button" :class="connectTap===2?'btn on':'btn'" @click="dataTogle(2)">게이트웨이</button>
+                <button type="button" :class="connectTap===1?'btn on':'btn'" @click="dataTogle(1)">센서</button>
             </div>
             <div class="tablist" v-if="connectTap===3">
                 <div class="list_top">
@@ -143,10 +143,10 @@
                                 <col style="width:25%;">
                             </colgroup>
                             <tbody>
-                                <tr>
+                                <tr v-for="(item,index) in getCSensorsData" v-bind:key="index">
                                     <td>gd23234474157445544</td>
                                     <td>215148814748754215487a</td>
-                                    <td>215148814748754215487a</td>
+                                    <td>{{item.serialNo}}</td>
                                     <td>215148814748754215487a</td>
                                 </tr>
                             </tbody>
@@ -227,7 +227,7 @@ import axios from "axios";
    },
    data () {
      return {
-      getCSensersData: null,
+      getCSensorsData: null,
       getCGatewayData: null,
       getCTabletsData: null,
       connectTap: 1,
@@ -235,10 +235,26 @@ import axios from "axios";
      }
    },
   methods: {
+      async getCSensers(){
+      const url  = `/admin/sensors?recipientId=${this.recipientId}`
+        
+        
+        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.getCSensorsData = res.data.data
+            console.log("sensors ")
+            console.log(this.getCSensorsData)
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
     async getCGateway(){
         const url  = `/admin/recipients/${this.recipientId}/gateways`
         
-        console.log("emergencys is ")
+        
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.getCGatewayData = res.data.data
@@ -250,17 +266,6 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-    },
-    dataTogle(value){
-        switch (value){
-          case 1 : this.connectTap=1 ;break;
-          case 2 : this.connectTap=2 ;break;
-          case 3 : this.connectTap=3 ;break;
-
-      }
-    },
-    getSensersData(){
-      
     },
     async getCTablets(){
       const url  = `/admin/recipients/${this.recipientId}/tablets`
@@ -278,11 +283,40 @@ import axios from "axios";
             console.error("There was an error!", error);
           });
     },
+    dataTogle(value){
+        switch (value){
+          case 1 : this.connectTap=1 ;break;
+          case 2 : this.connectTap=2 ;break;
+          case 3 : this.connectTap=3 ;break;
+
+      }
+    },
+    locationCode(input){
+        let result=''
+        switch (input){
+          case "LOC001" : result="거실1"; break;
+          case "LOC002" : result="거실2" ;break;
+          case "LOC003" : result="안방1"; break;
+          case "LOC004" : result="안방2" ;break;
+          case "LOC005" : result="화장실1" ;break;
+          case "LOC006" : result="화장실2" ;break;
+          case "LOC007" : result="현관1" ;break;
+          case "LOC008" : result="현관2" ;break;
+          case "LOC009" : result="주방1" ;break;
+          case "LOC010" : result="주방2" ;break;
+          case "LOC011" : result="작은방1" ;break;
+          case "LOC012" : result="작은방2" ;break;
+      }
+        return result
+    },
+    
+    
 
    },
    created() {
+    this.getCSensers();
     this.getCGateway();
-    this.getCTablets()
+    this.getCTablets();
   }
  }
  </script>

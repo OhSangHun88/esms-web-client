@@ -68,10 +68,10 @@
                   <div class="info_wrap_1">
                       <div class="tab">
                           <ul class="tabnav">
-                              <li class="active"><a href="#" @click="menu(1)">현재상태</a></li>
-                              <li><a href="#" @click="menu(2)">응급요원</a></li>
-                              <li><a href="#" @click="menu(3)">말벗</a></li>
-                              <li><a href="#" @click="menu(4)">생활관리사</a></li>
+                              <li :class="menutoggle===1?'active':''"><a href="#" @click="menu(1)">현재상태</a></li>
+                              <li :class="menutoggle===2?'active':''"><a href="#" @click="menu(2)">응급요원</a></li>
+                              <li :class="menutoggle===3?'active':''"><a href="#" @click="menu(3)">말벗</a></li>
+                              <li :class="menutoggle===4?'active':''"><a href="#" @click="menu(4)">생활관리사</a></li>
                           </ul>
                           <div class="tabcontent">
                             <!-- :recipientId="this.recipientId" -->
@@ -92,11 +92,11 @@
               <div class="info_wrap_2">
                   <div class="tab">
                       <ul class="tabnav">
-                          <li class="active"><a href="#" @click="tap(1)">수집정보</a></li>
-                          <li><a href="#" @click="tap(2)">응급신호</a></li>
-                          <li><a href="#" @click="tap(3)">통화이력</a></li>
-                          <li><a href="#" @click="tap(4)">연결장비</a></li>
-                          <li><a href="#" @click="tap(5)">주기설정</a></li>
+                          <li :class="taptoggle===1?'active':''"><a href="#" @click="tap(1)">수집정보</a></li>
+                          <li :class="taptoggle===2?'active':''"><a href="#" @click="tap(2)">응급신호</a></li>
+                          <li :class="taptoggle===3?'active':''"><a href="#" @click="tap(3)">통화이력</a></li>
+                          <li :class="taptoggle===4?'active':''"><a href="#" @click="tap(4)">연결장비</a></li>
+                          <li :class="taptoggle===5?'active':''"><a href="#" @click="tap(5)">주기설정</a></li>
                       </ul>
                       <tap1 v-if="this.taptoggle===1" :recipientId="this.recipientId"></tap1>
                       <tap2 v-if="this.taptoggle===2" :recipientId="this.recipientId"></tap2>

@@ -77,7 +77,7 @@ export default {
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
           this.relationPhoneData  = res.data.data.filter(pd =>{
-              return pd.typeCd === "TPE008"
+              return pd.typeCd === "TPE006"
           })
           console.log(this.relationPhoneData)
         }).catch(error => {
