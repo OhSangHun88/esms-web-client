@@ -43,7 +43,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select>
+                                    <select v-model="selectedTypeItems">
                                       <option v-for="(type, index) in typeItems"  v-bind:key="index">{{type.label}}</option>
                                     </select>
                                 </td>
@@ -64,12 +64,12 @@
                     </table>
                 </div>
                 <div class="btn_area">
-                    <button type="button" class="btn">조회</button>
+                    <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
                 </div>
             </div>
             <div class="one_box box_style">
                 <div class="result_txt">
-                    <p>조회결과 : <strong>235</strong>건</p>
+                    <p>조회결과 : <strong class="num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
                 </div>
                 <div class="list result">
                     <table>
@@ -105,7 +105,7 @@
                                 <col style="width:14%;">
                                 <col style="width:17%;">
                             </colgroup>
-                            <tbody>
+                            <tbody v-if="recipientItems">
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                     <td><a href="#">{{index+1}}</a></td>
                                     <td><a href="#">{{item.recipientNm}}</a></td>
@@ -115,6 +115,9 @@
                                     <td><a href="#">{{item.equipTypeNm}}</a></td>
                                     <td><a href="#">{{item.updDtime}}</a></td>
                                 </tr>
+                            </tbody>
+                            <tbody v-else>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -159,7 +162,8 @@ export default {
         partCode: '', statusCode: '', modelName: '',
         sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
-        cBirthday:'', cAddr: '',
+        cBirthday:'', cAddr: '', NCount:0,
+        selectedTypeItems:'',
       }
     },
     created() {
@@ -169,10 +173,6 @@ export default {
     this.getTypeData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
-    this.getRecipientData();
-    this.getPartData();
-    this.getStatusData();
-    this.getCycleData();
     this.cBirthday=moment().format('YYYY-MM-DD');
     },
     
@@ -296,7 +296,13 @@ export default {
       }
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
-            this.recipientItems = response.data.data
+            let resData = response.data.data
+            const typeCount = !this.selectedTypeItems? '' : new RegExp(this.selectedTypeItems, 'gi');
+
+            this.recipientItems= resData.filter((cd=>{
+              return cd.equipTypeCd.match(typeCount) 
+            }))
+            this.NCount =this.recipientItems.length
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -337,16 +343,8 @@ export default {
       let tmp2 = this.$moment()
       return tmp2.diff(tmp1, 'years');
     },
-    initSet() {
-      this.orgCode='';
-      this.partCode='';
-      this.statusCode='';
-      this.sexCode='';
-      this.cycleCode='';
-      this.modelName='';
-      this.modelOrg="전체";
-      this.modelPart="전체";
-      this.modelStatus="전체";
+     manageInquiry() {
+        this.getRecipientData();
     },
     },
 }

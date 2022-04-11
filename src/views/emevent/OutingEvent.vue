@@ -57,12 +57,12 @@
                     </table>
                 </div>
                 <div class="btn_area">
-                    <button type="button" class="btn">조회</button>
+                    <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
                 </div>
             </div>
             <div class="one_box box_style">
                 <div class="result_txt">
-                    <p>조회결과 : <strong>235</strong>건</p>
+                    <p>조회결과 : <strong class="num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
                 </div>
                 <div class="list result">
                     <table>
@@ -101,7 +101,7 @@
                                 <col style="width:11%;">
                                 <col style="width:10%;">
                             </colgroup>
-                            <tbody>
+                            <tbody  v-if="recipientItems">
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index" @click="goToDetailView(item.recipientId)">
                                     <td><a href="#" >{{index+1}}</a></td>
                                     <td><a href="#" >{{item.recipientNm}}</a></td>
@@ -112,6 +112,9 @@
                                     <td><a href="#">{{item.regDtime}}</a></td>
                                     <td><a href="#">1시간</a></td>
                                 </tr>                                
+                            </tbody>
+                            <tbody  v-else>
+                                데이터가 없습니다.            
                             </tbody>
                         </table>
                     </div>
@@ -156,7 +159,7 @@ export default {
         partCode: '', statusCode: '', modelName: '',
         sidoItems:[], sggItems:[], orgmItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
-        cBirthday:'', cAddr: '',
+        cBirthday:'', cAddr: '', NCount : 0,
       }
     },
     created() {
@@ -165,11 +168,6 @@ export default {
     this.getOrgmData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
-    this.getRecipientData();
-    this.getOrgmData();
-    this.getPartData();
-    this.getStatusData();
-    this.getCycleData();
     this.cBirthday=moment().format('YYYY-MM-DD');
     },
     
@@ -275,6 +273,7 @@ export default {
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.recipientItems = response.data.data
+            this.NCount =this.recipientItems.length
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -315,16 +314,8 @@ export default {
       let tmp2 = this.$moment()
       return tmp2.diff(tmp1, 'years');
     },
-    initSet() {
-      this.orgCode='';
-      this.partCode='';
-      this.statusCode='';
-      this.sexCode='';
-      this.cycleCode='';
-      this.modelName='';
-      this.modelOrg="전체";
-      this.modelPart="전체";
-      this.modelStatus="전체";
+    manageInquiry() {
+        this.getRecipientData();
     },
     },
 }

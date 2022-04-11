@@ -27,17 +27,17 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <select @change="onChangeSgg($event)">
+                                    <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
                                         <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select @change="onChangeOrg($event)">
+                                    <select v-model="selectedSggItems" @change="onChangeOrg($event)">
                                       <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select>
+                                    <select v-model="selectedOrgmItems">
                                       <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                     </select>
                                 </td>
@@ -159,7 +159,7 @@ export default {
       return{
         sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[],
-        orgSido:'', orgSgg:'', orgCode:'',
+        orgSido:'', orgSgg:'', orgCode:'',selectedOrgmItems:'', selectedSidoItems:'', selectedSggItems:'',
         NCount: 0,
       }
     },
@@ -169,7 +169,7 @@ export default {
       this.getOrgmData();
       this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
       this.e_date=moment().format('YYYY-MM-DD');
-      this.getNCount();
+
 //      this.getnoticeData();
     },
     methods:{
@@ -267,21 +267,17 @@ export default {
       },
       getNCount(){
       let url = "/admin/notices?startDate="+this.s_date+"&endDate="+this.e_date;
-      
-
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            const sidoCount = !sido? '' : new SidoCount(sido, 'gi');
-            const sggCount = !sgg? '' : new SggCount(sgg, 'gi');
-            const orgCount = !orgNm? '' : new OrgCount(orgNm, 'gi');
-            const userNmCount = !userNm? '' : new UserNmCount(userNm, 'gi');
-            
             let totalCData = response.data.data
-            console.log(totalCData.length)
-            this.Ncount = totalCData.filter(cd=>{
-              return cd.sido.match(sidoCount)&&cd.sgg.match(sggCount)&&cd.org.match(orgCount)&&cd.userNm.match(userNmCount)
-                //return cd.count(noticeId)
-            }).length
+            //const sidoCount = !this.selectedSidoItems? '' : new RegExp(this.selectedSidoItems, 'gi');
+            //const sggCount = !this.selectedSggItems? '' : new RegExp(this.selectedSggItems, 'gi');
+            const orgCount = !this.selectedOrgmItems? '' : new RegExp(this.selectedOrgmItems, 'gi');
+            //const userNmCount = !userNm? '' : new RegExp(userNm, 'gi');
+            this.noticItems= totalCData.filter((cd=>{
+              return cd.orgId.match(orgCount) 
+            }))
+            this.NCount =this.noticItems.length
           })
           .catch(error => {
             this.errorMessage = error.message;

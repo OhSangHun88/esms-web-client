@@ -1,17 +1,17 @@
 <template>
   <div>
-    <CWrapper>
-      <topMenu />
+    
+      
       <div class="c-body">
         <main class="c-main">
-          <CContainer fluid>
+          
             <transition name="fade" mode="out-in">
               <router-view :key="$route.path"></router-view>
             </transition>
-          </CContainer>
+          
         </main>
       </div>
-    </CWrapper>
+    
   </div>
 </template>
 
