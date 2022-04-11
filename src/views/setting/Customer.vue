@@ -47,7 +47,7 @@
                     </table>
                 </div>
                 <div class="btn_area">
-                    <button type="button" class="btn">조회</button>
+                    <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
                 </div>
             </div>
             <div class="one_box box_style">
@@ -85,7 +85,7 @@
                                 <col style="width:16%;">
                                 <col style="width:auto;">
                             </colgroup>
-                            <tbody>
+                            <tbody v-if="TorgItems">
                                 <tr v-for="(item,index) in TorgItems" v-bind:key="index">
                                     <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{}}</a></td>
@@ -94,6 +94,9 @@
                                     <td><a href="#">{{item.addrDetail}}</a></td>
                                     <td><a href="#">{{item.addr}}</a></td>
                                 </tr>
+                            </tbody>
+                            <tbody v-else>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -153,7 +156,7 @@
                                 <col style="width:16%;">
                                 <col style="width:auto;">
                             </colgroup>
-                            <tbody>
+                            <tbody v-if="userItems">
                                 <tr v-for="(item,index) in userItems" v-bind:key="index">
                                     <td><a href="#">{{item.sido}}</a></td>
                                     <td><a href="#">{{item.sgg}}</a></td>
@@ -163,6 +166,9 @@
                                     <td><a href="#">{{item.phoneNumber}}</a></td>
                                     <td><a href="#">{{item.chargeRegionNm}}</a></td>
                                 </tr>
+                            </tbody>
+                            <tbody v-esle>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -194,7 +200,7 @@
 <script>
 import HeaderComp from "../pages/HeaderComp.vue";
 import axios from "axios";
-import moment from "moment";
+
 
 export default {
     name: 'UserListComponent',
@@ -212,8 +218,8 @@ export default {
       this.getSidoData();
       this.getSggData();
       this.getOrgmData();
-      this.getTorgData();
-      this.getUserData();
+      //this.getTorgData();
+      //this.getUserData();
     },
     methods:{
     getSidoData() {
@@ -335,7 +341,8 @@ export default {
       this.getOrgmData()
     },
     manageInquiry() {
-        this.getnoticeData();
+        this.getTorgData();
+        this.getUserData();
     },
     }
 }

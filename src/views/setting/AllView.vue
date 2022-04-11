@@ -71,7 +71,7 @@
                     </table>
                 </div>
                 <div class="btn_area">
-                    <button type="button" class="btn">조회</button>
+                    <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
                 </div>
             </div>
             <div class="one_box box_style">
@@ -124,8 +124,8 @@
                                 <col style="width:8%;">
                                 <col style="width:8%;">
                             </colgroup>
-                            <tbody>
-                                <!--<tr v-for="(item,index) in noticItems" v-bind:key="index">
+                            <tbody v-if="noticItems">
+                                <tr v-for="(item,index) in noticItems" v-bind:key="index">
                                     <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{}}</a></td>
@@ -137,7 +137,10 @@
                                     <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{}}</a></td>
-                                </tr>-->
+                                </tr>
+                            </tbody>
+                            <tbody v-else>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -189,7 +192,7 @@ export default {
       this.getOrgmData();
       this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
       this.e_date=moment().format('YYYY-MM-DD');
-      this.getnoticeData();
+     // this.getnoticeData();
     },
     methods:{
         getSidoData() {

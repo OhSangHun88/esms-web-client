@@ -64,7 +64,7 @@
             </div>
             <div class="one_box box_style">
                 <div class="result_txt">
-                    <p>조회결과 : <strong>235</strong>건</p>
+                    <p>조회결과 : <strong class="num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
                 </div>
                 <div class="list result">
                     <table>
@@ -75,7 +75,7 @@
                             <col style="width:8%;">
                             <col style="width:8%;">
                             <col style="width:8%;">
-                            <col style="width:8%;">
+                            <col style="width:9%;">
                             <col style="width:atuo;">
                         </colgroup>
                         <thead>
@@ -100,10 +100,10 @@
                                 <col style="width:8%;">
                                 <col style="width:8%;">
                                 <col style="width:8%;">
-                                <col style="width:8%;">
+                                <col style="width:9%;">
                                 <col style="width:atuo;">
                             </colgroup>
-                            <tbody>
+                            <tbody v-if="noticItems" >
                                 <tr v-for="(item,index) in noticItems" v-bind:key="index">
                                     <td><a href="#" >{{index+1}}</a></td>
                                     <td><a href="#">{{}}</a></td>
@@ -114,6 +114,9 @@
                                     <td><a href="#">{{item.updDtime}}</a></td>
                                     <td><a href="#">{{item.details}}</a></td>
                                 </tr>
+                              </tbody>
+                              <tbody v-else>
+                                데이터가 없습니다
                               </tbody>
                         </table>
                     </div>
@@ -157,6 +160,7 @@ export default {
         sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
+        NCount: 0,
       }
     },
     created(){
@@ -165,7 +169,8 @@ export default {
       this.getOrgmData();
       this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
       this.e_date=moment().format('YYYY-MM-DD');
-      this.getnoticeData();
+      this.getNCount();
+//      this.getnoticeData();
     },
     methods:{
     getSidoData() {
@@ -260,6 +265,29 @@ export default {
             console.error("There was an error!", error);
           });
       },
+      getNCount(){
+      let url = "/admin/notices?startDate="+this.s_date+"&endDate="+this.e_date;
+      
+
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            const sidoCount = !sido? '' : new SidoCount(sido, 'gi');
+            const sggCount = !sgg? '' : new SggCount(sgg, 'gi');
+            const orgCount = !orgNm? '' : new OrgCount(orgNm, 'gi');
+            const userNmCount = !userNm? '' : new UserNmCount(userNm, 'gi');
+            
+            let totalCData = response.data.data
+            console.log(totalCData.length)
+            this.Ncount = totalCData.filter(cd=>{
+              return cd.sido.match(sidoCount)&&cd.sgg.match(sggCount)&&cd.org.match(orgCount)&&cd.userNm.match(userNmCount)
+                //return cd.count(noticeId)
+            }).length
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
       onChangeSido(event){
       console.log("====onChangeSido($event) execution")
       this.getSggData()
@@ -281,6 +309,7 @@ export default {
     },
     manageInquiry() {
         this.getnoticeData();
+        this.getNCount();
     },
     }
 }

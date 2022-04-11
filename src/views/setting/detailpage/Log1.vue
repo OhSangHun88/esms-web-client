@@ -35,7 +35,7 @@
                                 <col style="width:20%;">
                                 <col style="width:20%;">
                             </colgroup>
-                            <tbody>
+                            <tbody v-if="logItems">
                                 <tr v-for="(item,index) in logItems" v-bind:key="index">
                                     <td><a href="#" >{{index+1}}</a></td>
                                     <td><a href="#">{{item.logDtime}}</a></td>
@@ -44,7 +44,10 @@
                                     <td><a href="#">{{item.accessIp}}</a></td>
                                     <td><a href="#">{{item.logDetails}}</a></td>
                                 </tr>
-                              </tbody>
+                            </tbody>
+                            <tbody v-else>
+                                
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -90,7 +93,7 @@ export default {
       }
     },
     created(){
-      this.getLogData();
+
     },
     
 }

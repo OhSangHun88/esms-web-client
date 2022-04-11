@@ -25,8 +25,8 @@
                             <tr>
                                 <td>
                                     <div class="btn_area log">
-                                        <button type="button" @click="log(1)" @change="onChange($event)" class="btn on" value="1">로그</button>
-                                        <button type="button" @click="log(2)" @change="onChange($event)" class="btn " value="2">통신로그</button>
+                                        <button type="button" @click="log(1)" @change="onChange($event)" class="btn" value="1" :class="logtoggle===1?'btn on':'btn'" >로그</button>
+                                        <button type="button" @click="log(2)" @change="onChange($event)" class="btn" value="2" :class="logtoggle===2?'btn on':'btn'">통신로그</button>
                                     </div>
                                 </td>
                                 <td>
@@ -55,9 +55,8 @@
             </div>
             <div class="one_box box_style">
                 <div class="list result"><!-- 로그 선택시 -->
-                    <!--<log1 :s_date="this.s_date" :e_date="this.e_date" v-if="this.logtoggle===1"></log1>-->
-                    <log1 :logItems="this.logItems" v-if="this.logtoggle===1"></log1>
-                    <log2 :comLogItems="this.comLogItems" v-if="this.logtoggle===2"></log2>
+                    <log1  :logItems="this.logItems" v-if="this.logtoggle===1"></log1>
+                    <log2  :comLogItems="this.comLogItems" v-if="this.logtoggle===2"></log2>
                 </div>
             </div>
         </div>
@@ -95,8 +94,9 @@ export default {
     created(){
       this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
       this.e_date=moment().format('YYYY-MM-DD');
-      this.getLogData();
-      this.getEquLogData();
+      //this.getLogData();
+      //this.EquLogData();
+      //this.getEquLogData();
     },
     methods:{
       getLogData() {
@@ -116,7 +116,7 @@ export default {
       if(this.tabletId != '') uri+="&tabletId=" + this.tabletId;
       if(this.recipientId != '') uri+="&recipientId=" + this.recipientId;
         console.log("=======2 ok")
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.comLogItems = response.data.data
           })
@@ -151,8 +151,11 @@ export default {
       initSet() {
       this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
       this.e_date=moment().format('YYYY-MM-DD');
+      if(this.logtoggle===1){
       this.getLogData();
+      }else {
       this.getEquLogData();
+      }
     },
     log(value){
       switch (value){

@@ -201,7 +201,8 @@ export default {
     methods:{
     // 시/도 목록
     getSidoData() {
-      axios.get("/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
+      let url = "/admin/address/sido"
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           this.sidoItems=[];
           this.sidoItems.push({label: '전체', value: ''});
