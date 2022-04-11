@@ -1,7 +1,7 @@
 <template>
   <header id="header">
     <div class="header_top">
-      <h1><img alt="Vue logo" src="../../assets/images/logo_ib.png">IB-Care System</h1>
+      <h1><a href="http://localhost:8080/#/dashboard/allView"><img alt="Vue logo" src="../../assets/images/logo_ib.png">IB-Care System</a></h1>
       <div class="util_wrap">
         <div class="user_name">
           <i class="pf_img" style="background-image: url(../assets/images/img_profile.png)"></i>
