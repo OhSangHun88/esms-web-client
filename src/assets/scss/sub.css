@@ -178,6 +178,12 @@ ul.info_list li .txt p{font-size: 12px;color: rgba(255, 255, 255, 0.8);padding: 
 .container .list_top .title_area .select_area{display: inline-block;width: 120px;margin: 0 0 0 20px;}
 .container .list_top .title_area .select_area select{height: 30px;font-size: 14px;font-weight: 500;}
 
+/* 연결장비 탭*/
+.toggle_btn2{font-size:0;margin-left: -30px;padding: 10px 0 0;}
+.toggle_btn2 .btn{display: inline-block;margin: 0 0 0 30px;position:relative;color: rgba(255, 255, 255, 0.8); line-height:27px; text-decoration:none; font-size:18px;border-radius: 0;padding: 0;}
+.toggle_btn2 .btn.on{border-bottom: 2px solid #11B787;}
+.toggle_btn2 .btn:hover, .toggle_btn2 .btn.on{color:#11B787; font-weight: 500;}
+
 /* 주기설정 */
 .info_wrap_2 .tabcontent .tablist_wrap{font-size: 0;}
 .info_wrap_2 .tabcontent .tablist_wrap .tablist{width: 50%;display: inline-block;padding: 0 0 0 30px;}
@@ -214,8 +220,8 @@ ul.info_list li .txt p{font-size: 12px;color: rgba(255, 255, 255, 0.8);padding: 
 .container .top_info .txt_area .tit{font-size: 16px;font-weight: 300;color: #BBBBBB;line-height: 1.2;margin: 0;}
 .container .top_info .txt_area .num{font-size: 36px;font-weight: 500;color: #fff;line-height: 1.5;margin: 0;}
 
-.container .box_style.box_col3{height:394px; flex:1;margin: 0 0 30px 30px;}
-.container .box_style.box_col3:first-child{margin: 0 0 30px 0;}
+.container .box_style .box_col3{height:450px; flex:1;margin: 0 0 30px 30px;}
+.container .box_style .box_col3:first-child{margin: 0 0 30px 0;}
 .container .box_wrap .box_l.chart{width: 460px;}
 
 /* 운영기관 관리(펌웨어) */
