@@ -7,6 +7,7 @@
                 <div class="list result"><!-- 로그 선택시 -->
                     <table>
                         <colgroup>
+                            <col style="width:6%;">
                             <col style="width:20%;">
                             <col style="width:20%;">
                             <col style="width:20%;">
@@ -15,6 +16,7 @@
                         </colgroup>
                         <thead>
                             <tr>
+                                <th scope="col">순번</th>
                                 <th scope="col">로그일</th>
                                 <th scope="col">아이디</th>
                                 <th scope="col">구분</th>
@@ -26,21 +28,26 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
+                                <col style="width:6%;">
                                 <col style="width:20%;">
                                 <col style="width:20%;">
                                 <col style="width:20%;">
                                 <col style="width:20%;">
                                 <col style="width:20%;">
                             </colgroup>
-                            <tbody>
+                            <tbody v-if="logItems">
                                 <tr v-for="(item,index) in logItems" v-bind:key="index">
+                                    <td><a href="#" >{{index+1}}</a></td>
                                     <td><a href="#">{{item.logDtime}}</a></td>
                                     <td><a href="#">{{item.userId}}</a></td>
                                     <td><a href="#">{{item.applicationNm}}</a></td>
                                     <td><a href="#">{{item.accessIp}}</a></td>
                                     <td><a href="#">{{item.logDetails}}</a></td>
                                 </tr>
-                              </tbody>
+                            </tbody>
+                            <tbody v-else>
+                                
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -72,6 +79,7 @@ import axios from "axios";
 export default {
     name: 'Log1',
     props:{
+        logItems: String,
         s_date: String,
         e_date: String
     },
@@ -85,47 +93,9 @@ export default {
       }
     },
     created(){
-      this.getLogData();
+
     },
-    methods:{
-      getLogData() {
-      let uri = this.$store.state.serverApi + "/admin/logs/servers?startDate="+this.s_date+"&endDate="+this.e_date;;
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(response => {
-            this.logItems = response.data.data
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-      },
-      onChange(event) {
-      let optionValue = event.target.value;
-      switch (optionValue) {
-        case "1":
-          this.isLog=true; this.isComLog=false;
-          this.isTablet=false; this.isCustomer=false;
-          this.getLogData();
-          break;
-        case "2":
-          this.isLog=false; this.isComLog=true;
-          this.isTablet=true; this.isCustomer=true;
-          this.getEquLogtData();
-          break;
-      }
-    },
-      manageInquiry() {
-      if(this.isLog==true){
-        this.getLogData();
-      } else {
-        this.getEquLogtData();
-      }
-    },
-      initSet() { 
-      this.getLogData();
-      this.getEquLogData();
-    },
-    }
+    
 }
 </script>
 <style>

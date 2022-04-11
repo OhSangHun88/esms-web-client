@@ -1,403 +1,318 @@
 <template>
-  <div>
-    <CCard style="background-color: rgb(247 248 248);margin-top: 45px;border: none;">
-      <CCardBody>
-        <div role="group" class="form-check form-check-inline">
-          <div>
-            <label class="labelRadio">
-              <input name="tabnotice" type="radio" @change="onChange($event)" class="form-control customRadio" checked="checked" value="1">고객(사용자)
-            </label>
-          </div>
-          <div>
-            <label class="labelRadio">
-              <input name="tabnotice" type="radio" @change="onChange($event)" class="form-control customRadio"  value="2">응급요원
-            </label>
-          </div>
+    <div class="wrap">
+        <HeaderComp></HeaderComp>
+        <div class="container type-02">
+            <div class="list_title_wrap">
+                <span>관리</span>
+                <i class="ico_nav"></i>
+                <span class="on">공지사항</span>
+            </div>
+            <div class="box_search_wrap add_btn box_style">
+                <div class="table_wrap type-02">
+                    <table>
+                        <colgroup>
+                            <col style="width:18%;">
+                            <col style="width:18%;">
+                            <col style="width:18%;">
+                            <col style="width:18%;">
+                            <col style="width:auto;">
+                        </colgroup>
+                        <thead>
+                            <th scope="row">시/도</th>
+                            <th scope="row">시/군/구</th>
+                            <th scope="row">관리기관</th>
+                            <th scope="row">작성자</th>
+                            <th scope="row">등록일자</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select @change="onChangeSgg($event)">
+                                        <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select @change="onChangeOrg($event)">
+                                      <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                      <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" value="홍길동">
+                                </td>
+                                <td>
+                                    <div class="date_warp">
+                                        <div class="customerBts" style="justify-content: flex-start;">
+                                            <input type="date" v-model="s_date"/>
+                                            <span class="tilde">~</span>
+                                            <input type="date" v-model="e_date"/>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn_area">
+                    <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
+                    <button type="button" class="btn form2">작성</button>
+                </div>
+            </div>
+            <div class="one_box box_style">
+                <div class="result_txt">
+                    <p>조회결과 : <strong class="num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
+                </div>
+                <div class="list result">
+                    <table>
+                        <colgroup>
+                            <col style="width:5%;">
+                            <col style="width:5%;">
+                            <col style="width:6%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:9%;">
+                            <col style="width:atuo;">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th scope="col">순번</th>
+                                <th scope="col">시/도</th>
+                                <th scope="col">시/군/구</th>
+                                <th scope="col">관리기관</th>
+                                <th scope="col">제목</th>
+                                <th scope="col">작성자</th>
+                                <th scope="col">등록일자</th>
+                                <th scope="col">공지내용</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="tbody">
+                        <table>
+                            <colgroup>
+                                <col style="width:5%;">
+                                <col style="width:5%;">
+                                <col style="width:6%;">
+                                <col style="width:8%;">
+                                <col style="width:8%;">
+                                <col style="width:8%;">
+                                <col style="width:9%;">
+                                <col style="width:atuo;">
+                            </colgroup>
+                            <tbody v-if="noticItems" >
+                                <tr v-for="(item,index) in noticItems" v-bind:key="index">
+                                    <td><a href="#" >{{index+1}}</a></td>
+                                    <td><a href="#">{{}}</a></td>
+                                    <td><a href="#">{{}}</a></td>
+                                    <td><a href="#">{{item.orgNm}}</a></td>
+                                    <td><a href="#">{{item.title}}</a></td>
+                                    <td><a href="#">{{}}</a></td>
+                                    <td><a href="#">{{item.updDtime}}</a></td>
+                                    <td><a href="#">{{item.details}}</a></td>
+                                </tr>
+                              </tbody>
+                              <tbody v-else>
+                                데이터가 없습니다
+                              </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="pagination mt0">
+					<a href="#" class="front">첫 페이지</a>
+					<a href="#" class="prev">이전 페이지</a>
+					<a href="#" class="on">1</a>
+					<a href="#">2</a>
+					<a href="#">3</a>
+					<a href="#">4</a>
+					<a href="#">5</a>
+					<a href="#">6</a>
+					<a href="#">7</a>
+					<a href="#">8</a>
+					<a href="#">9</a>
+					<a href="#">10</a>
+					<a href="#" class="next">다음 페이지</a>
+					<a href="#" class="back">마지막 페이지</a>
+				</div>
+            </div>
         </div>
-        <div class="cardItem">
-          <CInput
-              type="text"
-              style="width: 200px"
-              class="paddingSel"
-              label="제목"
-              v-model="txt_title"
-          />
-          <CInput
-              type="text"
-              style="width: 300px"
-              class="paddingSel"
-              label="내용"
-              v-model="txt_details"
-          /> 
-          <CButton block color="primary" class="searchBtn" v-on:click="manageInquiry">검색</CButton>
-          <CButton block variant="outline" color="primary" class="initBtn"  v-on:click="initSet">초기화</CButton>
-        </div>
-      </CCardBody>
-    </CCard>
-    <CCard class="dataCard">
-      <CCardHeader class="dataCardHeader">
-        <div class="mHeader">
-          <CButton block variant="outline" color="primary" style="width: 120px;"  @click="regsternotice()">공지사항 등록</CButton>
-        </div>
-      </CCardHeader>
-      <CCardBody>
-        <CDataTable
-            class="mb-0 table-clear thBorder tdBorder thText"
-            hover
-            v-model="tableItems.item"
-            :items="tableItems"
-            :fields="tableFields"
-            head-color="light"
-            sorting >
-          <td slot="change" style="text-align: center;width: 90px;" slot-scope="{item}">
-            <CButton color="info" variant="outline" v-on:click="getNotice(item.noticeId)">수정</CButton>
-          </td>
-          <td slot="delete" style="text-align: center;width: 90px;" slot-scope="{item}">
-            <CButton color="info" variant="outline" v-on:click="deleteNotice(item.noticeId)">삭제</CButton>
-          </td>
-        </CDataTable>
-      </CCardBody>
-    </CCard>
-
-    <CModal
-        class="mCustomer"
-        title="공지사항"
-        :show.sync="noticesRegster"
-    >
-      <div>
-        <CContainer fluid>
-          <CCard class="mx-8 mb-0 cardModal" >
-            <CCardBody class="p-6">
-              <CSelect
-                  label="관리기관"
-                  :options="orgmItems"
-                  @change="onChangeOrg($event)"
-                  :value.sync="modelOrg"
-              />
-              <CInput
-                  type="text"
-                  v-model="modelTitle"
-                  label="제목"
-              />
-              <CTextarea
-                  type="text"
-                  v-model="modelContent"
-                  label="방문내용"
-              />
-              <div style="display: flex;justify-content: flex-end;">
-                <CButton color="primary" v-on:click="regNotice" v-show="regBt">저장</CButton>
-                <CButton color="primary" v-on:click="updateNotice" v-show="updateBt">수정</CButton>
-              </div>
-            </CCardBody>
-          </CCard>
-        </CContainer>
-      </div>
-    </CModal>
-
-  </div>
-
-
+    </div>
 </template>
-
+<style lang="scss">
+@import '../../assets/scss/common.css';
+@import '../../assets/scss/sub.css';
+</style>
 <script>
+import HeaderComp from "../pages/HeaderComp.vue";
 import axios from "axios";
+import moment from "moment";
 
 export default {
-  name: "Notice",
-  methods: {
-    getOrgmData() {
-      axios.get("/admin/organizations/all", {headers: {"Authorization": sessionStorage.getItem("token")}})
+    name: 'Notice',
+    components : {
+        HeaderComp
+    },
+    data(){
+      return{
+        sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
+        sidoItems:[], sggItems:[], orgmItems:[], noticItems:[],
+        orgSido:'', orgSgg:'', orgCode:'',
+        NCount: 0,
+      }
+    },
+    created(){
+      this.getSidoData();
+      this.getSggData();
+      this.getOrgmData();
+      this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
+      this.e_date=moment().format('YYYY-MM-DD');
+      this.getNCount();
+//      this.getnoticeData();
+    },
+    methods:{
+    getSidoData() {
+    axios.get("/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            this.orgmItems=[];
-            this.orgmItems.push({label: '전체', value: ''});
+            this.sidoItems=[];
+            this.sidoItems.push({label: '전체', value: ''});
             for(let i=0; i<response.data.data.length; i++) {
-              this.orgmItems.push({
-                label: response.data.data[i].orgNm,
-                value: response.data.data[i].orgId
+              this.sidoItems.push({
+                label: response.data.data[i].sido,
+                value: response.data.data[i].sidoCd
               });
-            }
+            }  
           })
           .catch(error => {
             this.errorMessage = error.message;
-            console.log()
             console.error("There was an error!", error);
           });
     },
-    getData(typeCd) {
-      let url = "/admin/notices?typeCd=" + typeCd;
-      if(this.txt_title != '') {
-        url += "&title="+this.txt_title;
-      }
-      if(this.txt_details != '') {
-        url += "&details="+this.txt_details;
-      }
-      axios.get(url, {headers: { "Authorization": sessionStorage.getItem("token") }})
-      .then(response => {
-        this.tableItems = [];
-        for(let i=0; i<response.data.data.length; i++) {
-          this.tableItems.push({
-            noticeId:response.data.data[i].noticeId,
-            orgNm:response.data.data[i].orgNm,
-            title:response.data.data[i].title,
-            regDtime:response.data.data[i].regDtime,
-            change:'',
-            delete:''
+
+    // 시/군/구 목록
+    getSggData() {
+    let url = "/admin/address/sgg";
+    if(this.sidoCd != ''){
+        url += "?sidoCd="+this.sidoCd;
+    }else{
+        this.sggItems=[];
+        this.sggItems.push({label: '전체', value: ''});
+        return ; 
+    }
+    axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            const tempArr = [];
+            this.sggItems=[];
+            tempArr.push({label: '전체', value: ''});
+            for(let i=0; i<response.data.data.length; i++) {
+              tempArr.push({
+                label: response.data.data[i].sgg,
+                value: response.data.data[i].sggCd,
+                value2: response.data.data[i].sidoCd
+              });
+            } 
+            this.sggItems = tempArr.filter(cd=>{
+                return cd.value2 === this.sidoCd
+            });
           })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+
+    // 관리 기관 목록
+     getOrgmData() {
+    let url = "/admin/organizations";
+        if(this.sggCd != ''){
+            url += "?sggCd="+this.sggCd;
+        }else{
+          this.orgmItems=[];
+          this.orgmItems.push({label: '전체', value: ''});
+          return ; 
         }
-      })
-      .catch(error => {
-        this.errorMessage = error.message;
-        console.error("There was an error!", error);
-      });
+       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            const tempArr = [];
+            this.orgmItems=[];
+            tempArr.push({label: '전체', value: ''});
+            for(let i=0; i<response.data.data.length; i++) {
+              tempArr.push({
+                label: response.data.data[i].orgNm,
+                value: response.data.data[i].orgId,
+                value2: response.data.data[i].addrCd
+              });
+            }
+            this.orgmItems = tempArr.filter(cd=>{
+            return cd.value2 === this.sggCd
+            });
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getnoticeData() {
+      let uri = this.$store.state.serverApi + "/admin/notices?startDate="+this.s_date+"&endDate="+this.e_date;;
+      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(response => {
+            this.noticItems = response.data.data
+          })          
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+      },
+      getNCount(){
+      let url = "/admin/notices?startDate="+this.s_date+"&endDate="+this.e_date;
+      
+
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            const sidoCount = !sido? '' : new SidoCount(sido, 'gi');
+            const sggCount = !sgg? '' : new SggCount(sgg, 'gi');
+            const orgCount = !orgNm? '' : new OrgCount(orgNm, 'gi');
+            const userNmCount = !userNm? '' : new UserNmCount(userNm, 'gi');
+            
+            let totalCData = response.data.data
+            console.log(totalCData.length)
+            this.Ncount = totalCData.filter(cd=>{
+              return cd.sido.match(sidoCount)&&cd.sgg.match(sggCount)&&cd.org.match(orgCount)&&cd.userNm.match(userNmCount)
+                //return cd.count(noticeId)
+            }).length
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+      onChangeSido(event){
+      console.log("====onChangeSido($event) execution")
+      this.getSggData()
+      this.orgSido = event.target.value;
+    },
+    onChangeSgg(event){
+      this.orgSgg = event.target.value;
+      this.sidoCd = event.target.value
+      this.getSggData()
     },
     onChangeOrg(event) {
       this.orgCode = event.target.value;
-      this.selOptionName = this.orgmItems.find(item => this.orgCode == item.value).label;
-    },
-    manageInquiry() {
-      if(this.selOption == 1) {
-        this.getData('TPE001');
-      } else {
-        this.getData('TPE002');
-      }
-    },
-    deleteNotice(nId) {
-      let returnValue = confirm('정말 삭제하시겠습니까?');
-      if(returnValue) {
-        let url = "/admin/notices/" + nId;
-
-        axios.delete(url, {
-          headers: { "Authorization": sessionStorage.getItem("token") }})
-        .then(response => {
-          if(response.data.totalCount == 0) {
-            alert("삭제가 성과적으로 되었습니다.");
-            if(this.selOption == 1) {
-              this.getData('TPE001');
-            } else {
-              this.getData('TPE002');
-            }
-          } else {
-            alert("삭제가 실패 되었습니다.");
-          }
-        })
-        .catch(error => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-      }
-    },
-    getNotice(nId) {
-      this.selectnId = nId;
-      let url = "/admin/notices/" + nId;
-      axios.get(url, {
-        headers: { "Authorization": sessionStorage.getItem("token") }})
-        .then(response => {
-          this.modelTitle = response.data.data.title;
-          this.modelContent = response.data.data.details;
-          let orgId = response.data.data.orgId;
-          this.orgCode = orgId;
-          this.modelOrg = this.orgmItems.find(item => orgId == item.value).value;
-          this.selOptionName = this.orgmItems.find(item => this.orgCode == item.value).label;
-          this.regBt = false;
-          this.updateBt = true;
-          this.noticesRegster = true;
-        })
-        .catch(error => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-    },
-    regsternotice() {
-      this.regBt = true;
-      this.updateBt = false;
-      this.noticesRegster = true;
-    },
-    regNotice() {
-      if(this.orgCode == '') {
-        alert('관리기관을 선택하여 주세요.');
-        return;
-      }
-      if(this.modelTitle == '') {
-        alert('제목을 입력하여 주세요.');
-        return;
-      }
-      if(this.modelContent == '') {
-        alert('방문내용을 입력하여 주세요.');
-        return;
-      }
-      let bodyFormData = new FormData();
-      bodyFormData.append('orgId', this.orgCode);
-      bodyFormData.append('orgNm', this.selOptionName);
-      if(this.selOption == 1) {
-        bodyFormData.append('typeCd', 'TPE001');
-      } else {
-        bodyFormData.append('typeCd', 'TPE002');
-      }
-      bodyFormData.append('title', this.modelTitle);
-      bodyFormData.append('details', this.modelContent);
-
-      const headers = {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': sessionStorage.getItem("token")
-      }
-      let self = this;
-      axios({
-        method: "post",
-        url: '/admin/notices',
-        data: bodyFormData,
-        headers: headers,
-      })
-      .then(function (response) {
-        if(response.data.totalCount > 0){
-          if(self.selOption == 1) {
-            self.getData('TPE001');
-          } else {
-            self.getData('TPE002');
-          }
-          self.noticesRegster=false;
-        }
-        console.log(response);
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });
-    },
-    updateNotice() {
-      if(this.orgCode == '') {
-        alert('관리기관을 선택하여 주세요.');
-        return;
-      }
-      if(this.modelTitle == '') {
-        alert('제목을 입력하여 주세요.');
-        return;
-      }
-      if(this.modelContent == '') {
-        alert('방문내용을 입력하여 주세요.');
-        return;
-      }
-      let bodyFormData = new FormData();
-      bodyFormData.append('orgId', this.orgCode);
-      bodyFormData.append('orgNm', this.selOptionName);
-      if(this.selOption == 1) {
-        bodyFormData.append('typeCd', 'TPE001');
-      } else {
-        bodyFormData.append('typeCd', 'TPE002');
-      }
-      bodyFormData.append('title', this.modelTitle);
-      bodyFormData.append('details', this.modelContent);
-
-      const headers = {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': sessionStorage.getItem("token")
-      }
-      let self = this;
-      axios({
-        method: "post",
-        url: '/admin/notices/' + this.selectnId,
-        data: bodyFormData,
-        headers: headers,
-      })
-      .then(function (response) {
-        if(response.data.totalCount > 0){
-          alert("성과적으로 수정 되었습니다.")
-          if(self.selOption == 1) {
-            self.getData('TPE001');
-          } else {
-            self.getData('TPE002');
-          }
-          self.noticesRegster=false;
-        } else {
-          alert("수정이 실패 되었습니다.")
-        }
-        console.log(response);
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });
+      this.sggCd = event.target.value
+      this.getOrgmData()
     },
     initSet() {
-      this.txt_title = '';
-      this.txt_details = '';
+      this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
+      this.e_date=moment().format('YYYY-MM-DD');
     },
-    onChange(event) {
-      let optionText = event.target.value;
-      if(optionText == 1) {
-        this.selOption = 1;
-        this.getData('TPE001');
-      } else {
-        this.selOption = 2;
-        this.getData('TPE002');
-      }
+    manageInquiry() {
+        this.getnoticeData();
+        this.getNCount();
+    },
     }
-  },
-  created() {
-    this.getOrgmData();
-    this.getData('TPE001');
-  },
-  data () {
-    return {
-      tableItems: [], orgmItems:[],
-      txt_title: '', modelTitle: '', modelContent: '', selectnId: '', selOptionName: '',
-      txt_details: '', orgCode: '', modelOrg: '', selOption: '1',
-      noticesRegster: false, regBt: true, updateBt:false,
-      tableFields: [
-        {key: 'orgNm', label: '관리기관', _classes: 'text-center'},
-        {key: 'title', label: '제목', _classes: 'text-center'},
-        {key: 'regDtime', label: '등록일자', _classes: 'text-center'},
-        {key: 'change',label: '',_classes: 'text-center'},
-        {key: 'delete', label: '', _classes: 'text-center'},
-      ],
-      noticesFields: [
-        {key: 'status', lalbel: '상태', _classes: 'text-center'},
-        {key: 'code', lalbel: '코드', _classes: 'text-center'},
-        {key: 'error', lalbel: '에러', _classes: 'text-center'},
-        {key: 'message', lalbel: '메시지', _classes: 'text-center'},
-        {key: 'errors', lalbel: '에러들', _classes: 'text-center'},
-      ],
-    }
-  }
 }
 </script>
-
-<style scoped>
-.cardModal {
-  border: none;
-}
-.searchBtn {
-  width: 70px;
-  right: 115px;
-  position: absolute;
-  margin-top: 45px;
-}
-.initBtn {
-  width: 70px;
-  right: 22px;
-  position: absolute;
-  margin-top: -1px;
-  margin-top: 45px;
-}
-.dataCard {
-  border: none;
-}
-.dataCardHeader {
-  border: none;
-}
-.mHeader {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-.cardItem {
-  border: 0;
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 15px;
-}
-
-
-.middleBtn {
-  margin: 0 10px 0 10px;
-}
+<style>
 </style>
