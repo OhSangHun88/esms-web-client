@@ -76,6 +76,7 @@ import axios from "axios";
 export default {
     name: 'Log2',
     props:{
+        comLogItems: String,
         s_date: String,
         e_date: String
     },
@@ -90,33 +91,7 @@ export default {
     created(){
       this.getEquLogData();
     },
-    methods:{
-      getEquLogData() {
-      let uri = this.$store.state.serverApi + "/admin/logs/equipments?startDate="+this.s_date+"&endDate="+this.e_date;;
-      if(this.tabletId != '') uri+="&tabletId=" + this.tabletId;
-      if(this.recipientId != '') uri+="&recipientId=" + this.recipientId;
-      console.log(uri)
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(response => {
-            this.comLogItems = response.data.data
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-          console.log(this.comLogItems)
-      },
-      manageInquiry() {
-      if(this.isLog==true){
-        this.getLogData();
-      } else {
-        this.getEquLogtData();
-      }
-    },
-      initSet() {
-      this.getEquLogData();
-    },
-    }
+    
 }
 </script>
 <style>

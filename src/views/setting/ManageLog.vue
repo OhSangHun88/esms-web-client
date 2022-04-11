@@ -25,8 +25,8 @@
                             <tr>
                                 <td>
                                     <div class="btn_area log">
-                                        <button type="button" @click="log(1)" class="btn on" value="1">로그</button>
-                                        <button type="button" @click="log(2)" class="btn " value="2">통신로그</button>
+                                        <button type="button" @click="log(1)" @change="onChange($event)" class="btn on" value="1">로그</button>
+                                        <button type="button" @click="log(2)" @change="onChange($event)" class="btn " value="2">통신로그</button>
                                     </div>
                                 </td>
                                 <td>
@@ -55,8 +55,9 @@
             </div>
             <div class="one_box box_style">
                 <div class="list result"><!-- 로그 선택시 -->
-                    <log1 :s_date="this.s_date" :e_date="this.e_date" v-if="this.logtoggle===1"></log1>
-                    <log2 :s_date="this.s_date" :e_date="this.e_date" v-if="this.logtoggle===2"></log2>
+                    <!--<log1 :s_date="this.s_date" :e_date="this.e_date" v-if="this.logtoggle===1"></log1>-->
+                    <log1 :logItems="this.logItems" v-if="this.logtoggle===1"></log1>
+                    <log2 :comLogItems="this.comLogItems" v-if="this.logtoggle===2"></log2>
                 </div>
             </div>
         </div>
@@ -103,7 +104,8 @@ export default {
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.logItems = response.data.data
-          })
+          })          
+          console.log("=====1 ok")
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
@@ -113,11 +115,12 @@ export default {
       let uri = this.$store.state.serverApi + "/admin/logs/equipments?startDate="+this.s_date+"&endDate="+this.e_date;;
       if(this.tabletId != '') uri+="&tabletId=" + this.tabletId;
       if(this.recipientId != '') uri+="&recipientId=" + this.recipientId;
-
+        console.log("=======2 ok")
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.comLogItems = response.data.data
           })
+          
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
@@ -134,15 +137,15 @@ export default {
         case "2":
           this.isLog=false; this.isComLog=true;
           this.isTablet=true; this.isCustomer=true;
-          this.getEquLogtData();
+          this.getEquLogData();
           break;
       }
     },
       manageInquiry() {
-      if(this.isLog==true){
+      if(this.logtoggle===1){
         this.getLogData();
       } else {
-        this.getEquLogtData();
+        this.getEquLogData();
       }
     },
       initSet() {
