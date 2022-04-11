@@ -125,7 +125,7 @@
                                 <col style="width:8%;">
                             </colgroup>
                             <tbody>
-                                <tr v-for="(item,index) in noticItems" v-bind:key="index">
+                                <!--<tr v-for="(item,index) in noticItems" v-bind:key="index">
                                     <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{}}</a></td>
@@ -137,7 +137,7 @@
                                     <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{}}</a></td>
-                                </tr>
+                                </tr>-->
                             </tbody>
                         </table>
                     </div>
