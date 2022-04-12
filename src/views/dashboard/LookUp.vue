@@ -28,9 +28,11 @@
                     </select>
                   </td>
                   <td>
+                    
                     <select>
                       <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                     </select>
+
                   </td>
                   <td>
                     <div class="date_warp">
@@ -38,7 +40,7 @@
                         <input type="date" v-model="s_date"/>
                         <span class="tilde">~</span>
                         <input type="date" v-model="e_date"/>
-                        <button type="button" class="btn">조회</button>
+                        <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
                       </div>
                     </div>
                   </td>
@@ -73,6 +75,7 @@
     </div>
 </template>
 
+
 <script>
 import axios from "axios";
 import moment from "moment";
@@ -88,13 +91,17 @@ export default {
       setCount: 0, setEMCount: 0, setLMCount: 0,
     }
   },
+  
   methods:{
+
     // 시/도 목록
     getSidoData() {
     axios.get("/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
+            
             this.sidoItems=[];
             this.sidoItems.push({label: '전체', value: ''});
+
             for(let i=0; i<response.data.data.length; i++) {
               this.sidoItems.push({
                 label: response.data.data[i].sido,
@@ -106,6 +113,7 @@ export default {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
+
     },
 
     // 시/군/구 목록
@@ -120,11 +128,16 @@ export default {
     }
 
     axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+
           .then(response => {
+
             const tempArr = [];
             this.sggItems=[];
+            
             //this.sggItems.push({label: '전체', value: ''});
+            
             tempArr.push({label: '전체', value: ''});
+
             /*
             for(let i=0; i<response.data.data.length; i++) {
               this.sggItems.push({
@@ -134,6 +147,7 @@ export default {
               });
             } 
             */
+
             for(let i=0; i<response.data.data.length; i++) {
               tempArr.push({
                 label: response.data.data[i].sgg,
@@ -152,10 +166,18 @@ export default {
     },
 
     // 관리 기관 목록
+
      getOrgmData() {
+
      let url = "/admin/organizations";
+        
         if(this.sggCd != ''){
-            url += "?sggCd="+this.sggCd;
+
+           let sggCode = this.sggCd.substring(0, 5);
+
+           console.log(">> sggCode["+sggCode+"]");
+     
+            url += "?sggCd="+sggCode;
         }else{
             this.orgmItems=[];
             this.orgmItems.push({label: '전체', value: ''});
@@ -164,48 +186,55 @@ export default {
     
        axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
+
             const tempArr = [];
             this.orgmItems=[];
-            //this.orgmItems.push({label: '전체', value: ''});
-            tempArr.push({label: '전체', value: ''});
-            console.log(tempArr)
-            /*
+
+            //console.log(">> response.data.totalCount["+response.data.totalCount+"]")
+            //console.log(">> response.data.data["+response.data.data+"]")
+
             for(let i=0; i<response.data.data.length; i++) {
-              this.orgmItems.push({
-                label: response.data.data[i].orgNm,
-                value: response.data.data[i].orgId
-              });
-            } 
-            */ 
-            for(let i=0; i<response.data.data.length; i++) {
+              console.log("orgNm["+response.data.data[i].orgNm+"]");
               tempArr.push({
                 label: response.data.data[i].orgNm,
                 value: response.data.data[i].orgId,
-                value2: response.data.data[i].addrCd
               });
-            }
-            this.orgmItems = tempArr.filter(cd=>{
-            return cd.value2 === this.sggCd
-            });
+            } 
+            console.log(">> tempArr["+tempArr+"]")
+            this.orgmItems=tempArr;
+
           })
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
     },
+
     onChangeSido(event){
       this.getSggData()
       this.orgSido = event.target.value;
     },
+    
     onChangeSgg(event){
+
       this.orgSgg = event.target.value;
       this.sidoCd = event.target.value
       this.getSggData()
     },
+
     onChangeOrg(event) {
-      this.orgId = event.target.value;
+
+
+      //this.sidoCd = event.target.value;
       this.sggCd = event.target.value
+      this.orgSgg = event.target.value
+
+      console.log("orgSido["+this.orgSido+"]")
+      console.log("orgSgg["+this.orgSgg+"]")
+      console.log("sggCd["+this.sggCd+"]")
+
       this.getOrgmData()
+
     },
 
     initSet() {
@@ -217,12 +246,29 @@ export default {
     },
 
     manageInquiry() {
-      if(this.selOption == '1') {
-        this.getUserData();
-      } else {
-        this.getOrganizationsData();
-      }
+
+      console.log("sggCd["+this.sggCd+"]")
+      console.log("s_date["+this.s_date+"]")
+      console.log("e_date["+this.e_date+"]")
+
+      let addrCode =  this.sggCd.substring(0,5);
+
+      let url = "/admin/organizations/stat/alarm?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            console.log("response.data.totalCount["+response.data.totalCount+"]")
+            console.log("response.data.data["+response.data.data+"]")            
+            
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+
+    
     },
+
+
     getTotalCount(){
       let url = "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
