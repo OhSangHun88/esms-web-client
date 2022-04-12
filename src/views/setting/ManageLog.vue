@@ -3,7 +3,7 @@
         <HeaderComp></HeaderComp>
         <div class="container type-02">
             <div class="list_title_wrap">
-                <span>관리</span>
+                <span>시스템관리</span>
                 <i class="ico_nav"></i>
                 <span class="on">로그 관리</span>
             </div>
