@@ -50,15 +50,13 @@
                     <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
                 </div>
             </div>
-         
-            <div class="one_box box_style mt30">
+            <div class="one_box box_style">
                 <div class="result_txt">
-                    <p>관리자 정보</p>
+                    <p>관리기관 정보</p>
                 </div>
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:16%;">
                             <col style="width:16%;">
                             <col style="width:16%;">
                             <col style="width:16%;">
@@ -71,10 +69,9 @@
                                 <th scope="col">시/도</th>
                                 <th scope="col">시/군/구</th>
                                 <th scope="col">관리기관명</th>
-                                <th scope="col">관리자 구분</th>
-                                <th scope="col">이름</th>
-                                <th scope="col">전화번호</th>
+                                <th scope="col">대표 전화번호</th>
                                 <th scope="col">담당지역</th>
+                                <th scope="col">주소</th>
                             </tr>
                         </thead>
                     </table>
@@ -86,26 +83,42 @@
                                 <col style="width:16%;">
                                 <col style="width:16%;">
                                 <col style="width:16%;">
-                                <col style="width:16%;">
                                 <col style="width:auto;">
                             </colgroup>
-                            <tbody v-if="userItems">
-                                <tr v-for="(item,index) in userItems" v-bind:key="index">
-                                    <td><a href="#">{{item.sido}}</a></td>
-                                    <td><a href="#">{{item.sgg}}</a></td>
+                            <tbody v-if="TorgItems">
+                                <tr v-for="(item,index) in TorgItems" v-bind:key="index">
+                                    <td><a href="#">{{}}</a></td>
+                                    <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{item.orgNm}}</a></td>
-                                    <td><a href="#">{{item.userTypeNm}}</a></td>
-                                    <td><a href="#">{{item.userNm}}</a></td>
                                     <td><a href="#">{{item.phoneNumber}}</a></td>
-                                    <td><a href="#">{{item.chargeRegionNm}}</a></td>
+                                    <td><a href="#">{{item.addrDetail}}</a></td>
+                                    <td><a href="#">{{item.addr}}</a></td>
                                 </tr>
                             </tbody>
-                            <tbody v-esle>
+                            <tbody v-else>
                                 
                             </tbody>
                         </table>
                     </div>
                 </div>
+                <div class="pagination mt0">
+					<a href="#" class="front">첫 페이지</a>
+					<a href="#" class="prev">이전 페이지</a>
+					<a href="#" class="on">1</a>
+					<a href="#">2</a>
+					<a href="#">3</a>
+					<a href="#">4</a>
+					<a href="#">5</a>
+					<a href="#">6</a>
+					<a href="#">7</a>
+					<a href="#">8</a>
+					<a href="#">9</a>
+					<a href="#">10</a>
+					<a href="#" class="next">다음 페이지</a>
+					<a href="#" class="back">마지막 페이지</a>
+				</div>
+            </div>
+           
                 <div class="pagination mt0">
 					<a href="#" class="front">첫 페이지</a>
 					<a href="#" class="prev">이전 페이지</a>
