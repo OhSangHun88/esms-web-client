@@ -84,7 +84,7 @@
                   </div>
               </div>
               
-              <div class="box_style box_col">
+              <div class="box_style box_col map map_box">
                   <div id="map"></div>
               </div>
           </div>
@@ -340,14 +340,14 @@ export default {
     makeMapData(){
         const container = document.getElementById("map");
         const mapOptions = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667, 16),
+          center: new kakao.maps.LatLng(33.450701, 126.570667),
           level: 5
         }
         let map = new kakao.maps.Map(container, mapOptions)
 
-        let geocoder = new kakao.maps.services.Geocoder();
-//${this.bodyData.addr} ${this.bodyData.addrDetail}
-        geocoder.addressSearch(`경기도 용인시 기흥구 중부대로 735 대우아파트 103동`, (result, status)=>{
+        let geocoder =  new daum.maps.services.Geocoder();
+        console.log(`${this.bodyData.addr} ${this.bodyData.addrDetail}`)
+        geocoder.addressSearch(`${this.bodyData.addr}`, (result, status)=>{
           if(status === kakao.maps.services.Status.OK){
             let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
             console.log("coords")
@@ -356,10 +356,10 @@ export default {
                 map: map,
                 position: coords
             });
-            let infowindow = new kakao.maps.InfoWindow({
-                content: `'<div style="width:150px;text-align:center;padding:6px 0;">${this.bodyData.recipientNm}</div>'`
-            });
-            infowindow.open(map, marker);
+            // let infowindow = new kakao.maps.InfoWindow({
+            //     content: `'<div style="width:150px;text-align:center;padding:6px 0;">이름 입력</div>'`
+            // });
+            // infowindow.open(map, marker);
             map.setCenter(coords);
           }
           else
@@ -373,10 +373,11 @@ export default {
     console.log(this.recipientId);
     this.getRecipientInfo();
     this.getMeasuresData();
+    
   },
   mounted(){
     const script = document.createElement("script");
-    script.src="//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=dafa9c5bd954ba036f344060208e1e83";
+    script.src="//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=dafa9c5bd954ba036f344060208e1e83&libraries=services";
     script.addEventListener("load", ()=>{
       kakao.maps.load(this.makeMapData)
     })
@@ -391,7 +392,7 @@ export default {
 @import '../../assets/scss/common.css';
 @import '../../assets/scss/sub.css';
 #map{
-  width : 710px;
-  height : 300px;
+  width : 720px;
+  height : 400px;
 }
 </style>

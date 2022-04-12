@@ -46,11 +46,11 @@
                             </colgroup>
                             <tbody>
                                 <tr>
-                                    <td>010-1234-1234</td>
-                                    <td>KT</td>
-                                    <td>SM-t225N</td>
-                                    <td>양호</td>
-                                    <td>양호(100%)</td>
+                                    <td>{{changeRecipientPhoneno(this.getCTabletsData.phoneNumber)}}</td>
+                                    <td>{{this.getCTabletsData.provider}}</td>
+                                    <td>{{this.getCTabletsData.modelNm}}</td>
+                                    <td>{{this.getCTabletsData.gwLinkYnNm}}</td>
+                                    <td>{{this.getCTabletsData.batteryValue}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -144,10 +144,10 @@
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index">
-                                    <td>gd23234474157445544</td>
-                                    <td>215148814748754215487a</td>
+                                    <td>{{item.sensorTypeNm}}</td>
+                                    <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td>{{item.serialNo}}</td>
-                                    <td>215148814748754215487a</td>
+                                    <td>{{item.macAddr}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -309,6 +309,15 @@ import axios from "axios";
       }
         return result
     },
+    changeRecipientPhoneno(phone){
+    if(phone){
+      let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+      return changeNumber
+    }else{
+      return ''
+    }
+    
+  },
     
     
 
