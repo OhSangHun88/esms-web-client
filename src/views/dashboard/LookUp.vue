@@ -79,13 +79,15 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import { eventBus } from "@/main.js";
+
 
 export default {
   name: "LookUp",
   data () {
     return {
       modelSido:'', modelSgg:'', modelOrg:'', orgNm:'', orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-      sidoItems:[], sggItems:[], orgmItems:[], totalItems:[],
+      sidoItems:[], sggItems:[], orgmItems:[], totalItems:[], ChartItems:[],
       isSido:true, isSgg:true, isOrg:true,
       orgSido:'', orgSgg:'', orgId:'',
       setCount: 0, setEMCount: 0, setLMCount: 0,
@@ -170,20 +172,15 @@ export default {
      getOrgmData() {
 
      let url = "/admin/organizations";
-        
         if(this.sggCd != ''){
-
            let sggCode = this.sggCd.substring(0, 5);
-
            console.log(">> sggCode["+sggCode+"]");
-     
             url += "?sggCd="+sggCode;
         }else{
             this.orgmItems=[];
             this.orgmItems.push({label: '전체', value: ''});
             return ; 
         }
-    
        axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
 
@@ -244,28 +241,41 @@ export default {
       this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
       this.e_date=moment().format('YYYY-MM-DD');
     },
+    sendDataToEventStatus(){
+      console.log("test22")
+      eventBus.$emit('LookUp', this.ChartItems)
+      console.log(this.ChartItems)
+    },
 
     manageInquiry() {
-
-      console.log("sggCd["+this.sggCd+"]")
-      console.log("s_date["+this.s_date+"]")
-      console.log("e_date["+this.e_date+"]")
-
       let addrCode =  this.sggCd.substring(0,5);
+
+      //console.log("addrCode["+addrCode+"]")
+      //console.log("s_date["+this.s_date+"]")
+      //console.log("e_date["+this.e_date+"]")
 
       let url = "/admin/organizations/stat/alarm?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            console.log("response.data.totalCount["+response.data.totalCount+"]")
-            console.log("response.data.data["+response.data.data+"]")            
+            //console.log("response.data.totalCount["+response.data.totalCount+"]")
+            //console.log("response.data.data["+response.data.data+"]")   
             
+            const tempArr = [];
+            this.ChartItems=[];     
+            for(let i=0; i<response.data.data.length; i++) {
+              tempArr.push({
+                label: response.data.data[i].eventCd,
+                value: response.data.data[i].alarmCnt,
+              });
+            } 
+            //console.log(">> tempArr["+tempArr+"]")
+            this.ChartItems=tempArr;
           })
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-
-    
+      this.sendDataToEventStatus();
     },
 
 

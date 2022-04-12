@@ -13,7 +13,7 @@ import * as VueGoogleMaps from "vue2-google-maps"
 
 //import CoreuiVue from '@coreui/vue'
 
-
+export const eventBus = new Vue();
 
 Vue.use(moment)
 Vue.use(VueGoogleMaps, { load: { key: "AIzaSyAaffTZJsqPsb6aONllVOsz4-Kzotyyb7g", libraries: "places", region: "KR" } });
@@ -30,6 +30,7 @@ new Vue({
   store,
   icons,
   axios,
+  
   template: '<App/>',
   components: {
     App
