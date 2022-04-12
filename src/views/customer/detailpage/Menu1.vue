@@ -27,7 +27,7 @@
                 </ul>
             </div>    
         </div>
-        <div class="box_style box_col">
+        <div class="box_style2 box_col">
                   <ul class="info_list">
                       <li>
                           <i class="ico01"></i>
@@ -92,9 +92,6 @@ export default {
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
           let lastMeasures = res.data.data
-          console.log("lastMeasures")
-          console.log(lastMeasures)
-          console.log("lastMeasures 가공")
           //this.reportMeasureData => 선언 처리 수정
           this.reportMeasureData = {
             TPE005: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE005"}).measureValue.split(',').slice(-1)[0],//심박
@@ -104,7 +101,6 @@ export default {
             TPE007: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE007"}).measureValue.split(',').slice(-1)[0],//습도
             TPE012: !lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}) ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}).measureValue.split(',').slice(-1)[0],//활동량
           }
-          console.log(this.reportMeasureData)
         }).catch(error => {
             console.log("fail to load")
           this.errorMessage = error.message;
