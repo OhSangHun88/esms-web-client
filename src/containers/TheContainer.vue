@@ -1,17 +1,12 @@
 <template>
   <div>
-    
-      
       <div class="c-body">
-        <main class="c-main">
-          
+        <main class="c-main">   
             <transition name="fade" mode="out-in">
               <router-view :key="$route.path"></router-view>
             </transition>
-          
         </main>
       </div>
-    
   </div>
 </template>
 

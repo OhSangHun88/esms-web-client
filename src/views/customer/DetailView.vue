@@ -28,32 +28,32 @@
               <tbody>
                 <tr>
                     <td>
-                        <input type="text" :value="this.bodyData.recipientNm">
+                        <input type="text" :value="this.bodyData? this.bodyData.recipientNm : ''">
                     </td>
                     <td>
-                        <input type="text" :value="this.bodyData.birthday">
+                        <input type="text" :value=" this.bodyData? this.bodyData.birthday : ''">
                     </td>
                     <td>
-                        <input type="text" class="size-1" :value="makeAge(this.bodyData.birthday)">
+                        <input type="text" class="size-1" :value="this.bodyData? makeAge(this.bodyData.birthday) : ''">
                     </td>
                     <td>
-                        <input type="text" class="size-4" :value="this.bodyData.addr">
-                        <input type="text" class="size-2" :value="this.bodyData.addrDetail">
+                        <input type="text" class="size-4" :value="this.bodyData? this.bodyData.addr : ''">
+                        <input type="text" class="size-2" :value="this.bodyData? this.bodyData.addrDetail : ''">
                     </td>
                     <td>
                         <div class="btn_area">
-                            <button type="button" :class="this.bodyData.sex === 'M'? 'btn on' :'btn'">남</button>
-                            <button type="button" :class="this.bodyData.sex === 'F'? 'btn on' :'btn'">여</button>
+                            <button type="button" :class="this.bodyData && this.bodyData.sex === 'M'? 'btn on' :'btn'">남</button>
+                            <button type="button" :class="this.bodyData && this.bodyData.sex === 'F'? 'btn on' :'btn'">여</button>
                         </div>
                     </td>
                     <td>
-                        <input type="text" :value="this.bodyData.recipientPhoneno">
+                        <input type="text" :value="this.bodyData? this.bodyData.recipientPhoneno : ''">
                     </td>
                     <td>
-                        <input type="text" class="size-1" :value="this.bodyData.measureCycle">
+                        <input type="text" class="size-1" :value="this.bodyData? this.bodyData.measureCycle : ''">
                     </td>
                     <td>
-                        <input type="text" class="size-3" :value="this.bodyData.orgNm">
+                        <input type="text" class="size-3" :value="this.bodyData? this.bodyData.orgNm : ''">
                     </td>
                 </tr>
             </tbody>
@@ -258,28 +258,16 @@ export default {
     menu4,
   },
   methods: {
-    getRecipientInfo() {
+    async getRecipientInfo() {
       
       //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");
       let uri = this.$store.state.serverApi + "/admin/recipients/" + this.recipientId
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.bodyData = res.data.data
             console.log("bodyData is ");
             console.log(this.bodyData)
-            this.d_zipCode = res.data.data.zipCode;
-            this.d_address = res.data.data.addr + res.data.data.addrDetail;
-            this.d_part = res.data.data.typeNm;
-            this.d_phone = res.data.data.recipientPhoneno;
-            this.d_status = res.data.data.stateNm;
-            this.d_endcycle =  res.data.data.activeUnsensingCycle;
-            this.d_sex =  res.data.data.sex;
-
-            var cyear = new Date().getFullYear();
-            var byear = res.data.data.birthday.substr(0,4);
-            var age = cyear - byear;
-
-            this.personinfo = res.data.data.recipientNm + '(' + res.data.data.birthday + ', 만' + age +'세)';
+            
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -307,6 +295,7 @@ export default {
     },
     async getMeasuresData(){
       //여기
+      
       const url  = `/admin/recipients/${this.recipientId}/sensors/lastmeasures`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
@@ -338,6 +327,7 @@ export default {
       return tmp2.diff(tmp1, 'years');
     },
     makeMapData(){
+
         const container = document.getElementById("map");
         const mapOptions = {
           center: new kakao.maps.LatLng(33.450701, 126.570667),
@@ -376,6 +366,7 @@ export default {
     
   },
   mounted(){
+    
     const script = document.createElement("script");
     script.src="//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=dafa9c5bd954ba036f344060208e1e83&libraries=services";
     script.addEventListener("load", ()=>{
