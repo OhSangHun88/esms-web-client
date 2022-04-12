@@ -126,17 +126,17 @@
                             </colgroup>
                             <tbody v-if="noticItems">
                                 <tr v-for="(item,index) in noticItems" v-bind:key="index">
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
                                 </tr>
                             </tbody>
                             <tbody v-else>

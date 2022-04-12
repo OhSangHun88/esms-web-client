@@ -101,7 +101,7 @@
                                 <col style="width:11%;">
                                 <col style="width:10%;">
                             </colgroup>
-                            <tbody  v-if="recipientItems">
+                            <tbody>  
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index" @click="goToDetailView(item.recipientId)">
                                     <td><a href="#" >{{index+1}}</a></td>
                                     <td><a href="#" >{{item.recipientNm}}</a></td>
@@ -113,9 +113,7 @@
                                     <td><a href="#">1시간</a></td>
                                 </tr>                                
                             </tbody>
-                            <tbody  v-else>
-                                데이터가 없습니다.            
-                            </tbody>
+                            
                         </table>
                     </div>
                 </div>
@@ -166,6 +164,7 @@ export default {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
+    this.getRecipientData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.cBirthday=moment().format('YYYY-MM-DD');

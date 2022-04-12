@@ -98,20 +98,18 @@
                                 <col style="width:13%;">
                                 <col style="width:13%;">
                             </colgroup>
-                            <tbody v-if="recipientItems">
+                            <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                     <td><a href="#" >{{index+1}}</a></td>
                                     <td><a href="#" >{{item.recipientNm}}</a></td>
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
-                                    <td><a href="#" style="float:left">{{item.addr}}</a></td>
+                                    <td><a href="#" >{{item.addr}}</a></td>
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{item.occurDtime}}</a></td>
                                     <td><a href="#">{{item.testYn}}</a></td>
                                 </tr>                                
                             </tbody>
-                            <tbody v-else>
-                                데이터가 없습니다.       
-                            </tbody>
+                  
                         </table>
                     </div>
                 </div>
@@ -163,6 +161,7 @@ export default {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
+    this.getRecipientData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.cBirthday=moment().format('YYYY-MM-DD');
