@@ -44,7 +44,8 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <input type="text" name="" id="" :value="item.relationNm">
+                                        {{item.relationNm}}
+                                        
                                     </td>
                                     <td>
                                         <input type="text" name="" id="" :value="item.relationCdNm">

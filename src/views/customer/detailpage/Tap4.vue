@@ -159,9 +159,7 @@
                     <div class="title_area">
                         <p class="tit">장비상태 정보</p>
                         <div class="select_area">
-                            <select name="" id="">
-                                <option value="">Tablet PC</option>
-                            </select>
+                            <input type="text" name="" id="" :value="connectTap===3?'tablet':connectTap===2?'gateway':'sensors'">
                         </div>
                         <div class="toggle_btn">
                             <button type="button" class="btn on">최신정보</button>
@@ -200,7 +198,27 @@
                                 <col style="width:16%;">
                                 <col style="width:auto;">
                             </colgroup>
-                            <tbody>
+                            <tbody v-if="connectTap===3">
+                                <tr>
+                                    <td>{{this.getCTabletsData.gwLinkYnNm}}</td>
+                                    <td>{{this.getCTabletsData.faultYnNm}}</td>
+                                    <td>{{this.getCTabletsData.batteryValue}}</td>
+                                    <td>미수신(..)</td>
+                                    <td>양호(100%)(..)</td>
+                                    <td>{{this.getCTabletsData.tabletRptDtime}}</td>
+                                </tr>
+                            </tbody>
+                            <tbody v-if="connectTap===2">
+                                <tr>
+                                    <td>미수신(..)</td>
+                                    <td>장애(..)</td>
+                                    <td>{{this.getCGatewayData.batteryValue}}</td>
+                                    <td>미수신(..)</td>
+                                    <td>양호(100%)(..)</td>
+                                    <td>2021-03-04 16:49:03(..)</td>
+                                </tr>
+                            </tbody>
+                            <tbody v-if="connectTap===1">
                                 <tr>
                                     <td>미수신</td>
                                     <td>장애</td>
@@ -230,6 +248,9 @@ import axios from "axios";
       getCSensorsData: null,
       getCGatewayData: null,
       getCTabletsData: null,
+      getBSensorsData: null,
+      getBGatewayData: null,
+      getBTabletsData: null,
       connectTap: 1,
 
      }
@@ -274,7 +295,7 @@ import axios from "axios";
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.getCTabletsData = res.data.data
-            console.log("tablets ")
+            
             console.log(this.getCTabletsData)
           })
           .catch(error => {

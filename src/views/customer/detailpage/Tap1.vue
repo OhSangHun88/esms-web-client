@@ -6,16 +6,17 @@
                     <i class="search_ico"></i>
                     <div class="fillter_wrap">
                         <div class="select_area">
-                            <select name="code1" id="code1" v-model="code1">
-                                <option value="">환경정보</option>
-                                <option value="">전체</option>
+                            <select name="code1" id="code1" ref="code1" v-model="code1" @change="filterChange">
+                                <option value="" disabled>환경정보</option>
+                                <option value="all">전체</option>
                                 <option value="TPE006">온도</option>
                                 <option value="TPE008">조도</option>
                                 <option value="TPE007">습도</option>
+                                
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="code2" id="code2" v-model="code2">
+                            <select name="code2" id="code2" ref="code2" v-model="code2">
                                 <option value="">바이오 정보</option>
                                 <option value="">전체</option>
                                 <option value="TPE005">심장박동</option>
@@ -24,19 +25,19 @@
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="code3" id="code3" v-model="code3">
+                            <select name="code3" id="code3" ref="code3" v-model="code3">
                                 <option value="">활동감지기(P)정보</option>
                                 <option value="">전체</option>
-                                <option value="LOC005">화장실</option>
-                                <option value="LOC003">안방</option>                                                    
+                                <option value="TPE002">화장실</option>
+                                <option value="TPE002">안방</option>                                                    
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="code4" id="code4" v-model="code4">
+                            <select name="code4" id="code4" ref="code4" v-model="code4">
                                 <option value="">도어감지기 정보</option>
                                 <option value="">전체</option>
-                                <option value="LOC007">뒷문</option>
-                                <option value="LOC008">대문</option>
+                                <option value="TPE004">뒷문</option>
+                                <option value="TPE004">대문</option>
                             </select>
                         </div>
                     </div>
@@ -62,15 +63,15 @@
                                 <th scope="col">설치장소</th>
                                 <th scope="col">측정일시</th>
                                 <th scope="col">보고일시</th>
-                                <th scope="col">{{
+                                <!-- <th scope="col">{{
                                     code1==="TPE006"? '온도' :
                                     code1==="TPE008"? '조도' :
                                     code1==="TPE007"? '습도' :
                                     code1==="TPE005"? '심장박동' :
                                     code1==="TPE011"? '호흡' :
                                     code1==="TPE012"? '활동량' : '온도'
-                                    }}
-                                </th>
+                                    }}</th> -->
+                                <th scope="col">정보</th>
                             </tr>
                         </thead>
                     </table>
@@ -121,23 +122,34 @@ import moment from "moment";
       code4: '',
       measureStartDate:moment().subtract(7,'days').format('YYYY-MM-DD'),
       measureEndDate: moment().format('YYYY-MM-DD'),
+      envData:[{text: '환경 정보', value:''},{text: '전체', value: 'all'},{text: '온도', value: 'TPE006'},{text: '조도', value: 'TPE008'},{text: '습도', value: 'TPE007'}, ],
+      bioData:[{text: '바이오 정보', value: ''},{text: '전체', value: 'all'}, ],
+      actPData:[{text: '활동감지기{P) 정보', value: ''},{text: '전체', value: 'all'}, ],
+      actData:[{text: '활동감지기 정보', value: ''},{text: '전체', value: 'all'}, ],
 
 
      }
    },
   methods: {
+    filterChange(){
+        if(this.code1){
+            this.$$refs=''
+
+        }
+    },
+
     async getSensorsData(input,input2,input3,input4){
 
-        if(!input&&input2){
+        if(!input&&!input2){
             input = 'TPE006'
         }
 
-        let code1 = input ? input : input2
-        let code2  = input3 ? input3 : input4
+        let code = input ? input : input2 ? input2 : input3 ? input3 :  input4 
+        
         
         //TPE011
-        //${input}
-        const url  = `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${code1}&sensorLocCd=${code2}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
+        //&sensorLocCd=${code2}
+        const url  = `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${code}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
         //const url  = `/admin/recipients/${this.recipientId}/sensors`
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -148,7 +160,7 @@ import moment from "moment";
             let lengthTmp = []
             lengthTmp = res.data
 
-             if(input==="TPE006"||input==="TPE007"||input==="TPE008"){
+             if(code==="TPE006"||code==="TPE007"||code==="TPE008"){
                 for(let i=0; i <lengthTmp.totalCount ;i++ ){
                     tmpData = res.data.data[i]
                     tmp = res.data.data[i].measureValue.split(',')
@@ -166,7 +178,7 @@ import moment from "moment";
                     }
                     
                 }
-              }else if(input==="TPE005"||input==="TPE011"){
+              }else if(code==="TPE005"||code==="TPE011"){
                 for(let i=0; i <lengthTmp.totalCount ;i++ ){
                     tmpData = res.data.data[i]
                     tmp = res.data.data[i].measureValue.split(',')
@@ -184,7 +196,43 @@ import moment from "moment";
                     }
                     
                 }
-            }else if(input==="TPE012"){
+            }else if(code==="TPE012"){
+                for(let i=0; i <lengthTmp.totalCount ;i++ ){
+                    tmpData = res.data.data[i]
+                    tmp = res.data.data[i].measureValue.split(',')
+                    for(let j=0; j <tmp.length ;j++ ){
+                        this.sensorsData.push({
+                        sensorId: tmpData.sensorId,
+                        sensorTypeCd: tmpData.sensorTypeCd,
+                        measureValue: tmp[j],
+                        testYn: tmpData.testYn,
+                        sensorLocCd: tmpData.sensorLocCd,
+                        measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                        regDtime : tmpData.regDtime,
+                    })
+                    
+                    }
+                    
+                }
+            }else if(code==="TPE002"){
+                for(let i=0; i <lengthTmp.totalCount ;i++ ){
+                    tmpData = res.data.data[i]
+                    tmp = res.data.data[i].measureValue.split(',')
+                    for(let j=0; j <tmp.length ;j++ ){
+                        this.sensorsData.push({
+                        sensorId: tmpData.sensorId,
+                        sensorTypeCd: tmpData.sensorTypeCd,
+                        measureValue: tmp[j],
+                        testYn: tmpData.testYn,
+                        sensorLocCd: tmpData.sensorLocCd,
+                        measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                        regDtime : tmpData.regDtime,
+                    })
+                    
+                    }
+                    
+                }
+            }else if(code==="TPE004"){
                 for(let i=0; i <lengthTmp.totalCount ;i++ ){
                     tmpData = res.data.data[i]
                     tmp = res.data.data[i].measureValue.split(',')

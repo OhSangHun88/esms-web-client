@@ -78,7 +78,14 @@ export default {
     },
     data () {
         return {
-            reportMeasureData:null
+            reportMeasureData:{
+                TPE005:null,
+                TPE011:null,
+                TPE006:null,
+                TPE008:null,
+                TPE007:null,
+                TPE012:null,
+            }
         }
     },
     created(){
@@ -86,21 +93,21 @@ export default {
     },
     methods:{
       async getMeasuresData(){
-          console.log("menu1")
+        console.log("menu1")
       //여기
-      const url  = `/admin/recipients/${this.recipientId}/sensors/lastmeasures`
-      await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-        .then(res => {
-          let lastMeasures = res.data.data
-          //this.reportMeasureData => 선언 처리 수정
-          this.reportMeasureData = {
-            TPE005: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE005"}).measureValue.split(',').slice(-1)[0],//심박
-            TPE011: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE011"}).measureValue.split(',').slice(-1)[0],//호흡
-            TPE006: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE006"}).measureValue.split(',').slice(-1)[0],//온도
-            TPE008: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE008"}).measureValue.split(',').slice(-1)[0],//조도
-            TPE007: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE007"}).measureValue.split(',').slice(-1)[0],//습도
-            TPE012: !lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}) ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}).measureValue.split(',').slice(-1)[0],//활동량
-          }
+        const url  = `/admin/recipients/${this.recipientId}/sensors/lastmeasures`
+        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+            let lastMeasures = res.data.data
+            //this.reportMeasureData => 선언 처리 수정
+            this.reportMeasureData = {
+                TPE005: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE005"}).measureValue.split(',').slice(-1)[0],//심박
+                TPE011: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE011"}).measureValue.split(',').slice(-1)[0],//호흡
+                TPE006: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE006"}).measureValue.split(',').slice(-1)[0],//온도
+                TPE008: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE008"}).measureValue.split(',').slice(-1)[0],//조도
+                TPE007: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE007"}).measureValue.split(',').slice(-1)[0],//습도
+                TPE012: !lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}) ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}).measureValue.split(',').slice(-1)[0],//활동량
+            }
         }).catch(error => {
             console.log("fail to load")
           this.errorMessage = error.message;
