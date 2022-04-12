@@ -84,7 +84,7 @@ export default {
       modelSido:'', modelSgg:'', modelOrg:'', orgNm:'', orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
       sidoItems:[], sggItems:[], orgmItems:[], totalItems:[],
       isSido:true, isSgg:true, isOrg:true,
-      orgSido:'', orgSgg:'', orgCode:'',
+      orgSido:'', orgSgg:'', orgId:'',
       setCount: 0, setEMCount: 0, setLMCount: 0,
     }
   },
@@ -118,8 +118,6 @@ export default {
         this.sggItems.push({label: '전체', value: ''});
         return ; 
     }
-    console.log(this.sidoCd)
-    console.log(url)
 
     axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
@@ -151,12 +149,11 @@ export default {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-          console.log()
     },
 
     // 관리 기관 목록
      getOrgmData() {
-    let url = "/admin/organizations";
+     let url = "/admin/organizations";
         if(this.sggCd != ''){
             url += "?sggCd="+this.sggCd;
         }else{
@@ -164,8 +161,6 @@ export default {
             this.orgmItems.push({label: '전체', value: ''});
             return ; 
         }
-        console.log(this.sggCd)
-        console.log(url)
     
        axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
@@ -173,6 +168,7 @@ export default {
             this.orgmItems=[];
             //this.orgmItems.push({label: '전체', value: ''});
             tempArr.push({label: '전체', value: ''});
+            console.log(tempArr)
             /*
             for(let i=0; i<response.data.data.length; i++) {
               this.orgmItems.push({
@@ -181,7 +177,6 @@ export default {
               });
             } 
             */ 
-           
             for(let i=0; i<response.data.data.length; i++) {
               tempArr.push({
                 label: response.data.data[i].orgNm,
@@ -189,7 +184,6 @@ export default {
                 value2: response.data.data[i].addrCd
               });
             }
-           
             this.orgmItems = tempArr.filter(cd=>{
             return cd.value2 === this.sggCd
             });
@@ -198,10 +192,8 @@ export default {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-          console.log(this.orgmItems)
     },
     onChangeSido(event){
-      console.log("====onChangeSido($event) execution")
       this.getSggData()
       this.orgSido = event.target.value;
     },
@@ -209,14 +201,11 @@ export default {
       this.orgSgg = event.target.value;
       this.sidoCd = event.target.value
       this.getSggData()
-      console.log("====onChangeSgg($event) execution")
-      console.log("========================================")
     },
     onChangeOrg(event) {
-      this.orgCode = event.target.value;
+      this.orgId = event.target.value;
       this.sggCd = event.target.value
       this.getOrgmData()
-      console.log("====onChangeOrg($event) execution")
     },
 
     initSet() {

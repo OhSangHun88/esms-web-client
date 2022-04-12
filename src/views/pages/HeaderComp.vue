@@ -1,7 +1,7 @@
 <template>
   <header id="header">
     <div class="header_top">
-      <h1><img alt="Vue logo" src="../../assets/images/logo_ib.png">IB-Care System</h1>
+      <h1><a href="http://localhost:8080/#/dashboard/allView"><img alt="Vue logo" src="../../assets/images/logo_ib.png">IB-Care System</a></h1>
       <div class="util_wrap">
         <div class="user_name">
           <i class="pf_img" style="background-image: url(../assets/images/img_profile.png)"></i>
@@ -29,7 +29,8 @@
             <li><a href="#"><router-link to ="/setting/manageLog">로그관리</router-link></a></li>
             <li><a href="#"><router-link to ="">IP-PBX 관리</router-link></a></li>
             <li><a href="#"><router-link to ="">Firmware 관리</router-link></a></li>
-            <li><a href="#"><router-link to ="/setting/customer">관리자 목록</router-link></a></li>
+            <li><a href="#"><router-link to ="/setting/customer">사용자관리</router-link></a></li>
+            <li><a href="#"><router-link to ="/setting/org">기관관리</router-link></a></li>
             <li><a href="#"><router-link to ="/setting/notice">공지사항</router-link></a></li>
           </ul>
         </li>

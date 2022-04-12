@@ -30,17 +30,17 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <select @change="onChangeSgg($event)">
+                                    <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
                                         <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select @change="onChangeOrg($event)">
+                                    <select v-model="selectedSggItems" @change="onChangeOrg($event)">
                                       <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select>
+                                    <select v-model="selectedOrgItems">
                                       <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                     </select>
                                 </td>
@@ -48,12 +48,12 @@
                                     <input type="text" value="홍길동">
                                 </td>
                                 <td>
-                                    <select name="" id="">
+                                    <select v-model="selectedTypeItems">
                                       <option v-for="(type, index) in typeItems" :value="type.value" v-bind:key="index">{{type.label}}</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select name="" id="">
+                                    <select v-model="selectedStateItems">
                                       <option v-for="(state, index) in stateItems" :value="state.value" v-bind:key="index">{{state.label}}</option>
                                     </select>
                                 </td>
@@ -71,12 +71,12 @@
                     </table>
                 </div>
                 <div class="btn_area">
-                    <button type="button" class="btn">조회</button>
+                    <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
                 </div>
             </div>
             <div class="one_box box_style">
                 <div class="result_txt">
-                    <p>조회결과 : <strong>235</strong>건</p>
+                    <p>조회결과 : <strong class="num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
                 </div>
                 <div class="list result">
                     <table>
@@ -122,12 +122,13 @@
                             <col style="width:11%;">
                             <col style="width:7%;">
                             </colgroup>
-                            <tbody>
+                            <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                     <td><a href="#">{{index+1}}</a></td>
                                     <td><a href="#">{{item.recipientNm}}</a></td>
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
-                                    <td><a href="#" style="float:left">{{item.addr}}</a></td>
+                                    <!--<td><a href="#" style="float:left">{{item.addr}}</a></td> -->
+                                    <td><a href="#" >{{item.addr}}</a></td> 
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                                     <td><a href="#">{{item.typeNm}}</a></td>
                                     <td><a href="#">{{item.signalStateNm}}</a></td>
@@ -136,6 +137,11 @@
                                     <td><a href="#">{{item.testYn}}</a></td>
                                 </tr>                                
                               </tbody>
+                            <!--  
+                              <tbody v-else>
+                                    데이터가 없습니다
+                              </tbody>
+                            -->
                         </table>
                     </div>
                 </div>
@@ -180,7 +186,8 @@ export default {
         partCode: '', statusCode: '', modelName: '',
         sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], number:[], stateItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
-        cBirthday:'', cAddr: '', 
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedTypeItems:'', selectedStateItems:'',
+        cBirthday:'', cAddr: '', NCount : 0,
       }
     },
     created() {
@@ -189,12 +196,9 @@ export default {
     this.getOrgmData();
     this.getTypeData();
     this.getStateData();
+    this.getRecipientData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
-    this.getRecipientData();
-    this.getPartData();
-    this.getStatusData();
-    this.getCycleData();
     this.cBirthday=moment().format('YYYY-MM-DD');
     },
     
@@ -324,14 +328,11 @@ export default {
 
     getRecipientData() {
       let uri = '';
-      if(this.orgCode == '' && this.partCode == '' && this.statusCode == '' && this.modelName == '') {
+
+      if(this.orgId == '' && this.partCode == '' && this.statusCode == '' && this.modelName == '') {
         uri = this.$store.state.serverApi + "/admin/emergencys?pageIndex=1&recordCountPerPage=100";
       } else {
         uri = this.$store.state.serverApi + "/admin/emergencys?pageIndex=1&recordCountPerPage=100";
-        if(this.orgCode != '') uri += "&orgId=" + this.orgCode;
-        if(this.partCode != '') uri += "&typeCd=" + this.partCode;
-        if(this.statusCode != '') uri += "&stateCd=" + this.statusCode;
-        if(this.modelName != '') uri += "&recipientNm=" + this.modelName;
 
         var fIdx = uri.indexOf("&", 0);
         var uriArray = uri.split('');
@@ -340,7 +341,22 @@ export default {
       }
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
-            this.recipientItems = response.data.data
+            //const sidoCount = !this.selectedSidoItems? '' : new RegExp(this.selectedSidoItems, 'gi');
+            //const sggCount = !this.selectedSggItems? '' : new RegExp(this.selectedSggItems, 'gi');
+            const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
+            const typeCount = !this.selectedTypeItems? '' : new RegExp(this.selectedTypeItems, 'gi');
+            const stateCount = !this.selectedStateItems? '' : new RegExp(this.selectedStateItems, 'gi');
+
+            let resData = response.data.data
+            if(resData){
+              this.recipientItems = resData.filter((cd=>{
+                return cd.orgId.match(orgCount) && cd.typeCd.match(typeCount) && cd.signalStateCd.match(stateCount)
+              }))
+              this.NCount =this.recipientItems.length
+              console.log(uri)
+            }
+            else 
+              this.recipientItems= []
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -381,16 +397,8 @@ export default {
       let tmp2 = this.$moment()
       return tmp2.diff(tmp1, 'years');
     },
-    initSet() {
-      this.orgCode='';
-      this.partCode='';
-      this.statusCode='';
-      this.sexCode='';
-      this.cycleCode='';
-      this.modelName='';
-      this.modelOrg="전체";
-      this.modelPart="전체";
-      this.modelStatus="전체";
+    manageInquiry() {
+        this.getRecipientData();
     },
   },
 }

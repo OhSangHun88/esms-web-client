@@ -75,6 +75,7 @@ const EmergencyAllView = () => import('@/views/emergency/AllView')
 //Setting
 const SettingAllView = () => import('@/views/setting/AllView')
 const SettingCustomer = () => import('@/views/setting/Customer')
+const SettingOrg = () => import('@/views/setting/Org')
 const SettingManageLog = () => import('@/views/setting/ManageLog')
 const SettingManageDevice = () => import('@/views/setting/ManageDevice')
 const SettingNotice = () => import('@/views/setting/Notice')
@@ -239,6 +240,11 @@ function configRoutes () {
               path: 'customer',
               name: 'Customer',
               component: SettingCustomer
+            },
+            {
+              path: 'org',
+              name: 'Org',
+              component: SettingOrg
             },
             {
               path: 'manageLog',

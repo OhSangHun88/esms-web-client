@@ -35,7 +35,7 @@
                                 <col style="width:20%;">
                                 <col style="width:20%;">
                             </colgroup>
-                            <tbody v-if="logItems">
+                            <tbody >
                                 <tr v-for="(item,index) in logItems" v-bind:key="index">
                                     <td><a href="#" >{{index+1}}</a></td>
                                     <td><a href="#">{{item.logDtime}}</a></td>
@@ -44,9 +44,6 @@
                                     <td><a href="#">{{item.accessIp}}</a></td>
                                     <td><a href="#">{{item.logDetails}}</a></td>
                                 </tr>
-                            </tbody>
-                            <tbody v-else>
-                                
                             </tbody>
                         </table>
                     </div>
