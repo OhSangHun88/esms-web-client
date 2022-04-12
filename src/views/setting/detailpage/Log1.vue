@@ -8,20 +8,22 @@
                     <table>
                         <colgroup>
                             <col style="width:6%;">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:12%;">
+                            <col style="width:12%;">
+                            <col style="width:auto;">
                             <col style="width:20%;">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th scope="col">순번</th>
-                                <th scope="col">로그일</th>
                                 <th scope="col">아이디</th>
+                                <th scope="col">Application</th>
                                 <th scope="col">구분</th>
                                 <th scope="col">IP</th>
                                 <th scope="col">내용</th>
+                                <th scope="col">로그일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -29,20 +31,22 @@
                         <table>
                             <colgroup>
                                 <col style="width:6%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:12%;">
+                                <col style="width:12%;">
+                                <col style="width:auto;">
                                 <col style="width:20%;">
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in logItems" v-bind:key="index">
                                     <td><a href="#" >{{index+1}}</a></td>
-                                    <td><a href="#">{{item.logDtime}}</a></td>
                                     <td><a href="#">{{item.userId}}</a></td>
                                     <td><a href="#">{{item.applicationNm}}</a></td>
+                                    <td><a href="#">{{item.actionDetails}}</a></td>
                                     <td><a href="#">{{item.accessIp}}</a></td>
                                     <td><a href="#">{{item.logDetails}}</a></td>
+                                    <td><a href="#">{{item.logDtime}}</a></td>
                                 </tr>
                             </tbody>
                         </table>

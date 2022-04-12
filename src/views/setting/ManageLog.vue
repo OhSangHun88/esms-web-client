@@ -3,7 +3,7 @@
         <HeaderComp></HeaderComp>
         <div class="container type-02">
             <div class="list_title_wrap">
-                <span>관리</span>
+                <span>시스템관리</span>
                 <i class="ico_nav"></i>
                 <span class="on">로그 관리</span>
             </div>
@@ -17,7 +17,7 @@
                             <col style="width:23.5%">
                         </colgroup>
                         <thead>
-                            <th scope="row">로그</th>
+                            <th scope="row">로그구분</th>
                             <th scope="row">태블릿 아이디</th>
                             <th scope="row">고객 아이디</th>
                         </thead>
@@ -25,8 +25,8 @@
                             <tr>
                                 <td>
                                     <div class="btn_area log">
-                                        <button type="button" @click="log(1)" @change="onChange($event)" class="btn" value="1" :class="logtoggle===1?'btn on':'btn'" >로그</button>
-                                        <button type="button" @click="log(2)" @change="onChange($event)" class="btn" value="2" :class="logtoggle===2?'btn on':'btn'">통신로그</button>
+                                        <button type="button" @click="log(1)" @change="onChange($event)" class="btn" value="1" :class="logtoggle===1?'btn on':'btn'" >서버로그</button>
+                                        <button type="button" @click="log(2)" @change="onChange($event)" class="btn" value="2" :class="logtoggle===2?'btn on':'btn'">장비로그</button>
                                     </div>
                                 </td>
                                 <td>
@@ -72,8 +72,6 @@ import moment from "moment";
 import HeaderComp from "../pages/HeaderComp.vue";
 import log1 from "./detailpage/Log1.vue";
 import log2 from "./detailpage/Log2.vue";
-
-
 
 export default {
     name: 'ManageLog',

@@ -84,13 +84,12 @@
                             <col style="width:6%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
-                            <col style="width:auto;">
+                            <col style="width:22%;">
                             <col style="width:11%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
                             <col style="width:11%;">
                             <col style="width:11%;">
-                            <col style="width:7%;">
                             
                         </colgroup>
                         <thead>
@@ -104,7 +103,6 @@
                                 <th scope="col">상태</th>
                                 <th scope="col">발생일시</th>
                                 <th scope="col">종료일시</th>
-                                <th scope="col">테스트 모드</th>
                             </tr>
                         </thead>
                     </table>
@@ -114,13 +112,13 @@
                             <col style="width:6%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
-                            <col style="width:auto;">
+                            <col style="width:22%;">
                             <col style="width:11%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
                             <col style="width:11%;">
                             <col style="width:11%;">
-                            <col style="width:7%;">
+                            
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
@@ -134,7 +132,7 @@
                                     <td><a href="#">{{item.signalStateNm}}</a></td>
                                     <td><a href="#">{{item.occurDtime}}</a></td>
                                     <td><a href="#">{{item.closeDtime}}</a></td>
-                                    <td><a href="#">{{item.testYn}}</a></td>
+                                    
                                 </tr>                                
                               </tbody>
                             <!--  

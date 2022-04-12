@@ -3,9 +3,9 @@
         <HeaderComp></HeaderComp>
         <div class="container type-02">
             <div class="list_title_wrap">
-                <span>관리</span>
+                <span>시스템관리</span>
                 <i class="ico_nav"></i>
-                <span class="on">관리자 목록</span>
+                <span class="on">기관관리</span>
             </div>
             <div class="box_search_wrap add_btn box_style">
                 <div class="table_wrap">
@@ -57,47 +57,49 @@
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:16%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
+                            <col style="width:5%;">
+                            <col style="width:7%;">
+                            <col style="width:10%;">
                             <col style="width:16%;">
                             <col style="width:16%;">
                             <col style="width:auto;">
+                            <col style="width:16%;">
                         </colgroup>
                         <thead>
                             <tr>
+                                <th scope="col">순번</th>
                                 <th scope="col">시/도</th>
                                 <th scope="col">시/군/구</th>
                                 <th scope="col">관리기관명</th>
                                 <th scope="col">대표 전화번호</th>
-                                <th scope="col">담당지역</th>
                                 <th scope="col">주소</th>
+                                <th scope="col">세부주소</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:auto;">
+                            <col style="width:5%;">
+                            <col style="width:7%;">
+                            <col style="width:10%;">
+                            <col style="width:16%;">
+                            <col style="width:16%;">
+                            <col style="width:auto;">
+                            <col style="width:16%;">
                             </colgroup>
-                            <tbody v-if="TorgItems">
+                            <tbody >
                                 <tr v-for="(item,index) in TorgItems" v-bind:key="index">
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
+                                    <td><a href="#">{{index+1}}</a></td>
+                                    <td><a href="#">{{item.sidoName}}</a></td>
+                                    <td><a href="#">{{item.sggName}}</a></td>
                                     <td><a href="#">{{item.orgNm}}</a></td>
                                     <td><a href="#">{{item.phoneNumber}}</a></td>
-                                    <td><a href="#">{{item.addrDetail}}</a></td>
                                     <td><a href="#">{{item.addr}}</a></td>
+                                    <td><a href="#">{{item.addrDetail}}</a></td>
                                 </tr>
                             </tbody>
-                            <tbody v-else>
-                                
-                            </tbody>
+
                         </table>
                     </div>
                 </div>
@@ -164,6 +166,7 @@ export default {
       this.getSidoData();
       this.getSggData();
       this.getOrgmData();
+      this.getTorgData();
       //this.getTorgData();
       //this.getUserData();
     },

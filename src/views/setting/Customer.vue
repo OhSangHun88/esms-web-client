@@ -3,9 +3,9 @@
         <HeaderComp></HeaderComp>
         <div class="container type-02">
             <div class="list_title_wrap">
-                <span>관리</span>
+                <span>시스템관리</span>
                 <i class="ico_nav"></i>
-                <span class="on">관리자 목록</span>
+                <span class="on">사용자관리</span>
             </div>
             <div class="box_search_wrap add_btn box_style">
                 <div class="table_wrap">
@@ -53,55 +53,59 @@
          
             <div class="one_box box_style mt30">
                 <div class="result_txt">
-                    <p>관리자 정보</p>
+                    <p>사용자 정보</p>
                 </div>
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:16%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
-                            <col style="width:auto;">
+                                <col style="width:5%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:16%;">
+                                <col style="width:auto%;">
+                                <col style="width:12%;">
+                                <col style="width:18%;">
                         </colgroup>
                         <thead>
                             <tr>
-                                <th scope="col">시/도</th>
-                                <th scope="col">시/군/구</th>
-                                <th scope="col">관리기관명</th>
-                                <th scope="col">관리자 구분</th>
-                                <th scope="col">이름</th>
+                                <th scope="col">순번</th>
+                                <th scope="col">사용자ID</th>
+                                <th scope="col">사용자명</th>
                                 <th scope="col">전화번호</th>
-                                <th scope="col">담당지역</th>
+                                <th scope="col">핸드폰번호</th>
+                                <th scope="col">이메일주소</th>
+                                <th scope="col">현재상태</th>
+                                <th scope="col">등록일시</th>
+                                <th scope="col">로그인일시</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody">
                         <table>
                             <colgroup>
+                                <col style="width:5%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
                                 <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:auto;">
+                                <col style="width:auto%;">
+                                <col style="width:12%;">
+                                <col style="width:18%;">
                             </colgroup>
-                            <tbody v-if="userItems">
+                            <tbody >
                                 <tr v-for="(item,index) in userItems" v-bind:key="index">
-                                    <td><a href="#">{{item.sido}}</a></td>
-                                    <td><a href="#">{{item.sgg}}</a></td>
-                                    <td><a href="#">{{item.orgNm}}</a></td>
-                                    <td><a href="#">{{item.userTypeNm}}</a></td>
+                                    <td><a href="#">{{index+1}}</a></td>
+                                    <td><a href="#">{{item.userId}}</a></td>
                                     <td><a href="#">{{item.userNm}}</a></td>
                                     <td><a href="#">{{item.phoneNumber}}</a></td>
-                                    <td><a href="#">{{item.chargeRegionNm}}</a></td>
+                                    <td><a href="#">{{item.mobileNumber}}</a></td>
+                                    <td><a href="#">{{item.email}}</a></td>
+                                    <td><a href="#">{{item.employStateNm}}</a></td>
+                                    <td><a href="#">{{item.regDtime}}</a></td>
+                                    <td><a href="#">{{item.loginDtime}}</a></td>
+                                    
                                 </tr>
-                            </tbody>
-                            <tbody v-esle>
-                                
                             </tbody>
                         </table>
                     </div>
@@ -151,6 +155,7 @@ export default {
       this.getSidoData();
       this.getSggData();
       this.getOrgmData();
+      this.getUserData();
       //this.getTorgData();
       //this.getUserData();
     },

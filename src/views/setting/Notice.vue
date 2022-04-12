@@ -3,7 +3,7 @@
         <HeaderComp></HeaderComp>
         <div class="container type-02">
             <div class="list_title_wrap">
-                <span>관리</span>
+                <span>시스템관리</span>
                 <i class="ico_nav"></i>
                 <span class="on">공지사항</span>
             </div>
@@ -69,55 +69,54 @@
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:5%;">
-                            <col style="width:5%;">
                             <col style="width:6%;">
                             <col style="width:8%;">
                             <col style="width:8%;">
+                            <col style="width:3%;">
+                            <col style="width:auto;">
                             <col style="width:8%;">
                             <col style="width:9%;">
-                            <col style="width:atuo;">
+                            <col style="width:9%;">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th scope="col">순번</th>
-                                <th scope="col">시/도</th>
-                                <th scope="col">시/군/구</th>
                                 <th scope="col">관리기관</th>
                                 <th scope="col">제목</th>
-                                <th scope="col">작성자</th>
-                                <th scope="col">등록일자</th>
+                                <th scope="col"></th>
                                 <th scope="col">공지내용</th>
+                                <th scope="col">작성자</th>
+                                <th scope="col">등록일시</th>
+                                <th scope="col">수정일시</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <col style="width:5%;">
-                                <col style="width:5%;">
-                                <col style="width:6%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:9%;">
-                                <col style="width:atuo;">
+                            <col style="width:6%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:3%;">
+                            <col style="width:auto;">
+                            <col style="width:8%;">
+                            
+                            <col style="width:9%;">
+                            <col style="width:9%;">
                             </colgroup>
-                            <tbody v-if="noticItems" >
+                            <tbody >
                                 <tr v-for="(item,index) in noticItems" v-bind:key="index">
                                     <td><a href="#" >{{index+1}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{item.orgNm}}</a></td>
                                     <td><a href="#">{{item.title}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
+                                    <td></td>
+                                    <td style="float:left"><a href="#">{{item.details}}</a></td>
+                                    <td><a href="#">{{item.regId}}</a></td>
+                                    <td><a href="#">{{item.regDtime}}</a></td>
                                     <td><a href="#">{{item.updDtime}}</a></td>
-                                    <td><a href="#">{{item.details}}</a></td>
                                 </tr>
                               </tbody>
-                              <tbody v-else>
-                                데이터가 없습니다
-                              </tbody>
+
                         </table>
                     </div>
                 </div>
@@ -167,6 +166,7 @@ export default {
       this.getSidoData();
       this.getSggData();
       this.getOrgmData();
+      this.getnoticeData();
       this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
       this.e_date=moment().format('YYYY-MM-DD');
 
