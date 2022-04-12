@@ -6,38 +6,45 @@
                     <i class="search_ico"></i>
                     <div class="fillter_wrap">
                         <div class="select_area">
-                            <select name="code1" id="code1" ref="code1" v-model="code1" @change="filterChange">
-                                <option value="" disabled>환경정보</option>
-                                <option value="all">전체</option>
-                                <option value="TPE006">온도</option>
-                                <option value="TPE008">조도</option>
-                                <option value="TPE007">습도</option>
+                            <select name="code1" id="code1" ref="code1" v-model="code1" @change="filterChange(1)">
+                                <option v-for="(items, index ) in envData" v-bind:value="items.value" v-bind:key="index"> 
+                                    {{ items.text }}
+                                </option>
                                 
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="code2" id="code2" ref="code2" v-model="code2">
-                                <option value="">바이오 정보</option>
+                            <select name="code2" id="code2" ref="code2" v-model="code2" @change="filterChange(2)">
+                                <option v-for="(items, index ) in bioData" v-bind:value="items.value" v-bind:key="index"> 
+                                    {{ items.text }}
+                                </option>
+                                <!-- <option value="">바이오 정보</option>
                                 <option value="">전체</option>
                                 <option value="TPE005">심장박동</option>
                                 <option value="TPE011">호흡</option>
-                                <option value="TPE012">활동량</option>
+                                <option value="TPE012">활동량</option> -->
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="code3" id="code3" ref="code3" v-model="code3">
-                                <option value="">활동감지기(P)정보</option>
+                            <select name="code3" id="code3" ref="code3" v-model="code3" @change="filterChange(3)">
+                                <option v-for="(items, index ) in actPData" v-bind:value="items.value" v-bind:key="index"> 
+                                    {{ items.text }}
+                                </option>
+                                <!-- <option value="">활동감지기(P)정보</option>
                                 <option value="">전체</option>
                                 <option value="TPE002">화장실</option>
-                                <option value="TPE002">안방</option>                                                    
+                                <option value="TPE002">안방</option>                                               -->
                             </select>
                         </div>
                         <div class="select_area">
-                            <select name="code4" id="code4" ref="code4" v-model="code4">
-                                <option value="">도어감지기 정보</option>
+                            <select name="code4" id="code4" ref="code4" v-model="code4" @change="filterChange(4)">
+                                <option v-for="(items, index ) in doorData" v-bind:value="items.value" v-bind:key="index"> 
+                                    {{ items.text }}
+                                </option>
+                                <!-- <option value="">도어감지기 정보</option>
                                 <option value="">전체</option>
                                 <option value="TPE004">뒷문</option>
-                                <option value="TPE004">대문</option>
+                                <option value="TPE004">대문</option> -->
                             </select>
                         </div>
                     </div>
@@ -122,20 +129,41 @@ import moment from "moment";
       code4: '',
       measureStartDate:moment().subtract(7,'days').format('YYYY-MM-DD'),
       measureEndDate: moment().format('YYYY-MM-DD'),
+
       envData:[{text: '환경 정보', value:''},{text: '전체', value: 'all'},{text: '온도', value: 'TPE006'},{text: '조도', value: 'TPE008'},{text: '습도', value: 'TPE007'}, ],
-      bioData:[{text: '바이오 정보', value: ''},{text: '전체', value: 'all'}, ],
-      actPData:[{text: '활동감지기{P) 정보', value: ''},{text: '전체', value: 'all'}, ],
-      actData:[{text: '활동감지기 정보', value: ''},{text: '전체', value: 'all'}, ],
-
-
+      bioData:[{text: '바이오 정보', value: ''},{text: '전체', value: 'all'},{text: '심장박동', value: 'TPE005'},{text: '호흡', value: 'TPE011'},{text: '활동량', value: 'TPE012'}, ],
+      actPData:[{text: '활동감지기{P) 정보', value: ''},{text: '전체', value: 'all'},{text: '화장실', value: 'TPE002'},{text: '안방', value: 'TPE002'}, ],
+      doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 'all'},{text: '뒷문', value: 'TPE004'},{text: '대문', value: 'TPE004'}, ],
      }
    },
   methods: {
-    filterChange(){
-        if(this.code1){
-            this.$$refs=''
-
+    filterChange(input){
+        switch (input){
+          case 1 : this.code2='';this.code3='';this.code4=''; break;
+          case 2 : this.code1='';this.code3='';this.code4=''; break;
+          case 3 : this.code1='';this.code2='';this.code4=''; break;
+          case 4 : this.code1='';this.code2='';this.code3=''; break;
         }
+        // if(this.code1){
+        //     this.code2='';
+        //     this.code3='';
+        //     this.code4='';
+        // }
+        // if(this.code2){
+        //     this.code1='';
+        //     this.code3='';
+        //     this.code4='';
+        // }
+        // if(this.code3){
+        //     this.code1='';
+        //     this.code2='';
+        //     this.code4='';
+        // }
+        // if(this.code4){
+        //     this.code1='';
+        //     this.code2='';
+        //     this.code3='';
+        // }
     },
 
     async getSensorsData(input,input2,input3,input4){
