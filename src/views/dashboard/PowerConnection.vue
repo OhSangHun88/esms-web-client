@@ -39,6 +39,7 @@ Chart.register(...registerables)
 import moment from "moment";
 import { eventBus } from "@/main.js";
 
+
 export default {
   data:() => ({
     chartData1: null,
@@ -163,7 +164,7 @@ export default {
           fullSize: false, 
           align: "center" 
           }, 
-          tooltip: { boxWidth: 5, bodyFont: { size: 5 } }
+          tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
         },
         responsive: true, 
         maintainAspectRatio: true, 

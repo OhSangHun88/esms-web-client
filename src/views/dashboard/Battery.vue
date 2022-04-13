@@ -2,7 +2,7 @@
 
   <div class="box_l chart box_style">
     <div class="result_txt">
-      <p>배터리</p>
+      <p>배터리 상태</p>
     </div>
     <div>
       <canvas ref="barChart"/>
@@ -85,6 +85,7 @@ export default {
             usePointStyle: true
           },
 		    },
+        tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
       }
       }
       this.chartData = data

@@ -88,6 +88,7 @@ export default {
         legend: {
 		      display: false,
 		    },
+        tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
       }
       }
       this.chartData = data
