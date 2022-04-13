@@ -25,13 +25,13 @@
         <li class="drop">
           <a href="#"><router-link to="/setting/allView" ><i class="ico-4"></i>시스템관리</router-link></a>
           <ul class="sub_menu">
-            <li><a href="#"><router-link to ="/setting/allView">장비관리</router-link></a></li>
             <li><a href="#"><router-link to ="/setting/org">기관관리</router-link></a></li>
             <li><a href="#"><router-link to ="/setting/customer">사용자관리</router-link></a></li>
+            <li><a href="#"><router-link to ="/setting/allView">장비관리</router-link></a></li>
             <li><a href="#"><router-link to ="">Firmware 관리</router-link></a></li>
+            <li><a href="#"><router-link to ="/setting/notice">공지사항</router-link></a></li>
             <li><a href="#"><router-link to ="/setting/manageLog">로그관리</router-link></a></li>
             <li><a href="#"><router-link to ="">IP-PBX 관리</router-link></a></li>
-            <li><a href="#"><router-link to ="/setting/notice">공지사항</router-link></a></li>
           </ul>
         </li>
         <li class="drop">
