@@ -255,7 +255,7 @@ import axios from "axios";
    },
   methods: {
       async getCSensers(){
-      const url  = `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30`
+      const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30`
         
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
