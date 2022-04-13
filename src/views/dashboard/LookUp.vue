@@ -228,12 +228,17 @@ export default {
     sendDataToPower(){
       eventBus.$emit('PwLookUp', this.PwChartItems, this.s_date)
     },
+    sendDataToChart(){
+      eventBus.$emit('CtLookUp', this.CtChartItems, this.s_date)
+    },
 
     manageInquiry() {
       let addrCode =  this.sggCd.substring(0,5);
       let urlEventStatus = this.$store.state.serverApi + "/admin/organizations/stat/alarm?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
       let urlBattery =this.$store.state.serverApi + "/admin/organizations/stat/battery?startDate="+this.s_date+"&endDate="+this.e_date;
-      let urlPower =this.$store.state.serverApi + "/admin/organizations/stat/rssi?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      let urlPower = this.$store.state.serverApi + "/admin/organizations/stat/rssi?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      let urlChart = this.$store.state.serverApi + "/admin/organizations/stat/oper?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+
       axios.get(urlEventStatus, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             const EvtempArr = [];
@@ -284,6 +289,24 @@ export default {
             } 
             this.PwChartItems=PwtempArr;
             this.sendDataToPower();
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+      axios.get(urlChart, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            const CttempArr = [];
+            this.CtChartItems=[];     
+            for(let i=0; i<response.data.data.length; i++) {
+              CttempArr.push({
+                statDate: response.data.data[i].statDate,
+                installCnt: response.data.data[i].installCnt,
+                operCnt: response.data.data[i].operCnt,
+              });
+            } 
+            this.CtChartItems=CttempArr;
+            this.sendDataToChart();
           })
           .catch(error => {
             this.errorMessage = error.message;
