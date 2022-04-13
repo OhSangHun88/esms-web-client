@@ -183,7 +183,7 @@
                                 <th scope="col">장애여부</th>
                                 <th scope="col">배터리</th>
                                 <th scope="col">Keep-Alive</th>
-                                <th scope="col">신호세기</th>
+                                <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
                                 <th scope="col">서버 보고 일시</th>
                             </tr>
                         </thead>
@@ -203,28 +203,28 @@
                                     <td>{{!this.getCTabletsData.gwLinkYnNm? '': this.getCTabletsData.gwLinkYnNm}}</td>
                                     <td>{{!this.getCTabletsData.faultYnNm? '': this.getCTabletsData.faultYnNm}}</td>
                                     <td>{{this.getCTabletsData.batteryValue}}</td>
-                                    <td>미수신(..)</td>
-                                    <td>양호(100%)(..)</td>
+                                    <td>수신</td>
+                                    <td>{{this.getCTabletsData.tabletStateNm}}</td>
                                     <td>{{this.getCTabletsData.tabletRptDtime}}</td>
                                 </tr>
                             </tbody>
                             <tbody v-if="connectTap===2">
                                 <tr>
-                                    <td>미수신(..)</td>
-                                    <td>장애(..)</td>
+                                    <td>수신</td>
+                                    <td>{{this.getCGatewayData.faultYnNm}}</td>
                                     <td>{{this.getCGatewayData.batteryValue}}</td>
-                                    <td>미수신(..)</td>
-                                    <td>양호(100%)(..)</td>
-                                    <td>2021-03-04 16:49:03(..)</td>
+                                    <td>수신</td>
+                                    <td>{{changeRssi(this.getCGatewayData.rssi)}}</td>
+                                    <td>{{this.getCGatewayData.incomeDtime}}</td>
                                 </tr>
                             </tbody>
                             <tbody v-if="connectTap===1">
                                 <tr>
-                                    <td>미수신(..)</td>
+                                    <td>수신</td>
                                     <td>{{!this.getBSensorsData.faultYnNm? '' : this.getBSensorsData.faultYnNm}}</td>
                                     <td>{{this.getBSensorsData.batteryValue}}</td>
-                                    <td>미수신(..)</td>
-                                    <td>양호(100%)(..)</td>
+                                    <td>수신</td>
+                                    <td>{{changeRssi(this.getBSensorsData.rssi)}}</td>
                                     <td>{{this.getBSensorsData.incomeDtime}}</td>
                                 </tr>
                             </tbody>
@@ -257,7 +257,7 @@ import axios from "axios";
    },
   methods: {
       async getCSensers(){
-      const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}`
+      const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30`
         
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -304,7 +304,7 @@ import axios from "axios";
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.getCTabletsData = res.data.data
-            
+            console.log("태블릿")
             console.log(this.getCTabletsData)
           })
           .catch(error => {
@@ -340,14 +340,23 @@ import axios from "axios";
         return result
     },
     changeRecipientPhoneno(phone){
-    if(phone){
-      let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
-      return changeNumber
-    }else{
-      return ''
-    }
+        if(phone){
+        let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+        return changeNumber
+        }else{
+        return ''
+        }
     
-  },
+    },
+    changeRssi(input){
+        if(input <=0 && input >= -80) {
+			return "양호";
+		}else if( input <-80  && input >= -99) {
+			return "보통";
+		}else {
+			return "미수신";
+		}
+    }
     
     
 

@@ -93,12 +93,14 @@ export default {
     },
     methods:{
       async getMeasuresData(){
-        console.log("menu1")
+        
       //여기
         const url  =  this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/lastmeasures`
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
             let lastMeasures = res.data.data
+            console.log("lastMeasures")    
+            console.log(lastMeasures)
             //this.reportMeasureData => 선언 처리 수정
             this.reportMeasureData = !lastMeasures ? { TPE005: 0,TPE011: 0,TPE006: 0,TPE008: 0,TPE007: 0,TPE012: 0 }: 
             {

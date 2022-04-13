@@ -45,13 +45,14 @@
                                     </td>
                                     <td>
                                         {{item.relationNm}}
-                                        
                                     </td>
                                     <td>
-                                        <input type="text" name="" id="" :value="item.relationCdNm">
+                                        <!-- <input type="text" name="" id="" :value="item.relationCdNm"> -->
+                                        {{item.relationCdNm}}
                                     </td>
                                     <td>
-                                        <input type="text" name="" id="" :value="changeRecipientPhoneno(item.relationPhone)">
+                                        <!-- <input type="text" name="" id="" :value="changeRecipientPhoneno(item.relationPhone)"> -->
+                                        {{changeRecipientPhoneno(item.relationPhone)}}
                                     </td>
                                 </tr>
                             </tbody>

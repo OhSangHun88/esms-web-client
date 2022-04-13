@@ -91,7 +91,7 @@
                                 <col style="width:25%;">
                                 <col style="width:25%;">
                             </colgroup>
-                            <tbody  v-if="sensorsData">
+                            <tbody>
                                 <tr  v-for="(item,index) in sensorsData" v-bind:key="index">
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td>{{item.measureDtime}}</td>
@@ -99,13 +99,9 @@
                                     <td>{{item.measureValue}}</td>
                                 </tr>
                             </tbody>
-                            <tbody  v-else>
-                                <tr  >
-                                    데이터가 존재하지 않습니다
-                                </tr>
-                            </tbody>
                         </table>
-                        <div class="pagination mt0">
+                    </div>
+                    <div class="pagination mt0">
                             <a href="#" class="front">첫 페이지</a>
                             <a href="#" class="prev">이전 페이지</a>
                             <a href="#" class="on">1</a>
@@ -121,7 +117,6 @@
                             <a href="#" class="next">다음 페이지</a>
                             <a href="#" class="back">마지막 페이지</a>
                         </div>
-                    </div>
                 </div>
             </div>           
         </div>
@@ -147,10 +142,10 @@ import moment from "moment";
       measureEndDate: moment().format('YYYY-MM-DD'),
       labelText:'정보',
       codeText:'°C',
-      envData:[{text: '환경 정보', value:''},{text: '전체', value: 'all'},{text: '온도', value: 'TPE006'},{text: '조도', value: 'TPE008'},{text: '습도', value: 'TPE007'}, ],
-      bioData:[{text: '바이오 정보', value: ''},{text: '전체', value: 'all'},{text: '심장박동', value: 'TPE005'},{text: '호흡', value: 'TPE011'},{text: '활동량', value: 'TPE012'}, ],
-      actPData:[{text: '활동감지기{P) 정보', value: ''},{text: '전체', value: 'all'},{text: '화장실', value: 'TPE002'},{text: '안방', value: 'TPE002'}, ],
-      doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 'all'},{text: '뒷문', value: 'TPE004'},{text: '대문', value: 'TPE004'}, ],
+      envData:[{text: '환경 정보', value:''},{text: '전체', value: 'TPE006'},{text: '온도', value: 'TPE006'},{text: '조도', value: 'TPE008'},{text: '습도', value: 'TPE007'}, ],
+      bioData:[{text: '바이오 정보', value: ''},{text: '전체', value: 'TPE005'},{text: '심장박동', value: 'TPE005'},{text: '호흡', value: 'TPE011'},{text: '활동량', value: 'TPE012'}, ],
+      actPData:[{text: '활동감지기{P) 정보', value: ''},{text: '전체', value: 'TPE002'},{text: '화장실', value: 'TPE002'},{text: '안방', value: 'TPE002'}, ],
+      doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 'TPE004'},{text: '뒷문', value: 'TPE004'},{text: '대문', value: 'TPE004'}, ],
      }
    },
   methods: {
@@ -190,14 +185,14 @@ import moment from "moment";
         let code = input ? input : input2 ? input2 : input3 ? input3 :  input4 
         
         switch (code){
-          case "TPE006" : this.labelText="온도"; this.codeText="°C"; break;
-          case "TPE008" : this.labelText="조도"; this.codeText="lux"; break;
-          case "TPE007" : this.labelText="습도"; this.codeText="%"; break;
-          case "TPE005" : this.labelText="심장박동"; this.codeText="회"; break;
-          case "TPE011" : this.labelText="호흡"; this.codeText="회"; break;
-          case "TPE012" : this.labelText="활동량"; this.codeText="°C"; break;
-          case "TPE002" : this.labelText="횟수"; this.codeText="회"; break;
-          case "TPE004" : this.labelText="횟수"; this.codeText="회"; break;
+          case "TPE006" : this.labelText="온도"; this.codeText=" °C"; break;
+          case "TPE008" : this.labelText="조도"; this.codeText=" lx"; break;
+          case "TPE007" : this.labelText="습도"; this.codeText=" %"; break;
+          case "TPE005" : this.labelText="심장박동"; this.codeText=" 회"; break;
+          case "TPE011" : this.labelText="호흡"; this.codeText=" 회"; break;
+          case "TPE012" : this.labelText="활동량"; this.codeText=" °C"; break;
+          case "TPE002" : this.labelText="횟수"; this.codeText=" 회"; break;
+          case "TPE004" : this.labelText="횟수"; this.codeText=" 회"; break;
           
       }
         
