@@ -68,7 +68,7 @@ export default {
         y: {
           beginAtZero: true,
           ticks: {
-            fontFamily: "noto-fonts",
+            stepSize: 1,
             fontColor: '#a5a5a5'
           }
         }

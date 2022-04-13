@@ -48,7 +48,12 @@ export default {
     chartData5: null,
     chartData6: null,
     chartOptions: null,
-    chartImage: null,
+    chartImage1: null,
+    chartImage2: null,
+    chartImage3: null,
+    chartImage4: null,
+    chartImage5: null,
+    chartImage6: null,
     GwData: [ 19, 5 ],
     EmData: [14, 5, 8],
     FiData:[14, 5, 8],
@@ -187,32 +192,32 @@ export default {
       this.chartRedraw();
     },
     chartRedraw(){
-      this.chartImage = new Chart(this.$refs.doughnutChart1, {
+      this.chartImage1 = new Chart(this.$refs.doughnutChart1, {
         type:'doughnut',
         data:this.chartData1,
         options:this.chartOptions
       })
-      this.chartImage = new Chart(this.$refs.doughnutChart2, {
+      this.chartImage2 = new Chart(this.$refs.doughnutChart2, {
         type:'doughnut',
         data:this.chartData2,
         options:this.chartOptions
       })
-      this.chartImage = new Chart(this.$refs.doughnutChart3, {
+      this.chartImage3 = new Chart(this.$refs.doughnutChart3, {
         type:'doughnut',
         data:this.chartData3,
         options:this.chartOptions
       })
-      this.chartImage = new Chart(this.$refs.doughnutChart4, {
+      this.chartImage4 = new Chart(this.$refs.doughnutChart4, {
         type:'doughnut',
         data:this.chartData4,
         options:this.chartOptions
       })
-      this.chartImage = new Chart(this.$refs.doughnutChart5, {
+      this.chartImage5 = new Chart(this.$refs.doughnutChart5, {
         type:'doughnut',
         data:this.chartData5,
         options:this.chartOptions
       })
-      this.chartImage = new Chart(this.$refs.doughnutChart6, {
+      this.chartImage6 = new Chart(this.$refs.doughnutChart6, {
         type:'doughnut',
         data:this.chartData6,
         options:this.chartOptions
@@ -237,9 +242,7 @@ export default {
           this.newDoArr = []
           this.newAcArr = []
           this.newLiArr = []
-         
-          console.log(this.comChartItems)
-          
+
           for(let i=0; i<this.comChartItems.length; i++){
             if(this.comChartItems[i].sensorTypeCd==="TPE000"){
               tmpArr1.push({
@@ -284,7 +287,13 @@ export default {
               })
             }
           }
+          console.log("arr1")
+          console.log(tmpArr1)
+          console.log("arr2")
           console.log(tmpArr2)
+
+          
+
           let makeArr1=[]
           let makeArr2=[]
           let makeArr3=[]
@@ -292,12 +301,10 @@ export default {
           let makeArr5=[]
           let makeArr6=[]
           //배열 전체 순환
-          for(let i=0; i<3; i++){
+          
           tmpArr1.forEach(item=>{
             makeArr1.push(item.statCnt)
           })
-          }
-          console.log(tmpArr1)
           tmpArr2.forEach(item=>{
             makeArr2.push(item.statCnt)
           })
@@ -313,21 +320,77 @@ export default {
           tmpArr6.forEach(item=>{
             makeArr6.push(item.statCnt)
           })
-          console.log(makeArr2)
+          for(let i=0; i<2; i++){
+          this.newGwArr.push({
+            sensorTypeCd: "TPE000",
+            statName: null,
+            statCnt: 0,
+          })}
+          for(let i=0; i<3; i++){
+          this.newEmArr.push({
+            sensorTypeCd: "TPE001",
+            statName: null,
+            statCnt: 0,
+          })
+          this.newFiArr.push({
+            sensorTypeCd: "TPE002",
+            statName: null,
+            statCnt: 0,
+          })
+          this.newDoArr.push({
+            sensorTypeCd: "TPE003",
+            statName: null,
+            statCnt: 0,
+          })
+          this.newAcArr.push({
+            sensorTypeCd: "TPE004",
+            statName: null,
+            statCnt: 0,
+          })
+          this.newLiArr.push({
+            sensorTypeCd: "TPE005",
+            statName: null,
+            statCnt: 0,
+          })}
+          this.newEmArr=[],
+          this.newFiArr=[],
+          this.newDoArr=[],
+          this.newAcArr=[],
+          this.newLiArr=[],
 
+          this.newGwArr = makeArr1
+          this.newEmArr[2] = makeArr2
+          this.newFiArr[2] = makeArr3
+          this.newDoArr[2] = makeArr4
+          this.newAcArr[2] = makeArr5
+          this.newLiArr[2] = makeArr6
+          console.log(this.newEmArr)
+
+          
 
           this.remakeData();
         }
       });
     },
     remakeData(){
-      this.chartImage.destroy();  
+      this.chartImage1.destroy();
+      this.chartImage2.destroy();
+      this.chartImage3.destroy();
+      this.chartImage4.destroy();
+      this.chartImage5.destroy();
+      this.chartImage6.destroy();  
       this.GwData = this.newGwArr
       this.EmData = this.newEmArr
       this.FiData = this.newFiArr
-      this.chartData.datasets[0].data = this.GwData
-      this.chartData.datasets[1].data = this.EmData
-      this.chartData.datasets[2].data = this.FiData
+      this.DoData = this.newDoArr
+      this.AcData = this.newAcArr
+      this.LiData = this.newAcArr
+      this.chartData1.datasets[0].data = this.GwData
+      this.chartData2.datasets[0].data = this.EmData
+      this.chartData3.datasets[0].data = this.FiData
+      this.chartData4.datasets[0].data = this.DoData
+      this.chartData5.datasets[0].data = this.AcData
+      this.chartData6.datasets[0].data = this.LiData
       this.chartRedraw();
     },
   }

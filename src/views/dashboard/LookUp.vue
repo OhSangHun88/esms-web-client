@@ -95,7 +95,6 @@ export default {
   },
   
   methods:{
-
     // 시/도 목록
     getSidoData() {
     axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
