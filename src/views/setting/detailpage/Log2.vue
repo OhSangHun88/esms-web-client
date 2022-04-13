@@ -4,7 +4,7 @@
                 <div class="result_txt">
                     <p>조회결과 : <strong>235</strong>건</p>
                 </div>
-                <div class="list result" style="display:none;"><!-- 통신로그 선택시 -->
+                <div class="list result"><!-- 통신로그 선택시 -->
                     <table>
                         <colgroup>
                             <col style="width:auto;">

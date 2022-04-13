@@ -15,6 +15,8 @@
     <div style="float: left; width: 14%; ">
       <canvas height="150px" width="200px" ref="doughnutChart1"/>
     </div>
+    <div></div>
+    <div></div>
     <div style="float: left; width: 14%; margin-left: 2%;">
       <canvas height="150px" width="200px" ref="doughnutChart2"/>
     </div>
