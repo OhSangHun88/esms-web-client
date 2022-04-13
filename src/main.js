@@ -9,6 +9,8 @@ import store from './store'
 import axios from 'axios'
 import moment from 'vue-moment'
 import * as VueGoogleMaps from "vue2-google-maps"
+import Chart from '@toast-ui/chart'
+import { BarChart } from '@toast-ui/chart'
 
 
 //import CoreuiVue from '@coreui/vue'
@@ -30,7 +32,8 @@ new Vue({
   store,
   icons,
   axios,
-  
+  BarChart,
+  Chart,
   template: '<App/>',
   components: {
     App

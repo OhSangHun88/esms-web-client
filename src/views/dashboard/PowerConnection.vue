@@ -38,8 +38,12 @@ import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables)
 import moment from "moment";
 import { eventBus } from "@/main.js";
+import { RadialBarChart  } from '@toast-ui/chart';
+
+
 
 export default {
+  
   data:() => ({
     chartData1: null,
     chartData2: null,
@@ -77,7 +81,7 @@ export default {
     createData(){
       let data1 = {
         type: 'doughnut',
-        labels: ['연결', '차단'],
+        categories: ['연결', '차단'],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
@@ -90,7 +94,7 @@ export default {
       }
       let data2 = {
         type: 'doughnut',
-        labels: ['수신', '미수신', '양호'],
+        categories: ['수신', '미수신', '양호'],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
@@ -103,7 +107,7 @@ export default {
       }
       let data3 = {
         type: 'doughnut',
-        labels: ['수신', '미수신', '양호'],
+        categories: ['수신', '미수신', '양호'],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
@@ -116,7 +120,7 @@ export default {
       }
       let data4 = {
         type: 'doughnut',
-        labels: ['수신', '미수신', '양호'],
+        categories: ['수신', '미수신', '양호'],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
@@ -129,7 +133,7 @@ export default {
       }
       let data5 = {
         type: 'doughnut',
-        labels: ['수신', '미수신', '양호'],
+        categories: ['수신', '미수신', '양호'],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
@@ -142,7 +146,7 @@ export default {
       }
       let data6 = {
         type: 'doughnut',
-        labels: ['수신', '미수신', '양호'],
+        categories: ['수신', '미수신', '양호'],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
@@ -163,7 +167,7 @@ export default {
           fullSize: false, 
           align: "center" 
           }, 
-          tooltip: { boxWidth: 5, bodyFont: { size: 5 } }
+          tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
         },
         responsive: true, 
         maintainAspectRatio: true, 
@@ -192,6 +196,7 @@ export default {
       this.chartRedraw();
     },
     chartRedraw(){
+      /*
       this.chartImage1 = new Chart(this.$refs.doughnutChart1, {
         type:'doughnut',
         data:this.chartData1,
@@ -222,6 +227,12 @@ export default {
         data:this.chartData6,
         options:this.chartOptions
       })
+      */
+     this.chartImage1 = new RadialBarChart({
+       el, 
+       data, 
+       options
+       });
       this.chartImage1.update();
       this.chartImage2.update();
       this.chartImage3.update();
