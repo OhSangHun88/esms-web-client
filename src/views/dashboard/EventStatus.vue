@@ -20,28 +20,106 @@ export default {
     FireData: [ 12, 19, 7, 5, 8, 13, 7 ],
     EmData: [10, 12, 11, 10, 10, 15, 9],
     SafeData:[5, 12, 10, 7, 7, 8, 17],
+    comChartItems:[],
+    newChartArr:[],
+    newFireArr:[],
+    newEmArr:[],
+    newSafeArr:[],
+    s_date: null,
+    newChartLabelArr:[],
+    newChartMMLabelArr:[],
+    newChartDDLabelArr:[],
   }),
-  
+//  [{eventcd: '',occureDate:'yy-mm-dd'},{},{}]
   mounted(){
     this.createData();
+    this.getDataFromLookUp();
   },
   methods:{
-    created() {
-      getDataFromLookUp();
-    },
     getDataFromLookUp(){
-      console.log("test")
-      eventBus.$on("LookUp", (ChartItems) => {console.log(ChartItems);});     
+      eventBus.$on("EvLookUp", (EvChartItems, s_date) => 
+      {
+          this.s_date = s_date
+          
+          if(EvChartItems != ''){
+          this.comChartItems = EvChartItems
+          let tmpArr1 = []
+          let tmpArr2 = []
+          let tmpArr3 = []
+          this.newChartArr=[]
+          this.newFireArr = []
+          this.newEmArr = []
+          this.newSafeArr = []
+          this.newChartLabelArr=[]
+          this.newChartMMLabelArr=[]
+          this.newChartDDLabelArr=[]
+
+          for(let i=0; i<7; i++){
+            tmpArr1.push({
+              alarmCnt:0,
+              eventCd: null,
+              occurDate: moment(s_date).add(i,'days').format('YYYYMMDD'),
+            })
+            tmpArr2.push({
+              alarmCnt:0,
+              eventCd: null,
+              occurDate: moment(s_date).add(i,'days').format('YYYYMMDD'),
+            })
+            tmpArr3.push({
+              alarmCnt:0,
+              eventCd: null,
+              occurDate: moment(s_date).add(i,'days').format('YYYYMMDD'),
+            })
+          }
+          //"E1013"
+          for(let i=0; i<this.comChartItems.length; i++){
+            if(this.comChartItems[i].eventCd==="E1013"){
+              let tmpidx = tmpArr1.findIndex(idx =>{
+                return idx.occurDate == this.comChartItems[i].occurDate
+              })
+              tmpArr1[tmpidx].alarmCnt = this.comChartItems[i].alarmCnt
+              tmpArr1[tmpidx].eventCd = this.comChartItems[i].eventCd
+            }
+            if(this.comChartItems[i].eventCd==="E1014"){
+              let tmpidx = tmpArr2.findIndex(idx =>{
+                return idx.occurDate == this.comChartItems[i].occurDate
+              })
+              tmpArr2[tmpidx].alarmCnt = this.comChartItems[i].alarmCnt
+              tmpArr2[tmpidx].eventCd = this.comChartItems[i].eventCd
+            }
+            if(this.comChartItems[i].eventCd==="E1016"){
+              let tmpidx = tmpArr3.findIndex(idx =>{
+                return idx.occurDate == this.comChartItems[i].occurDate
+              })
+              tmpArr3[tmpidx].alarmCnt = this.comChartItems[i].alarmCnt
+              tmpArr3[tmpidx].eventCd = this.comChartItems[i].eventCd
+            }
+          }
+          for(let i=0; i<7; i++){
+            this.newFireArr.push(tmpArr1[i].alarmCnt)
+            this.newEmArr.push(tmpArr2[i].alarmCnt)
+            this.newSafeArr.push(tmpArr3[i].alarmCnt)
+            this.newChartMMLabelArr.push(tmpArr1[i].occurDate.substring(4, 6))
+            this.newChartDDLabelArr.push(tmpArr1[i].occurDate.substring(6, 8))
+            this.newChartLabelArr.push(this.newChartMMLabelArr[i] +"-"+ this.newChartDDLabelArr[i])
+          }
+          this.remakeData();
+        }
+      });
     },
   
     remakeData(){
-      this.chartImage.destroy();
-      this.FireData=this.ChartItems[1]
-      this.chartData.datasets[0].data = this.ChartItems
-      //console.log(this.FireData)
-      console.log(this.chartData.datasets[0].data)
+      this.chartImage.destroy();  
+      this.FireData = this.newFireArr
+      this.EmData = this.newEmArr
+      this.SafeData = this.newSafeArr
+      this.chartData.datasets[0].data = this.FireData
+      this.chartData.datasets[1].data = this.EmData
+      this.chartData.datasets[2].data = this.SafeData
+      this.chartData.labels = this.newChartLabelArr
       this.chartRedraw();
     },
+
     chartRedraw(){  
       this.chartImage = new Chart(this.$refs.BarChart, {
         type:'bar',

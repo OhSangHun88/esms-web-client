@@ -87,7 +87,7 @@ export default {
   data () {
     return {
       modelSido:'', modelSgg:'', modelOrg:'', orgNm:'', orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-      sidoItems:[], sggItems:[], orgmItems:[], totalItems:[], ChartItems:[],
+      sidoItems:[], sggItems:[], orgmItems:[], totalItems:[], EvChartItems:[], BtChartItems:[],
       isSido:true, isSgg:true, isOrg:true,
       orgSido:'', orgSgg:'', orgId:'',
       setCount: 0, setEMCount: 0, setLMCount: 0,
@@ -98,7 +98,7 @@ export default {
 
     // 시/도 목록
     getSidoData() {
-    axios.get("/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
+    axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             
             this.sidoItems=[];
@@ -120,7 +120,7 @@ export default {
 
     // 시/군/구 목록
     getSggData() {
-    let url = "/admin/address/sgg";
+    let url =this.$store.state.serverApi + "/admin/address/sgg";
     if(this.sidoCd != ''){
         url += "?sidoCd="+this.sidoCd;
     }else{
@@ -128,14 +128,10 @@ export default {
         this.sggItems.push({label: '전체', value: ''});
         return ; 
     }
-
     axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-
           .then(response => {
-
             const tempArr = [];
             this.sggItems=[];
-            
             //this.sggItems.push({label: '전체', value: ''});
             
             tempArr.push({label: '전체', value: ''});
@@ -169,9 +165,8 @@ export default {
 
     // 관리 기관 목록
 
-     getOrgmData() {
-
-     let url = "/admin/organizations";
+    getOrgmData() {
+     let url =this.$store.state.serverApi + "/admin/organizations";
         if(this.sggCd != ''){
            let sggCode = this.sggCd.substring(0, 5);
            console.log(">> sggCode["+sggCode+"]");
@@ -183,13 +178,8 @@ export default {
         }
        axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-
             const tempArr = [];
             this.orgmItems=[];
-
-            //console.log(">> response.data.totalCount["+response.data.totalCount+"]")
-            //console.log(">> response.data.data["+response.data.data+"]")
-
             for(let i=0; i<response.data.data.length; i++) {
               console.log("orgNm["+response.data.data[i].orgNm+"]");
               tempArr.push({
@@ -199,7 +189,6 @@ export default {
             } 
             console.log(">> tempArr["+tempArr+"]")
             this.orgmItems=tempArr;
-
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -213,25 +202,15 @@ export default {
     },
     
     onChangeSgg(event){
-
       this.orgSgg = event.target.value;
       this.sidoCd = event.target.value
       this.getSggData()
     },
 
     onChangeOrg(event) {
-
-
-      //this.sidoCd = event.target.value;
       this.sggCd = event.target.value
       this.orgSgg = event.target.value
-
-      console.log("orgSido["+this.orgSido+"]")
-      console.log("orgSgg["+this.orgSgg+"]")
-      console.log("sggCd["+this.sggCd+"]")
-
       this.getOrgmData()
-
     },
 
     initSet() {
@@ -242,45 +221,80 @@ export default {
       this.e_date=moment().format('YYYY-MM-DD');
     },
     sendDataToEventStatus(){
-      console.log("test22")
-      eventBus.$emit('LookUp', this.ChartItems)
-      console.log(this.ChartItems)
+      eventBus.$emit('EvLookUp', this.EvChartItems, this.s_date)
+    },
+    sendDataToBattery(){
+      eventBus.$emit('BtLookUp', this.BtChartItems, this.s_date)
+    },
+    sendDataToPower(){
+      eventBus.$emit('PwLookUp', this.PwChartItems, this.s_date)
     },
 
     manageInquiry() {
       let addrCode =  this.sggCd.substring(0,5);
-
-      //console.log("addrCode["+addrCode+"]")
-      //console.log("s_date["+this.s_date+"]")
-      //console.log("e_date["+this.e_date+"]")
-
-      let url = "/admin/organizations/stat/alarm?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+      let urlEventStatus = this.$store.state.serverApi + "/admin/organizations/stat/alarm?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      let urlBattery =this.$store.state.serverApi + "/admin/organizations/stat/battery?startDate="+this.s_date+"&endDate="+this.e_date;
+      let urlPower =this.$store.state.serverApi + "/admin/organizations/stat/rssi?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      axios.get(urlEventStatus, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            //console.log("response.data.totalCount["+response.data.totalCount+"]")
-            //console.log("response.data.data["+response.data.data+"]")   
-            
-            const tempArr = [];
-            this.ChartItems=[];     
+            const EvtempArr = [];
+            this.EvChartItems=[];     
             for(let i=0; i<response.data.data.length; i++) {
-              tempArr.push({
-                label: response.data.data[i].eventCd,
-                value: response.data.data[i].alarmCnt,
+              EvtempArr.push({
+                eventCd: response.data.data[i].eventCd,
+                alarmCnt: response.data.data[i].alarmCnt,
+                occurDate: response.data.data[i].occurDate,
               });
             } 
-            //console.log(">> tempArr["+tempArr+"]")
-            this.ChartItems=tempArr;
+            
+            this.EvChartItems=EvtempArr;
+            this.sendDataToEventStatus();
           })
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-      this.sendDataToEventStatus();
+      axios.get(urlBattery, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            const BttempArr = [];
+            this.BtChartItems=[];     
+            for(let i=0; i<response.data.data.length; i++) {
+              BttempArr.push({
+                sensorTypeCd: response.data.data[i].sensorTypeCd,
+                statName: response.data.data[i].statName,
+                statCnt: response.data.data[i].statCnt,
+              });
+            } 
+            this.BtChartItems=BttempArr;
+            this.sendDataToBattery();
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+      axios.get(urlPower, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            const PwtempArr = [];
+            this.PwChartItems=[];     
+            for(let i=0; i<response.data.data.length; i++) {
+              PwtempArr.push({
+                sensorTypeCd: response.data.data[i].sensorTypeCd,
+                statName: response.data.data[i].statName,
+                statCnt: response.data.data[i].statCnt,
+              });
+            } 
+            this.PwChartItems=PwtempArr;
+            this.sendDataToPower();
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
     },
 
 
     getTotalCount(){
-      let url = "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             let totalCData = response.data.data
@@ -296,7 +310,7 @@ export default {
           });
     },
     getEMCount(){
-      let url = "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             let EMCData = response.data.data
@@ -311,7 +325,7 @@ export default {
             console.error("There was an error!", error);
           });
     },getLMCount(){
-      let url = "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             let LMCData = response.data.data

@@ -104,7 +104,7 @@ export default {
   methods:{
     // 게이트웨이 AS 요청,접수,완료
     getGwCount(){
-      let url = "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             let gwrqData = response.data.data
@@ -190,7 +190,7 @@ export default {
           });
     },
     getEmCount(){
-      let url = "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             let emrqData = response.data.data
@@ -276,7 +276,7 @@ export default {
           });
     },
     getAcCount(){
-      let url = "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             let acrqData = response.data.data
@@ -362,7 +362,7 @@ export default {
           });
     },
     getFiCount(){
-      let url = "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             let firqData = response.data.data
@@ -448,7 +448,7 @@ export default {
           });
     },
     getDoCount(){
-      let url = "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             let dorqData = response.data.data
@@ -534,7 +534,7 @@ export default {
           });
     },
     getLiCount(){
-      let url = "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             let lirqData = response.data.data
