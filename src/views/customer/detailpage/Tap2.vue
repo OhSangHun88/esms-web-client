@@ -83,7 +83,7 @@ import moment from "moment";
     async getEmergencysData(){
 
 
-        const url  = `/admin/recipients/${this.recipientId}/emergencys?pageIndex=1&recordCountPerPage=100`
+        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/emergencys?pageIndex=1&recordCountPerPage=100`
         
         console.log("emergencys is ")
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
