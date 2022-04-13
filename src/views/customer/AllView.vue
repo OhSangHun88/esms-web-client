@@ -405,9 +405,9 @@ export default {
     this.getOrgmData();
     
     this.getRecipientData();
-    this.getPartData();
-    this.getStatusData();
-    this.getCycleData();
+    //this.getPartData();
+    //this.getStatusData();
+    //this.getCycleData();
     this.cBirthday=moment().format('YYYY-MM-DD');
     this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
@@ -597,57 +597,57 @@ export default {
   },
 
 
-    getPartData() {
-      axios.get(this.$store.state.serverApi + "/codes?cmmnCdGroup=RECIPIENT.TYPECD", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(response => {
-            this.partItems=[];
-            this.partItems.push({label: '전체', value: ''});
-            for(let i=0; i<response.data.data.length; i++) {
-              this.partItems.push({
-                label: response.data.data[i].cmmnCdNm,
-                value: response.data.data[i].cmmnCd
-              });
-            }
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-    },
-    getCycleData() {
-      axios.get(this.$store.state.serverApi + "/codes?cmmnCdGroup=RECIPIENT.LEVELCD", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(response => {
-            this.cycleItems=[];
-            this.cycleItems.push({label: '전체', value: ''});
-            for(let i=0; i<response.data.data.length; i++) {
-              this.cycleItems.push({
-                label: response.data.data[i].cmmnCdNm,
-                value: response.data.data[i].cmmnCd
-              });
-            }
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-    },
-    getStatusData() {
-      axios.get(this.$store.state.serverApi + "/codes?cmmnCdGroup=RECIPIENT.STATECD", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(response => {
-            this.statusItems=[];
-            this.statusItems.push({label: '전체', value: ''});
-            for(let i=0; i<response.data.data.length; i++) {
-              this.statusItems.push({
-                label: response.data.data[i].cmmnCdNm,
-                value: response.data.data[i].cmmnCd
-              });
-            }
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-    },
+    // getPartData() {
+    //   axios.get(this.$store.state.serverApi + "/codes?cmmnCdGroup=RECIPIENT.TYPECD", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+    //       .then(response => {
+    //         this.partItems=[];
+    //         this.partItems.push({label: '전체', value: ''});
+    //         for(let i=0; i<response.data.data.length; i++) {
+    //           this.partItems.push({
+    //             label: response.data.data[i].cmmnCdNm,
+    //             value: response.data.data[i].cmmnCd
+    //           });
+    //         }
+    //       })
+    //       .catch(error => {
+    //         this.errorMessage = error.message;
+    //         console.error("There was an error!", error);
+    //       });
+    // },
+    // getCycleData() {
+    //   axios.get(this.$store.state.serverApi + "/codes?cmmnCdGroup=RECIPIENT.LEVELCD", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+    //       .then(response => {
+    //         this.cycleItems=[];
+    //         this.cycleItems.push({label: '전체', value: ''});
+    //         for(let i=0; i<response.data.data.length; i++) {
+    //           this.cycleItems.push({
+    //             label: response.data.data[i].cmmnCdNm,
+    //             value: response.data.data[i].cmmnCd
+    //           });
+    //         }
+    //       })
+    //       .catch(error => {
+    //         this.errorMessage = error.message;
+    //         console.error("There was an error!", error);
+    //       });
+    // },
+    // getStatusData() {
+    //   axios.get(this.$store.state.serverApi + "/codes?cmmnCdGroup=RECIPIENT.STATECD", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+    //       .then(response => {
+    //         this.statusItems=[];
+    //         this.statusItems.push({label: '전체', value: ''});
+    //         for(let i=0; i<response.data.data.length; i++) {
+    //           this.statusItems.push({
+    //             label: response.data.data[i].cmmnCdNm,
+    //             value: response.data.data[i].cmmnCd
+    //           });
+    //         }
+    //       })
+    //       .catch(error => {
+    //         this.errorMessage = error.message;
+    //         console.error("There was an error!", error);
+    //       });
+    // },
     say: function (message) {
       alert(message)
     },

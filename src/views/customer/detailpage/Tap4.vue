@@ -143,7 +143,7 @@
                                 <col style="width:25%;">
                             </colgroup>
                             <tbody>
-                                <tr v-for="(item,index) in getCSensorsData" v-bind:key="index">
+                                <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index)">
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td>{{item.serialNo}}</td>
@@ -200,8 +200,8 @@
                             </colgroup>
                             <tbody v-if="connectTap===3">
                                 <tr>
-                                    <td>{{this.getCTabletsData.gwLinkYnNm}}</td>
-                                    <td>{{this.getCTabletsData.faultYnNm}}</td>
+                                    <td>{{!this.getCTabletsData.gwLinkYnNm? '': this.getCTabletsData.gwLinkYnNm}}</td>
+                                    <td>{{!this.getCTabletsData.faultYnNm? '': this.getCTabletsData.faultYnNm}}</td>
                                     <td>{{this.getCTabletsData.batteryValue}}</td>
                                     <td>미수신(..)</td>
                                     <td>양호(100%)(..)</td>
@@ -220,12 +220,12 @@
                             </tbody>
                             <tbody v-if="connectTap===1">
                                 <tr>
-                                    <td>미수신</td>
-                                    <td>장애</td>
-                                    <td>양호(100%)</td>
-                                    <td>미수신</td>
-                                    <td>양호(100%)</td>
-                                    <td>2021-03-04 16:49:03</td>
+                                    <td>미수신(..)</td>
+                                    <td>{{!this.getBSensorsData.faultYnNm? '' : this.getBSensorsData.faultYnNm}}</td>
+                                    <td>{{this.getBSensorsData.batteryValue}}</td>
+                                    <td>미수신(..)</td>
+                                    <td>양호(100%)(..)</td>
+                                    <td>{{this.getBSensorsData.incomeDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -239,7 +239,7 @@
 import axios from "axios";
 
  export default {
-   name: "Tap2",
+   name: "Tap4",
    props:{
      recipientId: String
    },
@@ -249,15 +249,15 @@ import axios from "axios";
       getCGatewayData: null,
       getCTabletsData: null,
       getBSensorsData: null,
-      getBGatewayData: null,
-      getBTabletsData: null,
+      
+      
       connectTap: 1,
 
      }
    },
   methods: {
       async getCSensers(){
-      const url  = `/admin/sensors?recipientId=${this.recipientId}`
+      const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}`
         
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -265,6 +265,8 @@ import axios from "axios";
             this.getCSensorsData = res.data.data
             console.log("sensors ")
             console.log(this.getCSensorsData)
+            this.getBSensorsData = this.getCSensorsData[0]
+            
           })
           .catch(error => {
               console.log("fail to load")
@@ -272,8 +274,15 @@ import axios from "axios";
             console.error("There was an error!", error);
           });
     },
+    getBSensers(input){
+        
+        this.getBSensorsData = this.getCSensorsData[input]
+        console.log(this.getBSensorsData)
+    },
+
+
     async getCGateway(){
-        const url  = `/admin/recipients/${this.recipientId}/gateways`
+        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/gateways`
         
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -289,7 +298,7 @@ import axios from "axios";
           });
     },
     async getCTablets(){
-      const url  = `/admin/recipients/${this.recipientId}/tablets`
+      const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets`
         
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -352,5 +361,4 @@ import axios from "axios";
  </script>
 
 <style scoped>
-                
-            
+</style>                
