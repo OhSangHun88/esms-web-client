@@ -60,20 +60,24 @@
                             <col style="width:5%;">
                             <col style="width:7%;">
                             <col style="width:10%;">
+                            <col style="width:10%;">
                             <col style="width:16%;">
                             <col style="width:16%;">
                             <col style="width:auto;">
-                            <col style="width:16%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th scope="col">순번</th>
                                 <th scope="col">시/도</th>
                                 <th scope="col">시/군/구</th>
+                                <th scope="col">기관ID</th>
                                 <th scope="col">관리기관명</th>
                                 <th scope="col">대표 전화번호</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">세부주소</th>
+                                <th scope="col">등록일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -83,20 +87,24 @@
                             <col style="width:5%;">
                             <col style="width:7%;">
                             <col style="width:10%;">
+                            <col style="width:10%;">
                             <col style="width:16%;">
                             <col style="width:16%;">
                             <col style="width:auto;">
-                            <col style="width:16%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in TorgItems" v-bind:key="index">
                                     <td><a href="#">{{index+1}}</a></td>
                                     <td><a href="#">{{item.sidoName}}</a></td>
                                     <td><a href="#">{{item.sggName}}</a></td>
+                                    <td><a href="#">{{item.orgId}}</a></td>
                                     <td><a href="#">{{item.orgNm}}</a></td>
                                     <td><a href="#">{{item.phoneNumber}}</a></td>
                                     <td><a href="#">{{item.addr}}</a></td>
                                     <td><a href="#">{{item.addrDetail}}</a></td>
+                                    <td><a href="#">{{item.regDtime}}</a></td>
                                 </tr>
                             </tbody>
 

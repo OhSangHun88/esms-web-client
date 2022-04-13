@@ -222,6 +222,12 @@ export default {
         data:this.chartData6,
         options:this.chartOptions
       })
+      this.chartImage1.update();
+      this.chartImage2.update();
+      this.chartImage3.update();
+      this.chartImage4.update();
+      this.chartImage5.update();
+      this.chartImage6.update();
     },
     getDataFromLookUp(){
       eventBus.$on("PwLookUp", (PwChartItems, s_date) => 

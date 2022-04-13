@@ -168,6 +168,9 @@ export default {
       scales: {
         y: {
           beginAtZero: true,
+          ticks:{
+            stepSize: 1
+          }
         }
       },
       plugins:{
