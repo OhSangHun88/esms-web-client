@@ -75,7 +75,7 @@ import moment from "moment";
     async getCall_historysData(){
 
 
-        const url  = `/admin/recipients/${this.recipientId}/call-historys?pageIndex=1&recordCountPerPage=100&callStartDate=${this.callStartDate}&callEndDate=${this.callEndDate}`
+        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/call-historys?pageIndex=1&recordCountPerPage=100&callStartDate=${this.callStartDate}&callEndDate=${this.callEndDate}`
         
         console.log("call_historys is ")
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})

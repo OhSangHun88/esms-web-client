@@ -232,8 +232,7 @@ export default {
   data () {
     return {
       d_phone: '', d_sex: '', d_endcycle: '', d_part: '', d_status: '', d_zipCode: '', d_address: '', personinfo: '',
-      recipientId: '',taptoggle:1, bodyData : null, reportMeasureData: { TPE005: 0,TPE011: 0,TPE006: 0,TPE008: 0,TPE007: 0,TPE012: 0 },
-      menutoggle: 1,
+      recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,
     }
   },
   components: {
@@ -262,6 +261,7 @@ export default {
       
       //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");
       let uri = this.$store.state.serverApi + "/admin/recipients/" + this.recipientId
+      console.log(uri)
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.bodyData = res.data.data
@@ -293,33 +293,7 @@ export default {
 
       }
     },
-    async getMeasuresData(){
-      //여기
-      
-      const url  = `/admin/recipients/${this.recipientId}/sensors/lastmeasures`
-      await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-        .then(res => {
-          let lastMeasures = res.data.data
-          console.log("lastMeasures")
-          console.log(lastMeasures)
-          console.log("lastMeasures 가공")
-          //this.reportMeasureData => 선언 처리 수정
-          this.reportMeasureData = {
-            TPE005: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE005"}).measureValue.split(',').slice(-1)[0],//심박
-            TPE011: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE011"}).measureValue.split(',').slice(-1)[0],//호흡
-            TPE006: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE006"}).measureValue.split(',').slice(-1)[0],//온도
-            TPE008: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE008"}).measureValue.split(',').slice(-1)[0],//조도
-            TPE007: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE007"}).measureValue.split(',').slice(-1)[0],//습도
-            TPE012: !lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}) ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}).measureValue.split(',').slice(-1)[0],//활동량
-          }
-          console.log(this.reportMeasureData)
-        }).catch(error => {
-            console.log("fail to load")
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-
-    },
+    
     makeAge(birthDay){
       let tmp1 = this.$moment(birthDay).format('YYYY')
       
@@ -327,17 +301,19 @@ export default {
       return tmp2.diff(tmp1, 'years');
     },
     makeMapData(){
-
+        let addr = this.bodyData.addr
+        if(!addr){
+          console.log("지도 오류 주소코딩중...")
+          addr =  '경기도 과천시 별양로 85(별양동, 주공아파트)'
+        }
         const container = document.getElementById("map");
         const mapOptions = {
           center: new kakao.maps.LatLng(33.450701, 126.570667),
           level: 5
         }
         let map = new kakao.maps.Map(container, mapOptions)
-
         let geocoder =  new daum.maps.services.Geocoder();
-        console.log(`${this.bodyData.addr} ${this.bodyData.addrDetail}`)
-        geocoder.addressSearch(`${this.bodyData.addr}`, (result, status)=>{
+        geocoder.addressSearch(addr, (result, status)=>{
           if(status === kakao.maps.services.Status.OK){
             let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
             console.log("coords")
@@ -359,10 +335,7 @@ export default {
   },
   created() {
     this.recipientId = this.$route.params.recipientId
-    console.log("id is ");
-    console.log(this.recipientId);
     this.getRecipientInfo();
-    this.getMeasuresData();
     
   },
   mounted(){

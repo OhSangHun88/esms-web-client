@@ -73,7 +73,7 @@ export default {
       async getRelationPhoneData(){
           console.log("menu4")
       //여기
-      const url  = `/admin/recipients/${this.recipientId}/phoneNumbers`
+      const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
           this.relationPhoneData  = res.data.data.filter(pd =>{
