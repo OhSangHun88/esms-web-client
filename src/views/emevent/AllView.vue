@@ -203,7 +203,7 @@ export default {
     methods:{
     // 시/도 목록
     getSidoData() {
-      let url = "/admin/address/sido"
+      let url =this.$store.state.serverApi + "/admin/address/sido"
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           this.sidoItems=[];
@@ -223,7 +223,7 @@ export default {
 
     // 시/군/구 목록
     getSggData() {
-    let url = "/admin/address/sgg";
+    let url =this.$store.state.serverApi + "/admin/address/sgg";
     if(this.sidoCd != ''){
         url += "?sidoCd="+this.sidoCd;
     }else{
@@ -235,7 +235,20 @@ export default {
           .then(response => {
             const tempArr = [];
             this.sggItems=[];
+            //this.sggItems.push({label: '전체', value: ''});
+            
             tempArr.push({label: '전체', value: ''});
+
+            /*
+            for(let i=0; i<response.data.data.length; i++) {
+              this.sggItems.push({
+                label: response.data.data[i].sgg,
+                value: response.data.data[i].sggCd,
+                value2: response.data.data[i].sidoCd
+              });
+            } 
+            */
+
             for(let i=0; i<response.data.data.length; i++) {
               tempArr.push({
                 label: response.data.data[i].sgg,
@@ -254,30 +267,30 @@ export default {
     },
 
     // 관리 기관 목록
-     getOrgmData() {
-    let url = "/admin/organizations";
+    getOrgmData() {
+     let url =this.$store.state.serverApi + "/admin/organizations";
         if(this.sggCd != ''){
-            url += "?sggCd="+this.sggCd;
+           let sggCode = this.sggCd.substring(0, 5);
+           console.log(">> sggCode["+sggCode+"]");
+            url += "?sggCd="+sggCode;
         }else{
-          this.orgmItems=[];
-          this.orgmItems.push({label: '전체', value: ''});
-          return ; 
+            this.orgmItems=[];
+            this.orgmItems.push({label: '전체', value: ''});
+            return ; 
         }
        axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             const tempArr = [];
             this.orgmItems=[];
-            tempArr.push({label: '전체', value: ''});
             for(let i=0; i<response.data.data.length; i++) {
+              console.log("orgNm["+response.data.data[i].orgNm+"]");
               tempArr.push({
                 label: response.data.data[i].orgNm,
                 value: response.data.data[i].orgId,
-                value2: response.data.data[i].addrCd
               });
-            }
-            this.orgmItems = tempArr.filter(cd=>{
-            return cd.value2 === this.sggCd
-            });
+            } 
+            console.log(">> tempArr["+tempArr+"]")
+            this.orgmItems=tempArr;
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -287,7 +300,7 @@ export default {
 
     //구분 목록
     getTypeData() {
-    axios.get("/admin/codes?cmmnCdGroup=ALARM.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
+    axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=ALARM.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.typeItems=[];
             this.typeItems.push({label: '전체', value: ''});
@@ -306,7 +319,7 @@ export default {
 
     //상태 목록
     getStateData() {
-    axios.get("/admin/codes?cmmnCdGroup=ALARM.STATECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
+    axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=ALARM.STATECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.stateItems=[];
             this.stateItems.push({label: '전체', value: ''});
@@ -380,8 +393,8 @@ export default {
       this.getSggData()
     },
     onChangeOrg(event) {
-      this.orgCode = event.target.value;
       this.sggCd = event.target.value
+      this.orgSgg = event.target.value
       this.getOrgmData()
     },
     onChangePart(event) {
