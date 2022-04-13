@@ -2,7 +2,7 @@
     <div>
         <div class="tabcontent">
             <div class="tablist_wrap">
-                <div class="tablist" style="width: 100%">
+                <div class="tablist">
                     <div class="list_top">
                         <div class="title_area">
                             <p class="tit">활동 미감지</p>
@@ -31,10 +31,66 @@
                                     <col style="width:50%;">
                                 </colgroup>
                                 <tbody>
-                                    <tr>
-                                        <td><input type="text" name="" id="" value="30"></td>
-                                        <td>120</td>
+                                    <tr class="m_input">
+                                        <td>
+                                            <div class="input_area">
+                                                <input type="text" name="" id="" value="30">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input_area">
+                                                <input type="text" name="" id="" value="120">
+                                            </div>
+                                        </td>
                                     </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="tablist">
+                    <div class="list_top">
+                        <div class="title_area">
+                            <p class="tit">게이트웨이 상태 전송</p>
+                        </div>
+                        <div class="btn_area">
+                            <button type="button" class="btn form2">저장</button>
+                        </div>
+                    </div>
+                    <div class="list">
+                        <table>
+                            <colgroup>
+                                <col style="width:50%;">
+                                <col style="width:50%;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th scope="col">설정 값(분)</th>
+                                    <th scope="col">설정 값(분)</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="tbody">
+                            <table>
+                                <colgroup>
+                                    <col style="width:50%;">
+                                    <col style="width:50%;">
+                                </colgroup>
+                                <tbody>
+                                    <tr class="m_input">
+                                        <td>
+                                            <div class="input_area">
+                                                <input type="text" name="" id="" value="30">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input_area">
+                                                <input type="text" name="" id="" value="120">
+                                            </div>
+                                        </td>
+                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -66,8 +122,8 @@
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
                                 <th scope="col">감지 주기(초)</th>
-                                <th scope="col">센서 전송주기(배수)</th>
-                                <th scope="col">G/W 전송주기(배수)</th>                                                    
+                                <th scope="col">센서 전송주기(초)</th>
+                                <th scope="col">G/W 전송주기(초)</th>                                                    
                             </tr>
                         </thead>
                     </table>
@@ -93,18 +149,14 @@
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td>2</td>
                                     <td>
-                                        <span>[{{item.svrSendCycle}}초]</span>
-                                        <select name="" id="">
-                                            <option value="">30</option>
-                                        </select>
-                                        배수
+                                        <div class="input_area">
+                                            <input type="text" name="" id="" :value="item.svrSendCycle">초
+                                        </div>
                                     </td>
                                     <td>
-                                        <span>[{{item.gwSendCycle}}초]</span>
-                                        <select name="" id="">
-                                            <option value="">30</option>
-                                        </select>
-                                        배수
+                                        <div class="input_area">
+                                            <input type="text" name="" id="" :value="item.gwSendCycle">초
+                                        </div>
                                     </td>
                                 </tr>
                                 
@@ -165,18 +217,14 @@
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td>2</td>
                                     <td>
-                                        <span>[{{item.stateSvrSendCycle}}초]</span>
-                                        <select name="" id="">
-                                            <option value="">30</option>
-                                        </select>
-                                        배수
+                                        <div class="input_area">
+                                            <input type="text" name="" id="" :value="item.stateSvrSendCycle">초
+                                        </div>
                                     </td>
                                     <td>
-                                        <span>[{{item.stateGwSendCycle}}초]</span>
-                                        <select name="" id="">
-                                            <option value="">30</option>
-                                        </select>
-                                        배수
+                                        <div class="input_area">
+                                            <input type="text" name="" id="" :value="item.stateGwSendCycle">초
+                                        </div>
                                     </td>
                                 </tr>
                                 
@@ -207,7 +255,7 @@ import axios from "axios";
    },
   methods: {
       async getCSensers(){
-      const url  = `/admin/sensors?recipientId=${this.recipientId}`
+      const url  = `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30`
         
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})

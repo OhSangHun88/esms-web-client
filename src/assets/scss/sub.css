@@ -193,6 +193,8 @@ ul.info_list li .txt p{font-size: 12px;color: rgba(255, 255, 255, 0.8);padding: 
 .info_wrap_2 .tabcontent .tablist .list .tbody table tbody tr select{width: 93px;height: 30px;font-size: 14px;margin: 0 10px;}
 .info_wrap_2 .tabcontent .tablist .list.bd_btm table tbody tr:last-child{border-bottom-width: 1px;}
 .container .list_top .btn_area .btn.form2{width: auto;background-color: #11B787;color: #E6E5E8;box-shadow: 0px 6px 12px #0000000F;padding: 0 20px;}
+.info_wrap_2 .tabcontent .tablist .list .tbody table tbody tr.m_input td .input_area{width:150px;margin:0 auto;}
+.info_wrap_2 .tabcontent .tablist .list .tbody table tbody tr input{width: 93px;height: 30px;font-size: 14px;margin: 0 10px;}
 
 
 

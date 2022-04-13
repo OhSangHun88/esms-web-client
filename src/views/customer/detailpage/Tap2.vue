@@ -21,7 +21,6 @@
                             <col style="width:auto;">
                             <col style="width:auto;">
                             <col style="width:auto;">
-                            <col style="width:10%;">
                         </colgroup>
                         <thead>
                             <tr>
@@ -31,7 +30,6 @@
                                 <th scope="col">발생일시</th>
                                 <th scope="col">해제일시</th>
                                 <th scope="col">보고일시</th>
-                                <th scope="col">조치내용</th>
                             </tr>
                         </thead>
                     </table>
@@ -44,17 +42,15 @@
                                 <col style="width:auto;">
                                 <col style="width:auto;">
                                 <col style="width:auto;">
-                                <col style="width:10%;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in emergencys" v-bind:key="index">
                                     <td>{{item.signalStateNm}}</td>
                                     <td>{{item.typeNm}}</td>
-                                    <td>{{!item.testYn ? '테스트':'실제상황'}}</td> 
+                                    <td>{{!item.testYn ? '실제상황':'테스트'}}</td> 
                                     <td>{{item.occurDtime}}</td>
-                                    <td>2021-03-04 16:49:03</td>
+                                    <td>{{item.closeDtime}}</td>
                                     <td>{{item.rcvDtime}}</td>
-                                    <td>조치내용</td>
                                 </tr>   
                                 
                             </tbody>
@@ -67,7 +63,6 @@
 </template>
 <script>
 import axios from "axios";
-import moment from "moment";
  export default {
    name: "Tap2",
    props:{

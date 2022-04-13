@@ -301,10 +301,12 @@ export default {
       return tmp2.diff(tmp1, 'years');
     },
     makeMapData(){
-        let addr = this.bodyData.addr
-        if(!addr){
+        let addr = ''
+        if(!this.bodyData){
           console.log("지도 오류 주소코딩중...")
           addr =  '경기도 과천시 별양로 85(별양동, 주공아파트)'
+        }else {
+          addr = this.bodyData.addr
         }
         const container = document.getElementById("map");
         const mapOptions = {
