@@ -28,44 +28,44 @@
             </div>    
         </div>
         <div class="box_style2 box_col">
-                  <ul class="info_list">
-                      <li>
-                          <i class="ico01"></i>
-                          <div class="txt">
-                              <strong>{{this.reportMeasureData.TPE007}}</strong>
-                              <p>습도</p>
-                          </div>
-                      </li> 
-                      <li>
-                          <i class="ico02"></i>
-                          <div class="txt">
-                              <strong>{{this.reportMeasureData.TPE006}}</strong>
-                              <p>온도</p>
-                          </div>
-                      </li> 
-                      <li>
-                          <i class="ico03"></i>
-                          <div class="txt">
-                              <strong>{{this.reportMeasureData.TPE008}}</strong>
-                              <p>조도</p>
-                          </div>
-                      </li> 
-                      <li>
-                          <i class="ico04"></i>
-                          <div class="txt">
-                              <strong>연결</strong>
-                              <p>전원연결</p>
-                          </div>
-                      </li> 
-                      <li>
-                          <i class="ico05"></i>
-                          <div class="txt">
-                              <strong>{{!this.reportMeasureData.TPE012? "미감지": "감지"}}</strong>
-                              <p>활동감지</p>
-                          </div>
-                      </li> 
-                  </ul>
-              </div>
+            <ul class="info_list">
+                <li>
+                    <i class="ico01"></i>
+                    <div class="txt">
+                        <strong>{{this.reportMeasureData.TPE007}}</strong>
+                        <p>습도</p>
+                    </div>
+                </li> 
+                <li>
+                    <i class="ico02"></i>
+                    <div class="txt">
+                        <strong>{{this.reportMeasureData.TPE006}}</strong>
+                        <p>온도</p>
+                    </div>
+                </li> 
+                <li>
+                    <i class="ico03"></i>
+                    <div class="txt">
+                        <strong>{{this.reportMeasureData.TPE008}}</strong>
+                        <p>조도</p>
+                    </div>
+                </li> 
+                <li>
+                    <i class="ico04"></i>
+                    <div class="txt">
+                        <strong>연결</strong>
+                        <p>전원연결</p>
+                    </div>
+                </li> 
+                <li>
+                    <i class="ico05"></i>
+                    <div class="txt">
+                        <strong>{{!this.reportMeasureData.TPE012? "미감지": "감지"}}</strong>
+                        <p>활동감지</p>
+                    </div>
+                </li> 
+            </ul>
+        </div>
     </div>
 </template>
 <script>
@@ -116,7 +116,7 @@ export default {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
-
+        setInterval(this.getMeasuresData,180000)
     },
   }
 }
