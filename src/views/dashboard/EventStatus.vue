@@ -40,7 +40,6 @@ export default {
       eventBus.$on("EvLookUp", (EvChartItems, s_date) => 
       {
           this.s_date = s_date
-          
           if(EvChartItems != ''){
           this.comChartItems = EvChartItems
           let tmpArr1 = []
@@ -70,7 +69,9 @@ export default {
               eventCd: null,
               occurDate: moment(s_date).add(i,'days').format('YYYYMMDD'),
             })
+            console.log(tmpArr2)
           }
+          
           //"E1013"
           for(let i=0; i<this.comChartItems.length; i++){
             if(this.comChartItems[i].eventCd==="E1013"){

@@ -203,8 +203,7 @@ export default {
     methods:{
     // 시/도 목록
     getSidoData() {
-      let url =this.$store.state.serverApi + "/admin/address/sido"
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+      axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           this.sidoItems=[];
           this.sidoItems.push({label: '전체', value: ''});
@@ -214,88 +213,79 @@ export default {
               value: response.data.data[i].sidoCd
             });
           }  
-      })
-      .catch(error => {
-        this.errorMessage = error.message;
-        console.error("There was an error!", error);
-      });
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
     },
 
     // 시/군/구 목록
     getSggData() {
-    let url =this.$store.state.serverApi + "/admin/address/sgg";
-    if(this.sidoCd != ''){
+      let url =this.$store.state.serverApi + "/admin/address/sgg";
+      if(this.sidoCd != ''){
         url += "?sidoCd="+this.sidoCd;
-    }else{
+      }else{
+        this.selectedSggItems = ''
         this.sggItems=[];
         this.sggItems.push({label: '전체', value: ''});
         return ; 
-    }
-    axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            const tempArr = [];
-            this.sggItems=[];
-            //this.sggItems.push({label: '전체', value: ''});
-            
-            tempArr.push({label: '전체', value: ''});
-
-            /*
-            for(let i=0; i<response.data.data.length; i++) {
-              this.sggItems.push({
-                label: response.data.data[i].sgg,
-                value: response.data.data[i].sggCd,
-                value2: response.data.data[i].sidoCd
-              });
-            } 
-            */
-
-            for(let i=0; i<response.data.data.length; i++) {
-              tempArr.push({
-                label: response.data.data[i].sgg,
-                value: response.data.data[i].sggCd,
-                value2: response.data.data[i].sidoCd
-              });
-            } 
-            this.sggItems = tempArr.filter(cd=>{
-                return cd.value2 === this.sidoCd
+      }
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          const tempArr = [{label: '전체', value: ''}];
+          let tmpResult2 = [{label: '전체', value: ''}];
+          for(let i=0; i<response.data.data.length; i++) {
+            tempArr.push({
+              label: response.data.data[i].sgg,
+              value: response.data.data[i].sggCd,
+              value2: response.data.data[i].sidoCd
             });
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
+          } 
+          let tmpResult = tempArr.filter(cd=>{
+            return cd.value2 === this.sidoCd
           });
+          
+          this.sggItems = [...tmpResult2,...tmpResult]
+          console.log(this.sggItems )
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
     },
 
     // 관리 기관 목록
     getOrgmData() {
-     let url =this.$store.state.serverApi + "/admin/organizations";
-        if(this.sggCd != ''){
-           let sggCode = this.sggCd.substring(0, 5);
-           console.log(">> sggCode["+sggCode+"]");
-            url += "?sggCd="+sggCode;
-        }else{
-            this.orgmItems=[];
-            this.orgmItems.push({label: '전체', value: ''});
-            return ; 
-        }
-       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            const tempArr = [];
-            this.orgmItems=[];
-            for(let i=0; i<response.data.data.length; i++) {
-              console.log("orgNm["+response.data.data[i].orgNm+"]");
-              tempArr.push({
-                label: response.data.data[i].orgNm,
-                value: response.data.data[i].orgId,
-              });
-            } 
-            console.log(">> tempArr["+tempArr+"]")
-            this.orgmItems=tempArr;
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
+      let url =this.$store.state.serverApi + "/admin/organizations";
+      if(this.sggCd != ''){
+        let sggCode = this.sggCd.substring(0, 5);
+        url += "?sggCd="+sggCode;
+      }else{
+        this.selectedOrgItems = ''
+        this.orgmItems=[];
+        this.orgmItems.push({label: '전체', value: ''});
+        return ; 
+      }
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          const tmpArr = [{label: '전체', value: ''}];
+          let tmpResult2 = [{label: '전체', value: ''}];
+          this.orgmItems=[];
+          for(let i=0; i<response.data.data.length; i++) {
+            tmpArr.push({
+              label: response.data.data[i].orgNm,
+              value: response.data.data[i].orgId,
+            });
+          } 
+          let tmpResult = tmpArr
+          this.orgmItems = [...tmpResult2,...tmpResult]
+        this.orgmItems=tmpArr;
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
     },
 
     //구분 목록
@@ -388,13 +378,13 @@ export default {
       this.orgSido = event.target.value;
     },
     onChangeSgg(event){
-      this.orgSgg = event.target.value;
       this.sidoCd = event.target.value
       this.getSggData()
+      this.sggCd = ''
+      this.getOrgmData()
     },
     onChangeOrg(event) {
       this.sggCd = event.target.value
-      this.orgSgg = event.target.value
       this.getOrgmData()
     },
     onChangePart(event) {
