@@ -415,7 +415,7 @@ export default {
   },
   methods: {
     getSidoData() {
-      axios.get("/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
+      axios.get(this.$store.state.serverApi +"/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           this.sidoItems=[];
           this.sidoItems.push({label: '전체', value: ''});
@@ -434,7 +434,7 @@ export default {
 
     // 시/군/구 목록
     getSggData() {
-      let url = "/admin/address/sgg";
+      let url = this.$store.state.serverApi +"/admin/address/sgg";
       if(this.sidoCd != ''){
           url += "?sidoCd="+this.sidoCd;
       }else{
@@ -467,7 +467,7 @@ export default {
     // 관리 기관 목록
   getOrgmData() {
     
-    let url = "/admin/organizations";
+    let url = this.$store.state.serverApi +"/admin/organizations";
         if(this.sggCd != ''){
             url += "?sggCd="+this.sggCd;
         }else{
