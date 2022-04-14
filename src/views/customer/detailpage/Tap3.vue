@@ -31,7 +31,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <div class="tbody">
+                    <div class="tbody htype-01">
                         <table>
                             <colgroup>
                                 <col style="width:20%;">
@@ -40,7 +40,7 @@
                                 <col style="width:20%;">
                                 <col style="width:20%;">
                             </colgroup>
-                            <tbody>
+                            <tbody class="">
                                 <tr v-for="(item,index) in call_historys" v-bind:key="index">
                                     <td>{{item.callTypeNm}}</td>
                                     <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>

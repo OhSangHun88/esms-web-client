@@ -127,7 +127,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <div class="tbody">
+                    <div class="tbody htype-03">
                         <table>
                             <colgroup>
                                 <col style="width:13%;">
@@ -195,7 +195,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <div class="tbody">
+                    <div class="tbody htype-03">
                         <table>
                             <colgroup>
                                 <col style="width:13%;">

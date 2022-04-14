@@ -35,7 +35,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <div class="tbody">
+                    <div class="tbody htype-04">
                         <table>
                             <colgroup>
                                 <col style="width:20%;">
@@ -87,7 +87,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <div class="tbody">
+                    <div class="tbody htype-04">
                         <table>
                             <colgroup>
                                 <col style="width:25%;">
@@ -134,7 +134,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <div class="tbody">
+                    <div class="tbody htype-04">
                         <table>
                             <colgroup>
                                 <col style="width:25%;">
@@ -188,7 +188,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <div class="tbody">
+                    <div class="tbody ">
                         <table>
                             <colgroup>
                                 <col style="width:16%;">

@@ -118,8 +118,8 @@
                             <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                             <td><a href="#">{{item.typeNm}}</a></td>
                             <td><a href="#">{{item.stateNm}}</a></td>
-                            <td><a href="#">{{item.addr}}</a></td>
-                            <td><a href="#">{{item.orgNm}}</a></td>
+                            <td style="text-align: left;"><a href="#" >{{item.addr}}</a></td>
+                            <td style="text-align: left;"><a href="#">{{item.orgNm}}</a></td>
                             <td><a href="#">{{item.managerNm}}</a></td>
                             <td><a href="#">{{$moment(item.regDtime).format('YYYY-MM-DD')}}</a></td>
                         </tr>

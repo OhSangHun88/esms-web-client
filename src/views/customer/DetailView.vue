@@ -22,7 +22,7 @@
                   <th scope="row">주소</th>
                   <th scope="row">성별</th>
                   <th scope="row">전화번호</th>
-                  <th scope="col">감지주기</th>
+                  <th scope="col">활동미감지(분)</th>
                   <th scope="col">관리기관</th>
               </thead>
               <tbody>
@@ -47,7 +47,7 @@
                         </div>
                     </td>
                     <td>
-                        <input type="text" :value="this.bodyData? this.bodyData.recipientPhoneno : ''">
+                        <input type="text" :value="this.bodyData? changeRecipientPhoneno(this.bodyData.recipientPhoneno) : ''">
                     </td>
                     <td>
                         <input type="text" class="size-1" :value="this.bodyData? this.bodyData.measureCycle : ''">
@@ -69,15 +69,15 @@
                       <div class="tab">
                           <ul class="tabnav">
                               <li :class="menutoggle===1?'active':''"><a href="#" @click="menu(1)">현재상태</a></li>
-                              <li :class="menutoggle===2?'active':''"><a href="#" @click="menu(2)">응급요원</a></li>
                               <li :class="menutoggle===3?'active':''"><a href="#" @click="menu(3)">말벗</a></li>
+                              <li :class="menutoggle===2?'active':''"><a href="#" @click="menu(2)">응급요원</a></li>
                               <li :class="menutoggle===4?'active':''"><a href="#" @click="menu(4)">생활관리사</a></li>
                           </ul>
                           <div class="tabcontent">
                             <!-- :recipientId="this.recipientId" -->
                             <menu1 :recipientId="this.recipientId" v-if="this.menutoggle===1"></menu1>
-                            <menu2 :recipientId="this.recipientId" v-if="this.menutoggle===2"></menu2>  
                             <menu3 :recipientId="this.recipientId" v-if="this.menutoggle===3"></menu3>  
+                            <menu2 :recipientId="this.recipientId" v-if="this.menutoggle===2"></menu2>  
                             <menu4 :recipientId="this.recipientId" v-if="this.menutoggle===4"></menu4>    
                           </div>
                       </div><!--tab-->
@@ -333,7 +333,16 @@ export default {
           else
             console.log("fail")
         })
+    },
+    changeRecipientPhoneno(phone){
+    if(phone){
+      let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+      return changeNumber
+    }else{
+      return ''
     }
+    
+  },
   },
   created() {
     this.recipientId = this.$route.params.recipientId
