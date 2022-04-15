@@ -157,6 +157,7 @@ export default {
     data() {
       return{
         orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
         partCode: '', statusCode: '', modelName: '',
         sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
@@ -179,21 +180,23 @@ export default {
     methods:{
     // 시/도 목록
     getSidoData() {
-      axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
-        .then(response => {
-          this.sidoItems=[];
-          this.sidoItems.push({label: '전체', value: ''});
-          for(let i=0; i<response.data.data.length; i++) {
-            this.sidoItems.push({
-              label: response.data.data[i].sido,
-              value: response.data.data[i].sidoCd
-            });
-          }  
-        })
-        .catch(error => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
+    axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            
+            this.sidoItems=[];
+            this.sidoItems.push({label: '전체', value: ''});
+
+            for(let i=0; i<response.data.data.length; i++) {
+              this.sidoItems.push({
+                label: response.data.data[i].sido,
+                value: response.data.data[i].sidoCd
+              });
+            }  
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
     },
 
     // 시/군/구 목록
@@ -232,6 +235,7 @@ export default {
     },
 
     // 관리 기관 목록
+
     getOrgmData() {
       let url =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
@@ -332,6 +336,7 @@ export default {
       this.sggCd = ''
       this.getOrgmData()
     },
+
     onChangeOrg(event) {
       this.sggCd = event.target.value
       this.getOrgmData()

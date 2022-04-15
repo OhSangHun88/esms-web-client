@@ -203,21 +203,24 @@ export default {
     methods:{
     // 시/도 목록
     getSidoData() {
-      axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
-        .then(response => {
-          this.sidoItems=[];
-          this.sidoItems.push({label: '전체', value: ''});
-          for(let i=0; i<response.data.data.length; i++) {
-            this.sidoItems.push({
-              label: response.data.data[i].sido,
-              value: response.data.data[i].sidoCd
-            });
-          }  
-        })
-        .catch(error => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
+    axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            
+            this.sidoItems=[];
+            this.sidoItems.push({label: '전체', value: ''});
+
+            for(let i=0; i<response.data.data.length; i++) {
+              this.sidoItems.push({
+                label: response.data.data[i].sido,
+                value: response.data.data[i].sidoCd
+              });
+            }  
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+
     },
 
     // 시/군/구 목록
@@ -329,7 +332,6 @@ export default {
 
     getRecipientData() {
       let uri = '';
-
       if(this.orgId == '' && this.partCode == '' && this.statusCode == '' && this.modelName == '') {
         uri = this.$store.state.serverApi + "/admin/emergencys?pageIndex=1&recordCountPerPage=100";
       } else {
@@ -372,17 +374,13 @@ export default {
         return ''
       }
     },
-    onChangeSido(event){
-      console.log("====onChangeSido($event) execution")
-      this.getSggData()
-      this.orgSido = event.target.value;
-    },
     onChangeSgg(event){
       this.sidoCd = event.target.value
       this.getSggData()
       this.sggCd = ''
       this.getOrgmData()
     },
+
     onChangeOrg(event) {
       this.sggCd = event.target.value
       this.getOrgmData()

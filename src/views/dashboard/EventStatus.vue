@@ -1,9 +1,9 @@
 <template>
   <div class="box_col3 box_style" style="margin-left:20px">
     <p>응급 이벤트 현황</p>    
-   <div>
-      <canvas class="statistics-charts-line" ref="BarChart" width="470" height="275" ></canvas>
-    </div>
+  <div>
+    <canvas class="statistics-charts-line" ref="BarChart" width="470" height="275" ></canvas>
+  </div>
   </div>
 </template>
 
