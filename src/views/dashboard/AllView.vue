@@ -80,10 +80,10 @@
             </div>
           </div>
           <div class="box_col3 box_style">
-            <p>오늘 이벤트 현황</p>
+            <!-- <p>오늘 이벤트 현황</p>
             <div>
               <canvas class="statistics-charts-line" ref="BarChart2" width="470" height="50" ></canvas>
-            </div>
+            </div> -->
             <p>응급 이벤트 현황</p>    
             <div>
               <canvas class="statistics-charts-line" ref="BarChart1" width="470" height="275" ></canvas>
@@ -178,7 +178,7 @@
             <p>배터리 상태</p>
             </div>
             <div>
-              <canvas ref="barChart" style="height: 240px"/>
+              <canvas ref="barChart" style="height: 240"/>
             </div>
           </div>
           <div class="box_style box_r" style="height: 270px;">
@@ -324,6 +324,7 @@ export default {
   },
   mounted(){
     this.createEuData();
+    // this.EvchartRedraw2()
     this.createEvData();
     this.createBtData();
     this.createPwData();
@@ -649,29 +650,29 @@ export default {
         backgroundColor: ["rgba(255, 60, 166, 0.8)",],
       }]
       }
-      let data2 =  {
-      labels: [],
-      labelsColor: 'rgba(17, 183, 1, 1)',
-      datasets: [
-        {
-        label: '화재',
-        data: 16,
-        maxBarThickness: 10,    
-        backgroundColor: ["rgba(19, 126, 255, 0.8)",]
-        },
-        {
-        label: '응급',
-        data: 17,
-        maxBarThickness: 10,  
-        backgroundColor: ['rgba(17, 183, 135, 1)',],
-      },
-      {
-        label:'119',
-        data: 10,
-        maxBarThickness: 10,  
-        backgroundColor: ["rgba(255, 60, 166, 0.8)",],
-      }]
-      }
+      // let data2 =  {
+      // labels: [],
+      // labelsColor: 'rgba(17, 183, 1, 1)',
+      // datasets: [
+      //   {
+      //   label: '화재',
+      //   data: [16],
+      //   maxBarThickness: 10,    
+      //   backgroundColor: ["rgba(19, 126, 255, 0.8)",]
+      //   },
+      //   {
+      //   label: '응급',
+      //   data: [17],
+      //   maxBarThickness: 10,  
+      //   backgroundColor: ['rgba(17, 183, 135, 1)',],
+      // },
+      // {
+      //   label:'119',
+      //   data: [8],
+      //   maxBarThickness: 10,  
+      //   backgroundColor: ["rgba(255, 60, 166, 0.8)",],
+      // }]
+      // }
       let options1={
       scales: {
         x: {
@@ -701,47 +702,41 @@ export default {
         tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
       }
     }
-    let options2={
-      scales: {
-        x: {
-          stacked:true,
-          display:false,
-          ticks:{
-            color: "rgba(255, 255, 255, 1)"
-          }
-        },
-        y: {
-          beginAtZero: true,
-          display:false,
-          ticks:{
-            stepSize: 1,
-            color: "rgba(255, 255, 255, 1)"
-          }
-        }
-      },
-      indexAxis:'y',
-      plugins:{
-        legend: {
-		      display: false,
-          position: 'top',
-          align: 'end',
-          labels: {
-            color: "rgba(255, 255, 255, 1)",
-            boxWidth: 8,
-            usePointStyle: true
-          },
-		    },
-        tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
-      }
-    }
+    // let options2={
+    //   scales: {
+    //     x: {
+    //       stacked:true,
+    //       display:false,
+    //       ticks:{
+    //         color: "rgba(255, 255, 255, 1)"
+    //       }
+    //     },
+    //     y: {
+    //       beginAtZero: true,
+    //       display:false,
+    //       ticks:{
+    //         stepSize: 1,
+    //         color: "rgba(255, 255, 255, 1)"
+    //       }
+    //     }
+    //   },
+    //   indexAxis:'y',
+    //   plugins:{
+    //     legend: {
+		//       display: false,
+		//     },
+        
+    //   }
+    // }
     this.EvchartData1 = data1
     this.EvchartOptions1 = options1
-    this.EvchartData2 = data2
-    this.EvchartOptions2 = options2
+    // this.EvchartData2 = data2
+    // this.EvchartOptions2 = options2
     console.log(this.EvchartData1)
-    console.log(this.EvchartData2)
+    // console.log(this.EvchartData2)
     this.createEvChartDateTime()
     this.EvchartRedraw();
+    //this.EvchartRedraw2();
     },
     EvchartRedraw(){  
       this.EvchartImage1 = new Chart(this.$refs.BarChart1, {
@@ -749,16 +744,16 @@ export default {
         data:this.EvchartData1,
         options:this.EvchartOptions1
       })
-      this.EvchartImage2 = new Chart(this.$refs.BarChart2, {
-        type:'bar',
-        data:this.EvchartData2,
-        options:this.EvchartOptions2
-      })
       this.EvchartImage1.update();
-      this.EvchartImage2.update();
-      console.log(this.EvchartImage1)
-      console.log(this.EvchartImage2)
     },
+    // EvchartRedraw2(){  
+    //   this.EvchartImage2 = new Chart(this.$refs.BarChart2, {
+    //     type:'bar',
+    //     data:this.EvchartData2,
+    //     options:this.EvchartOptions2
+    //   })
+    //   this.EvchartImage2.update();
+    // },
     createEvChartDateTime(){
       if(this.EvchartData1){
         let tmp = this.EvchartData1.datasets[0].data.length
@@ -771,7 +766,7 @@ export default {
       }
     },
     async remakeEvData(){
-      this.EvchartImage.destroy();  
+      this.EvchartImage1.destroy();  
       let addrCode =  this.sggCd.substring(0,5);
       this.e_date = moment(this.s_date).add(6,'days').format('YYYYMMDD')
       let urlEventStatus = this.$store.state.serverApi + "/admin/organizations/stat/alarm?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
@@ -1111,7 +1106,7 @@ export default {
           display: true, 
           color: "rgba(255, 255, 255, 1)", //labelscolor,fontcolor,color 데이터를 arr
           position: "bottom", 
-          labels: { boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: "circle", font: { size: 14 } }, 
+          labels: { boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: "circle", font: { size: 14 }, color:"rgba(255, 255, 255, 1)"}, 
           fullSize: false, 
           align: "center" 
           }, 
