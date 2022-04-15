@@ -31,21 +31,23 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
-                            <select @change="onChangeSgg($event)">
-                                <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select @change="onChangeOrg($event)">
-                              <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select>
-                              <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
-                            </select>
-                        </td>
+                      <td>
+                        <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
+                          <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                        </select> 
+                      </td>
+                      <td>
+                        <select v-model="selectedSggItems" @change="onChangeOrg($event)">
+                          <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                        </select>
+                      </td>
+                      <td>
+                        
+                        <select v-model="selectedOrgItems">
+                          <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                        </select>
+
+                      </td>
                         <td>
                             <input type="text" value=" " v-model="filterName" placeholder="이름을 입력해 주세요">
                         </td>
@@ -376,10 +378,10 @@ export default {
       caption: '', fileName: '',
       counter: 0,pageIndex: 1,
       orgmItems: [], partItems: [], statusItems: [], cycleItems: [], sexItems:[{label: '남', value: 'M'}, {label: '여', value: 'F'}],
-      orgCode: '', partCode: '', statusCode: '', sexCode: '', cycleCode: '',
+      orgCode: '', partCode: '', statusCode: '', sexCode: '', cycleCode: '',selectedSidoItems: '', selectedSggItems: '', selectedOrgItems: '',
       modelOrg: '', modelPart: '', modelStatus: '', modelName: '',
       orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-      sidoItems:[], sggItems:[],  actItems:[], recipientItems:[], orgSido:'', orgSgg:'', filterName:'',
+      sidoItems:[], sggItems:[],  actItems:[], recipientItems:[],recipientOrginItems:[], orgSido:'', orgSgg:'', filterName:'',
       recipientFields: [
         { key: 'orgNm', label: '기관관리', _classes: 'text-center' },
         { key: 'typeNm', label: '구분', _classes: 'text-center' },
@@ -415,131 +417,141 @@ export default {
   },
   methods: {
     getSidoData() {
-      axios.get(this.$store.state.serverApi +"/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
-        .then(response => {
-          this.sidoItems=[];
-          this.sidoItems.push({label: '전체', value: ''});
-          for(let i=0; i<response.data.data.length; i++) {
-            this.sidoItems.push({
-              label: response.data.data[i].sido,
-              value: response.data.data[i].sidoCd
-            });
-          }  
-      })
-      .catch(error => {
-        this.errorMessage = error.message;
-        console.error("There was an error!", error);
-      });
+    axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            
+            this.sidoItems=[];
+            this.sidoItems.push({label: '전체', value: ''});
+
+            for(let i=0; i<response.data.data.length; i++) {
+              this.sidoItems.push({
+                label: response.data.data[i].sido,
+                value: response.data.data[i].sidoCd
+              });
+            }  
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+
     },
 
     // 시/군/구 목록
     getSggData() {
-      let url = this.$store.state.serverApi +"/admin/address/sgg";
+      let url =this.$store.state.serverApi + "/admin/address/sgg";
       if(this.sidoCd != ''){
-          url += "?sidoCd="+this.sidoCd;
+        url += "?sidoCd="+this.sidoCd;
       }else{
-          this.sggItems=[];
-          this.sggItems.push({label: '전체', value: ''});
-          return ; 
+        this.selectedSggItems = ''
+        this.sggItems=[];
+        this.sggItems.push({label: '전체', value: ''});
+        return ; 
       }
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            const tempArr = [];
-            this.sggItems=[];
-            tempArr.push({label: '전체', value: ''});
-            for(let i=0; i<response.data.data.length; i++) {
-              tempArr.push({
-                label: response.data.data[i].sgg,
-                value: response.data.data[i].sggCd,
-                value2: response.data.data[i].sidoCd
-              });
-            } 
-            this.sggItems = tempArr.filter(cd=>{
-                return cd.value2 === this.sidoCd
+        .then(response => {
+          const tempArr = [{label: '전체', value: ''}];
+          let tmpResult2 = [{label: '전체', value: ''}];
+          for(let i=0; i<response.data.data.length; i++) {
+            tempArr.push({
+              label: response.data.data[i].sgg,
+              value: response.data.data[i].sggCd,
+              value2: response.data.data[i].sidoCd
             });
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
+          } 
+          let tmpResult = tempArr.filter(cd=>{
+            return cd.value2 === this.sidoCd
           });
+          
+          this.sggItems = [...tmpResult2,...tmpResult]
+          console.log("this.sggItems ")
+          console.log(this.sggItems)
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
     },
 
     // 관리 기관 목록
   getOrgmData() {
-    
-    let url = this.$store.state.serverApi +"/admin/organizations";
-        if(this.sggCd != ''){
-            url += "?sggCd="+this.sggCd;
-        }else{
+      let url =this.$store.state.serverApi + "/admin/organizations";
+      if(this.sggCd != ''){
+        let sggCode = this.sggCd.substring(0, 5);
+        url += "?sggCd="+sggCode;
+      }else{
+        this.selectedOrgItems = ''
+        this.orgmItems=[];
+        this.orgmItems.push({label: '전체', value: ''});
+        return ; 
+      }
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          const tmpArr = [{label: '전체', value: ''}];
+          let tmpResult2 = [{label: '전체', value: ''}];
           this.orgmItems=[];
-          this.orgmItems.push({label: '전체', value: ''});
-          return ; 
-        }
-       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            const tempArr = [];
-            this.orgmItems=[];
-            tempArr.push({label: '전체', value: ''});
-            for(let i=0; i<response.data.data.length; i++) {
-              tempArr.push({
-                label: response.data.data[i].orgNm,
-                value: response.data.data[i].orgId,
-                value2: response.data.data[i].addrCd
-              });
-            }
-            this.orgmItems = tempArr.filter(cd=>{
-            return cd.value2 === this.sggCd
+          for(let i=0; i<response.data.data.length; i++) {
+            tmpArr.push({
+              label: response.data.data[i].orgNm,
+              value: response.data.data[i].orgId,
             });
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
+          } 
+          let tmpResult = tmpArr
+          this.orgmItems = [...tmpResult2,...tmpResult]
+        this.orgmItems=tmpArr;
+        console.log(this.orgmItems)
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
     },
-  onChangeSido(event){
-      console.log("====onChangeSido($event) execution")
-      this.getSggData()
-      this.orgSido = event.target.value;
-  },
   onChangeSgg(event){
-      this.orgSgg = event.target.value;
       this.sidoCd = event.target.value
       this.getSggData()
-  },
-  onChangeOrg(event) {
-      console.log("onChangeOrg")
-      this.orgCode = event.target.value;
+      this.sggCd = ''
+      this.getOrgmData()
+    },
+    onChangeOrg(event) {
       this.sggCd = event.target.value
       this.getOrgmData()
-  },
-  onChangePart(event) {
-      this.partCode = event.target.value;
-  },
-  onChangeStatus(event) {
-      this.statusCode = event.target.value;
-  },
-  initSet() {
-      this.orgCode='';
-      this.partCode='';
-      this.statusCode='';
-      this.sexCode='';
-      this.cycleCode='';
-      this.modelName='';
-      this.modelOrg="전체";
-      this.modelPart="전체";
-      this.modelStatus="전체";
-  },
+    },
+    onChangeSido(event){
+      this.getSggData()
+      this.orgSido = event.target.value;
+    },
+  // onChangePart(event) {
+  //     this.partCode = event.target.value;
+  // },
+  // onChangeStatus(event) {
+  //     this.statusCode = event.target.value;
+  // },
+  // initSet() {
+  //     this.orgCode='';
+  //     this.partCode='';
+  //     this.statusCode='';
+  //     this.sexCode='';
+  //     this.cycleCode='';
+  //     this.modelName='';
+  //     this.modelOrg="전체";
+  //     this.modelPart="전체";
+  //     this.modelStatus="전체";
+  // },
   getFilteredRecipientData(){
     console.log("aa")
     console.log(this.filterName)
+    console.log(this.selectedOrgItems)
     
     const regExp1 = this.filterName !=='' ? new RegExp(this.filterName, 'gi') : '';
+    
+    let tmpData = this.recipientItems
+    console.log(this.recipientOrginItems)
     if(this.filterName){
-      this.recipientItems = this.recipientItems.filter(ri=>{
+      this.recipientItems = tmpData.filter(ri=>{
       return ri.recipientNm.match(regExp1)
     })
     }else 
-      return this.recipientItems 
+      return this.recipientItems = this.recipientOrginItems
   },
   getRecipientData() {
     let uri = '';
@@ -562,6 +574,7 @@ export default {
     axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(response => {
           this.recipientItems = response.data.data
+          this.recipientOrginItems = response.data.data
           console.log(this.recipientItems)
           // this.recipientItems = [];
           // for(let i=0; i<response.data.data.length; i++) {
@@ -648,44 +661,44 @@ export default {
     //         console.error("There was an error!", error);
     //       });
     // },
-    say: function (message) {
-      alert(message)
-    },
-    detailCustomerView(recipId, orgm) {
-      sessionStorage.setItem("recipid", recipId);
-      sessionStorage.setItem("orgm", orgm);
-      this.$router.push('detailView');
-    },
+    // say: function (message) {
+    //   alert(message)
+    // },
+    // detailCustomerView(recipId, orgm) {
+    //   sessionStorage.setItem("recipid", recipId);
+    //   sessionStorage.setItem("orgm", orgm);
+    //   this.$router.push('detailView');
+    // },
     
-    onChangePart(event) {
-      this.partCode = event.target.value;
-    },
-    onChangeStatus(event) {
-      this.statusCode = event.target.value;
-    },
-    onChangeSex(event) {
-      this.sexCode = event.target.value;
-    },
-    onChangeCycle(event) {
-      this.cycleCode = event.target.value;
-    },
-    manageInquiry() {
-      this.getRecipientData();
-    },
-    findPostCode() {
-      axios.get("https://www.juso.go.kr/addrlink/addrLinkApiJsonp.do");
-    },
-    initSet() {
-      this.orgCode='';
-      this.partCode='';
-      this.statusCode='';
-      this.sexCode='';
-      this.cycleCode='';
-      this.modelName='';
-      this.modelOrg="전체";
-      this.modelPart="전체";
-      this.modelStatus="전체";
-    },
+    // onChangePart(event) {
+    //   this.partCode = event.target.value;
+    // },
+    // onChangeStatus(event) {
+    //   this.statusCode = event.target.value;
+    // },
+    // onChangeSex(event) {
+    //   this.sexCode = event.target.value;
+    // },
+    // onChangeCycle(event) {
+    //   this.cycleCode = event.target.value;
+    // },
+    // manageInquiry() {
+    //   this.getRecipientData();
+    // },
+    // findPostCode() {
+    //   axios.get("https://www.juso.go.kr/addrlink/addrLinkApiJsonp.do");
+    // },
+    // initSet() {
+    //   this.orgCode='';
+    //   this.partCode='';
+    //   this.statusCode='';
+    //   this.sexCode='';
+    //   this.cycleCode='';
+    //   this.modelName='';
+    //   this.modelOrg="전체";
+    //   this.modelPart="전체";
+    //   this.modelStatus="전체";
+    // },
     makeAge(birthDay){
       let tmp1 = this.$moment(birthDay).format('YYYY')
       let tmp2 = this.$moment()

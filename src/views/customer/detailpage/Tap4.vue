@@ -1,18 +1,18 @@
 <template>
-    <div>
+    <div >
         <div class="tabcontent">
-            <div class="toggle_btn2">
-                <button type="button" :class="connectTap===3?'btn on':'btn'" @click="dataTogle(3)" >태블릿</button>
-                <button type="button" :class="connectTap===2?'btn on':'btn'" @click="dataTogle(2)">게이트웨이</button>
-                <button type="button" :class="connectTap===1?'btn on':'btn'" @click="dataTogle(1)">센서</button>
+            <div class="toggle_btn2" style="margin-top : -25px">
+                <button type="button" :class="connectTap===3?'btn on':'btn'" @click="dataTogle(3)" style="font-size: 16px;">태블릿</button>
+                <button type="button" :class="connectTap===2?'btn on':'btn'" @click="dataTogle(2)" style="font-size: 16px;">게이트웨이</button>
+                <button type="button" :class="connectTap===1?'btn on':'btn'" @click="dataTogle(1)" style="font-size: 16px;">센서</button>
             </div>
             <div class="tablist" v-if="connectTap===3">
                 <div class="list_top">
                     <div class="title_area">
                         <p class="tit">Tablet PC</p>
                         <div class="toggle_btn">
-                            <button type="button" class="btn on">남</button>
-                            <button type="button" class="btn">여</button>
+                            <button type="button" class="btn on">기본정보</button>
+                            <button type="button" class="btn">상세정보</button>
                         </div>
                     </div>
                 </div>
@@ -112,8 +112,8 @@
                     <div class="title_area">
                         <p class="tit">센서</p>
                         <div class="toggle_btn">
-                            <button type="button" class="btn on">최신정보</button>
-                            <button type="button" class="btn">직전정보</button>
+                            <button type="button" class="btn on">기본정보</button>
+                            <button type="button" class="btn">상세정보</button>
                         </div>
                     </div>
                 </div>
