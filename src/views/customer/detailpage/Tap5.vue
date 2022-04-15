@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="margin-top : -20px">
         <div class="tabcontent">
             <div class="tablist_wrap">
                 <div class="tablist">
@@ -12,38 +12,29 @@
                         </div>
                     </div>
                     <div class="list">
-                        <table>
-                            <colgroup>
-                                <col style="width:50%;">
-                                <col style="width:50%;">
-                            </colgroup>
-                            <thead>
-                                <tr>
-                                    <th scope="col">설정 값(분)</th>
-                                    <th scope="col">설정 값(분)</th>
-                                </tr>
-                            </thead>
-                        </table>
                         <div class="tbody">
                             <table>
                                 <colgroup>
-                                    <col style="width:50%;">
-                                    <col style="width:50%;">
+                                    <col style="width:25%;">
+                                    <col style="width:25%;">
+                                    <col style="width:25%;">
+                                    <col style="width:25%;">
                                 </colgroup>
                                 <tbody>
                                     <tr class="m_input">
+                                        <td >설정 값(분)</td>
                                         <td>
                                             <div class="input_area">
                                                 <input type="text" name="" id="" value="30">
                                             </div>
                                         </td>
+                                        <td >설정 값(분)</td>
                                         <td>
                                             <div class="input_area">
                                                 <input type="text" name="" id="" value="120">
                                             </div>
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                         </div>
@@ -59,31 +50,23 @@
                         </div>
                     </div>
                     <div class="list">
-                        <table>
-                            <colgroup>
-                                <col style="width:50%;">
-                                <col style="width:50%;">
-                            </colgroup>
-                            <thead>
-                                <tr>
-                                    <th scope="col">설정 값(분)</th>
-                                    <th scope="col">설정 값(분)</th>
-                                </tr>
-                            </thead>
-                        </table>
                         <div class="tbody">
                             <table>
                                 <colgroup>
-                                    <col style="width:50%;">
-                                    <col style="width:50%;">
+                                    <col style="width:25%;">
+                                    <col style="width:25%;">
+                                    <col style="width:25%;">
+                                    <col style="width:25%;">
                                 </colgroup>
                                 <tbody>
                                     <tr class="m_input">
+                                        <td >설정 값(분)</td>
                                         <td>
                                             <div class="input_area">
                                                 <input type="text" name="" id="" value="30">
                                             </div>
                                         </td>
+                                        <td >설정 값(분)</td>
                                         <td>
                                             <div class="input_area">
                                                 <input type="text" name="" id="" value="120">
@@ -97,7 +80,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tablist">
+            <div class="tablist" style="margin-top : -5px">
                 <div class="list_top">
                     <div class="title_area">
                         <p class="tit">센서 감지 주기 및 전송 주기</p>

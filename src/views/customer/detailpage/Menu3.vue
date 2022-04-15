@@ -19,8 +19,8 @@
                         <thead>
                             <tr>
                                 <!-- <th scope="col">관리기관</th> -->
-                                <th scope="col">관계</th>
                                 <th scope="col">이름</th>
+                                <th scope="col">관계</th>
                                 <th scope="col">핸드폰번호</th>
                             </tr>
                         </thead>
