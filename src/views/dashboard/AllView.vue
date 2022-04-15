@@ -82,7 +82,7 @@
           <div class="box_col3 box_style">
             <p>오늘 이벤트 현황</p>
             <div>
-              <canvas class="statistics-charts-line" ref="BarChart2" width="470" height="100" ></canvas>
+              <canvas class="statistics-charts-line" ref="BarChart2" width="470" height="50" ></canvas>
             </div>
             <p>응급 이벤트 현황</p>    
             <div>
@@ -248,12 +248,11 @@ export default {
     sidoItems:[], sggItems:[], orgmItems:[],
     selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
     // 날짜
-    s_date: null, e_date: null, 
-    TodayS_date: null,
-    ASs_date: null, ASe_date: null,
+    s_date: null, e_date: null,
     // 설치 가구수, 응급관리요원, 생활 관리사
     setCount: 0, setEMCount: 0, setLMCount: 0,
     // A/S 현황
+    ASs_date: null, ASe_date: null,
     gwrqCount: 0, gwrcCount: 0, gwcpCount: 0, gwcaCount: 0,
     emrqCount: 0, emrcCount: 0, emcpCount: 0, emcaCount: 0,
     acrqCount: 0, acrcCount: 0, accpCount: 0, accaCount: 0,
@@ -262,15 +261,14 @@ export default {
     lirqCount: 0, lircCount: 0, licpCount: 0, licaCount: 0,
     // 차트
     EuchartData: null, EuchartOptions: null, EuchartImage: null,
-    EvchartData1: null, EvchartData2: null, EvchartOptions1: null, EvchartOptions2: null, EvchartImage1: null, EvchartImage2: null,
+    EvchartData1: null, EvchartOptions1: null, EvchartImage1: null,
+    EvchartData2: null, EvchartOptions2: null, EvchartImage2: null,
     BtchartData: null, BtchartOptions: null, BtchartImage: null,
     EuData: [ 12, 19, 3, 5, 2, 3, 7 ], EuChartItems:[],
-    EvFireData1: [ 12, 19, 7, 5, 8, 13, 7 ], EvEmData1: [10, 12, 11, 10, 10, 15, 9], EvSafeData1:[5, 12, 10, 7, 7, 8, 17], EvChartItems1:[], 
-    EvTFireData: 16, EvTEmData: 10, EvTSafeData:8, EvTChartItems: [],
+    EvFireData: [ 12, 19, 7, 5, 8, 13, 7 ], EvEmData: [10, 12, 11, 10, 10, 15, 9], EvSafeData:[5, 12, 10, 7, 7, 8, 17], EvChartItems:[],
     BtFullData: [ 12, 19, 7, 5, 8, 13], BtLackData: [10, 12, 11, 10, 10, 15], BtChangeData:[5, 12, 10, 7, 7, 8],
     newEuArr:[], 
-    newEvChartArr:[], newEvFireArr:[], newEvEmArr:[], newEvSafeArr:[],
-    newEvTFireArr:[], newEvTEmArr:[], newEvTSafeArr:[],
+    newEvChartArr:[], newEvFireArr:[],newEvEmArr:[],newEvSafeArr:[],
     newBtFullArr:[], newBtLackArr:[], newBtChangeArr:[],
     newEuChartLabelArr:[], newEuChartMMLabelArr:[], newEuChartDDLabelArr:[],
     newEvChartLabelArr:[], newEvChartMMLabelArr:[], newEvChartDDLabelArr:[],
@@ -313,7 +311,6 @@ export default {
     this.getTotalCount();
     this.getEMCount();
     this.getLMCount();
-    this.TodayS_date = moment().format('YYYY-MM-DD');
     this.ASs_date = this.s_date;
     this.ASe_date = this.e_date;
     this.ASs_date=moment().subtract(999, 'days').format('YYYY-MM-DD');
@@ -635,41 +632,45 @@ export default {
       datasets: [
         {
         label: '화재',
-        data: this.EvFireData1,
+        data: this.EvFireData,
         maxBarThickness: 10,    
         backgroundColor: ["rgba(19, 126, 255, 0.8)",]
         },
         {
         label: '응급',
-        data: this.EvEmData1,
+        data: this.EvEmData,
         maxBarThickness: 10,  
         backgroundColor: ['rgba(17, 183, 135, 1)',],
       },
       {
         label:'119',
-        data: this.EvSafeData1,
+        data: this.EvSafeData,
         maxBarThickness: 10,  
         backgroundColor: ["rgba(255, 60, 166, 0.8)",],
       }]
       }
-      let data2 = {
-        labelsColor: 'rgba(17, 183, 1, 1)',
-        datasets: [
-          {
-          label: '화재',
-          data: this.EvTFireData,
-          backgroundColor: ["rgba(19, 126, 255, 0.8)",]
-          },
-          {
-          label: '응급',
-          data: this.EvTEmData,
-          backgroundColor: ['rgba(17, 183, 135, 1)',],
+      let data2 =  {
+      labels: [],
+      labelsColor: 'rgba(17, 183, 1, 1)',
+      datasets: [
+        {
+        label: '화재',
+        data: 16,
+        maxBarThickness: 10,    
+        backgroundColor: ["rgba(19, 126, 255, 0.8)",]
         },
         {
-          label:'119',
-          data: this.EvTSafeData,
-          backgroundColor: ["rgba(255, 60, 166, 0.8)",],
-        }]
+        label: '응급',
+        data: 17,
+        maxBarThickness: 10,  
+        backgroundColor: ['rgba(17, 183, 135, 1)',],
+      },
+      {
+        label:'119',
+        data: 10,
+        maxBarThickness: 10,  
+        backgroundColor: ["rgba(255, 60, 166, 0.8)",],
+      }]
       }
       let options1={
       scales: {
@@ -688,7 +689,7 @@ export default {
       },
       plugins:{
         legend: {
-		      display: false,
+		      display: true,
           position: 'top',
           align: 'end',
           labels: {
@@ -722,14 +723,23 @@ export default {
       plugins:{
         legend: {
 		      display: false,
+          position: 'top',
+          align: 'end',
+          labels: {
+            color: "rgba(255, 255, 255, 1)",
+            boxWidth: 8,
+            usePointStyle: true
+          },
 		    },
         tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
       }
     }
     this.EvchartData1 = data1
-    this.EvchartData2 = data2
     this.EvchartOptions1 = options1
+    this.EvchartData2 = data2
     this.EvchartOptions2 = options2
+    console.log(this.EvchartData1)
+    console.log(this.EvchartData2)
     this.createEvChartDateTime()
     this.EvchartRedraw();
     },
@@ -746,6 +756,8 @@ export default {
       })
       this.EvchartImage1.update();
       this.EvchartImage2.update();
+      console.log(this.EvchartImage1)
+      console.log(this.EvchartImage2)
     },
     createEvChartDateTime(){
       if(this.EvchartData1){
@@ -759,15 +771,14 @@ export default {
       }
     },
     async remakeEvData(){
-      this.EvchartImage1.destroy();  
-      this.EvchartImage2.destroy();
+      this.EvchartImage.destroy();  
       let addrCode =  this.sggCd.substring(0,5);
       this.e_date = moment(this.s_date).add(6,'days').format('YYYYMMDD')
       let urlEventStatus = this.$store.state.serverApi + "/admin/organizations/stat/alarm?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
       await axios.get(urlEventStatus, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             const EvtempArr = [];
-            this.EvChartItems1=[];
+            this.EvChartItems=[];     
             for(let i=0; i<response.data.data.length; i++) {
               EvtempArr.push({
                 eventCd: response.data.data[i].eventCd,
@@ -775,25 +786,8 @@ export default {
                 occurDate: response.data.data[i].occurDate,
               });
             } 
-            this.EvChartItems1=EvtempArr;
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-      let urlEventStatus2 = this.$store.state.serverApi + "/admin/organizations/stat/alarm?startDate="+this.TodayS_date+"&addrCd="+addrCode;    
-      await axios.get(urlEventStatus2, {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            const EvtempArr2 = [];
-            this.EvChartItems2=[];
-            for(let i=0; i<response.data.data.length; i++) {
-              EvtempArr2.push({
-                eventCd: response.data.data[i].eventCd,
-                alarmCnt: response.data.data[i].alarmCnt,
-                occurDate: response.data.data[i].occurDate,
-              });
-            } 
-            this.EvChartItems2=EvtempArr2;
+            
+            this.EvChartItems=EvtempArr;
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -803,16 +797,10 @@ export default {
       let tmpArr1 = []
       let tmpArr2 = []
       let tmpArr3 = []
-      let TtmpArr1 = []
-      let TtmpArr2 = []
-      let TtmpArr3 = []
       this.newEvChartArr=[]
       this.newEvFireArr = []
       this.newEvEmArr = []
       this.newEvSafeArr = []
-      this.newEvTFireArr = []
-      this.newEvTEmArr = []
-      this.newEvTSafeArr = []
       this.newEvChartLabelArr=[]
       this.newEvChartMMLabelArr=[]
       this.newEvChartDDLabelArr=[]
@@ -834,71 +822,30 @@ export default {
               occurDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
             })
           }
-      for(let i =0; i<this.EvChartItems2.length; i++){
-        TtmpArr1.push({
-          alarmCnt:0,
-          eventCd: null,
-          occurDate: moment().format('YYYY-MM-DD'),
-        })
-        TtmpArr2.push({
-          alarmCnt:0,
-          eventCd: null,
-          occurDate: moment().format('YYYY-MM-DD'),
-        })
-        TtmpArr3.push({
-          alarmCnt:0,
-          eventCd: null,
-          occurDate: moment().format('YYYY-MM-DD'),
-        })
-      }
           
-          for(let i=0; i<this.EvChartItems1.length; i++){
-            if(this.EvChartItems1[i].eventCd==="E1013"){
+          for(let i=0; i<this.EvChartItems.length; i++){
+            if(this.EvChartItems[i].eventCd==="E1013"){
               let tmpidx = tmpArr1.findIndex(idx =>{
-                return idx.occurDate == this.EvChartItems1[i].occurDate
+                return idx.occurDate == this.EvChartItems[i].occurDate
               })
-              tmpArr1[tmpidx].alarmCnt = this.EvChartItems1[i].alarmCnt
-              tmpArr1[tmpidx].eventCd = this.EvChartItems1[i].eventCd
+              tmpArr1[tmpidx].alarmCnt = this.EvChartItems[i].alarmCnt
+              tmpArr1[tmpidx].eventCd = this.EvChartItems[i].eventCd
             }
-            if(this.EvChartItems1[i].eventCd==="E1014"){
+            if(this.EvChartItems[i].eventCd==="E1014"){
               let tmpidx = tmpArr2.findIndex(idx =>{
-                return idx.occurDate == this.EvChartItems1[i].occurDate
+                return idx.occurDate == this.EvChartItems[i].occurDate
               })
-              tmpArr2[tmpidx].alarmCnt = this.EvChartItems1[i].alarmCnt
-              tmpArr2[tmpidx].eventCd = this.EvChartItems1[i].eventCd
+              tmpArr2[tmpidx].alarmCnt = this.EvChartItems[i].alarmCnt
+              tmpArr2[tmpidx].eventCd = this.EvChartItems[i].eventCd
             }
-            if(this.EvChartItems1[i].eventCd==="E1016"){
+            if(this.EvChartItems[i].eventCd==="E1016"){
               let tmpidx = tmpArr3.findIndex(idx =>{
-                return idx.occurDate == this.EvChartItems1[i].occurDate
+                return idx.occurDate == this.EvChartItems[i].occurDate
               })
-              tmpArr3[tmpidx].alarmCnt = this.EvChartItems1[i].alarmCnt
-              tmpArr3[tmpidx].eventCd = this.EvChartItems1[i].eventCd
+              tmpArr3[tmpidx].alarmCnt = this.EvChartItems[i].alarmCnt
+              tmpArr3[tmpidx].eventCd = this.EvChartItems[i].eventCd
             }
           }
-          for(let i=0; i<this.EvChartItems2.length; i++){
-            if(this.EvChartItems2[i].eventCd==="E1013"){
-              let tmpidx = TtmpArr1.findIndex(idx =>{
-                return idx.occurDate == this.EvChartItems2[i].occurDate
-              })
-              TtmpArr1[tmpidx].alarmCnt = this.EvChartItems2[i].alarmCnt
-              TtmpArr1[tmpidx].eventCd = this.EvChartItems2[i].eventCd
-            }
-            if(this.EvChartItems2[i].eventCd==="E1014"){
-              let tmpidx = TtmpArr2.findIndex(idx =>{
-                return idx.occurDate == this.EvChartItems2[i].occurDate
-              })
-              TtmpArr2[tmpidx].alarmCnt = this.EvChartItems2[i].alarmCnt
-              TtmpArr2[tmpidx].eventCd = this.EvChartItems2[i].eventCd
-            }
-            if(this.EvChartItems4[i].eventCd==="E1016"){
-              let tmpidx = TtmpArr3.findIndex(idx =>{
-                return idx.occurDate == this.EvChartItems2[i].occurDate
-              })
-              TtmpArr3[tmpidx].alarmCnt = this.EvChartItems2[i].alarmCnt
-              TtmpArr3[tmpidx].eventCd = this.EvChartItems2[i].eventCd
-            }
-          }
-          
           for(let i=0; i<7; i++){
             this.newEvFireArr.push(tmpArr1[i].alarmCnt)
             this.newEvEmArr.push(tmpArr2[i].alarmCnt)
@@ -907,25 +854,14 @@ export default {
             this.newEvChartDDLabelArr.push(tmpArr1[i].occurDate.substring(6, 8))
             this.newEvChartLabelArr.push(this.newEvChartMMLabelArr[i] +"-"+ this.newEvChartDDLabelArr[i])
           }
-          for(let i=0; i<this.EvChartItems2.length; i++){
-            this.newEvTFireArr.push(TtmpArr1[i].alarmCnt)
-            this.newEvTEmArr.push(TtmpArr2[i].alarmCnt)
-            this.newEvTSafeArr.push(TtmpArr3[i].alarmCnt)
-          }
 
       
-      this.EvFireData1 = this.newEvFireArr
-      this.EvEmData1 = this.newEvEmArr
-      this.EvSafeData1 = this.newEvSafeArr
-      this.EvTFireData = this.newEvTFireArr
-      this.EvTEmData = this.newEvTEmArr
-      this.EvTSafeData = this.newEvTSafeArr
-      this.EvchartData1.datasets[0].data = this.EvFireData1
-      this.EvchartData1.datasets[1].data = this.EvEmData1
-      this.EvchartData1.datasets[2].data = this.EvSafeData1
-      this.EvchartData2.datasets[0].data = this.EvTFireData
-      this.EvchartData2.datasets[1].data = this.EvTEmData
-      this.EvchartData2.datasets[2].data = this.EvTSafeData
+      this.EvFireData = this.newEvFireArr
+      this.EvEmData = this.newEvEmArr
+      this.EvSafeData = this.newEvSafeArr
+      this.EvchartData1.datasets[0].data = this.EvFireData
+      this.EvchartData1.datasets[1].data = this.EvEmData
+      this.EvchartData1.datasets[2].data = this.EvSafeData
       this.EvchartData1.labels = this.newEvChartLabelArr
       this.EvchartRedraw();
     },
@@ -1175,7 +1111,7 @@ export default {
           display: true, 
           color: "rgba(255, 255, 255, 1)", //labelscolor,fontcolor,color 데이터를 arr
           position: "bottom", 
-          labels: { boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: "circle", font: { size: 14 }, color:"rgba(255, 255, 255, 1)" }, 
+          labels: { boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: "circle", font: { size: 14 } }, 
           fullSize: false, 
           align: "center" 
           }, 
