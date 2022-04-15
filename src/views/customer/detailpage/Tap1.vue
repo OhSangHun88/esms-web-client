@@ -83,7 +83,7 @@
                         </thead>
                     </table>
                     
-                    <div class="tbody">
+                    <div class="tbody htype-05">
                         <table>
                             <colgroup>
                                 <col style="width:25%;">
@@ -142,10 +142,10 @@ import moment from "moment";
       measureEndDate: moment().format('YYYY-MM-DD'),
       labelText:'정보',
       codeText:'°C',
-      envData:[{text: '환경 정보', value:''},{text: '전체', value: 'TPE006'},{text: '온도', value: 'TPE006'},{text: '조도', value: 'TPE008'},{text: '습도', value: 'TPE007'}, ],
-      bioData:[{text: '바이오 정보', value: ''},{text: '전체', value: 'TPE005'},{text: '심장박동', value: 'TPE005'},{text: '호흡', value: 'TPE011'},{text: '활동량', value: 'TPE012'}, ],
-      actPData:[{text: '활동감지기{P) 정보', value: ''},{text: '전체', value: 'TPE002'},{text: '화장실', value: 'TPE002'},{text: '안방', value: 'TPE002'}, ],
-      doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 'TPE004'},{text: '뒷문', value: 'TPE004'},{text: '대문', value: 'TPE004'}, ],
+      envData:[{text: '환경 정보', value:''},{text: '전체', value: 'all'},{text: '온도', value: 'TPE006'},{text: '조도', value: 'TPE008'},{text: '습도', value: 'TPE007'}, ],
+      bioData:[{text: '바이오 정보', value: ''},{text: '전체', value: 'all'},{text: '심장박동', value: 'TPE005'},{text: '호흡', value: 'TPE011'},{text: '활동량', value: 'TPE012'}, ],
+      actPData:[{text: '활동감지기{P) 정보', value: ''},{text: '전체', value: 'all'},{text: '화장실', value: 'TPE002'},{text: '안방', value: 'TPE002'}, ],
+      doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 'all'},{text: '뒷문', value: 'TPE004'},{text: '대문', value: 'TPE004'}, ],
      }
    },
   methods: {
@@ -190,7 +190,7 @@ import moment from "moment";
           case "TPE007" : this.labelText="습도"; this.codeText=" %"; break;
           case "TPE005" : this.labelText="심장박동"; this.codeText=" 회"; break;
           case "TPE011" : this.labelText="호흡"; this.codeText=" 회"; break;
-          case "TPE012" : this.labelText="활동량"; this.codeText=" °C"; break;
+          case "TPE012" : this.labelText="활동량"; this.codeText=" "; break;
           case "TPE002" : this.labelText="횟수"; this.codeText=" 회"; break;
           case "TPE004" : this.labelText="횟수"; this.codeText=" 회"; break;
           
@@ -198,7 +198,13 @@ import moment from "moment";
         
         //TPE011
         //&sensorLocCd=${code2}
-        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${code}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
+        let url
+        if(code==="TPE012"){
+            url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/actmeasures?sensorTypeCd=${code}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
+        }else{
+            url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${code}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
+        }
+            
         //const url  = `/admin/recipients/${this.recipientId}/sensors`
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -208,6 +214,7 @@ import moment from "moment";
             this.sensorsData = []
             let lengthTmp = []
             lengthTmp = res.data
+            console.log(lengthTmp)
 
              if(code==="TPE006"||code==="TPE007"||code==="TPE008"){
                 for(let i=0; i <lengthTmp.totalCount ;i++ ){

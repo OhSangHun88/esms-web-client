@@ -185,6 +185,7 @@ export default {
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
       }
     },
     created(){
@@ -215,10 +216,8 @@ export default {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-
     },
 
-    // 시/군/구 목록
     // 시/군/구 목록
     getSggData() {
       let url =this.$store.state.serverApi + "/admin/address/sgg";

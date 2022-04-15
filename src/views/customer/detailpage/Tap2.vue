@@ -8,7 +8,7 @@
                             <input type="date"/>
                             <span class="tilde">~</span>
                             <input type="date"/>
-                            <button type="button" class="btn">조회</button>
+                            <button type="button" class="btn" @click="getEmergencysData">조회</button>
                         </div>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <div class="tbody">
+                    <div class="tbody htype-01">
                         <table>
                             <colgroup>
                                 <col style="width:10%;">

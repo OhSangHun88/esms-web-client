@@ -150,6 +150,7 @@ export default {
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[], userItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
       }
     },
     created(){
@@ -179,7 +180,6 @@ export default {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-
     },
 
     // 시/군/구 목록

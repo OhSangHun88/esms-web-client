@@ -156,6 +156,7 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount: 0,
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
       }
     },
     created() {
@@ -225,7 +226,6 @@ export default {
           console.error("There was an error!", error);
         });
     },
-
     // 관리 기관 목록
     getOrgmData() {
       let url =this.$store.state.serverApi + "/admin/organizations";

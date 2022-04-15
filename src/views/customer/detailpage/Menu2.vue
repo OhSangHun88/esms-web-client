@@ -27,7 +27,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <div class="tbody">
+                    <div class="tbody htype-02 ">
                         <table>
                             <colgroup>
                                 <col style="width:auto;">
