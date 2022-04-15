@@ -1,20 +1,221 @@
 <template>
     <div class="wrap">
-        <HeaderComp></HeaderComp>
-        <!-- <HeaderComp2></HeaderComp2> -->
-        <div class="container type-02">
-            <LookUp/>
-          <div class="box_wrap">
-            <ChartLine/>
-            <EventStatus/>
-            <ASStatus/>
+      <HeaderComp></HeaderComp>
+      <div class="container type-02">
+        <div class="box_wrap" style="height: 134px;">
+          <div class="box_search_wrap box_style type_db">
+            <table>
+              <colgroup>
+                <col style="width:16%;">
+                <col style="width:16%;">
+                <col style="width:26%;">
+                <col style="width:auto;">
+              </colgroup>
+              <thead>
+                <th scope="row">시/도</th>
+                <th scope="row">시/군/구</th>
+                <th scope="row">관리기관</th>
+                <th scope="row"></th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
+                      <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                    </select> 
+                  </td>
+                  <td>
+                    <select v-model="selectedSggItems" @change="onChangeOrg($event)">
+                      <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select v-model="selectedOrgItems">
+                      <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <div class="date_warp">
+                      <div class="customerBts" style="justify-content: flex-start;">
+                        <input type="date" v-model="s_date"/>
+                        <span class="tilde">~</span>
+                        <input type="date" v-model="e_date"/>
+                        <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="box_wrap">
-            <Battery/>
-            <PowerConnection/>
+          <div class="top_info box_style">
+            <i class="ico_info_1"></i>
+              <div class="txt_area">
+                <p class="tit">총 설치 가구수</p>
+                <strong class="num">{{!this.setCount? 0 : this.setCount}}</strong>
+              </div>
+          </div>
+          <div class="top_info type-l box_style">
+            <div class="top_half">
+              <i class="ico_info_2"></i>
+                <div class="txt_area">
+                  <p class="tit">응급관리요원</p>
+                  <strong class="num">{{!this.setEMCount? 0 : this.setEMCount}}</strong>
+                </div>  
+            </div>
+            <div class="top_half">
+              <i class="ico_info_3"></i>
+                <div class="txt_area">
+                  <p class="tit">생활관리사</p>
+                  <strong class="num">{{!this.setLMCount? 0 : this.setLMCount}}</strong>
+                </div>
+            </div>
           </div>
         </div>
-  </div>
+        <div class="box_wrap">
+          <div class="box_col3 box_style">
+            <p>장비가동률</p>    
+            <div>
+              <canvas class="statistics-charts-line" ref="lineChart" width="100px" height="60px"></canvas>
+            </div>
+          </div>
+          <div class="box_col3 box_style">
+            <p>오늘 이벤트 현황</p>
+            <div>
+              <canvas class="statistics-charts-line" ref="BarChart2" width="470" height="100" ></canvas>
+            </div>
+            <p>응급 이벤트 현황</p>    
+            <div>
+              <canvas class="statistics-charts-line" ref="BarChart1" width="470" height="275" ></canvas>
+            </div>
+          </div>
+          <div class="box_col3 box_style">
+            <div>
+              <colgroup>
+                <col style="width:2%;" >
+                <col style="width:1.5%;">
+                <col style="width:1.5%;">
+                <col style="width:1.5%;">
+                <col style="width:1%;">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>구 분</th>
+                  <th>A/S 요청</th>
+                  <th>A/S 접수</th>
+                  <th>A/S 완료</th>
+                  <th>취  소</th>
+                </tr>
+                <br>
+              </thead>
+              <div class="tbody">
+              <colgroup>
+                <col style="width:2%;" >
+                <col style="width:1.5%;">
+                <col style="width:1.4%;">
+                <col style="width:1.2%;">
+                <col style="width:0.7%;">
+              </colgroup>
+              <tbody>
+                <tr>
+                  <th scope="col">게이트웨이</th>
+                  <th scope="col">{{this.gwrqCount}}</th>
+                  <th scope="col">{{this.gwrcCount}}</th>
+                  <th scope="col">{{this.gwcpCount}}</th>
+                  <th scope="col">{{this.gwcaCount}}</th>
+                </tr>
+                <br>
+                <tr>
+                  <th scope="col">응급호출기</th>
+                  <th scope="col">{{this.emrqCount}}</th>
+                  <th scope="col">{{this.emrcCount}}</th>
+                  <th scope="col">{{this.emcpCount}}</th>
+                  <th scope="col">{{this.emcaCount}}</th>
+                </tr>
+                <br>
+                <tr>
+                  <th scope="col">활동감지기</th>
+                  <th scope="col">{{this.acrqCount}}</th>
+                  <th scope="col">{{this.acrcCount}}</th>
+                  <th scope="col">{{this.accpCount}}</th>
+                  <th scope="col">{{this.accaCount}}</th>
+                </tr>
+               <br>
+                <tr>
+                  <th scope="col">화재감지기</th>
+                  <th scope="col">{{this.firqCount}}</th>
+                  <th scope="col">{{this.fircCount}}</th>
+                  <th scope="col">{{this.ficpCount}}</th>
+                  <th scope="col">{{this.ficaCount}}</th>
+                </tr>
+                <br>
+                <tr>
+                  <th scope="col">출입문센서</th>
+                  <th scope="col">{{this.dorqCount}}</th>
+                  <th scope="col">{{this.dorcCount}}</th>
+                  <th scope="col">{{this.docpCount}}</th>
+                  <th scope="col">{{this.docaCount}}</th>
+                </tr>
+                <br>
+                <tr>
+                  <th scope="col">생활안심센서</th>
+                  <th scope="col">{{this.lirqCount}}</th>
+                  <th scope="col">{{this.lircCount}}</th>
+                  <th scope="col">{{this.licpCount}}</th>
+                  <th scope="col">{{this.licaCount}}</th>
+                </tr>
+              </tbody>
+              </div>
+            </div>
+            <div>
+              <canvas width="470" height="1"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="box_wrap">
+          <div class="box_l chart box_style">
+            <div class="result_txt">
+            <p>배터리 상태</p>
+            </div>
+            <div>
+              <canvas ref="barChart" style="height: 240px"/>
+            </div>
+          </div>
+          <div class="box_style box_r" style="height: 270px;">
+            <div class="result_txt">
+              <p style="float: left; width: 17%; fontSize: 18px; height: 10px; margin-bottom: 20px;">전원연결</p>
+              <p style="float: left; width: 73%; fontSize: 18px; height: 10px; margin-bottom: 20px;">통신상태</p>
+            </div>
+            <div>
+              <p style="float: left; width: 17%;">게이트웨이</p>
+              <p style="float: left; width: 17%;">응급호출기</p>
+              <p style="float: left; width: 17%;">화재감지기</p>
+              <p style="float: left; width: 17%;">도어센서</p>
+              <p style="float: left; width: 16%;">활동감지센서</p>
+              <p style="float: left; width: 16%;">생활안심센서</p>
+            </div>
+            <div style="float: left; width: 14%; ">
+              <canvas height="150px" width="200px" ref="doughnutChart1"/>
+            </div>
+            <div style="float: left; width: 14%; margin-left: 2%;">
+              <canvas height="150px" width="200px" ref="doughnutChart2"/>
+            </div>
+            <div style="float: left; width: 14%; margin-left: 2%;">
+              <canvas height="150px" width="200px" ref="doughnutChart3"/>
+            </div>
+            <div style="float: left; width: 14%; margin-left: 3%;">
+              <canvas height="150px" width="200px" ref="doughnutChart4"/>
+            </div>
+            <div style="float: left; width: 14%; margin-left: 3%;">
+              <canvas height="150px" width="200px" ref="doughnutChart5"/>
+            </div>
+            <div style="float: left; width: 14%; margin-left: 3%;">
+              <canvas height="150px" width="200px" ref="doughnutChart6"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </template>
 <style lang="scss">
 @import '../../assets/scss/common.css';
@@ -22,46 +223,1726 @@
 
 </style>
 <script>
-
-//검색창
-import LookUp from './LookUp.vue'
-//장비가동율
-import ChartLine from './ChartLine.vue'
-//AS 현황
-import ASStatus from './ASStatus.vue'
-//이벤트현황
-import EventStatus from './EventStatus.vue'
-//배터리상태
-import Battery from './Battery.vue'
-//전원연결
-import PowerConnection from './PowerConnection.vue'
-//메뉴
+// 메뉴
 import HeaderComp from "../pages/HeaderComp.vue";
+// API
+import axios from "axios";
+// 날짜
+import moment from "moment";
+// 차트
+import { Chart, registerables } from 'chart.js'
+Chart.register(...registerables)
 
 
 export default {
-    name: 'UserDataComponent',
+  name: 'DashBoard',
 
-    data() {
-    return {
-        taptoggle:1,
+  components : {
+    HeaderComp
+  },
+
+  data() {
+  return {
+    // 시/도, 시/군/도, 관리기관
+    orgNm:'', orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', 
+    sidoItems:[], sggItems:[], orgmItems:[],
+    selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
+    // 날짜
+    s_date: null, e_date: null, 
+    TodayS_date: null,
+    ASs_date: null, ASe_date: null,
+    // 설치 가구수, 응급관리요원, 생활 관리사
+    setCount: 0, setEMCount: 0, setLMCount: 0,
+    // A/S 현황
+    gwrqCount: 0, gwrcCount: 0, gwcpCount: 0, gwcaCount: 0,
+    emrqCount: 0, emrcCount: 0, emcpCount: 0, emcaCount: 0,
+    acrqCount: 0, acrcCount: 0, accpCount: 0, accaCount: 0,
+    firqCount: 0, fircCount: 0, ficpCount: 0, ficaCount: 0,
+    dorqCount: 0, dorcCount: 0, docpCount: 0, docaCount: 0,
+    lirqCount: 0, lircCount: 0, licpCount: 0, licaCount: 0,
+    // 차트
+    EuchartData: null, EuchartOptions: null, EuchartImage: null,
+    EvchartData1: null, EvchartData2: null, EvchartOptions1: null, EvchartOptions2: null, EvchartImage1: null, EvchartImage2: null,
+    BtchartData: null, BtchartOptions: null, BtchartImage: null,
+    EuData: [ 12, 19, 3, 5, 2, 3, 7 ], EuChartItems:[],
+    EvFireData1: [ 12, 19, 7, 5, 8, 13, 7 ], EvEmData1: [10, 12, 11, 10, 10, 15, 9], EvSafeData1:[5, 12, 10, 7, 7, 8, 17], EvChartItems1:[], 
+    EvTFireData: 16, EvTEmData: 10, EvTSafeData:8, EvTChartItems: [],
+    BtFullData: [ 12, 19, 7, 5, 8, 13], BtLackData: [10, 12, 11, 10, 10, 15], BtChangeData:[5, 12, 10, 7, 7, 8],
+    newEuArr:[], 
+    newEvChartArr:[], newEvFireArr:[], newEvEmArr:[], newEvSafeArr:[],
+    newEvTFireArr:[], newEvTEmArr:[], newEvTSafeArr:[],
+    newBtFullArr:[], newBtLackArr:[], newBtChangeArr:[],
+    newEuChartLabelArr:[], newEuChartMMLabelArr:[], newEuChartDDLabelArr:[],
+    newEvChartLabelArr:[], newEvChartMMLabelArr:[], newEvChartDDLabelArr:[],
+    newBtChartLabelArr:[], newBtChartMMLabelArr:[], newBtChartDDLabelArr:[],
+
+    PwchartData1: null,
+    PwchartData2: null,
+    PwchartData3: null,
+    PwchartData4: null,
+    PwchartData5: null,
+    PwchartData6: null,
+    PwchartOptions: null,
+    PwchartImage1: null,
+    PwchartImage2: null,
+    PwchartImage3: null,
+    PwchartImage4: null,
+    PwchartImage5: null,
+    PwchartImage6: null,
+    PwGwData: [ 19, 5 ],
+    PwEmData: [14, 5, 8],
+    PwFiData:[14, 5, 8],
+    PwDoData: [14, 5, 8],
+    PwAcData: [14, 5, 8],
+    PwLiData: [14, 5, 8],
+    PwChartItems:[],
+    newPwGwArr:[],
+    newPwEmArr:[],
+    newPwFiArr:[],
+    newPwDoArr:[],
+    newPwAcArr:[],
+    newPwLiArr:[],
+  }
+  },
+  created(){
+    this.getSidoData();
+    this.getSggData();
+    this.getOrgmData();
+    this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
+    this.e_date=moment().format('YYYY-MM-DD');
+    this.getTotalCount();
+    this.getEMCount();
+    this.getLMCount();
+    this.TodayS_date = moment().format('YYYY-MM-DD');
+    this.ASs_date = this.s_date;
+    this.ASe_date = this.e_date;
+    this.ASs_date=moment().subtract(999, 'days').format('YYYY-MM-DD');
+    this.ASe_date=moment().format('YYYY-MM-DD');
+    this.getGwCount();
+    this.getEmCount();
+    this.getAcCount();
+    this.getFiCount();
+    this.getDoCount();
+    this.getLiCount();
+  },
+  mounted(){
+    this.createEuData();
+    this.createEvData();
+    this.createBtData();
+    this.createPwData();
+  },
+  methods:{
+    //--------------------------시/도--------------------------
+    getSidoData() {
+      axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          this.sidoItems=[];
+          this.sidoItems.push({label: '전체', value: ''});
+          for(let i=0; i<response.data.data.length; i++) {
+            this.sidoItems.push({
+              label: response.data.data[i].sido,
+              value: response.data.data[i].sidoCd
+            });
+          }  
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+    },
+    //--------------------------시/군/구--------------------------
+    getSggData() {
+      let url =this.$store.state.serverApi + "/admin/address/sgg";
+      if(this.sidoCd != ''){
+        url += "?sidoCd="+this.sidoCd;
+      }else{
+        this.selectedSggItems = ''
+        this.sggItems=[];
+        this.sggItems.push({label: '전체', value: ''});
+        return ; 
+      }
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          const tempArr = [{label: '전체', value: ''}];
+          let tmpResult2 = [{label: '전체', value: ''}];
+          for(let i=0; i<response.data.data.length; i++) {
+            tempArr.push({
+              label: response.data.data[i].sgg,
+              value: response.data.data[i].sggCd,
+              value2: response.data.data[i].sidoCd
+            });
+          } 
+          let tmpResult = tempArr.filter(cd=>{
+            return cd.value2 === this.sidoCd
+          });
+          
+          this.sggItems = [...tmpResult2,...tmpResult]
+          console.log(this.sggItems )
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+    },
+    //--------------------------관리기관--------------------------
+    getOrgmData() {
+      let url =this.$store.state.serverApi + "/admin/organizations";
+      if(this.sggCd != ''){
+        let sggCode = this.sggCd.substring(0, 5);
+        url += "?sggCd="+sggCode;
+      }else{
+        this.selectedOrgItems = ''
+        this.orgmItems=[];
+        this.orgmItems.push({label: '전체', value: ''});
+        return ; 
+      }
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          const tmpArr = [{label: '전체', value: ''}];
+          let tmpResult2 = [{label: '전체', value: ''}];
+          this.orgmItems=[];
+          for(let i=0; i<response.data.data.length; i++) {
+            tmpArr.push({
+              label: response.data.data[i].orgNm,
+              value: response.data.data[i].orgId,
+            });
+          } 
+          let tmpResult = tmpArr
+          this.orgmItems = [...tmpResult2,...tmpResult]
+        this.orgmItems=tmpArr;
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+    },
+    onChangeSgg(event){
+      this.sidoCd = event.target.value
+      this.getSggData()
+      this.sggCd = ''
+      this.getOrgmData()
+    },
+    onChangeOrg(event) {
+      this.sggCd = event.target.value
+      this.getOrgmData()
+    },
+    //--------------------------총 설치 가구수--------------------------
+    getTotalCount(){
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          let totalCData = response.data.data
+          let totalCArrToString = ''
+          totalCArrToString = totalCData.filter(cd=>{
+            return cd.typeCd ==="1"
+          })
+          this.setCount =totalCArrToString[0].typeCnt
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+    },
+    //--------------------------응급관리요원수--------------------------
+    getEMCount(){
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          let EMCData = response.data.data
+          let EMCArrToString = ''
+          EMCArrToString = EMCData.filter(cd=>{
+            return cd.typeCd ==="2"
+          })
+          this.setEMCount =EMCArrToString[0].typeCnt
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+    },
+    //--------------------------생활관리사수--------------------------
+    getLMCount(){
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          let LMCData = response.data.data
+          let LMCArrToString = ''
+          LMCArrToString = LMCData.filter(cd=>{
+            return cd.typeCd ==="3"
+          })
+          this.setLMCount =LMCArrToString[0].typeCnt
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+    },
+    //--------------------------장비 가동률 차트--------------------------
+    createEuData(){
+      let data={
+      labels: [],
+      labelsColor: 'rgba(17, 183, 1, 1)',
+      datasets: [{
+        label: '장비가동률',
+        type: 'line',
+        data: this.EuData,
+        borderColor:'rgba(17, 183, 135, 0.8)',
+        borderWidth: 3.5,
+        tension: 0.5,
+        fill: true,
+        backgroundColor: 'rgba(17, 183, 135, 0.2)',
+        animation: {        
+          easing: 'easeInOutQuart'
         }
+      }]
+      }
+      let options={
+        scales: {
+          x:{
+            ticks:{
+              color: "rgba(255, 255, 255, 1)"
+            }
+          },
+          y: {
+            beginAtZero: true,
+            ticks:{
+              min: 0,
+              max: 100,
+              stepSize: 5,
+              color: "rgba(255, 255, 255, 1)"
+            }
+          }
+        },
+        plugins:{
+          legend: {
+		        display: false,
+		      },
+        tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
+        }
+      }
+      this.EuchartData = data
+      this.EuchartOptions = options
+      this.createEuChartDateTime()
+      this.EuchartRedraw();
     },
-    components : {
-      LookUp,
-      ChartLine,
-      ASStatus,
-      EventStatus,
-      Battery,
-      PowerConnection,
-      HeaderComp
+    EuchartRedraw(){
+      this.EuchartImage = new Chart(this.$refs.lineChart,{
+        type:'line',
+        data:this.EuchartData,
+        options:this.EuchartOptions
+      })
+      this.EuchartImage.update();
     },
-    props: {
-    
+    createEuChartDateTime(){
+      if(this.EuchartData){
+        let tmp = this.EuchartData.datasets[0].data.length
+        let nowDate = moment().add(1,'days').format('MM-DD');
+        let tmpArr = []
+        for(let i=tmp ; i>0; i--){
+          tmpArr.push(moment(nowDate).subtract(1*i, 'days').format('MM-DD'))
+        }
+        this.EuchartData.labels = tmpArr
+      }
     },
-    methods:{
+    async remakeEuData(){
+      this.EuchartImage.destroy();
+      let addrCode =  this.sggCd.substring(0,5);
+      this.e_date =  moment(this.s_date).add(6,'days').format('YYYYMMDD')
+      let urlEuChart = this.$store.state.serverApi + "/admin/organizations/stat/oper?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      await axios.get(urlEuChart, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          this.EuChartItems=[];     
+          for(let i=0; i<response.data.data.length; i++) {
+            this.EuChartItems.push({
+              statDate: response.data.data[i].statDate,
+              installCnt: response.data.data[i].installCnt,
+              operCnt: response.data.data[i].operCnt,
+            });
+          }
+          
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+      let tmpArr1 = []
+      this.newEuArr=[]
+      this.newEuChartLabelArr=[]
+      this.newEuChartMMLabelArr=[]
+      this.newEuChartDDLabelArr=[]
+      for(let i=0; i<7; i++){
 
+        tmpArr1.push({
+          statDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
+          installCnt:1,
+          operCnt: 1,
+        })
+
+      }
+
+      if(this.EuChartItems != ''){
+      for(let i=0; i<this.EuChartItems.length; i++){
+        if(this.EuChartItems[i].installCnt != "0"){
+          let tmpidx = tmpArr1.findIndex(idx =>{
+            return idx.statDate == this.EuChartItems[i].statDate
+          })
+          tmpArr1[tmpidx].installCnt = this.EuChartItems[i].installCnt
+          tmpArr1[tmpidx].operCnt = this.EuChartItems[i].operCnt
+        }else{
+          tmpArr1[i].installCnt = "1"
+          tmpArr1[i].operCnt = "1"
+        }
+      }}else{
+        
+        for(let i=0; i<7; i++){
+        tmpArr1[i] = {
+          statDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
+          installCnt:0,
+          operCnt: 0,
+        }
+      }}
+      
+      if(this.EuChartItems != ''){
+        for(let i=0; i<7; i++){
+          this.newEuArr[i] = (tmpArr1[i].operCnt/tmpArr1[i].installCnt*100)
+          if(this.newEuArr[i] == "0"){
+            this.newEuArr[i] = 100
+          }
+          this.newEuChartMMLabelArr.push(tmpArr1[i].statDate.substring(4, 6))
+          this.newEuChartDDLabelArr.push(tmpArr1[i].statDate.substring(6, 8))
+          this.newEuChartLabelArr.push(this.newEuChartMMLabelArr[i] +"-"+ this.newEuChartDDLabelArr[i])
+        }
+      }else{
+        
+        for(let i=0; i<7; i++){
+            
+            this.newEuArr[i] = 0
+            this.newEuChartMMLabelArr.push(tmpArr1[i].statDate.substring(4, 6))
+            this.newEuChartDDLabelArr.push(tmpArr1[i].statDate.substring(6, 8))
+            this.newEuChartLabelArr.push(this.newEuChartMMLabelArr[i] +"-"+ this.newEuChartDDLabelArr[i])
+        }
+      }
+      this.EuData = this.newEuArr
+      this.EuchartData.datasets[0].data = this.EuData
+      this.EuchartData.labels = this.newEuChartLabelArr
+      this.EuchartRedraw();
+    },
+    //--------------------------응급 이벤트 차트--------------------------
+    createEvData(){
+      let data1 =  {
+      labels: [],
+      labelsColor: 'rgba(17, 183, 1, 1)',
+      datasets: [
+        {
+        label: '화재',
+        data: this.EvFireData1,
+        maxBarThickness: 10,    
+        backgroundColor: ["rgba(19, 126, 255, 0.8)",]
+        },
+        {
+        label: '응급',
+        data: this.EvEmData1,
+        maxBarThickness: 10,  
+        backgroundColor: ['rgba(17, 183, 135, 1)',],
+      },
+      {
+        label:'119',
+        data: this.EvSafeData1,
+        maxBarThickness: 10,  
+        backgroundColor: ["rgba(255, 60, 166, 0.8)",],
+      }]
+      }
+      let data2 = {
+        labelsColor: 'rgba(17, 183, 1, 1)',
+        datasets: [
+          {
+          label: '화재',
+          data: this.EvTFireData,
+          backgroundColor: ["rgba(19, 126, 255, 0.8)",]
+          },
+          {
+          label: '응급',
+          data: this.EvTEmData,
+          backgroundColor: ['rgba(17, 183, 135, 1)',],
+        },
+        {
+          label:'119',
+          data: this.EvTSafeData,
+          backgroundColor: ["rgba(255, 60, 166, 0.8)",],
+        }]
+      }
+      let options1={
+      scales: {
+        x: {
+          ticks:{
+            color: "rgba(255, 255, 255, 1)"
+          }
+        },
+        y: {
+          beginAtZero: true,
+          ticks:{
+            stepSize: 1,
+            color: "rgba(255, 255, 255, 1)"
+          }
+        }
+      },
+      plugins:{
+        legend: {
+		      display: false,
+          position: 'top',
+          align: 'end',
+          labels: {
+            color: "rgba(255, 255, 255, 1)",
+            boxWidth: 8,
+            usePointStyle: true
+          },
+		    },
+        tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
+      }
     }
+    let options2={
+      scales: {
+        x: {
+          stacked:true,
+          display:false,
+          ticks:{
+            color: "rgba(255, 255, 255, 1)"
+          }
+        },
+        y: {
+          beginAtZero: true,
+          display:false,
+          ticks:{
+            stepSize: 1,
+            color: "rgba(255, 255, 255, 1)"
+          }
+        }
+      },
+      indexAxis:'y',
+      plugins:{
+        legend: {
+		      display: false,
+		    },
+        tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
+      }
+    }
+    this.EvchartData1 = data1
+    this.EvchartData2 = data2
+    this.EvchartOptions1 = options1
+    this.EvchartOptions2 = options2
+    this.createEvChartDateTime()
+    this.EvchartRedraw();
+    },
+    EvchartRedraw(){  
+      this.EvchartImage1 = new Chart(this.$refs.BarChart1, {
+        type:'bar',
+        data:this.EvchartData1,
+        options:this.EvchartOptions1
+      })
+      this.EvchartImage2 = new Chart(this.$refs.BarChart2, {
+        type:'bar',
+        data:this.EvchartData2,
+        options:this.EvchartOptions2
+      })
+      this.EvchartImage1.update();
+      this.EvchartImage2.update();
+    },
+    createEvChartDateTime(){
+      if(this.EvchartData1){
+        let tmp = this.EvchartData1.datasets[0].data.length
+        let nowDate = moment().add(1,'days').format('MM-DD');
+        let tmpArr = []
+        for(let i=tmp ; i>0; i--){
+          tmpArr.push(moment(nowDate).subtract(1*i, 'days').format('MM-DD'))
+        }
+        this.EvchartData1.labels = tmpArr
+      }
+    },
+    async remakeEvData(){
+      this.EvchartImage1.destroy();  
+      this.EvchartImage2.destroy();
+      let addrCode =  this.sggCd.substring(0,5);
+      this.e_date = moment(this.s_date).add(6,'days').format('YYYYMMDD')
+      let urlEventStatus = this.$store.state.serverApi + "/admin/organizations/stat/alarm?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      await axios.get(urlEventStatus, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            const EvtempArr = [];
+            this.EvChartItems1=[];
+            for(let i=0; i<response.data.data.length; i++) {
+              EvtempArr.push({
+                eventCd: response.data.data[i].eventCd,
+                alarmCnt: response.data.data[i].alarmCnt,
+                occurDate: response.data.data[i].occurDate,
+              });
+            } 
+            this.EvChartItems1=EvtempArr;
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+      let urlEventStatus2 = this.$store.state.serverApi + "/admin/organizations/stat/alarm?startDate="+this.TodayS_date+"&addrCd="+addrCode;    
+      await axios.get(urlEventStatus2, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            const EvtempArr2 = [];
+            this.EvChartItems2=[];
+            for(let i=0; i<response.data.data.length; i++) {
+              EvtempArr2.push({
+                eventCd: response.data.data[i].eventCd,
+                alarmCnt: response.data.data[i].alarmCnt,
+                occurDate: response.data.data[i].occurDate,
+              });
+            } 
+            this.EvChartItems2=EvtempArr2;
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+
+      let tmpArr1 = []
+      let tmpArr2 = []
+      let tmpArr3 = []
+      let TtmpArr1 = []
+      let TtmpArr2 = []
+      let TtmpArr3 = []
+      this.newEvChartArr=[]
+      this.newEvFireArr = []
+      this.newEvEmArr = []
+      this.newEvSafeArr = []
+      this.newEvTFireArr = []
+      this.newEvTEmArr = []
+      this.newEvTSafeArr = []
+      this.newEvChartLabelArr=[]
+      this.newEvChartMMLabelArr=[]
+      this.newEvChartDDLabelArr=[]
+
+      for(let i=0; i<7; i++){
+        tmpArr1.push({
+          alarmCnt:0,
+          eventCd: null,
+          occurDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
+        })
+            tmpArr2.push({
+              alarmCnt:0,
+              eventCd: null,
+              occurDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
+            })
+            tmpArr3.push({
+              alarmCnt:0,
+              eventCd: null,
+              occurDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
+            })
+          }
+      for(let i =0; i<this.EvChartItems2.length; i++){
+        TtmpArr1.push({
+          alarmCnt:0,
+          eventCd: null,
+          occurDate: moment().format('YYYY-MM-DD'),
+        })
+        TtmpArr2.push({
+          alarmCnt:0,
+          eventCd: null,
+          occurDate: moment().format('YYYY-MM-DD'),
+        })
+        TtmpArr3.push({
+          alarmCnt:0,
+          eventCd: null,
+          occurDate: moment().format('YYYY-MM-DD'),
+        })
+      }
+          
+          for(let i=0; i<this.EvChartItems1.length; i++){
+            if(this.EvChartItems1[i].eventCd==="E1013"){
+              let tmpidx = tmpArr1.findIndex(idx =>{
+                return idx.occurDate == this.EvChartItems1[i].occurDate
+              })
+              tmpArr1[tmpidx].alarmCnt = this.EvChartItems1[i].alarmCnt
+              tmpArr1[tmpidx].eventCd = this.EvChartItems1[i].eventCd
+            }
+            if(this.EvChartItems1[i].eventCd==="E1014"){
+              let tmpidx = tmpArr2.findIndex(idx =>{
+                return idx.occurDate == this.EvChartItems1[i].occurDate
+              })
+              tmpArr2[tmpidx].alarmCnt = this.EvChartItems1[i].alarmCnt
+              tmpArr2[tmpidx].eventCd = this.EvChartItems1[i].eventCd
+            }
+            if(this.EvChartItems1[i].eventCd==="E1016"){
+              let tmpidx = tmpArr3.findIndex(idx =>{
+                return idx.occurDate == this.EvChartItems1[i].occurDate
+              })
+              tmpArr3[tmpidx].alarmCnt = this.EvChartItems1[i].alarmCnt
+              tmpArr3[tmpidx].eventCd = this.EvChartItems1[i].eventCd
+            }
+          }
+          for(let i=0; i<this.EvChartItems2.length; i++){
+            if(this.EvChartItems2[i].eventCd==="E1013"){
+              let tmpidx = TtmpArr1.findIndex(idx =>{
+                return idx.occurDate == this.EvChartItems2[i].occurDate
+              })
+              TtmpArr1[tmpidx].alarmCnt = this.EvChartItems2[i].alarmCnt
+              TtmpArr1[tmpidx].eventCd = this.EvChartItems2[i].eventCd
+            }
+            if(this.EvChartItems2[i].eventCd==="E1014"){
+              let tmpidx = TtmpArr2.findIndex(idx =>{
+                return idx.occurDate == this.EvChartItems2[i].occurDate
+              })
+              TtmpArr2[tmpidx].alarmCnt = this.EvChartItems2[i].alarmCnt
+              TtmpArr2[tmpidx].eventCd = this.EvChartItems2[i].eventCd
+            }
+            if(this.EvChartItems4[i].eventCd==="E1016"){
+              let tmpidx = TtmpArr3.findIndex(idx =>{
+                return idx.occurDate == this.EvChartItems2[i].occurDate
+              })
+              TtmpArr3[tmpidx].alarmCnt = this.EvChartItems2[i].alarmCnt
+              TtmpArr3[tmpidx].eventCd = this.EvChartItems2[i].eventCd
+            }
+          }
+          
+          for(let i=0; i<7; i++){
+            this.newEvFireArr.push(tmpArr1[i].alarmCnt)
+            this.newEvEmArr.push(tmpArr2[i].alarmCnt)
+            this.newEvSafeArr.push(tmpArr3[i].alarmCnt)
+            this.newEvChartMMLabelArr.push(tmpArr1[i].occurDate.substring(4, 6))
+            this.newEvChartDDLabelArr.push(tmpArr1[i].occurDate.substring(6, 8))
+            this.newEvChartLabelArr.push(this.newEvChartMMLabelArr[i] +"-"+ this.newEvChartDDLabelArr[i])
+          }
+          for(let i=0; i<this.EvChartItems2.length; i++){
+            this.newEvTFireArr.push(TtmpArr1[i].alarmCnt)
+            this.newEvTEmArr.push(TtmpArr2[i].alarmCnt)
+            this.newEvTSafeArr.push(TtmpArr3[i].alarmCnt)
+          }
+
+      
+      this.EvFireData1 = this.newEvFireArr
+      this.EvEmData1 = this.newEvEmArr
+      this.EvSafeData1 = this.newEvSafeArr
+      this.EvTFireData = this.newEvTFireArr
+      this.EvTEmData = this.newEvTEmArr
+      this.EvTSafeData = this.newEvTSafeArr
+      this.EvchartData1.datasets[0].data = this.EvFireData1
+      this.EvchartData1.datasets[1].data = this.EvEmData1
+      this.EvchartData1.datasets[2].data = this.EvSafeData1
+      this.EvchartData2.datasets[0].data = this.EvTFireData
+      this.EvchartData2.datasets[1].data = this.EvTEmData
+      this.EvchartData2.datasets[2].data = this.EvTSafeData
+      this.EvchartData1.labels = this.newEvChartLabelArr
+      this.EvchartRedraw();
+    },
+    //--------------------------배터리 상태 차트--------------------------
+    createBtData(){
+      let data = {
+        type: 'bar',
+        labels: [ 'GW', '응급', '화재', '출입문', '활동', '생활'],
+        datasets: [{
+        label: '충만',
+        maxBarThickness: 12,  
+        data: this.BtFullData,
+        backgroundColor: [
+          "rgba(19, 126, 255, 0.8)",
+          ],
+      },{
+        label: '부족',
+        maxBarThickness: 12,
+        data: this.BtLackData,
+        backgroundColor: [
+          'rgba(17, 183, 135, 1)',
+          ],
+      },{
+        label: '교체',
+        maxBarThickness: 12,
+        data: this.BtChangeData,
+        backgroundColor: [
+          "rgba(255, 60, 166, 0.8)",
+          ],
+      }]
+      }
+      let options={
+        scales: {
+          x: {
+            ticks: {
+              color: "rgba(255, 255, 255, 1)"
+            }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1,
+              color: "rgba(255, 255, 255, 1)"
+            }
+          }
+        },
+        plugins:{
+          legend: {
+		        display: true,
+            fontColor: "#959dad",
+            position: 'top',
+            align: 'end',
+            labels: {
+              color: "rgba(255, 255, 255, 1)",
+              boxWidth: 8,
+              usePointStyle: true
+            },
+		      },
+          tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
+        }
+      }
+      this.BtchartData = data
+      this.BtchartOptions = options
+      this.BtchartRedraw();
+    },
+    BtchartRedraw(){
+      this.BtchartImage = new Chart(this.$refs.barChart, {
+        type:'bar',
+        data:this.BtchartData,
+        options:this.BtchartOptions
+      })
+      this.BtchartImage.update();
+    },
+    async remakeBtData(){
+      this.BtchartImage.destroy();
+      let addrCode =  this.sggCd.substring(0,5);
+      this.e_date =  moment(this.s_date).add(6,'days').format('YYYYMMDD')
+      let urlBattery =this.$store.state.serverApi + "/admin/organizations/stat/battery?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      await axios.get(urlBattery, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            const BttempArr = [];
+            this.BtChartItems=[];     
+            for(let i=0; i<response.data.data.length; i++) {
+              BttempArr.push({
+                sensorTypeCd: response.data.data[i].sensorTypeCd,
+                statName: response.data.data[i].statName,
+                statCnt: response.data.data[i].statCnt,
+              });
+            } 
+            this.BtChartItems=BttempArr;
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+
+          let tmpArr1 = []
+          let tmpArr2 = []
+          let tmpArr3 = []
+          this.newBtFullArr = []
+          this.newBtLackArr = []
+          this.newBtChangeArr = []
+
+          for(let i=0; i<6; i++){
+            tmpArr1.push({
+              sensorTypeCd: "TPE00"+i,
+              statName: null,
+              statCnt: 0,
+            })
+          }
+          for(let i=0; i<6; i++){
+            tmpArr2.push({
+              sensorTypeCd: "TPE00"+i,
+              statName: null,
+              statCnt: 0,
+            })
+          }
+          for(let i=0; i<6; i++){
+            tmpArr3.push({
+              sensorTypeCd: "TPE00"+i,
+              statName: null,
+              statCnt: 0,
+            })
+          }
+        
+          for(let i=0; i<7; i++){
+            if(this.BtChartItems[i].statName==="충만"){
+              let tmpidx = tmpArr1.findIndex(idx=>{
+                return idx.sensorTypeCd == this.BtChartItems[i].sensorTypeCd
+              })
+              tmpArr1[tmpidx].statName = this.BtChartItems[i].statName
+              tmpArr1[tmpidx].statCnt = this.BtChartItems[i].statCnt
+            }
+            if(this.BtChartItems[i].statName==="부족"){
+              let tmpidx = tmpArr2.findIndex(idx=>{
+                return idx.sensorTypeCd == this.BtChartItems[i].sensorTypeCd
+              })
+              tmpArr2[tmpidx].statName = this.BtChartItems[i].statName
+              tmpArr2[tmpidx].statCnt = this.BtChartItems[i].statCnt
+            }
+            if(this.BtChartItems[i].statName==="교체"){
+              let tmpidx = tmpArr3.findIndex(idx=>{
+                return idx.sensorTypeCd == this.BtChartItems[i].sensorTypeCd
+              })
+              tmpArr3[tmpidx].statName = this.BtChartItems[i].statName
+              tmpArr3[tmpidx].statCnt = this.BtChartItems[i].statCnt
+            }
+          }
+          for(let i=0; i<6; i++){
+            this.newBtFullArr.push(tmpArr1[i].statCnt)
+            this.newBtLackArr.push(tmpArr2[i].statCnt)
+            this.newBtChangeArr.push(tmpArr3[i].statCnt)
+          }
+      
+      this.BtFullData = this.newBtFullArr
+      this.BtLackData = this.newBtLackArr
+      this.BtChangeData = this.newBtChangeArr
+      this.BtchartData.datasets[0].data = this.BtFullData
+      this.BtchartData.datasets[1].data = this.BtLackData
+      this.BtchartData.datasets[2].data = this.BtChangeData
+      this.BtchartRedraw();
+    },
+    //--------------------------전원연결 차트--------------------------
+    createPwData(){
+      let data1 = {
+        type: 'doughnut',
+        labels: ['연결', '차단'],
+        labelsColor: 'white',
+        datasets: [{
+        label: '연결',
+        data: this.PwGwData,
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)"],
+        borderColor: 'rgba(255, 255, 255, 1)',
+        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        borderWidth: 1,
+      }]
+      }
+      let data2 = {
+        type: 'doughnut',
+        labels: ['수신', '미수신', '양호'],
+        labelsColor: 'white',
+        datasets: [{
+        label: '연결',
+        data: this.PwEmData,
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)", "rgba(255, 60, 166, 0.8)"],
+        borderColor: 'rgba(255, 255, 255, 1)',
+        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        borderWidth: 1,
+      }]
+      }
+      let data3 = {
+        type: 'doughnut',
+        labels: ['수신', '미수신', '양호'],
+        labelsColor: 'white',
+        datasets: [{
+        label: '연결',
+        data: this.PwFiData,
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)", "rgba(255, 60, 166, 0.8)"],
+        borderColor: 'rgba(255, 255, 255, 1)',
+        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        borderWidth: 1,
+      }]
+      }
+      let data4 = {
+        type: 'doughnut',
+        labels: ['수신', '미수신', '양호'],
+        labelsColor: 'white',
+        datasets: [{
+        label: '연결',
+        data: this.PwDoData,
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)", "rgba(255, 60, 166, 0.8)"],
+        borderColor: 'rgba(255, 255, 255, 1)',
+        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        borderWidth: 1,
+      }]
+      }
+      let data5 = {
+        type: 'doughnut',
+        labels: ['수신', '미수신', '양호'],
+        labelsColor: 'white',
+        datasets: [{
+        label: '연결',
+        data: this.PwAcData,
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)", "rgba(255, 60, 166, 0.8)"],
+        borderColor: 'rgba(255, 255, 255, 1)',
+        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        borderWidth: 1,
+      }]
+      }
+      let data6 = {
+        type: 'doughnut',
+        labels: ['수신', '미수신', '양호'],
+        labelsColor: "rgba(255, 255, 255, 1)",
+        datasets: [{
+        labels: [],
+        data: this.PwLiData,
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)", "rgba(255, 60, 166, 0.8)"],
+        borderColor: 'rgba(255, 255, 255, 1)',
+        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        borderWidth: 1,
+      }]
+      }
+      let options = {
+        responsive: false,
+        plugins: { 
+        legend: { 
+          display: true, 
+          color: "rgba(255, 255, 255, 1)", //labelscolor,fontcolor,color 데이터를 arr
+          position: "bottom", 
+          labels: { boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: "circle", font: { size: 14 }, color:"rgba(255, 255, 255, 1)" }, 
+          fullSize: false, 
+          align: "center" 
+          }, 
+          tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
+        },
+        responsive: true, 
+        maintainAspectRatio: true, 
+        layout: { 
+        padding: { 
+          top: 2, 
+          bottom: 2 
+        } 
+        }, 
+        elements: { 
+        arc: { 
+          borderWidth: 2 
+        } 
+        }, 
+        animation: { 
+          duration: 5 
+        } 
+      }
+      this.PwchartData1 = data1
+      this.PwchartData2 = data2
+      this.PwchartData3 = data3
+      this.PwchartData4 = data4
+      this.PwchartData5 = data5
+      this.PwchartData6 = data6
+      this.PwchartOptions = options
+      this.PwchartRedraw();
+    },
+    PwchartRedraw(){
+      this.PwchartImage1 = new Chart(this.$refs.doughnutChart1, {
+        type:'doughnut',
+        data:this.PwchartData1,
+        options:this.PwchartOptions
+      })
+      this.PwchartImage2 = new Chart(this.$refs.doughnutChart2, {
+        type:'doughnut',
+        data:this.PwchartData2,
+        options:this.PwchartOptions
+      })
+      this.PwchartImage3 = new Chart(this.$refs.doughnutChart3, {
+        type:'doughnut',
+        data:this.PwchartData3,
+        options:this.PwchartOptions
+      })
+      this.PwchartImage4 = new Chart(this.$refs.doughnutChart4, {
+        type:'doughnut',
+        data:this.PwchartData4,
+        options:this.PwchartOptions
+      })
+      this.PwchartImage5 = new Chart(this.$refs.doughnutChart5, {
+        type:'doughnut',
+        data:this.PwchartData5,
+        options:this.PwchartOptions
+      })
+      this.PwchartImage6 = new Chart(this.$refs.doughnutChart6, {
+        type:'doughnut',
+        data:this.PwchartData6,
+        options:this.PwchartOptions
+      })
+      this.PwchartImage1.update();
+      this.PwchartImage2.update();
+      this.PwchartImage3.update();
+      this.PwchartImage4.update();
+      this.PwchartImage5.update();
+      this.PwchartImage6.update();
+    },
+    async remakePwData(){
+      this.PwchartImage1.destroy();
+      this.PwchartImage2.destroy();
+      this.PwchartImage3.destroy();
+      this.PwchartImage4.destroy();
+      this.PwchartImage5.destroy();
+      this.PwchartImage6.destroy();
+      let addrCode =  this.sggCd.substring(0,5);
+      this.e_date =  moment(this.s_date).add(6,'days').format('YYYYMMDD')
+      let urlPower = this.$store.state.serverApi + "/admin/organizations/stat/rssi?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      await axios.get(urlPower, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            const PwtempArr = [];
+            this.PwChartItems=[];     
+            for(let i=0; i<response.data.data.length; i++) {
+              PwtempArr.push({
+                sensorTypeCd: response.data.data[i].sensorTypeCd,
+                statName: response.data.data[i].statName,
+                statCnt: response.data.data[i].statCnt,
+              });
+            } 
+            this.PwChartItems=PwtempArr;
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+
+          let tmpArr1 = []
+          let tmpArr2 = []
+          let tmpArr3 = []
+          let tmpArr4 = []
+          let tmpArr5 = []
+          let tmpArr6 = []
+          this.newPwGwArr = []
+          this.newPwEmArr = []
+          this.newPwFiArr = []
+          this.newPwDoArr = []
+          this.newPwAcArr = []
+          this.newPwLiArr = []
+
+          for(let i=0; i<this.PwChartItems.length; i++){
+            if(this.PwChartItems[i].sensorTypeCd==="TPE000"){
+              tmpArr1.push({
+                sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
+                statCnt: this.PwChartItems[i].statCnt,
+                statName: this.PwChartItems[i].statName,
+              })
+            }
+            if(this.PwChartItems[i].sensorTypeCd==="TPE001"){
+              tmpArr2.push({
+                sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
+                statCnt: this.PwChartItems[i].statCnt,
+                statName: this.PwChartItems[i].statName,
+              })
+            }
+            if(this.PwChartItems[i].sensorTypeCd==="TPE002"){
+              tmpArr3.push({
+                sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
+                statCnt: this.PwChartItems[i].statCnt,
+                statName: this.PwChartItems[i].statName,
+              })
+            }
+            if(this.PwChartItems[i].sensorTypeCd==="TPE003"){
+              tmpArr4.push({
+                sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
+                statCnt: this.PwChartItems[i].statCnt,
+                statName: this.PwChartItems[i].statName,
+              })
+            }
+            if(this.PwChartItems[i].sensorTypeCd==="TPE004"){
+              tmpArr5.push({
+                sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
+                statCnt: this.PwChartItems[i].statCnt,
+                statName: this.PwChartItems[i].statName,
+              })
+            }
+            if(this.PwChartItems[i].sensorTypeCd==="TPE005"){
+              tmpArr6.push({
+                sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
+                statCnt: this.PwChartItems[i].statCnt,
+                statName: this.PwChartItems[i].statName,
+              })
+            }
+          }
+          let makeArr1=[]
+          let makeArr2=[]
+          let makeArr3=[]
+          let makeArr4=[]
+          let makeArr5=[]
+          let makeArr6=[]
+          //배열 전체 순환
+          
+          tmpArr1.forEach(item=>{
+            makeArr1.push(item.statCnt)
+          })
+          tmpArr2.forEach(item=>{
+            makeArr2.push(item.statCnt)
+          })
+          tmpArr3.forEach(item=>{
+            makeArr3.push(item.statCnt)
+          })
+          tmpArr4.forEach(item=>{
+            makeArr4.push(item.statCnt)
+          })
+          tmpArr5.forEach(item=>{
+            makeArr5.push(item.statCnt)
+          })
+          tmpArr6.forEach(item=>{
+            makeArr6.push(item.statCnt)
+          })
+          for(let i=0; i<2; i++){
+          this.newPwGwArr.push({
+            sensorTypeCd: "TPE000",
+            statName: null,
+            statCnt: 0,
+          })}
+          for(let i=0; i<3; i++){
+          this.newPwEmArr.push({
+            sensorTypeCd: "TPE001",
+            statName: null,
+            statCnt: 0,
+          })
+          this.newPwFiArr.push({
+            sensorTypeCd: "TPE002",
+            statName: null,
+            statCnt: 0,
+          })
+          this.newPwDoArr.push({
+            sensorTypeCd: "TPE003",
+            statName: null,
+            statCnt: 0,
+          })
+          this.newPwAcArr.push({
+            sensorTypeCd: "TPE004",
+            statName: null,
+            statCnt: 0,
+          })
+          this.newPwLiArr.push({
+            sensorTypeCd: "TPE005",
+            statName: null,
+            statCnt: 0,
+          })}
+          this.newPwEmArr=[],
+          this.newPwFiArr=[],
+          this.newPwDoArr=[],
+          this.newPwAcArr=[],
+          this.newPwLiArr=[],
+
+          this.newPwGwArr = makeArr1
+          this.newPwEmArr[2] = makeArr2
+          this.newPwFiArr[2] = makeArr3
+          this.newPwDoArr[2] = makeArr4
+          this.newPwAcArr[2] = makeArr5
+          this.newPwLiArr[2] = makeArr6
+
+
+
+      this.PwGwData = this.newPwGwArr
+      this.PwEmData = this.newPwEmArr
+      this.PwFiData = this.newPwFiArr
+      this.PwDoData = this.newPwDoArr
+      this.PwAcData = this.newPwAcArr
+      this.PwLiData = this.newPwAcArr
+      this.PwchartData1.datasets[0].data = this.PwGwData
+      this.PwchartData2.datasets[0].data = this.PwEmData
+      this.PwchartData3.datasets[0].data = this.PwFiData
+      this.PwchartData4.datasets[0].data = this.PwDoData
+      this.PwchartData5.datasets[0].data = this.PwAcData
+      this.PwchartData6.datasets[0].data = this.PwLiData
+      this.PwchartRedraw();
+    },
+    //--------------------------A/S 현황--------------------------
+    // 게이트웨이 AS 요청,접수,완료
+    getGwCount(){
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.ASs_date+"&endDate="+this.ASe_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let gwrqData = response.data.data
+            let gwrqCArrToString = ''
+            let fgwrqCArrToString = ''
+
+            let gwrcData = response.data.data
+            let gwrcCArrToString = ''
+            let fgwrcCArrToString = ''
+
+            let gwcpData = response.data.data
+            let gwcpCArrToString = ''
+            let fgwcpCArrToString = ''
+
+            let gwcaData = response.data.data
+            let gwcaCArrToString = ''
+            let fgwcaCArrToString = ''
+
+            // 요청
+            gwrqCArrToString = gwrqData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(gwrqCArrToString.length != ''){
+            fgwrqCArrToString = gwrqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE001"
+            })
+            if(fgwrqCArrToString.length != ''){
+            this.gwrqCount = fgwrqCArrToString[0].typeCnt
+            }else{
+              this.gwrqCount = '0';
+            }}else{
+              this.gwrqCount = '0';
+            }
+            // 접수
+            gwrcCArrToString = gwrcData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(gwrcCArrToString != ''){
+            fgwrcCArrToString = gwrcCArrToString.filter(cd=>{
+              return cd.stateCd === "STE002"
+            })
+            if(fgwrcCArrToString != ''){
+            this.gwrcCount = fgwrcCArrToString[0].typeCnt
+            }else{
+              this.gwrcCount = '0';
+            }}else{
+              this.gwrcCount = '0';
+            }
+            // 완료
+            gwcpCArrToString = gwcpData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(gwcpCArrToString != ''){
+            fgwcpCArrToString = gwcpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE003"
+            })
+            if(fgwcpCArrToString != ''){
+            this.gwcpCount =fgwcpCArrToString[0].typeCnt
+            }else{
+              this.gwcpCount = '0';
+            }}else{
+              this.gwcpCount = '0';
+            }
+            // 취소
+            gwcaCArrToString = gwcaData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(gwcaCArrToString != ''){
+            fgwcaCArrToString = gwcaCArrToString.filter(cd=>{
+              return cd.stateCd === "STE004"
+            })
+            if(fgwcaCArrToString != ''){
+            this.gwcaCount =fgwcaCArrToString[0].typeCnt
+            }else{
+              this.gwcaCount = '0';
+            }}else{
+              this.gwcaCount = '0';
+            }
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getEmCount(){
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.ASs_date+"&endDate="+this.ASe_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let emrqData = response.data.data
+            let emrqCArrToString = ''
+            let femrqCArrToString = ''
+
+            let emrcData = response.data.data
+            let emrcCArrToString = ''
+            let femrcCArrToString = ''
+
+            let emcpData = response.data.data
+            let emcpCArrToString = ''
+            let femcpCArrToString = ''
+
+            let emcaData = response.data.data
+            let emcaCArrToString = ''
+            let femcaCArrToString = ''
+
+            // 요청
+            emrqCArrToString = emrqData.filter(cd=>{
+            return cd.typeCd ==="TPE001"
+            })
+            if(emrqCArrToString.length != ''){
+            femrqCArrToString = emrqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE001"
+            })
+            if(femrqCArrToString.length != ''){
+            this.emrqCount = femrqCArrToString[0].typeCnt
+            }else{
+              this.emrqCount = '0';
+            }}else{
+              this.emrqCount = '0';
+            }
+            // 접수
+            emrcCArrToString = emrcData.filter(cd=>{
+            return cd.typeCd ==="TPE001"
+            })
+            if(emrcCArrToString != ''){
+            femrcCArrToString = emrcCArrToString.filter(cd=>{
+              return cd.stateCd === "STE002"
+            })
+            if(femrcCArrToString != ''){
+            this.emrcCount = femrcCArrToString[0].typeCnt
+            }else{
+              this.emrcCount = '0';
+            }}else{
+              this.emrcCount = '0';
+            }
+            // 완료
+            emcpCArrToString = emcpData.filter(cd=>{
+            return cd.typeCd ==="TPE001"
+            })
+            if(emcpCArrToString != ''){
+            femcpCArrToString = emcpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE003"
+            })
+            if(femcpCArrToString != ''){
+            this.emcpCount =femcpCArrToString[0].typeCnt
+            }else{
+              this.emcpCount = '0';
+            }}else{
+              this.emcpCount = '0';
+            }
+            // 취소
+            emcaCArrToString = emcaData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(emcaCArrToString != ''){
+            femcaCArrToString = emcaCArrToString.filter(cd=>{
+              return cd.stateCd === "STE004"
+            })
+            if(femcaCArrToString != ''){
+            this.emcaCount =femcaCArrToString[0].typeCnt
+            }else{
+              this.emcaCount = '0';
+            }}else{
+              this.emcaCount = '0';
+            }
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getAcCount(){
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.ASs_date+"&endDate="+this.ASe_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let acrqData = response.data.data
+            let acrqCArrToString = ''
+            let facrqCArrToString = ''
+
+            let acrcData = response.data.data
+            let acrcCArrToString = ''
+            let facrcCArrToString = ''
+
+            let accpData = response.data.data
+            let accpCArrToString = ''
+            let faccpCArrToString = ''
+
+            let accaData = response.data.data
+            let accaCArrToString = ''
+            let faccaCArrToString = ''
+
+            // 요청
+            acrqCArrToString = acrqData.filter(cd=>{
+            return cd.typeCd ==="TPE002"
+            })
+            if(acrqCArrToString.length != ''){
+            facrqCArrToString = acrqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE001"
+            })
+            if(facrqCArrToString.length != ''){
+            this.acrqCount = facrqCArrToString[0].typeCnt
+            }else{
+              this.acrqCount = '0';
+            }}else{
+              this.acrqCount = '0';
+            }
+            // 접수
+            acrcCArrToString = acrcData.filter(cd=>{
+            return cd.typeCd ==="TPE002"
+            })
+            if(acrcCArrToString != ''){
+            facrcCArrToString = acrcCArrToString.filter(cd=>{
+              return cd.stateCd === "STE002"
+            })
+            if(facrcCArrToString != ''){
+            this.acrcCount = facrcCArrToString[0].typeCnt
+            }else{
+              this.acrcCount = '0';
+            }}else{
+              this.acrcCount = '0';
+            }
+            // 완료
+            accpCArrToString = accpData.filter(cd=>{
+            return cd.typeCd ==="TPE002"
+            })
+            if(accpCArrToString != ''){
+            faccpCArrToString = accpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE003"
+            })
+            if(faccpCArrToString != ''){
+            this.accpCount =faccpCArrToString[0].typeCnt
+            }else{
+              this.accpCount = '0';
+            }}else{
+              this.accpCount = '0';
+            }
+            // 취소
+            accaCArrToString = accaData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(accaCArrToString != ''){
+            faccaCArrToString = accaCArrToString.filter(cd=>{
+              return cd.stateCd === "STE004"
+            })
+            if(faccaCArrToString != ''){
+            this.accaCount =faccaCArrToString[0].typeCnt
+            }else{
+              this.accaCount = '0';
+            }}else{
+              this.accaCount = '0';
+            }
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getFiCount(){
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.ASs_date+"&endDate="+this.ASe_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let firqData = response.data.data
+            let firqCArrToString = ''
+            let ffirqCArrToString = ''
+
+            let fircData = response.data.data
+            let fircCArrToString = ''
+            let ffircCArrToString = ''
+
+            let ficpData = response.data.data
+            let ficpCArrToString = ''
+            let fficpCArrToString = ''
+
+            let ficaData = response.data.data
+            let ficaCArrToString = ''
+            let fficaCArrToString = ''
+
+            // 요청
+            firqCArrToString = firqData.filter(cd=>{
+            return cd.typeCd ==="TPE003"
+            })
+            if(firqCArrToString.length != ''){
+            ffirqCArrToString = firqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE001"
+            })
+            if(ffirqCArrToString.length != ''){
+            this.firqCount = ffirqCArrToString[0].typeCnt
+            }else{
+              this.firqCount = '0';
+            }}else{
+              this.firqCount = '0';
+            }
+            // 접수
+            fircCArrToString = fircData.filter(cd=>{
+            return cd.typeCd ==="TPE003"
+            })
+            if(fircCArrToString != ''){
+            ffircCArrToString = fircCArrToString.filter(cd=>{
+              return cd.stateCd === "STE002"
+            })
+            if(ffircCArrToString != ''){
+            this.fircCount = ffircCArrToString[0].typeCnt
+            }else{
+              this.fircCount = '0';
+            }}else{
+              this.fircCount = '0';
+            }
+            // 완료
+            ficpCArrToString = ficpData.filter(cd=>{
+            return cd.typeCd ==="TPE003"
+            })
+            if(ficpCArrToString != ''){
+            fficpCArrToString = ficpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE003"
+            })
+            if(fficpCArrToString != ''){
+            this.ficpCount =fficpCArrToString[0].typeCnt
+            }else{
+              this.ficpCount = '0';
+            }}else{
+              this.ficpCount = '0';
+            }
+            // 취소
+            ficaCArrToString = ficaData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(ficaCArrToString != ''){
+            fficaCArrToString = ficaCArrToString.filter(cd=>{
+              return cd.stateCd === "STE004"
+            })
+            if(fficaCArrToString != ''){
+            this.ficaCount =fficaCArrToString[0].typeCnt
+            }else{
+              this.ficaCount = '0';
+            }}else{
+              this.ficaCount = '0';
+            }
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getDoCount(){
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.ASs_date+"&endDate="+this.ASe_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let dorqData = response.data.data
+            let dorqCArrToString = ''
+            let fdorqCArrToString = ''
+
+            let dorcData = response.data.data
+            let dorcCArrToString = ''
+            let fdorcCArrToString = ''
+
+            let docpData = response.data.data
+            let docpCArrToString = ''
+            let fdocpCArrToString = ''
+
+            let docaData = response.data.data
+            let docaCArrToString = ''
+            let fdocaCArrToString = ''
+
+            // 요청
+            dorqCArrToString = dorqData.filter(cd=>{
+            return cd.typeCd ==="TPE004"
+            })
+            if(dorqCArrToString.length != ''){
+            fdorqCArrToString = dorqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE001"
+            })
+            if(fdorqCArrToString.length != ''){
+            this.dorqCount = fdorqCArrToString[0].typeCnt
+            }else{
+              this.dorqCount = '0';
+            }}else{
+              this.dorqCount = '0';
+            }
+            // 접수
+            dorcCArrToString = dorcData.filter(cd=>{
+            return cd.typeCd ==="TPE004"
+            })
+            if(dorcCArrToString != ''){
+            fdorcCArrToString = dorcCArrToString.filter(cd=>{
+              return cd.stateCd === "STE002"
+            })
+            if(fdorcCArrToString != ''){
+            this.dorcCount = fdorcCArrToString[0].typeCnt
+            }else{
+              this.dorcCount = '0';
+            }}else{
+              this.dorcCount = '0';
+            }
+            // 완료
+            docpCArrToString = docpData.filter(cd=>{
+            return cd.typeCd ==="TPE004"
+            })
+            if(docpCArrToString != ''){
+            fdocpCArrToString = docpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE003"
+            })
+            if(fdocpCArrToString != ''){
+            this.docpCount =fdocpCArrToString[0].typeCnt
+            }else{
+              this.docpCount = '0';
+            }}else{
+              this.docpCount = '0';
+            }
+            // 취소
+            docaCArrToString = docaData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(docaCArrToString != ''){
+            fdocaCArrToString = docaCArrToString.filter(cd=>{
+              return cd.stateCd === "STE004"
+            })
+            if(fdocaCArrToString != ''){
+            this.docaCount =fdocaCArrToString[0].typeCnt
+            }else{
+              this.docaCount = '0';
+            }}else{
+              this.docaCount = '0';
+            }
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getLiCount(){
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.ASs_date+"&endDate="+this.ASe_date;
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            let lirqData = response.data.data
+            let lirqCArrToString = ''
+            let flirqCArrToString = ''
+
+            let lircData = response.data.data
+            let lircCArrToString = ''
+            let flircCArrToString = ''
+
+            let licpData = response.data.data
+            let licpCArrToString = ''
+            let flicpCArrToString = ''
+
+            let licaData = response.data.data
+            let licaCArrToString = ''
+            let flicaCArrToString = ''
+
+            // 요청
+            lirqCArrToString = lirqData.filter(cd=>{
+            return cd.typeCd ==="TPE005"
+            })
+            if(lirqCArrToString.length != ''){
+            flirqCArrToString = lirqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE001"
+            })
+            if(flirqCArrToString.length != ''){
+            this.lirqCount = flirqCArrToString[0].typeCnt
+            }else{
+              this.lirqCount = '0';
+            }}else{
+              this.lirqCount = '0';
+            }
+            // 접수
+            lircCArrToString = lircData.filter(cd=>{
+            return cd.typeCd ==="TPE005"
+            })
+            if(lircCArrToString != ''){
+            flircCArrToString = lircCArrToString.filter(cd=>{
+              return cd.stateCd === "STE002"
+            })
+            if(flircCArrToString != ''){
+            this.lircCount = flircCArrToString[0].typeCnt
+            }else{
+              this.lircCount = '0';
+            }}else{
+              this.lircCount = '0';
+            }
+            // 완료
+            licpCArrToString = licpData.filter(cd=>{
+            return cd.typeCd ==="TPE005"
+            })
+            if(licpCArrToString != ''){
+            flicpCArrToString = licpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE003"
+            })
+            if(flicpCArrToString != ''){
+            this.licpCount =flicpCArrToString[0].typeCnt
+            }else{
+              this.licpCount = '0';
+            }}else{
+              this.licpCount = '0';
+            }
+            // 취소
+            licaCArrToString = licaData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            if(licaCArrToString != ''){
+            flicaCArrToString = licaCArrToString.filter(cd=>{
+              return cd.stateCd === "STE004"
+            })
+            if(flicaCArrToString != ''){
+            this.licaCount =flicaCArrToString[0].typeCnt
+            }else{
+              this.licaCount = '0';
+            }}else{
+              this.licaCount = '0';
+            }
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    //--------------------------조회버튼 클릭--------------------------
+    manageInquiry(){
+      this.remakeEuData()
+      this.remakeEvData()
+      this.remakeBtData()
+      this.remakePwData()
+    },
+  }
 }
 </script>
 <style>

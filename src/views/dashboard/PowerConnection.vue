@@ -44,40 +44,40 @@ import { eventBus } from "@/main.js";
 
 export default {
   data:() => ({
-    chartData1: null,
-    chartData2: null,
-    chartData3: null,
-    chartData4: null,
-    chartData5: null,
-    chartData6: null,
-    chartOptions: null,
-    chartImage1: null,
-    chartImage2: null,
-    chartImage3: null,
-    chartImage4: null,
-    chartImage5: null,
-    chartImage6: null,
-    GwData: [ 19, 5 ],
-    EmData: [14, 5, 8],
-    FiData:[14, 5, 8],
-    DoData: [14, 5, 8],
-    AcData: [14, 5, 8],
-    LiData: [14, 5, 8],
+    PwchartData1: null,
+    PwchartData2: null,
+    PwchartData3: null,
+    PwchartData4: null,
+    PwchartData5: null,
+    PwchartData6: null,
+    PwchartOptions: null,
+    PwchartImage1: null,
+    PwchartImage2: null,
+    PwchartImage3: null,
+    PwchartImage4: null,
+    PwchartImage5: null,
+    PwchartImage6: null,
+    PwGwData: [ 19, 5 ],
+    PwEmData: [14, 5, 8],
+    PwFiData:[14, 5, 8],
+    PwDoData: [14, 5, 8],
+    PwAcData: [14, 5, 8],
+    PwLiData: [14, 5, 8],
     comChartItems:[],
-    newGwArr:[],
-    newEmArr:[],
-    newFiArr:[],
-    newDoArr:[],
-    newAcArr:[],
-    newLiArr:[],
+    newPwGwArr:[],
+    newPwEmArr:[],
+    newPwFiArr:[],
+    newPwDoArr:[],
+    newPwAcArr:[],
+    newPwLiArr:[],
     s_date: null,
   }),
   mounted(){
-    this.createData();
+    this.createPwData();
     this.getDataFromLookUp();
   },
   methods:{
-    createData(){
+    createPwData(){
       let data1 = {
         type: 'doughnut',
         labels: ['연결', '차단'],
@@ -185,52 +185,52 @@ export default {
           duration: 5 
         } 
       }
-      this.chartData1 = data1
-      this.chartData2 = data2
-      this.chartData3 = data3
-      this.chartData4 = data4
-      this.chartData5 = data5
-      this.chartData6 = data6
-      this.chartOptions = options
+      this.PwchartData1 = data1
+      this.PwchartData2 = data2
+      this.PwchartData3 = data3
+      this.PwchartData4 = data4
+      this.PwchartData5 = data5
+      this.PwchartData6 = data6
+      this.PwchartOptions = options
       this.chartRedraw();
     },
-    chartRedraw(){
-      this.chartImage1 = new Chart(this.$refs.doughnutChart1, {
+    PwchartRedraw(){
+      this.PwchartImage1 = new Chart(this.$refs.doughnutChart1, {
         type:'doughnut',
-        data:this.chartData1,
-        options:this.chartOptions
+        data:this.PwchartData1,
+        options:this.PwchartOptions
       })
-      this.chartImage2 = new Chart(this.$refs.doughnutChart2, {
+      this.PwchartImage2 = new Chart(this.$refs.doughnutChart2, {
         type:'doughnut',
-        data:this.chartData2,
-        options:this.chartOptions
+        data:this.PwchartData2,
+        options:this.PwchartOptions
       })
-      this.chartImage3 = new Chart(this.$refs.doughnutChart3, {
+      this.PwchartImage3 = new Chart(this.$refs.doughnutChart3, {
         type:'doughnut',
-        data:this.chartData3,
-        options:this.chartOptions
+        data:this.PwchartData3,
+        options:this.PwchartOptions
       })
-      this.chartImage4 = new Chart(this.$refs.doughnutChart4, {
+      this.PwchartImage4 = new Chart(this.$refs.doughnutChart4, {
         type:'doughnut',
-        data:this.chartData4,
-        options:this.chartOptions
+        data:this.PwchartData4,
+        options:this.PwchartOptions
       })
-      this.chartImage5 = new Chart(this.$refs.doughnutChart5, {
+      this.PwchartImage5 = new Chart(this.$refs.doughnutChart5, {
         type:'doughnut',
-        data:this.chartData5,
-        options:this.chartOptions
+        data:this.PwchartData5,
+        options:this.PwchartOptions
       })
-      this.chartImage6 = new Chart(this.$refs.doughnutChart6, {
+      this.PwchartImage6 = new Chart(this.$refs.doughnutChart6, {
         type:'doughnut',
-        data:this.chartData6,
-        options:this.chartOptions
+        data:this.PwchartData6,
+        options:this.PwchartOptions
       })
-      this.chartImage1.update();
-      this.chartImage2.update();
-      this.chartImage3.update();
-      this.chartImage4.update();
-      this.chartImage5.update();
-      this.chartImage6.update();
+      this.PwchartImage1.update();
+      this.PwchartImage2.update();
+      this.PwchartImage3.update();
+      this.PwchartImage4.update();
+      this.PwchartImage5.update();
+      this.PwchartImage6.update();
     },
     getDataFromLookUp(){
       eventBus.$on("PwLookUp", (PwChartItems, s_date) => 
@@ -382,24 +382,24 @@ export default {
       });
     },
     remakeData(){
-      this.chartImage1.destroy();
-      this.chartImage2.destroy();
-      this.chartImage3.destroy();
-      this.chartImage4.destroy();
-      this.chartImage5.destroy();
-      this.chartImage6.destroy();  
+      this.PwchartImage1.destroy();
+      this.PwchartImage2.destroy();
+      this.PwchartImage3.destroy();
+      this.PwchartImage4.destroy();
+      this.PwchartImage5.destroy();
+      this.PwchartImage6.destroy();  
       this.GwData = this.newGwArr
       this.EmData = this.newEmArr
       this.FiData = this.newFiArr
       this.DoData = this.newDoArr
       this.AcData = this.newAcArr
       this.LiData = this.newAcArr
-      this.chartData1.datasets[0].data = this.GwData
-      this.chartData2.datasets[0].data = this.EmData
-      this.chartData3.datasets[0].data = this.FiData
-      this.chartData4.datasets[0].data = this.DoData
-      this.chartData5.datasets[0].data = this.AcData
-      this.chartData6.datasets[0].data = this.LiData
+      this.PwchartData1.datasets[0].data = this.GwData
+      this.PwchartData2.datasets[0].data = this.EmData
+      this.PwchartData3.datasets[0].data = this.FiData
+      this.PwchartData4.datasets[0].data = this.DoData
+      this.PwchartData5.datasets[0].data = this.AcData
+      this.PwchartData6.datasets[0].data = this.LiData
       this.chartRedraw();
     },
   }
