@@ -39,7 +39,7 @@ export default {
     createData(){
       let data = {
         type: 'bar',
-        labels: [ '게이트웨이', '응급호출기', '화재감지기', '도어센서', '활동감지센서', '생활안심센서'],
+        labels: [ 'GW', '응급', '화재', '출입문', '활동', '생활'],
         datasets: [{
         label: '충만',
         maxBarThickness: 12,  
