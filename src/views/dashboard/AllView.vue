@@ -80,13 +80,14 @@
             </div>
           </div>
           <div class="box_col3 box_style">
-            <!-- <p>오늘 이벤트 현황</p>
+            <p style="float: left; width: 30%; height: 3%">오늘 이벤트 현황</p>
+            <img src = "@/assets/images/dashboard_event.png" style="float:right; width: 30%;"/>
             <div>
-              <canvas class="statistics-charts-line" ref="BarChart2" width="470" height="50" ></canvas>
-            </div> -->
+              <canvas ref="BarChart2" width="470" height="40"></canvas>
+            </div>
             <p>응급 이벤트 현황</p>    
             <div>
-              <canvas class="statistics-charts-line" ref="BarChart1" width="470" height="275" ></canvas>
+              <canvas class="statistics-charts-line" ref="BarChart1" width="470" height="220" ></canvas>
             </div>
           </div>
           <div class="box_col3 box_style">
@@ -178,39 +179,41 @@
             <p>배터리 상태</p>
             </div>
             <div>
-              <canvas ref="barChart" style="height: 240"/>
+              <canvas ref="barChart" style="height: 150px"/>
             </div>
           </div>
           <div class="box_style box_r" style="height: 270px;">
             <div class="result_txt">
-              <p style="float: left; width: 17%; fontSize: 18px; height: 10px; margin-bottom: 20px;">전원연결</p>
-              <p style="float: left; width: 73%; fontSize: 18px; height: 10px; margin-bottom: 20px;">통신상태</p>
+              <p style="float: left; width: 6%; fontSize: 18px; height: 10px; margin-bottom: 20px;">전원연결</p>
+               <img src = "@/assets/images/dashboard_gw.png" style="float:left; width: 10%;"/>
+              <p style="float: left; width: 6%; fontSize: 18px; height: 10px; margin-left: 70px; margin-bottom: 20px;">통신상태</p>
+               <img src = "@/assets/images/dashboard_power.png" style="float:left; width: 15%;"/>
             </div>
             <div>
-              <p style="float: left; width: 17%;">게이트웨이</p>
-              <p style="float: left; width: 17%;">응급호출기</p>
-              <p style="float: left; width: 17%;">화재감지기</p>
-              <p style="float: left; width: 17%;">도어센서</p>
-              <p style="float: left; width: 16%;">활동감지센서</p>
-              <p style="float: left; width: 16%;">생활안심센서</p>
+              <p style="float: left; width: 270px; margin-left: 40px">게이트웨이</p>
+              <p style="float: left; width: 208px;">응급호출기</p>
+              <p style="float: left; width: 215px;">화재감지기</p>
+              <p style="float: left; width: 195px;">도어센서</p>
+              <p style="float: left; width: 196px;">활동감지센서</p>
+              <p style="float: left; width: 100px;">생활안심센서</p>
             </div>
-            <div style="float: left; width: 14%; ">
-              <canvas height="150px" width="200px" ref="doughnutChart1"/>
+            <div style="float: left; width: 160px; ">
+              <canvas height="100px" width="100px" ref="doughnutChart1"/>
             </div>
-            <div style="float: left; width: 14%; margin-left: 2%;">
-              <canvas height="150px" width="200px" ref="doughnutChart2"/>
+            <div style="float: left; width: 160px; margin-left: 8.7%;">
+              <canvas height="100px" width="100px" ref="doughnutChart2"/>
             </div>
-            <div style="float: left; width: 14%; margin-left: 2%;">
-              <canvas height="150px" width="200px" ref="doughnutChart3"/>
+            <div style="float: left; width: 160px; margin-left: 3.7%;">
+              <canvas height="100px" width="100px" ref="doughnutChart3"/>
             </div>
-            <div style="float: left; width: 14%; margin-left: 3%;">
-              <canvas height="150px" width="200px" ref="doughnutChart4"/>
+            <div style="float: left; width: 160px; margin-left: 3.8%;">
+              <canvas height="100px" width="100px" ref="doughnutChart4"/>
             </div>
-            <div style="float: left; width: 14%; margin-left: 3%;">
-              <canvas height="150px" width="200px" ref="doughnutChart5"/>
+            <div style="float: left; width: 160px; margin-left: 3.9%;">
+              <canvas height="100px" width="100px" ref="doughnutChart5"/>
             </div>
-            <div style="float: left; width: 14%; margin-left: 3%;">
-              <canvas height="150px" width="200px" ref="doughnutChart6"/>
+            <div style="float: left; width: 160px; margin-left: 3%;">
+              <canvas height="100px" width="100px" ref="doughnutChart6"/>
             </div>
           </div>
         </div>
@@ -262,10 +265,11 @@ export default {
     // 차트
     EuchartData: null, EuchartOptions: null, EuchartImage: null,
     EvchartData1: null, EvchartOptions1: null, EvchartImage1: null,
-    EvchartData2: null, EvchartOptions2: null, EvchartImage2: null,
+    TodayEventData: null, TodayEventOptions: null, TodayEventImage: null,
     BtchartData: null, BtchartOptions: null, BtchartImage: null,
     EuData: [ 12, 19, 3, 5, 2, 3, 7 ], EuChartItems:[],
     EvFireData: [ 12, 19, 7, 5, 8, 13, 7 ], EvEmData: [10, 12, 11, 10, 10, 15, 9], EvSafeData:[5, 12, 10, 7, 7, 8, 17], EvChartItems:[],
+    TodayFireData: [7], TodayEmData: [9], TodaySafeData:[17],
     BtFullData: [ 12, 19, 7, 5, 8, 13], BtLackData: [10, 12, 11, 10, 10, 15], BtChangeData:[5, 12, 10, 7, 7, 8],
     newEuArr:[], 
     newEvChartArr:[], newEvFireArr:[],newEvEmArr:[],newEvSafeArr:[],
@@ -324,7 +328,7 @@ export default {
   },
   mounted(){
     this.createEuData();
-    // this.EvchartRedraw2()
+    this.createTodayEvData();
     this.createEvData();
     this.createBtData();
     this.createPwData();
@@ -650,37 +654,16 @@ export default {
         backgroundColor: ["rgba(255, 60, 166, 0.8)",],
       }]
       }
-      // let data2 =  {
-      // labels: [],
-      // labelsColor: 'rgba(17, 183, 1, 1)',
-      // datasets: [
-      //   {
-      //   label: '화재',
-      //   data: [16],
-      //   maxBarThickness: 10,    
-      //   backgroundColor: ["rgba(19, 126, 255, 0.8)",]
-      //   },
-      //   {
-      //   label: '응급',
-      //   data: [17],
-      //   maxBarThickness: 10,  
-      //   backgroundColor: ['rgba(17, 183, 135, 1)',],
-      // },
-      // {
-      //   label:'119',
-      //   data: [8],
-      //   maxBarThickness: 10,  
-      //   backgroundColor: ["rgba(255, 60, 166, 0.8)",],
-      // }]
-      // }
       let options1={
       scales: {
         x: {
+          
           ticks:{
             color: "rgba(255, 255, 255, 1)"
           }
         },
         y: {
+          
           beginAtZero: true,
           ticks:{
             stepSize: 1,
@@ -690,7 +673,7 @@ export default {
       },
       plugins:{
         legend: {
-		      display: true,
+		      display: false,
           position: 'top',
           align: 'end',
           labels: {
@@ -702,41 +685,10 @@ export default {
         tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
       }
     }
-    // let options2={
-    //   scales: {
-    //     x: {
-    //       stacked:true,
-    //       display:false,
-    //       ticks:{
-    //         color: "rgba(255, 255, 255, 1)"
-    //       }
-    //     },
-    //     y: {
-    //       beginAtZero: true,
-    //       display:false,
-    //       ticks:{
-    //         stepSize: 1,
-    //         color: "rgba(255, 255, 255, 1)"
-    //       }
-    //     }
-    //   },
-    //   indexAxis:'y',
-    //   plugins:{
-    //     legend: {
-		//       display: false,
-		//     },
-        
-    //   }
-    // }
     this.EvchartData1 = data1
     this.EvchartOptions1 = options1
-    // this.EvchartData2 = data2
-    // this.EvchartOptions2 = options2
-    console.log(this.EvchartData1)
-    // console.log(this.EvchartData2)
     this.createEvChartDateTime()
     this.EvchartRedraw();
-    //this.EvchartRedraw2();
     },
     EvchartRedraw(){  
       this.EvchartImage1 = new Chart(this.$refs.BarChart1, {
@@ -746,14 +698,6 @@ export default {
       })
       this.EvchartImage1.update();
     },
-    // EvchartRedraw2(){  
-    //   this.EvchartImage2 = new Chart(this.$refs.BarChart2, {
-    //     type:'bar',
-    //     data:this.EvchartData2,
-    //     options:this.EvchartOptions2
-    //   })
-    //   this.EvchartImage2.update();
-    // },
     createEvChartDateTime(){
       if(this.EvchartData1){
         let tmp = this.EvchartData1.datasets[0].data.length
@@ -764,6 +708,79 @@ export default {
         }
         this.EvchartData1.labels = tmpArr
       }
+    },
+    createTodayEvData(){
+      let TodayData =  {
+      labels: [0],
+      labelsColor: 'rgba(17, 183, 1, 1)',
+      datasets: [
+        {
+        label: '화재',
+        data: this.TodayFireData,
+        backgroundColor: "rgba(19, 126, 255, 0.8)",
+        },
+        {
+        label: '응급',
+        data: this.TodayEmData,
+        backgroundColor: 'rgba(17, 183, 135, 1)',
+      },
+      {
+        label:'119',
+        data: this.TodaySafeData,
+        backgroundColor: "rgba(255, 60, 166, 0.8)",
+      }]
+      }
+      let TodayOptions={
+      scales: {
+        x: {
+          display:false,
+          stacked: true,
+          beginAtZero: true,
+          ticks:{
+            color: "rgba(255, 255, 255, 1)",
+            min: 0,
+            max: 100,
+            stepSize: 1,
+          }
+        },
+        y: {
+          display:false,
+          stacked: true,
+          beginAtZero: true,
+          ticks:{
+            min: 0,
+            max: 100,
+            color: "rgba(255, 255, 255, 1)"
+          }
+        }
+      },
+      indexAxis: 'y',
+      plugins:{
+        legend: {
+		      display: false,
+          position: 'top',
+          align: 'end',
+          labels: {
+            color: "rgba(255, 255, 255, 1)",
+            boxWidth: 8,
+            usePointStyle: true
+          },
+		    },
+        tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
+      }
+    }
+    this.TodayEventData = TodayData
+    this.TodayEventOptions = TodayOptions
+    this.TodayEvchartRedraw();
+    },
+
+    TodayEvchartRedraw(){  
+      this.TodayEventImage = new Chart(this.$refs.BarChart2, {
+        type:'bar',
+        data: this.TodayEventData,
+        options: this.TodayEventOptions
+      })
+      this.TodayEventImage.update();
     },
     async remakeEvData(){
       this.EvchartImage1.destroy();  
@@ -1103,7 +1120,7 @@ export default {
         responsive: false,
         plugins: { 
         legend: { 
-          display: true, 
+          display: false, 
           color: "rgba(255, 255, 255, 1)", //labelscolor,fontcolor,color 데이터를 arr
           position: "bottom", 
           labels: { boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: "circle", font: { size: 14 }, color:"rgba(255, 255, 255, 1)"}, 
