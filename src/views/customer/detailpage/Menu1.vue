@@ -116,7 +116,7 @@ export default {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
-        setInterval(this.getMeasuresData,180000)
+        setInterval(this.getMeasuresData, 300000)
     },
   }
 }
