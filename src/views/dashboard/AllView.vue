@@ -492,7 +492,7 @@ export default {
         borderWidth: 3.5,
         tension: 0.5,
         fill: true,
-        backgroundColor: 'rgba(17, 183, 135, 0.5)',
+        backgroundColor: 'rgba(17, 183, 135, 0.3)',
         animation: {        
           easing: 'easeInOutQuart'
         }
@@ -501,11 +501,11 @@ export default {
         label: '전체 가동률',
         type: 'line',
         data: this.TotalEuData,
-        borderColor:'rgba(255, 255, 0, 0.4)',
+        borderColor:'rgba(30, 118, 225, 1)',
         borderWidth: 3.5,
         tension: 0.5,
         fill: true,
-        backgroundColor: 'rgba(255, 255, 0, 0.4)',
+        backgroundColor: 'rgba(30, 118, 225, 0.3)',
         animation: {        
           easing: 'easeInOutQuart'
         }
@@ -671,12 +671,12 @@ export default {
         data: this.EvSafeData,
         maxBarThickness: 10,  
         backgroundColor: ["rgba(255, 60, 166, 0.8)",],
-      }]
+      },
+      ]
       }
       let options1={
       scales: {
         x: {
-          
           ticks:{
             color: "rgba(255, 255, 255, 1)"
           }
@@ -713,7 +713,7 @@ export default {
       this.EvchartImage1 = new Chart(this.$refs.BarChart1, {
         type:'bar',
         data:this.EvchartData1,
-        options:this.EvchartOptions1
+        options:this.EvchartOptions1,
       })
       this.EvchartImage1.update();
     },
@@ -1145,6 +1145,7 @@ export default {
       }]
       }
       let options = {
+        
         responsive: false,
         plugins: { 
         legend: { 
