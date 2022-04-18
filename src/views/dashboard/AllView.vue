@@ -85,7 +85,8 @@
             <div>
               <canvas ref="BarChart2" width="470" height="40"></canvas>
             </div>
-            <p>응급 이벤트 현황</p>    
+            <p>응급 이벤트 현황</p> 
+            <div id="bar-chart"></div>
             <div>
               <canvas class="statistics-charts-line" ref="BarChart1" width="470" height="220" ></canvas>
             </div>
@@ -93,77 +94,78 @@
           <div class="box_col3 box_style">
             <div>
               <colgroup>
-                <col style="width:2%;" >
-                <col style="width:1.5%;">
-                <col style="width:1.5%;">
-                <col style="width:1.5%;">
-                <col style="width:1%;">
+                <col style="width:140px;" >
+                <col style="width:120px;">
+                <col style="width:120px;">
+                <col style="width:115px;">
+                <col style="width:80px;">
               </colgroup>
               <thead>
                 <tr>
                   <th>구 분</th>
                   <th>A/S 요청</th>
                   <th>A/S 접수</th>
-                  <th>A/S 완료</th>
-                  <th>취  소</th>
+                  <th>A/S 취소</th>
+                  <th style="color:yellow;">A/S 완료</th>
                 </tr>
                 <br>
               </thead>
               <div class="tbody">
               <colgroup>
-                <col style="width:2%;" >
-                <col style="width:1.5%;">
-                <col style="width:1.4%;">
-                <col style="width:1.2%;">
-                <col style="width:0.7%;">
+                <col style="width:180px;" >
+                <col style="width:130px;">
+                <col style="width:135px;">
+                <col style="width:125px;">
+                <col style="width:60px;">>
               </colgroup>
               <tbody>
                 <tr>
                   <th scope="col">게이트웨이</th>
                   <th scope="col">{{this.gwrqCount}}</th>
                   <th scope="col">{{this.gwrcCount}}</th>
-                  <th scope="col">{{this.gwcpCount}}</th>
                   <th scope="col">{{this.gwcaCount}}</th>
+                  <th scope="col" style="color:yellow;">{{this.gwcpCount}}</th>
                 </tr>
                 <br>
                 <tr>
                   <th scope="col">응급호출기</th>
                   <th scope="col">{{this.emrqCount}}</th>
                   <th scope="col">{{this.emrcCount}}</th>
-                  <th scope="col">{{this.emcpCount}}</th>
                   <th scope="col">{{this.emcaCount}}</th>
+                  <th scope="col" style="color:yellow;">{{this.emcpCount}}</th>
                 </tr>
                 <br>
                 <tr>
                   <th scope="col">활동감지기</th>
                   <th scope="col">{{this.acrqCount}}</th>
                   <th scope="col">{{this.acrcCount}}</th>
-                  <th scope="col">{{this.accpCount}}</th>
                   <th scope="col">{{this.accaCount}}</th>
+                  <th scope="col" style="color:yellow;">{{this.accpCount}}</th>
                 </tr>
                <br>
                 <tr>
                   <th scope="col">화재감지기</th>
                   <th scope="col">{{this.firqCount}}</th>
                   <th scope="col">{{this.fircCount}}</th>
-                  <th scope="col">{{this.ficpCount}}</th>
                   <th scope="col">{{this.ficaCount}}</th>
+                  <th scope="col" style="color:yellow;">{{this.ficpCount}}</th>
                 </tr>
                 <br>
                 <tr>
                   <th scope="col">출입문센서</th>
                   <th scope="col">{{this.dorqCount}}</th>
                   <th scope="col">{{this.dorcCount}}</th>
-                  <th scope="col">{{this.docpCount}}</th>
                   <th scope="col">{{this.docaCount}}</th>
+                  <th scope="col" style="color:yellow;">{{this.docpCount}}</th>
+                  
                 </tr>
                 <br>
                 <tr>
                   <th scope="col">생활안심센서</th>
                   <th scope="col">{{this.lirqCount}}</th>
                   <th scope="col">{{this.lircCount}}</th>
-                  <th scope="col">{{this.licpCount}}</th>
                   <th scope="col">{{this.licaCount}}</th>
+                  <th scope="col" style="color:yellow;">{{this.licpCount}}</th>
                 </tr>
               </tbody>
               </div>
@@ -235,6 +237,7 @@ import moment from "moment";
 // 차트
 import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables)
+import barChart from '@toast-ui/chart';
 
 
 export default {
@@ -332,6 +335,7 @@ export default {
     this.createEvData();
     this.createBtData();
     this.createPwData();
+    this.testchart();
   },
   methods:{
     //--------------------------시/도--------------------------
@@ -1910,6 +1914,22 @@ export default {
             console.error("There was an error!", error);
           });
     },
+    
+    testchart(){
+      let data = {
+        type: 'doughnut',
+        labels: ['연결', '차단'],
+        labelsColor: 'white',
+        datasets: [{
+        label: '연결',
+        data: this.PwGwData,
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)"],
+        borderColor: 'rgba(255, 255, 255, 1)',
+        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        borderWidth: 1,
+      }]
+      }
+      },
     //--------------------------조회버튼 클릭--------------------------
     manageInquiry(){
       this.remakeEuData()

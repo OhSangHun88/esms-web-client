@@ -229,7 +229,7 @@ ul.info_list li .txt p{font-size: 12px;color: rgba(255, 255, 255, 0.8);padding: 
 
 .container .box_style.box_col3{height:394px; flex:1;margin: 0 0 20px 20px;}
 .container .box_style.box_col3:first-child{margin: 0 0 20px 0;}
-.container .box_wrap .box_l.chart{width: 450px;height: 270px;}
+.container .box_wrap .box_l.chart{width: 460px;height: 270px;}
 
 /* 운영기관 관리(펌웨어) */
 .container .fw_info{width: 458px;height: 116px;margin: 0 20px 0 0;}
