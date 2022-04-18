@@ -74,13 +74,13 @@
         </div>
         <div class="box_wrap">
           <div class="box_col3 box_style">
-            <p>장비가동률</p>    
+            <p style="height:1%">장비가동률</p>    
             <div>
-              <canvas class="statistics-charts-line" ref="lineChart" width="100px" height="60px"></canvas>
+              <canvas class="statistics-charts-line" ref="lineChart" width="100px" height="65px"></canvas>
             </div>
           </div>
           <div class="box_col3 box_style">
-            <p style="float: left; width: 30%; height: 3%">오늘 이벤트 현황</p>
+            <p style="float: left; width: 30%; height: 4%;">오늘 이벤트 현황</p>
             <img src = "@/assets/images/dashboard_event.png" style="float:right; width: 30%;"/>
             <div>
               <canvas ref="BarChart2" width="470" height="40"></canvas>
@@ -176,7 +176,7 @@
         <div class="box_wrap">
           <div class="box_l chart box_style">
             <div class="result_txt">
-            <p>배터리 상태</p>
+            <p style="height:2px">배터리 상태</p>
             </div>
             <div>
               <canvas ref="barChart" style="height: 150px"/>
@@ -267,7 +267,7 @@ export default {
     EvchartData1: null, EvchartOptions1: null, EvchartImage1: null,
     TodayEventData: null, TodayEventOptions: null, TodayEventImage: null,
     BtchartData: null, BtchartOptions: null, BtchartImage: null,
-    EuData: [ 12, 19, 3, 5, 2, 3, 7 ], EuChartItems:[],
+    EuData: [ 82, 89, 23, 75, 42, 63, 87 ], TotalEuData: [ 100, 100, 100, 100, 100, 100, 100 ], EuChartItems:[],
     EvFireData: [ 12, 19, 7, 5, 8, 13, 7 ], EvEmData: [10, 12, 11, 10, 10, 15, 9], EvSafeData:[5, 12, 10, 7, 7, 8, 17], EvChartItems:[],
     TodayFireData: [7], TodayEmData: [9], TodaySafeData:[17],
     BtFullData: [ 12, 19, 7, 5, 8, 13], BtLackData: [10, 12, 11, 10, 10, 15], BtChangeData:[5, 12, 10, 7, 7, 8],
@@ -488,11 +488,24 @@ export default {
         label: '장비가동률',
         type: 'line',
         data: this.EuData,
-        borderColor:'rgba(17, 183, 135, 0.8)',
+        borderColor:'rgba(17, 183, 135, 1)',
         borderWidth: 3.5,
         tension: 0.5,
         fill: true,
-        backgroundColor: 'rgba(17, 183, 135, 0.2)',
+        backgroundColor: 'rgba(17, 183, 135, 0.5)',
+        animation: {        
+          easing: 'easeInOutQuart'
+        }
+      },
+      {
+        label: '전체 가동률',
+        type: 'line',
+        data: this.TotalEuData,
+        borderColor:'rgba(255, 255, 0, 0.4)',
+        borderWidth: 3.5,
+        tension: 0.5,
+        fill: true,
+        backgroundColor: 'rgba(255, 255, 0, 0.4)',
         animation: {        
           easing: 'easeInOutQuart'
         }
@@ -517,7 +530,14 @@ export default {
         },
         plugins:{
           legend: {
-		        display: false,
+		        display: true,
+            position: 'top',
+            align: 'end',
+            labels:{
+              color: "rgba(255, 255, 255, 1)",
+              boxWidth: 8,
+              usePointStyle: true
+            }
 		      },
         tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
         }
@@ -595,7 +615,6 @@ export default {
           tmpArr1[i].operCnt = "1"
         }
       }}else{
-        
         for(let i=0; i<7; i++){
         tmpArr1[i] = {
           statDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
@@ -711,7 +730,7 @@ export default {
     },
     createTodayEvData(){
       let TodayData =  {
-      labels: [0],
+      labels: [''],
       labelsColor: 'rgba(17, 183, 1, 1)',
       datasets: [
         {
@@ -980,25 +999,25 @@ export default {
           for(let i=0; i<6; i++){
             tmpArr1.push({
               sensorTypeCd: "TPE00"+i,
-              statName: null,
+              statName: "충만",
               statCnt: 0,
             })
           }
           for(let i=0; i<6; i++){
             tmpArr2.push({
               sensorTypeCd: "TPE00"+i,
-              statName: null,
+              statName: "부족",
               statCnt: 0,
             })
           }
           for(let i=0; i<6; i++){
             tmpArr3.push({
               sensorTypeCd: "TPE00"+i,
-              statName: null,
+              statName: "교체",
               statCnt: 0,
             })
           }
-        
+          if(this.BtChartItems != ''){
           for(let i=0; i<7; i++){
             if(this.BtChartItems[i].statName==="충만"){
               let tmpidx = tmpArr1.findIndex(idx=>{
@@ -1022,10 +1041,19 @@ export default {
               tmpArr3[tmpidx].statCnt = this.BtChartItems[i].statCnt
             }
           }
+          }
+          if(this.BtChartItems != ''){
           for(let i=0; i<6; i++){
             this.newBtFullArr.push(tmpArr1[i].statCnt)
             this.newBtLackArr.push(tmpArr2[i].statCnt)
             this.newBtChangeArr.push(tmpArr3[i].statCnt)
+          }
+          }else{
+            for(let i=0; i<6; i++){
+              this.newBtFullArr.push(tmpArr1.statCnt)
+              this.newBtLackArr.push(tmpArr2.statCnt)
+              this.newBtChartArr.push(tmpArr3.statCnt)
+            }
           }
       
       this.BtFullData = this.newBtFullArr
