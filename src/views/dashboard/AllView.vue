@@ -658,22 +658,21 @@ export default {
         label: '화재',
         data: this.EvFireData,
         maxBarThickness: 10,    
-        backgroundColor: ["rgba(19, 126, 255, 0.8)",]
+        backgroundColor: ["rgba(19, 126, 255, 0.8)"],
         },
         {
         label: '응급',
         data: this.EvEmData,
         maxBarThickness: 10,  
-        backgroundColor: ['rgba(17, 183, 135, 1)',],
+        backgroundColor: ['rgba(17, 183, 135, 1)'],
       },
       {
         label:'119',
         data: this.EvSafeData,
         maxBarThickness: 10,  
-        backgroundColor: ["rgba(255, 60, 166, 0.8)",],
+        backgroundColor: ["rgba(255, 60, 166, 0.8)"],
       },
-      ]
-      }
+      ]}
       let options1={
       scales: {
         x: {
@@ -682,7 +681,6 @@ export default {
           }
         },
         y: {
-          
           beginAtZero: true,
           ticks:{
             stepSize: 1,
