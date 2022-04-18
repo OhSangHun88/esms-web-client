@@ -74,19 +74,21 @@
         </div>
         <div class="box_wrap">
           <div class="box_col3 box_style">
-            <p>장비가동률</p>    
+            <p style="height:1%">장비가동률</p>    
             <div>
-              <canvas class="statistics-charts-line" ref="lineChart" width="100px" height="60px"></canvas>
+              <canvas class="statistics-charts-line" ref="lineChart" width="100px" height="65px"></canvas>
             </div>
           </div>
           <div class="box_col3 box_style">
-            <p>오늘 이벤트 현황</p>
+            <p style="float: left; width: 30%; height: 4%;">오늘 이벤트 현황</p>
+            <img src = "@/assets/images/dashboard_event.png" style="float:right; width: 30%;"/>
             <div>
-              <canvas class="statistics-charts-line" ref="BarChart2" width="470" height="50" ></canvas>
+              <canvas ref="BarChart2" width="470" height="40"></canvas>
             </div>
-            <p>응급 이벤트 현황</p>    
+            <p>응급 이벤트 현황</p> 
+            <div id="bar-chart"></div>
             <div>
-              <canvas class="statistics-charts-line" ref="BarChart1" width="470" height="275" ></canvas>
+              <canvas class="statistics-charts-line" ref="BarChart1" width="470" height="220" ></canvas>
             </div>
           </div>
             <div class="box_col3 box_style">
@@ -151,50 +153,129 @@
                 </tbody>
               </table>
             <div>
-      <canvas width="470" height="1">
-      </canvas>
-    </div>
-  </div>
+              <colgroup>
+                <col style="width:140px;" >
+                <col style="width:120px;">
+                <col style="width:120px;">
+                <col style="width:115px;">
+                <col style="width:80px;">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>구 분</th>
+                  <th>A/S 요청</th>
+                  <th>A/S 접수</th>
+                  <th>A/S 취소</th>
+                  <th style="color:yellow;">A/S 완료</th>
+                </tr>
+                <br>
+              </thead>
+              <div class="tbody">
+              <colgroup>
+                <col style="width:180px;" >
+                <col style="width:130px;">
+                <col style="width:135px;">
+                <col style="width:125px;">
+                <col style="width:60px;">>
+              </colgroup>
+              <tbody>
+                <tr>
+                  <th scope="col">게이트웨이</th>
+                  <th scope="col">{{this.gwrqCount}}</th>
+                  <th scope="col">{{this.gwrcCount}}</th>
+                  <th scope="col">{{this.gwcaCount}}</th>
+                  <th scope="col" style="color:yellow;">{{this.gwcpCount}}</th>
+                </tr>
+                <br>
+                <tr>
+                  <th scope="col">응급호출기</th>
+                  <th scope="col">{{this.emrqCount}}</th>
+                  <th scope="col">{{this.emrcCount}}</th>
+                  <th scope="col">{{this.emcaCount}}</th>
+                  <th scope="col" style="color:yellow;">{{this.emcpCount}}</th>
+                </tr>
+                <br>
+                <tr>
+                  <th scope="col">활동감지기</th>
+                  <th scope="col">{{this.acrqCount}}</th>
+                  <th scope="col">{{this.acrcCount}}</th>
+                  <th scope="col">{{this.accaCount}}</th>
+                  <th scope="col" style="color:yellow;">{{this.accpCount}}</th>
+                </tr>
+               <br>
+                <tr>
+                  <th scope="col">화재감지기</th>
+                  <th scope="col">{{this.firqCount}}</th>
+                  <th scope="col">{{this.fircCount}}</th>
+                  <th scope="col">{{this.ficaCount}}</th>
+                  <th scope="col" style="color:yellow;">{{this.ficpCount}}</th>
+                </tr>
+                <br>
+                <tr>
+                  <th scope="col">출입문센서</th>
+                  <th scope="col">{{this.dorqCount}}</th>
+                  <th scope="col">{{this.dorcCount}}</th>
+                  <th scope="col">{{this.docaCount}}</th>
+                  <th scope="col" style="color:yellow;">{{this.docpCount}}</th>
+                  
+                </tr>
+                <br>
+                <tr>
+                  <th scope="col">생활안심센서</th>
+                  <th scope="col">{{this.lirqCount}}</th>
+                  <th scope="col">{{this.lircCount}}</th>
+                  <th scope="col">{{this.licaCount}}</th>
+                  <th scope="col" style="color:yellow;">{{this.licpCount}}</th>
+                </tr>
+              </tbody>
+              </div>
+            </div>
+            <div>
+              <canvas width="470" height="1"></canvas>
+            </div>
+          </div>
         </div>
         <div class="box_wrap">
           <div class="box_l chart box_style">
             <div class="result_txt">
-            <p>배터리 상태</p>
+            <p style="height:2px">배터리 상태</p>
             </div>
             <div>
-              <canvas ref="barChart" style="height: 240px"/>
+              <canvas ref="barChart" style="height: 150px"/>
             </div>
           </div>
           <div class="box_style box_r" style="height: 270px;">
             <div class="result_txt">
-              <p style="float: left; width: 17%; fontSize: 18px; height: 10px; margin-bottom: 20px;">전원연결</p>
-              <p style="float: left; width: 73%; fontSize: 18px; height: 10px; margin-bottom: 20px;">통신상태</p>
+              <p style="float: left; width: 6%; fontSize: 18px; height: 10px; margin-bottom: 20px;">전원연결</p>
+               <img src = "@/assets/images/dashboard_gw.png" style="float:left; width: 10%;"/>
+              <p style="float: left; width: 6%; fontSize: 18px; height: 10px; margin-left: 70px; margin-bottom: 20px;">통신상태</p>
+               <img src = "@/assets/images/dashboard_power.png" style="float:left; width: 15%;"/>
             </div>
             <div>
-              <p style="float: left; width: 17%;">게이트웨이</p>
-              <p style="float: left; width: 17%;">응급호출기</p>
-              <p style="float: left; width: 17%;">화재감지기</p>
-              <p style="float: left; width: 17%;">도어센서</p>
-              <p style="float: left; width: 16%;">활동감지센서</p>
-              <p style="float: left; width: 16%;">생활안심센서</p>
+              <p style="float: left; width: 270px; margin-left: 40px">게이트웨이</p>
+              <p style="float: left; width: 208px;">응급호출기</p>
+              <p style="float: left; width: 215px;">화재감지기</p>
+              <p style="float: left; width: 195px;">도어센서</p>
+              <p style="float: left; width: 196px;">활동감지센서</p>
+              <p style="float: left; width: 100px;">생활안심센서</p>
             </div>
-            <div style="float: left; width: 14%; ">
-              <canvas height="150px" width="200px" ref="doughnutChart1"/>
+            <div style="float: left; width: 160px; ">
+              <canvas height="100px" width="100px" ref="doughnutChart1"/>
             </div>
-            <div style="float: left; width: 14%; margin-left: 2%;">
-              <canvas height="150px" width="200px" ref="doughnutChart2"/>
+            <div style="float: left; width: 160px; margin-left: 8.7%;">
+              <canvas height="100px" width="100px" ref="doughnutChart2"/>
             </div>
-            <div style="float: left; width: 14%; margin-left: 2%;">
-              <canvas height="150px" width="200px" ref="doughnutChart3"/>
+            <div style="float: left; width: 160px; margin-left: 3.7%;">
+              <canvas height="100px" width="100px" ref="doughnutChart3"/>
             </div>
-            <div style="float: left; width: 14%; margin-left: 3%;">
-              <canvas height="150px" width="200px" ref="doughnutChart4"/>
+            <div style="float: left; width: 160px; margin-left: 3.8%;">
+              <canvas height="100px" width="100px" ref="doughnutChart4"/>
             </div>
-            <div style="float: left; width: 14%; margin-left: 3%;">
-              <canvas height="150px" width="200px" ref="doughnutChart5"/>
+            <div style="float: left; width: 160px; margin-left: 3.9%;">
+              <canvas height="100px" width="100px" ref="doughnutChart5"/>
             </div>
-            <div style="float: left; width: 14%; margin-left: 3%;">
-              <canvas height="150px" width="200px" ref="doughnutChart6"/>
+            <div style="float: left; width: 160px; margin-left: 3%;">
+              <canvas height="100px" width="100px" ref="doughnutChart6"/>
             </div>
           </div>
         </div>
@@ -216,6 +297,7 @@ import moment from "moment";
 // 차트
 import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables)
+import barChart from '@toast-ui/chart';
 
 
 export default {
@@ -246,10 +328,11 @@ export default {
     // 차트
     EuchartData: null, EuchartOptions: null, EuchartImage: null,
     EvchartData1: null, EvchartOptions1: null, EvchartImage1: null,
-    EvchartData2: null, EvchartOptions2: null, EvchartImage2: null,
+    TodayEventData: null, TodayEventOptions: null, TodayEventImage: null,
     BtchartData: null, BtchartOptions: null, BtchartImage: null,
-    EuData: [ 12, 19, 3, 5, 2, 3, 7 ], EuChartItems:[],
+    EuData: [ 82, 89, 23, 75, 42, 63, 87 ], TotalEuData: [ 100, 100, 100, 100, 100, 100, 100 ], EuChartItems:[],
     EvFireData: [ 12, 19, 7, 5, 8, 13, 7 ], EvEmData: [10, 12, 11, 10, 10, 15, 9], EvSafeData:[5, 12, 10, 7, 7, 8, 17], EvChartItems:[],
+    TodayFireData: [7], TodayEmData: [9], TodaySafeData:[17],
     BtFullData: [ 12, 19, 7, 5, 8, 13], BtLackData: [10, 12, 11, 10, 10, 15], BtChangeData:[5, 12, 10, 7, 7, 8],
     newEuArr:[], 
     newEvChartArr:[], newEvFireArr:[],newEvEmArr:[],newEvSafeArr:[],
@@ -308,9 +391,11 @@ export default {
   },
   mounted(){
     this.createEuData();
+    this.createTodayEvData();
     this.createEvData();
     this.createBtData();
     this.createPwData();
+    this.testchart();
   },
   methods:{
     //--------------------------시/도--------------------------
@@ -467,11 +552,24 @@ export default {
         label: '장비가동률',
         type: 'line',
         data: this.EuData,
-        borderColor:'rgba(17, 183, 135, 0.8)',
+        borderColor:'rgba(17, 183, 135, 1)',
         borderWidth: 3.5,
         tension: 0.5,
         fill: true,
-        backgroundColor: 'rgba(17, 183, 135, 0.2)',
+        backgroundColor: 'rgba(17, 183, 135, 0.3)',
+        animation: {        
+          easing: 'easeInOutQuart'
+        }
+      },
+      {
+        label: '전체 가동률',
+        type: 'line',
+        data: this.TotalEuData,
+        borderColor:'rgba(30, 118, 225, 1)',
+        borderWidth: 3.5,
+        tension: 0.5,
+        fill: true,
+        backgroundColor: 'rgba(30, 118, 225, 0.3)',
         animation: {        
           easing: 'easeInOutQuart'
         }
@@ -496,7 +594,14 @@ export default {
         },
         plugins:{
           legend: {
-		        display: false,
+		        display: true,
+            position: 'top',
+            align: 'end',
+            labels:{
+              color: "rgba(255, 255, 255, 1)",
+              boxWidth: 8,
+              usePointStyle: true
+            }
 		      },
         tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
         }
@@ -574,7 +679,6 @@ export default {
           tmpArr1[i].operCnt = "1"
         }
       }}else{
-        
         for(let i=0; i<7; i++){
         tmpArr1[i] = {
           statDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
@@ -618,44 +722,21 @@ export default {
         label: '화재',
         data: this.EvFireData,
         maxBarThickness: 10,    
-        backgroundColor: ["rgba(19, 126, 255, 0.8)",]
+        backgroundColor: ["rgba(19, 126, 255, 0.8)"],
         },
         {
         label: '응급',
         data: this.EvEmData,
         maxBarThickness: 10,  
-        backgroundColor: ['rgba(17, 183, 135, 1)',],
+        backgroundColor: ['rgba(17, 183, 135, 1)'],
       },
       {
         label:'119',
         data: this.EvSafeData,
         maxBarThickness: 10,  
-        backgroundColor: ["rgba(255, 60, 166, 0.8)",],
-      }]
-      }
-      let data2 =  {
-      labels: [],
-      labelsColor: 'rgba(17, 183, 1, 1)',
-      datasets: [
-        {
-        label: '화재',
-        data: 16,
-        maxBarThickness: 10,    
-        backgroundColor: ["rgba(19, 126, 255, 0.8)",]
-        },
-        {
-        label: '응급',
-        data: 17,
-        maxBarThickness: 10,  
-        backgroundColor: ['rgba(17, 183, 135, 1)',],
+        backgroundColor: ["rgba(255, 60, 166, 0.8)"],
       },
-      {
-        label:'119',
-        data: 10,
-        maxBarThickness: 10,  
-        backgroundColor: ["rgba(255, 60, 166, 0.8)",],
-      }]
-      }
+      ]}
       let options1={
       scales: {
         x: {
@@ -673,39 +754,6 @@ export default {
       },
       plugins:{
         legend: {
-		      display: true,
-          position: 'top',
-          align: 'end',
-          labels: {
-            color: "rgba(255, 255, 255, 1)",
-            boxWidth: 8,
-            usePointStyle: true
-          },
-		    },
-        tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
-      }
-    }
-    let options2={
-      scales: {
-        x: {
-          stacked:true,
-          display:false,
-          ticks:{
-            color: "rgba(255, 255, 255, 1)"
-          }
-        },
-        y: {
-          beginAtZero: true,
-          display:false,
-          ticks:{
-            stepSize: 1,
-            color: "rgba(255, 255, 255, 1)"
-          }
-        }
-      },
-      indexAxis:'y',
-      plugins:{
-        legend: {
 		      display: false,
           position: 'top',
           align: 'end',
@@ -720,10 +768,6 @@ export default {
     }
     this.EvchartData1 = data1
     this.EvchartOptions1 = options1
-    this.EvchartData2 = data2
-    this.EvchartOptions2 = options2
-    console.log(this.EvchartData1)
-    console.log(this.EvchartData2)
     this.createEvChartDateTime()
     this.EvchartRedraw();
     },
@@ -731,18 +775,9 @@ export default {
       this.EvchartImage1 = new Chart(this.$refs.BarChart1, {
         type:'bar',
         data:this.EvchartData1,
-        options:this.EvchartOptions1
-      })
-      this.EvchartImage2 = new Chart(this.$refs.BarChart2, {
-        type:'horizontalBar',
-        data:this.EvchartData2,
-        options:this.EvchartOptions2
+        options:this.EvchartOptions1,
       })
       this.EvchartImage1.update();
-      this.EvchartImage2.update();
-      console.log("this.EvchartImage1")
-      console.log(this.EvchartImage1)
-      console.log(this.EvchartImage2)
     },
     createEvChartDateTime(){
       if(this.EvchartData1){
@@ -755,8 +790,81 @@ export default {
         this.EvchartData1.labels = tmpArr
       }
     },
+    createTodayEvData(){
+      let TodayData =  {
+      labels: [''],
+      labelsColor: 'rgba(17, 183, 1, 1)',
+      datasets: [
+        {
+        label: '화재',
+        data: this.TodayFireData,
+        backgroundColor: "rgba(19, 126, 255, 0.8)",
+        },
+        {
+        label: '응급',
+        data: this.TodayEmData,
+        backgroundColor: 'rgba(17, 183, 135, 1)',
+      },
+      {
+        label:'119',
+        data: this.TodaySafeData,
+        backgroundColor: "rgba(255, 60, 166, 0.8)",
+      }]
+      }
+      let TodayOptions={
+      scales: {
+        x: {
+          display:false,
+          stacked: true,
+          beginAtZero: true,
+          ticks:{
+            color: "rgba(255, 255, 255, 1)",
+            min: 0,
+            max: 100,
+            stepSize: 1,
+          }
+        },
+        y: {
+          display:false,
+          stacked: true,
+          beginAtZero: true,
+          ticks:{
+            min: 0,
+            max: 100,
+            color: "rgba(255, 255, 255, 1)"
+          }
+        }
+      },
+      indexAxis: 'y',
+      plugins:{
+        legend: {
+		      display: false,
+          position: 'top',
+          align: 'end',
+          labels: {
+            color: "rgba(255, 255, 255, 1)",
+            boxWidth: 8,
+            usePointStyle: true
+          },
+		    },
+        tooltip: { boxWidth: 10, bodyFont: { size: 15 } }
+      }
+    }
+    this.TodayEventData = TodayData
+    this.TodayEventOptions = TodayOptions
+    this.TodayEvchartRedraw();
+    },
+
+    TodayEvchartRedraw(){  
+      this.TodayEventImage = new Chart(this.$refs.BarChart2, {
+        type:'bar',
+        data: this.TodayEventData,
+        options: this.TodayEventOptions
+      })
+      this.TodayEventImage.update();
+    },
     async remakeEvData(){
-      this.EvchartImage.destroy();  
+      this.EvchartImage1.destroy();  
       let addrCode =  this.sggCd.substring(0,5);
       this.e_date = moment(this.s_date).add(6,'days').format('YYYYMMDD')
       let urlEventStatus = this.$store.state.serverApi + "/admin/organizations/stat/alarm?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
@@ -953,25 +1061,25 @@ export default {
           for(let i=0; i<6; i++){
             tmpArr1.push({
               sensorTypeCd: "TPE00"+i,
-              statName: null,
+              statName: "충만",
               statCnt: 0,
             })
           }
           for(let i=0; i<6; i++){
             tmpArr2.push({
               sensorTypeCd: "TPE00"+i,
-              statName: null,
+              statName: "부족",
               statCnt: 0,
             })
           }
           for(let i=0; i<6; i++){
             tmpArr3.push({
               sensorTypeCd: "TPE00"+i,
-              statName: null,
+              statName: "교체",
               statCnt: 0,
             })
           }
-        
+          if(this.BtChartItems != ''){
           for(let i=0; i<7; i++){
             if(this.BtChartItems[i].statName==="충만"){
               let tmpidx = tmpArr1.findIndex(idx=>{
@@ -995,10 +1103,19 @@ export default {
               tmpArr3[tmpidx].statCnt = this.BtChartItems[i].statCnt
             }
           }
+          }
+          if(this.BtChartItems != ''){
           for(let i=0; i<6; i++){
             this.newBtFullArr.push(tmpArr1[i].statCnt)
             this.newBtLackArr.push(tmpArr2[i].statCnt)
             this.newBtChangeArr.push(tmpArr3[i].statCnt)
+          }
+          }else{
+            for(let i=0; i<6; i++){
+              this.newBtFullArr.push(tmpArr1.statCnt)
+              this.newBtLackArr.push(tmpArr2.statCnt)
+              this.newBtChartArr.push(tmpArr3.statCnt)
+            }
           }
       
       this.BtFullData = this.newBtFullArr
@@ -1090,13 +1207,14 @@ export default {
       }]
       }
       let options = {
+        
         responsive: false,
         plugins: { 
         legend: { 
-          display: true, 
+          display: false, 
           color: "rgba(255, 255, 255, 1)", //labelscolor,fontcolor,color 데이터를 arr
           position: "bottom", 
-          labels: { boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: "circle", font: { size: 14 } }, 
+          labels: { boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: "circle", font: { size: 14 }, color:"rgba(255, 255, 255, 1)"}, 
           fullSize: false, 
           align: "center" 
           }, 
@@ -1856,6 +1974,22 @@ export default {
             console.error("There was an error!", error);
           });
     },
+    
+    testchart(){
+      let data = {
+        type: 'doughnut',
+        labels: ['연결', '차단'],
+        labelsColor: 'white',
+        datasets: [{
+        label: '연결',
+        data: this.PwGwData,
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)"],
+        borderColor: 'rgba(255, 255, 255, 1)',
+        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        borderWidth: 1,
+      }]
+      }
+      },
     //--------------------------조회버튼 클릭--------------------------
     manageInquiry(){
       this.remakeEuData()
