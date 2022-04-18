@@ -89,88 +89,72 @@
               <canvas class="statistics-charts-line" ref="BarChart1" width="470" height="275" ></canvas>
             </div>
           </div>
-          <div class="box_col3 box_style">
+            <div class="box_col3 box_style">
+              <table class="asstatus">
+                <colgroup>
+                  <col style="width:20%;" >
+                  <col style="width:20%;">
+                  <col style="width:20%;">
+                  <col style="width:20%;">
+                  <col style="width:20%;">
+                </colgroup>
+                <thead>
+                    <th>구 분</th>
+                    <th>A/S 요청</th>
+                    <th>A/S 접수</th>
+                    <th>A/S 완료</th>
+                    <th>취  소</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">게이트웨이</th>
+                    <td>{{this.gwrqCount}}</td>
+                    <td>{{this.gwrcCount}}</td>
+                    <td class="comple">{{this.gwcpCount}}</td>
+                    <td>{{this.gwcaCount}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">응급호출기</th>
+                    <td>{{this.emrqCount}}</td>
+                    <td>{{this.emrcCount}}</td>
+                    <td class="comple">{{this.emcpCount}}</td>
+                    <td>{{this.emcaCount}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">활동감지기</th>
+                    <td>{{this.acrqCount}}</td>
+                    <td>{{this.acrcCount}}</td>
+                    <td class="comple">{{this.accpCount}}</td>
+                    <td>{{this.accaCount}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">화재감지기</th>
+                    <td>{{this.firqCount}}</td>
+                    <td>{{this.fircCount}}</td>
+                    <td class="comple">{{this.ficpCount}}</td>
+                    <td>{{this.ficaCount}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">출입문센서</th>
+                    <td>{{this.dorqCount}}</td>
+                    <td>{{this.dorcCount}}</td>
+                    <td class="comple">{{this.docpCount}}</td>
+                    <td>{{this.docaCount}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">생활안심센서</th>
+                    <td>{{this.lirqCount}}</td>
+                    <td>{{this.lircCount}}</td>
+                    <td class="comple">{{this.licpCount}}</td>
+                    <td>{{this.licaCount}}</td>
+                  </tr>
+                </tbody>
+              </table>
             <div>
-              <colgroup>
-                <col style="width:2%;" >
-                <col style="width:1.5%;">
-                <col style="width:1.5%;">
-                <col style="width:1.5%;">
-                <col style="width:1%;">
-              </colgroup>
-              <thead>
-                <tr>
-                  <th>구 분</th>
-                  <th>A/S 요청</th>
-                  <th>A/S 접수</th>
-                  <th>A/S 완료</th>
-                  <th>취  소</th>
-                </tr>
-                <br>
-              </thead>
-              <div class="tbody">
-              <colgroup>
-                <col style="width:2%;" >
-                <col style="width:1.5%;">
-                <col style="width:1.4%;">
-                <col style="width:1.2%;">
-                <col style="width:0.7%;">
-              </colgroup>
-              <tbody>
-                <tr>
-                  <th scope="col">게이트웨이</th>
-                  <th scope="col">{{this.gwrqCount}}</th>
-                  <th scope="col">{{this.gwrcCount}}</th>
-                  <th scope="col">{{this.gwcpCount}}</th>
-                  <th scope="col">{{this.gwcaCount}}</th>
-                </tr>
-                <br>
-                <tr>
-                  <th scope="col">응급호출기</th>
-                  <th scope="col">{{this.emrqCount}}</th>
-                  <th scope="col">{{this.emrcCount}}</th>
-                  <th scope="col">{{this.emcpCount}}</th>
-                  <th scope="col">{{this.emcaCount}}</th>
-                </tr>
-                <br>
-                <tr>
-                  <th scope="col">활동감지기</th>
-                  <th scope="col">{{this.acrqCount}}</th>
-                  <th scope="col">{{this.acrcCount}}</th>
-                  <th scope="col">{{this.accpCount}}</th>
-                  <th scope="col">{{this.accaCount}}</th>
-                </tr>
-               <br>
-                <tr>
-                  <th scope="col">화재감지기</th>
-                  <th scope="col">{{this.firqCount}}</th>
-                  <th scope="col">{{this.fircCount}}</th>
-                  <th scope="col">{{this.ficpCount}}</th>
-                  <th scope="col">{{this.ficaCount}}</th>
-                </tr>
-                <br>
-                <tr>
-                  <th scope="col">출입문센서</th>
-                  <th scope="col">{{this.dorqCount}}</th>
-                  <th scope="col">{{this.dorcCount}}</th>
-                  <th scope="col">{{this.docpCount}}</th>
-                  <th scope="col">{{this.docaCount}}</th>
-                </tr>
-                <br>
-                <tr>
-                  <th scope="col">생활안심센서</th>
-                  <th scope="col">{{this.lirqCount}}</th>
-                  <th scope="col">{{this.lircCount}}</th>
-                  <th scope="col">{{this.licpCount}}</th>
-                  <th scope="col">{{this.licaCount}}</th>
-                </tr>
-              </tbody>
-              </div>
-            </div>
-            <div>
-              <canvas width="470" height="1"></canvas>
-            </div>
-          </div>
+      <canvas width="470" height="1">
+      </canvas>
+    </div>
+  </div>
         </div>
         <div class="box_wrap">
           <div class="box_l chart box_style">
@@ -750,12 +734,13 @@ export default {
         options:this.EvchartOptions1
       })
       this.EvchartImage2 = new Chart(this.$refs.BarChart2, {
-        type:'bar',
+        type:'horizontalBar',
         data:this.EvchartData2,
         options:this.EvchartOptions2
       })
       this.EvchartImage1.update();
       this.EvchartImage2.update();
+      console.log("this.EvchartImage1")
       console.log(this.EvchartImage1)
       console.log(this.EvchartImage2)
     },
