@@ -11,11 +11,12 @@
                 <div class="table_wrap">
                     <table>
                         <colgroup>
+                            <col style="width:15%;">
+                            <col style="width:15%;">
+                            <col style="width:15%">
                             <col style="width:16%;">
-                            <col style="width:16%;">
-                            <col style="width:16%">
-                            <col style="width:14%;">
-                            <col style="width:14%;">
+                            <col style="width:8%;" v-if="equipList === 'sensor'">
+                            <col style="width:13%;">
                             <col style="width:auto;">
                         </colgroup>
                         <thead>
@@ -23,6 +24,7 @@
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
                             <th scope="row">장비구분</th>
+                            <th scope="row" v-if="equipList === 'sensor'"></th>
                             <th scope="row">대상자 이름 입력</th>
                         </thead>
                         <tbody>
@@ -43,8 +45,18 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select v-model="selectedTypeItems">
+                                  <div class="btn_area">
+                                    <button type="button" style="width:40%" @click="eList(1)" :class="equipList === 'gateway'? 'btn on' :'btn'">게이트웨이</button>
+                                    <button type="button" style="width:27%" @click="eList(2)" :class="equipList === 'tablet'? 'btn on' :'btn'">테블릿</button>
+                                    <button type="button" style="width:33%" @click="eList(3)" :class="equipList === 'sensor'? 'btn on' :'btn'">센서</button>
+                                  </div>
+                                    <!-- <select v-model="selectedTypeItems">
                                       <option v-for="(type, index) in typeItems" :value="type.value" v-bind:key="index">{{type.label}}</option>
+                                    </select> -->
+                                </td>
+                                <td v-if="equipList === 'sensor'">
+                                    <select name="" id="sensorList" >
+                                      <option v-for="(sensor, index) in sensorItems" :value="sensor.value" v-bind:key="index">{{sensor.label}}</option>
                                     </select>
                                 </td>
                                 <td>
@@ -75,15 +87,16 @@
                     <table>
                         <colgroup>
                             <col style="width:6%;">
-                            <col style="width:9%;">
+                            <col style="width:6%;">
                             <col style="width:9%;">
                             <col style="width:auto;">
                             <col style="width:10%;">
+                            <col style="width:6%;">
                             <col style="width:10%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
                             <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:17%;">
                         </colgroup>
                         <thead>
                             <tr>
@@ -96,6 +109,7 @@
                                 <th scope="col">응급관리요원 전화번호</th>
                                 <th scope="col">장비구분</th>
                                 <th scope="col">센서타입</th>
+                                <th scope="col">점검구분</th>
                                 <th scope="col">발생일시</th>
                             </tr>
                         </thead>
@@ -104,15 +118,16 @@
                         <table>
                             <colgroup>
                                 <col style="width:6%;">
-                                <col style="width:9%;">
+                                <col style="width:6%;">
                                 <col style="width:9%;">
                                 <col style="width:auto;">
                                 <col style="width:10%;">
+                                <col style="width:6%;">
                                 <col style="width:10%;">
+                                <col style="width:8%;">
+                                <col style="width:8%;">
+                                <col style="width:8%;">
                                 <col style="width:10%;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
-                                <col style="width:17%;">
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
@@ -124,7 +139,8 @@
                                     <td><a href="#"></a></td>
                                     <td><a href="#"></a></td>
                                     <td><a href="#">{{item.equipTypeNm}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
                                     <td><a href="#">{{item.updDtime}}</a></td>
                                 </tr>
                             </tbody>
@@ -175,6 +191,8 @@ export default {
         cBirthday:'', cAddr: '', NCount:0,
         selectedTypeItems:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
+        equipList: 'gateway',
+        sensorItems:[],
       }
     },
     created() {
@@ -182,6 +200,7 @@ export default {
     this.getSggData();
     this.getOrgmData();
     this.getTypeData();
+    this.getsensorData();
     this.getRecipientData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
@@ -366,6 +385,30 @@ export default {
     },
      manageInquiry() {
         this.getRecipientData();
+    },
+    getsensorData() {
+    axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=SENSOR.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            this.sensorItems=[];
+            this.sensorItems.push({label: '전체', value: ''});
+            for(let i=0; i<response.data.data.length; i++) {
+              this.sensorItems.push({
+                label: response.data.data[i].cmmnCdNm,
+                value: response.data.data[i].cmmnCd
+              });
+            }  
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    eList(value){
+      switch (value){
+          case 1 : this.equipList="gateway" ;break;
+          case 2 : this.equipList="tablet" ;break;
+          case 3 : this.equipList="sensor" ;break;
+      }
     },
     },
 }
