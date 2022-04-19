@@ -45,7 +45,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" value="홍길동">
+                                    <input type="text" value="" v-model="selectedRecipientNm">
                                 </td>
                                 <td>
                                     <select v-model="selectedTypeItems">
@@ -81,15 +81,17 @@
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:6%;">
+                            <col style="width:5%;">
+                            <col style="width:5%;">
+                            <col style="width:5%;">
+                            <col style="width:20%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
-                            <col style="width:22%;">
-                            <col style="width:11%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
-                            <col style="width:11%;">
-                            <col style="width:11%;">
+                            <col style="width:5%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
                             
                         </colgroup>
                         <thead>
@@ -99,6 +101,8 @@
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">대상자 전화번호</th>
+                                <th scope="col">응급관리요원</th>
+                                <th scope="col">응급관리요원 전화번호</th>
                                 <th scope="col">구분</th>
                                 <th scope="col">상태</th>
                                 <th scope="col">발생일시</th>
@@ -109,15 +113,17 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
-                            <col style="width:6%;">
+                            <col style="width:5%;">
+                            <col style="width:5%;">
+                            <col style="width:5%;">
+                            <col style="width:20%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
-                            <col style="width:22%;">
-                            <col style="width:11%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
-                            <col style="width:11%;">
-                            <col style="width:11%;">
+                            <col style="width:5%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
                             
                             </colgroup>
                             <tbody >
@@ -128,6 +134,8 @@
                                     <!--<td><a href="#" style="float:left">{{item.addr}}</a></td> -->
                                     <td><a href="#" >{{item.addr}}</a></td> 
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
+                                    <td><a href="#">{{item.managerNm}}</a></td>
+                                    <td><a href="#">{{changeRecipientPhoneno(item.managerMobileNumber)}}</a></td>
                                     <td><a href="#">{{item.typeNm}}</a></td>
                                     <td><a href="#">{{item.signalStateNm}}</a></td>
                                     <td><a href="#">{{item.occurDtime}}</a></td>
@@ -184,7 +192,7 @@ export default {
         partCode: '', statusCode: '', modelName: '',
         sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], number:[], stateItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedTypeItems:'', selectedStateItems:'',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm:'', selectedTypeItems:'', selectedStateItems:'',
         cBirthday:'', cAddr: '', NCount : 0,
       }
     },
@@ -346,6 +354,7 @@ export default {
           .then(response => {
             //const sidoCount = !this.selectedSidoItems? '' : new RegExp(this.selectedSidoItems, 'gi');
             //const sggCount = !this.selectedSggItems? '' : new RegExp(this.selectedSggItems, 'gi');
+            const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
             const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
             const typeCount = !this.selectedTypeItems? '' : new RegExp(this.selectedTypeItems, 'gi');
             const stateCount = !this.selectedStateItems? '' : new RegExp(this.selectedStateItems, 'gi');
@@ -353,7 +362,7 @@ export default {
             let resData = response.data.data
             if(resData){
               this.recipientItems = resData.filter((cd=>{
-                return cd.orgId.match(orgCount) && cd.typeCd.match(typeCount) && cd.signalStateCd.match(stateCount)
+                return cd.orgId.match(orgCount) && cd.recipientNm.match(RecCount) && cd.typeCd.match(typeCount) && cd.signalStateCd.match(stateCount)
               }))
               this.NCount =this.recipientItems.length
               console.log(uri)
