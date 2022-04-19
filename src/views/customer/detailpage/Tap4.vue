@@ -11,8 +11,8 @@
                     <div class="title_area">
                         <p class="tit">Tablet PC</p>
                         <div class="toggle_btn">
-                            <button type="button" class="btn on">기본정보</button>
-                            <button type="button" class="btn">상세정보</button>
+                            <button type="button" class="btn on" >기본정보</button>
+                            <button type="button" class="btn" >상세정보</button>
                         </div>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                             <col style="width:20%;">
                             <col style="width:20%;">
                         </colgroup>
-                        <thead>
+                        <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">전화번호</th>
                                 <th scope="col">통신사</th>
@@ -56,6 +56,7 @@
                         </table>
                     </div>
                 </div>
+                
             </div>
             <div class="tablist" v-if="connectTap===2">
                 <div class="list_top">
@@ -78,7 +79,7 @@
                             <col style="width:25%;">
                             <col style="width:25%;">
                         </colgroup>
-                        <thead>
+                        <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">시리얼번호(S/N)</th>
                                 <th scope="col">맥 어드레스</th>
@@ -112,12 +113,12 @@
                     <div class="title_area">
                         <p class="tit">센서</p>
                         <div class="toggle_btn">
-                            <button type="button" class="btn on">기본정보</button>
-                            <button type="button" class="btn">상세정보</button>
+                            <button type="button" :class="sensorsTap===1? 'btn on':'btn'" @click="sensorsTogle(1)">기본정보</button>
+                            <button type="button" :class="sensorsTap===2? 'btn on':'btn'" @click="sensorsTogle(2)" >상세정보</button>
                         </div>
                     </div>
                 </div>
-                <div class="list">
+                <div class="list" v-if="sensorsTap===1">
                     <table>
                         <colgroup>
                             <col style="width:25%;">
@@ -125,7 +126,7 @@
                             <col style="width:25%;">
                             <col style="width:25%;">
                         </colgroup>
-                        <thead>
+                        <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
@@ -148,6 +149,43 @@
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td>{{item.serialNo}}</td>
                                     <td>{{item.macAddr}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="list" v-if="sensorsTap===2">
+                    <table>
+                        <colgroup>
+                            <col style="width:33%;">
+                            <col style="width:33%;">
+                            <col style="width:33%;">
+                            <!-- <col style="width:20%;">
+                            <col style="width:20%;"> -->
+                        </colgroup>
+                        <thead class="thead htype-01">
+                            <tr>
+                                <th scope="col">sensorId</th>
+                                <th scope="col">게이트웨이 전송주기(초)</th>
+                                <th scope="col">센서 감지주기(초)</th>
+                                
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="tbody htype-04">
+                        <table>
+                            <colgroup>
+                                <col style="width:33%;">
+                                <col style="width:33%;">
+                                <col style="width:33%;">
+                                <!-- <col style="width:20%;">
+                                <col style="width:20%;"> -->
+                            </colgroup>
+                            <tbody>
+                                <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index)">
+                                    <td>{{item.sensorId}}</td>
+                                    <td>{{item.gwSendCycle}}</td>
+                                    <td>{{item.sensorDetectCycle}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -177,7 +215,7 @@
                             <col style="width:16%;">
                             <col style="width:auto;">
                         </colgroup>
-                        <thead>
+                        <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">통신상태</th>
                                 <th scope="col">장애여부</th>
@@ -252,6 +290,7 @@ import axios from "axios";
       
       
       connectTap: 1,
+      sensorsTap: 1,
 
      }
    },
@@ -318,6 +357,13 @@ import axios from "axios";
           case 1 : this.connectTap=1 ;break;
           case 2 : this.connectTap=2 ;break;
           case 3 : this.connectTap=3 ;break;
+
+      }
+    },
+    sensorsTogle(value){
+        switch (value){
+          case 1 : this.sensorsTap=1 ;break;
+          case 2 : this.sensorsTap=2 ;break;
 
       }
     },

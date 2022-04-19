@@ -65,7 +65,7 @@
                             <col style="width:25%;">
                             <col style="width:25%;">
                         </colgroup>
-                        <thead>
+                        <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">설치장소</th>
                                 <th scope="col">측정일시</th>
@@ -142,10 +142,14 @@ import moment from "moment";
       measureEndDate: moment().format('YYYY-MM-DD'),
       labelText:'정보',
       codeText:'°C',
-      envData:[{text: '환경 정보', value:''},{text: '전체', value: 'all'},{text: '온도', value: 'TPE006'},{text: '조도', value: 'TPE008'},{text: '습도', value: 'TPE007'}, ],
-      bioData:[{text: '바이오 정보', value: ''},{text: '전체', value: 'all'},{text: '심장박동', value: 'TPE005'},{text: '호흡', value: 'TPE011'},{text: '활동량', value: 'TPE012'}, ],
-      actPData:[{text: '활동감지기{P) 정보', value: ''},{text: '전체', value: 'all'},{text: '화장실', value: 'TPE002'},{text: '안방', value: 'TPE002'}, ],
-      doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 'all'},{text: '뒷문', value: 'TPE004'},{text: '대문', value: 'TPE004'}, ],
+      envData:[{text: '환경 정보', value:''},{text: '전체', value: 1},{text: '온도', value: 2},{text: '조도', value: 3},{text: '습도', value: 4}, ],
+      bioData:[{text: '바이오 정보', value: ''},{text: '전체', value: 5},{text: '심장박동', value: 6},{text: '호흡', value: 7},{text: '활동량', value: 8}, ],
+      actPData:[{text: '활동감지기{P) 정보', value: ''},{text: '전체', value: 9},{text: '화장실', value: 10},{text: '안방', value: 11}, ],
+      doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 12},{text: '뒷문', value: 13},{text: '대문', value: 14}, ],
+      selectedValue : null,
+      sensorsTmp1Data: [],
+      sensorsTmp2Data: [],
+      sensorsTmp3Data: [],
      }
    },
   methods: {
@@ -156,172 +160,298 @@ import moment from "moment";
           case 3 : this.code1='';this.code2='';this.code4=''; break;
           case 4 : this.code1='';this.code2='';this.code3=''; break;
         }
-        // if(this.code1){
-        //     this.code2='';
-        //     this.code3='';
-        //     this.code4='';
-        // }
-        // if(this.code2){
-        //     this.code1='';
-        //     this.code3='';
-        //     this.code4='';
-        // }
-        // if(this.code3){
-        //     this.code1='';
-        //     this.code2='';
-        //     this.code4='';
-        // }
-        // if(this.code4){
-        //     this.code1='';
-        //     this.code2='';
-        //     this.code3='';
-        // }
+        
     },
 
     async getSensorsData(input,input2,input3,input4){
 
-        console.log(input,input2,input3,input4)
+        
 
         let code = input ? input : input2 ? input2 : input3 ? input3 :  input4 
-        
+        //드롭다운 코드화 및 값 설정
         switch (code){
-          case "TPE006" : this.labelText="온도"; this.codeText=" °C"; break;
-          case "TPE008" : this.labelText="조도"; this.codeText=" lx"; break;
-          case "TPE007" : this.labelText="습도"; this.codeText=" %"; break;
-          case "TPE005" : this.labelText="심장박동"; this.codeText=" 회"; break;
-          case "TPE011" : this.labelText="호흡"; this.codeText=" 회"; break;
-          case "TPE012" : this.labelText="활동량"; this.codeText=" "; break;
-          case "TPE002" : this.labelText="횟수"; this.codeText=" 회"; break;
-          case "TPE004" : this.labelText="횟수"; this.codeText=" 회"; break;
+          case 1 : this.selectedValue = 'all'; break;
+          case 2 : this.selectedValue = 'TPE006'; break;
+          case 3 : this.selectedValue = 'TPE008'; break;
+          case 4 : this.selectedValue = 'TPE007'; break;
+        }
+        
+        //드롭다운 코드화 및 라벨 설정
+        switch (code){
+          case 2 : this.labelText="온도"; this.codeText=" °C"; break;
+          case 3 : this.labelText="조도"; this.codeText=" lx"; break;
+          case 4 : this.labelText="습도"; this.codeText=" %"; break;
+          case 6 : this.labelText="심장박동"; this.codeText=" 회"; break;
+          case 7 : this.labelText="호흡"; this.codeText=" 회"; break;
+          case 8 : this.labelText="활동량"; this.codeText=" "; break;
+          case 10 : this.labelText="횟수"; this.codeText=" 회"; break;
+          case 11 : this.labelText="횟수"; this.codeText=" 회"; break;
+          case 13 : this.labelText="횟수"; this.codeText=" 회"; break;
+          case 14 : this.labelText="횟수"; this.codeText=" 회"; break;
           
       }
         
         //TPE011
         //&sensorLocCd=${code2}
-        let url
-        if(code==="TPE012"){
-            url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/actmeasures?sensorTypeCd=${code}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
+        let url=''
+        if(this.selectedValue==="TPE012"){
+            url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/actmeasures?sensorTypeCd=${this.selectedValue}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
         }else{
-            url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${code}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
+            url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${this.selectedValue}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
         }
-            
+        console.log(code)    
         //const url  = `/admin/recipients/${this.recipientId}/sensors`
-        
-        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(res => {
-            let tmpData = []
-            let tmp = []
-            this.sensorsData = []
-            let lengthTmp = []
-            lengthTmp = res.data
-            console.log(lengthTmp)
+        if(code !== 1 &&code !== 5 &&code !== 9 &&code !== 12){
+            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                let tmpData = []
+                let tmp = []
+                this.sensorsData = []
+                let lengthTmp = []
+                lengthTmp = res.data
+                console.log(lengthTmp)
 
-             if(code==="TPE006"||code==="TPE007"||code==="TPE008"){
+                if(this.selectedValue==="TPE006"||this.selectedValue==="TPE007"||this.selectedValue==="TPE008"){
+                    for(let i=0; i <lengthTmp.totalCount ;i++ ){
+                        tmpData = res.data.data[i]
+                        tmp = res.data.data[i].measureValue.split(',')
+                        for(let j=0; j <tmp.length ;j++ ){
+                            this.sensorsData.push({
+                            sensorId: tmpData.sensorId,
+                            sensorTypeCd: tmpData.sensorTypeCd,
+                            measureValue: tmp[j] + this.codeText,
+                            testYn: tmpData.testYn,
+                            sensorLocCd: tmpData.sensorLocCd,
+                            measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                            regDtime : tmpData.regDtime,
+                        })
+                        
+                        }
+                        
+                    }
+                }else if(this.selectedValue==="TPE005"||this.selectedValue==="TPE011"){
+                    for(let i=0; i <lengthTmp.totalCount ;i++ ){
+                        tmpData = res.data.data[i]
+                        tmp = res.data.data[i].measureValue.split(',')
+                        for(let j=0; j <tmp.length ;j++ ){
+                            this.sensorsData.push({
+                            sensorId: tmpData.sensorId,
+                            sensorTypeCd: tmpData.sensorTypeCd,
+                            measureValue: tmp[j] + this.codeText,
+                            testYn: tmpData.testYn,
+                            sensorLocCd: tmpData.sensorLocCd,
+                            measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                            regDtime : tmpData.regDtime,
+                        })
+                        
+                        }
+                        
+                    }
+                }else if(this.selectedValue==="TPE012"){
+                    for(let i=0; i <lengthTmp.totalCount ;i++ ){
+                        tmpData = res.data.data[i]
+                        tmp = res.data.data[i].measureValue.split(',')
+                        for(let j=0; j <tmp.length ;j++ ){
+                            this.sensorsData.push({
+                            sensorId: tmpData.sensorId,
+                            sensorTypeCd: tmpData.sensorTypeCd,
+                            measureValue: tmp[j] + this.codeText,
+                            testYn: tmpData.testYn,
+                            sensorLocCd: tmpData.sensorLocCd,
+                            measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                            regDtime : tmpData.regDtime,
+                        })
+                        
+                        }
+                        
+                    }
+                }else if(this.selectedValue==="TPE002"){
+                    for(let i=0; i <lengthTmp.totalCount ;i++ ){
+                        tmpData = res.data.data[i]
+                        tmp = res.data.data[i].measureValue.split(',')
+                        for(let j=0; j <tmp.length ;j++ ){
+                            this.sensorsData.push({
+                            sensorId: tmpData.sensorId,
+                            sensorTypeCd: tmpData.sensorTypeCd,
+                            measureValue: tmp[j] + this.codeText,
+                            testYn: tmpData.testYn,
+                            sensorLocCd: tmpData.sensorLocCd,
+                            measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                            regDtime : tmpData.regDtime,
+                        })
+                        
+                        }
+                        
+                    }
+                }else if(this.selectedValue==="TPE004"){
+                    for(let i=0; i <lengthTmp.totalCount ;i++ ){
+                        tmpData = res.data.data[i]
+                        tmp = res.data.data[i].measureValue.split(',')
+                        for(let j=0; j <tmp.length ;j++ ){
+                            this.sensorsData.push({
+                                sensorId: tmpData.sensorId,
+                                sensorTypeCd: tmpData.sensorTypeCd,
+                                measureValue: tmp[j] + this.codeText,
+                                testYn: tmpData.testYn,
+                                sensorLocCd: tmpData.sensorLocCd,
+                                measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                                regDtime : tmpData.regDtime,
+                            })     
+                        }
+                    }
+                }
+                console.log("sensorsData is ")
+                console.log(this.sensorsData)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+        }else if (code === 1 ){
+            //TPE 006
+            url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=TPE006&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
+            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                let tmpData = []
+                let tmp = []
+                this.sensorsTmp1Data= []
+                let lengthTmp = []
+                lengthTmp = res.data
+                
                 for(let i=0; i <lengthTmp.totalCount ;i++ ){
                     tmpData = res.data.data[i]
                     tmp = res.data.data[i].measureValue.split(',')
                     for(let j=0; j <tmp.length ;j++ ){
-                        this.sensorsData.push({
-                        sensorId: tmpData.sensorId,
-                        sensorTypeCd: tmpData.sensorTypeCd,
-                        measureValue: tmp[j] + this.codeText,
-                        testYn: tmpData.testYn,
-                        sensorLocCd: tmpData.sensorLocCd,
-                        measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
-                        regDtime : tmpData.regDtime,
-                    })
+                        this.sensorsTmp1Data.push({
+                            sensorId: tmpData.sensorId,
+                            sensorTypeCd: tmpData.sensorTypeCd,
+                            measureValue1: tmp[j] + ' °C',
+                            testYn: tmpData.testYn,
+                            sensorLocCd: tmpData.sensorLocCd,
+                            measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                            regDtime : tmpData.regDtime,
+                        })
                     
                     }
-                    
                 }
-              }else if(code==="TPE005"||code==="TPE011"){
+                console.log(this.sensorsTmp1Data)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+            //TPE 008
+            url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=TPE008&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
+            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                let tmpData = []
+                let tmp = []
+                this.sensorsTmp2Data= []
+                let lengthTmp = []
+                lengthTmp = res.data
+                
                 for(let i=0; i <lengthTmp.totalCount ;i++ ){
                     tmpData = res.data.data[i]
                     tmp = res.data.data[i].measureValue.split(',')
                     for(let j=0; j <tmp.length ;j++ ){
-                        this.sensorsData.push({
-                        sensorId: tmpData.sensorId,
-                        sensorTypeCd: tmpData.sensorTypeCd,
-                        measureValue: tmp[j] + this.codeText,
-                        testYn: tmpData.testYn,
-                        sensorLocCd: tmpData.sensorLocCd,
-                        measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
-                        regDtime : tmpData.regDtime,
-                    })
+                        this.sensorsTmp2Data.push({
+                            sensorId: tmpData.sensorId,
+                            sensorTypeCd: tmpData.sensorTypeCd,
+                            measureValue2: tmp[j] + ' lx',
+                            testYn: tmpData.testYn,
+                            sensorLocCd: tmpData.sensorLocCd,
+                            measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                            regDtime : tmpData.regDtime,
+                        })
                     
                     }
-                    
                 }
-            }else if(code==="TPE012"){
+                console.log(this.sensorsTmp2Data)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+            //TPE 007
+            url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=TPE007&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
+            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                let tmpData = []
+                let tmp = []
+                this.sensorsTmp3Data= []
+                let lengthTmp = []
+                lengthTmp = res.data
+                
                 for(let i=0; i <lengthTmp.totalCount ;i++ ){
                     tmpData = res.data.data[i]
                     tmp = res.data.data[i].measureValue.split(',')
                     for(let j=0; j <tmp.length ;j++ ){
-                        this.sensorsData.push({
-                        sensorId: tmpData.sensorId,
-                        sensorTypeCd: tmpData.sensorTypeCd,
-                        measureValue: tmp[j] + this.codeText,
-                        testYn: tmpData.testYn,
-                        sensorLocCd: tmpData.sensorLocCd,
-                        measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
-                        regDtime : tmpData.regDtime,
-                    })
+                        this.sensorsTmp3Data.push({
+                            sensorId: tmpData.sensorId,
+                            sensorTypeCd: tmpData.sensorTypeCd,
+                            measureValue3: tmp[j] + ' %',
+                            testYn: tmpData.testYn,
+                            sensorLocCd: tmpData.sensorLocCd,
+                            measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                            regDtime : tmpData.regDtime,
+                        })
                     
                     }
-                    
                 }
-            }else if(code==="TPE002"){
-                for(let i=0; i <lengthTmp.totalCount ;i++ ){
-                    tmpData = res.data.data[i]
-                    tmp = res.data.data[i].measureValue.split(',')
-                    for(let j=0; j <tmp.length ;j++ ){
-                        this.sensorsData.push({
-                        sensorId: tmpData.sensorId,
-                        sensorTypeCd: tmpData.sensorTypeCd,
-                        measureValue: tmp[j] + this.codeText,
-                        testYn: tmpData.testYn,
-                        sensorLocCd: tmpData.sensorLocCd,
-                        measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
-                        regDtime : tmpData.regDtime,
-                    })
-                    
-                    }
-                    
-                }
-            }else if(code==="TPE004"){
-                for(let i=0; i <lengthTmp.totalCount ;i++ ){
-                    tmpData = res.data.data[i]
-                    tmp = res.data.data[i].measureValue.split(',')
-                    for(let j=0; j <tmp.length ;j++ ){
-                        this.sensorsData.push({
-                        sensorId: tmpData.sensorId,
-                        sensorTypeCd: tmpData.sensorTypeCd,
-                        measureValue: tmp[j] + this.codeText,
-                        testYn: tmpData.testYn,
-                        sensorLocCd: tmpData.sensorLocCd,
-                        measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
-                        regDtime : tmpData.regDtime,
-                    })
-                    
-                    }
-                    
-                }
-            }
+                console.log(this.sensorsTmp3Data)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+            let tmpArr = [...this.sensorsTmp1Data,...this.sensorsTmp2Data,...this.sensorsTmp3Data]
+            let tmpArr2 = []
+            tmpArr.forEach(element => {
+               tmpArr2.push({
+                   measureDtime: element.measureDtime,
+                   measureValue1: 0,
+                   measureValue2: 0,
+                   measureValue3: 0,
+                   regDtime: element.regDtime,
+                   sensorLocCd: element.sensorLocCd,
+                   }) 
+            });
             
-            console.log("sensorsData is ")
-            console.log(this.sensorsData)
+            let setObj = new Set(tmpArr2)
+            let setArr = [...setObj]
+            console.log("setArr")
+            console.log(setArr)
+            setArr.forEach(item=>{
+                for(let i = 0 ; i<this.sensorsTmp1Data.length ; i++ ){
+                    if(item.measureDtime ===this.sensorsTmp1Data[i].measureDtime){
+                        item.measureValue1 = this.sensorsTmp1Data[i].measureValue1
+                    }
+                }
+                for(let j = 0 ; j<this.sensorsTmp2Data.length ; j++ ){
+                    if(item.measureDtime ===this.sensorsTmp2Data[j].measureDtime){
+                        item.measureValue2 = this.sensorsTmp1Data[j].measureValue2
+                    }
+                }
+                for(let k = 0 ; k<this.sensorsTmp3Data.length ; k++ ){
+                    if(item.measureDtime ===this.sensorsTmp3Data[k].measureDtime){
+                        item.measureValue3 = this.sensorsTmp1Data[k].measureValue3
+                    }
+                }
 
-          })
-          .catch(error => {
-              console.log("fail to load")
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
+            })
+            
+            
+            tmpArr2.from(new Set(tmpArr))
+            console.log(tmpArr2)
+        }
     },
     getfilteringData(){
         const url  = `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=TPE006&measureStartDate=2022-03-30&measureEndDate=2022-04-04`
         //const url  = `/admin/recipients/${this.recipientId}/sensors`
-        
         axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.sensorsData = res.data.data
@@ -360,7 +490,7 @@ import moment from "moment";
    },
    created() {
        
-    this.getSensorsData('TPE006');
+    this.getSensorsData(2,'','','');
   }
  }
  </script>

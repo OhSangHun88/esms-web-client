@@ -54,7 +54,7 @@
                                     </td>
                                     <td>
                                         <!-- <input type="text" name="" id="" :value="item.relationCdNm"> -->
-                                        {{item.relationCdNm}}
+                                        응급요원
                                     </td>
                                     <td>
                                         <!-- <input type="text" name="" id="" :value="changeRecipientPhoneno(item.relationPhone)"> -->
