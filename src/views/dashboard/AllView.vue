@@ -90,7 +90,67 @@
               <canvas class="statistics-charts-line" ref="BarChart1" width="470" height="220" ></canvas>
             </div>
           </div>
-          <div class="box_col3 box_style">
+            <div class="box_col3 box_style">
+              <table class="asstatus">
+                <colgroup>
+                  <col style="width:20%;" >
+                  <col style="width:20%;">
+                  <col style="width:20%;">
+                  <col style="width:20%;">
+                  <col style="width:20%;">
+                </colgroup>
+                <thead>
+                    <th>구 분</th>
+                    <th>A/S 요청</th>
+                    <th>A/S 접수</th>
+                    <th>A/S 완료</th>
+                    <th>취  소</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">게이트웨이</th>
+                    <td>{{this.gwrqCount}}</td>
+                    <td>{{this.gwrcCount}}</td>
+                    <td class="comple">{{this.gwcpCount}}</td>
+                    <td>{{this.gwcaCount}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">응급호출기</th>
+                    <td>{{this.emrqCount}}</td>
+                    <td>{{this.emrcCount}}</td>
+                    <td class="comple">{{this.emcpCount}}</td>
+                    <td>{{this.emcaCount}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">활동감지기</th>
+                    <td>{{this.acrqCount}}</td>
+                    <td>{{this.acrcCount}}</td>
+                    <td class="comple">{{this.accpCount}}</td>
+                    <td>{{this.accaCount}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">화재감지기</th>
+                    <td>{{this.firqCount}}</td>
+                    <td>{{this.fircCount}}</td>
+                    <td class="comple">{{this.ficpCount}}</td>
+                    <td>{{this.ficaCount}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">출입문센서</th>
+                    <td>{{this.dorqCount}}</td>
+                    <td>{{this.dorcCount}}</td>
+                    <td class="comple">{{this.docpCount}}</td>
+                    <td>{{this.docaCount}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">생활안심센서</th>
+                    <td>{{this.lirqCount}}</td>
+                    <td>{{this.lircCount}}</td>
+                    <td class="comple">{{this.licpCount}}</td>
+                    <td>{{this.licaCount}}</td>
+                  </tr>
+                </tbody>
+              </table>
             <div>
               <colgroup>
                 <col style="width:2%;" >
