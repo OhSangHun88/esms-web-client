@@ -40,8 +40,9 @@
                                             <label for="chk2_1" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td> -->
-                                    <td>{{item.relationCdNm}}</td>
                                     <td>{{item.relationNm}}</td>
+                                    <td>생활관리사</td>
+                                    
                                     
                                     <td>{{changeRecipientPhoneno(item.relationPhone)}}</td>
                                 </tr>

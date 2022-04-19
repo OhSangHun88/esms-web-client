@@ -21,7 +21,7 @@
                             <col style="width:20%;">
                             <col style="width:20%;">
                         </colgroup>
-                        <thead>
+                        <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">통화구분</th>
                                 <th scope="col">전화번호</th>
