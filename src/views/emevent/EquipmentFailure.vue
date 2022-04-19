@@ -5,7 +5,7 @@
             <div class="list_title_wrap">
                 <span>이벤트 리포트</span>
                 <i class="ico_nav"></i>
-                <span class="on">장비 장애</span>
+                <span class="on">장비 점검 대상</span>
             </div>
             <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
                 <div class="table_wrap">
@@ -82,6 +82,7 @@
                             <col style="width:10%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
+                            <col style="width:10%;">
                             <col style="width:17%;">
                         </colgroup>
                         <thead>
@@ -94,7 +95,8 @@
                                 <th scope="col">응급관리요원</th>
                                 <th scope="col">응급관리요원 전화번호</th>
                                 <th scope="col">장비구분</th>
-                                <th scope="col">발생일자</th>
+                                <th scope="col">센서타입</th>
+                                <th scope="col">발생일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -105,6 +107,7 @@
                                 <col style="width:9%;">
                                 <col style="width:9%;">
                                 <col style="width:auto;">
+                                <col style="width:10%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
@@ -121,6 +124,7 @@
                                     <td><a href="#"></a></td>
                                     <td><a href="#"></a></td>
                                     <td><a href="#">{{item.equipTypeNm}}</a></td>
+                                    <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{item.updDtime}}</a></td>
                                 </tr>
                             </tbody>

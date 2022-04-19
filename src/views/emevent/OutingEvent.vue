@@ -75,8 +75,9 @@
                             <col style="width:10%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
-                            <col style="width:11%;">
                             <col style="width:10%;">
+                            <col style="width:11%;">
+                            
                         </colgroup>
                         <thead>
                             <tr>
@@ -87,9 +88,10 @@
                                 <th scope="col">대상자 전화번호</th>
                                 <th scope="col">생활관리사</th>
                                 <th scope="col">생활관리사 전화번호</th>
-                                <th scope="col">외출 발생일시</th>
-                                <th scope="col">외출 귀가 시간</th>
-                                <th scope="col">외출 지속 시간</th>
+                                <th scope="col">구분</th>
+                                <th scope="col">발생일시</th>
+                                <th scope="col">서버전송일시</th>
+                                
                             </tr>
                         </thead>
                     </table>
@@ -104,8 +106,9 @@
                                 <col style="width:10%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
-                                <col style="width:11%;">
                                 <col style="width:10%;">
+                                <col style="width:11%;">
+                                
                             </colgroup>
                             <tbody>  
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index" @click="goToDetailView(item.recipientId)">
@@ -114,11 +117,12 @@
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
                                     <td><a href="#">{{item.addr}}</a></td>
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#"></a></td>
+                                    <td><a href="#">{{item.managerNm}}</a></td>
+                                    <td><a href="#">{{changeRecipientPhoneno(item.managerMobileNumber)}}</a></td>
+                                    <td><a href="#">{{item.eventDesc}}</a></td>
                                     <td><a href="#">{{item.occurDtime}}</a></td>
                                     <td><a href="#">{{item.regDtime}}</a></td>
-                                    <td><a href="#">1시간</a></td>
+                                    
                                 </tr>                                
                             </tbody>
                             
@@ -286,13 +290,13 @@ export default {
       }
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
-            //const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
+            const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
             const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
 
             let resData = response.data.data
             if(resData){
               this.recipientItems = resData.filter((cd=>{
-                return cd.recipientNm.match(RecCount)
+                return cd.orgId.match(orgCount) && cd.recipientNm.match(RecCount)
               }))
               this.NCount =this.recipientItems.length
             }else

@@ -7,7 +7,7 @@
                 <i class="ico_nav"></i>
                 <span class="on">기관관리</span>
             </div>
-            <div class="box_search_wrap add_btn box_style">
+            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
                 <div class="table_wrap">
                     <table>
                         <colgroup>
@@ -40,7 +40,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" value="홍길동">
+                                    <input type="text" value="">
                                 </td>
                             </tr>
                         </tbody>
@@ -128,23 +128,6 @@
 					<a href="#" class="back">마지막 페이지</a>
 				</div>
             </div>
-           
-                <div class="pagination mt0">
-					<a href="#" class="front">첫 페이지</a>
-					<a href="#" class="prev">이전 페이지</a>
-					<a href="#" class="on">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">6</a>
-					<a href="#">7</a>
-					<a href="#">8</a>
-					<a href="#">9</a>
-					<a href="#">10</a>
-					<a href="#" class="next">다음 페이지</a>
-					<a href="#" class="back">마지막 페이지</a>
-				</div>
       </div>
     </div>
 </template>
@@ -165,10 +148,9 @@ export default {
     data(){
       return{
         sido:'', sidoCd:'', sgg:'', sggCd:'',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[], userItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm:'',
       }
     },
     created(){
@@ -273,7 +255,17 @@ export default {
       let uri = this.$store.state.serverApi + "/admin/organizations";
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
-            this.TorgItems = response.data.data
+            const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
+            const sggCount = !this.selectedSggItems.substring(0, 5)? '' : new RegExp(this.selectedSggItems.substring(0, 5), 'gi');
+            const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
+            let resData = response.data.data
+            if(resData){
+              this.TorgItems = resData.filter(cd=>{
+                return cd.addrCd.match(sggCount) && cd.orgId.match(orgCount)
+              })
+            }else{
+              this.TorgItems = []
+            }
           })          
           .catch(error => {
             this.errorMessage = error.message;
@@ -309,7 +301,6 @@ export default {
     },
     manageInquiry() {
         this.getTorgData();
-        this.getUserData();
     },
     }
 }

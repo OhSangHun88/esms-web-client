@@ -50,7 +50,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" value="홍길동">
+                                    <input type="text" value="">
                                 </td>
                                 <td>
                                     <select name="" id="">

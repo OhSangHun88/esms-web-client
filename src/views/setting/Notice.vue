@@ -7,7 +7,7 @@
                 <i class="ico_nav"></i>
                 <span class="on">공지사항</span>
             </div>
-            <div class="box_search_wrap add_btn box_style">
+            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
                 <div class="table_wrap type-02">
                     <table>
                         <colgroup>
@@ -37,12 +37,12 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select v-model="selectedOrgmItems">
+                                    <select v-model="selectedOrgItems">
                                       <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" value="홍길동">
+                                    <input v-model="selectedRegId" type="text" value="">
                                 </td>
                                 <td>
                                     <div class="date_warp">
@@ -110,7 +110,7 @@
                                     <td><a href="#">{{item.orgNm}}</a></td>
                                     <td><a href="#">{{item.title}}</a></td>
                                     <td></td>
-                                    <td style="float:left"><a href="#">{{item.details}}</a></td>
+                                    <td><a href="#">{{item.details}}</a></td>
                                     <td><a href="#">{{item.regId}}</a></td>
                                     <td><a href="#">{{item.regDtime}}</a></td>
                                     <td><a href="#">{{item.updDtime}}</a></td>
@@ -158,7 +158,7 @@ export default {
       return{
         sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[],
-        orgSido:'', orgSgg:'', orgCode:'',selectedOrgmItems:'', selectedSidoItems:'', selectedSggItems:'',
+        orgSido:'', orgSgg:'', orgCode:'',selectedOrgItems:'', selectedSidoItems:'', selectedSggItems:'', selectedRegId: '',
         NCount: 0,
       }
     },
@@ -262,28 +262,18 @@ export default {
           console.error("There was an error!", error);
         });
     },
-    getnoticeData() {
-      let uri = this.$store.state.serverApi + "/admin/notices?startDate="+this.s_date+"&endDate="+this.e_date;;
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(response => {
-            this.noticItems = response.data.data
-          })          
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-      },
-      getNCount(){
+    
+      getnoticeData(){
       let url = this.$store.state.serverApi +"/admin/notices?startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             let totalCData = response.data.data
             //const sidoCount = !this.selectedSidoItems? '' : new RegExp(this.selectedSidoItems, 'gi');
             //const sggCount = !this.selectedSggItems? '' : new RegExp(this.selectedSggItems, 'gi');
-            const orgCount = !this.selectedOrgmItems? '' : new RegExp(this.selectedOrgmItems, 'gi');
-            //const userNmCount = !userNm? '' : new RegExp(userNm, 'gi');
+            const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
+            const regIdCount = !this.selectedRegId? '' : new RegExp(this.selectedRegId, 'gi');
             this.noticItems= totalCData.filter((cd=>{
-              return cd.orgId.match(orgCount) 
+              return cd.orgId.match(orgCount) && cd.regId.match(regIdCount)
             }))
             this.NCount =this.noticItems.length
           })
@@ -314,7 +304,6 @@ export default {
     },
     manageInquiry() {
         this.getnoticeData();
-        this.getNCount();
     },
     }
 }

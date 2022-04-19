@@ -45,7 +45,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" value="" v-model="selectedRecipientNm">
+                                    <input v-model="selectedRecipientNm" type="text" value="">
                                 </td>
                                 <td>
                                     <select v-model="selectedTypeItems">

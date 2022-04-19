@@ -68,14 +68,15 @@
                     <table>
                         <colgroup>
                             <col style="width:6%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
                             <col style="width:auto;">
                             <col style="width:10%;">
+                            <col style="width:6%;">
                             <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:13%;">
-                            <col style="width:13%;">
+                            <col style="width:11%;">
+                            <col style="width:11%;">
+                            <col style="width:11%;">
                         </colgroup>
                         <thead>
                             <tr>
@@ -86,8 +87,9 @@
                                 <th scope="col">대상자 전화번호</th>
                                 <th scope="col">생활관리사</th>
                                 <th scope="col">생활관리사 전화번호</th>
+                                <th scope="col">구분</th>
                                 <th scope="col">발생일시</th>
-                                <th scope="col">미감지 지속 시간</th>
+                                <th scope="col">서버전송일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -95,14 +97,15 @@
                         <table>
                             <colgroup>
                                 <col style="width:6%;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
+                                <col style="width:6%;">
+                                <col style="width:6%;">
                                 <col style="width:auto;">
                                 <col style="width:10%;">
+                                <col style="width:6%;">
                                 <col style="width:10%;">
-                                <col style="width:10%;">
-                                <col style="width:13%;">
-                                <col style="width:13%;">
+                                <col style="width:11%;">
+                                <col style="width:11%;">
+                                <col style="width:11%;">
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
@@ -111,10 +114,11 @@
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
                                     <td><a href="#" >{{item.addr}}</a></td>
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#"></a></td>
+                                    <td><a href="#">{{item.managerNm}}</a></td>
+                                    <td><a href="#">{{changeRecipientPhoneno(item.managerMobileNumber)}}</a></td>
+                                    <td><a href="#">{{item.eventDesc}}</a></td>
                                     <td><a href="#">{{item.occurDtime}}</a></td>
-                                    <td><a href="#">{{item.testYn}}</a></td>
+                                    <td><a href="#">{{item.regDtime}}</a></td>
                                 </tr>                                
                             </tbody>
                   
@@ -285,10 +289,11 @@ export default {
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
+            const OrgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
             let resData = response.data.data
             if(resData){
               this.recipientItems = resData.filter(cd=>{
-                return cd.recipientNm.match(RecCount)
+                return cd.orgId.match(OrgCount) && cd.recipientNm.match(RecCount)
               })
               this.NCount = this.recipientItems.length
             }else{
