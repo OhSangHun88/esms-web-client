@@ -28,7 +28,7 @@
                                                 <input type="text" name="" id="" value="30">
                                             </div>
                                         </td>
-                                        <td >설정 값(분)</td>
+                                        <td >변경 값(분)</td>
                                         <td>
                                             <div class="input_area">
                                                 <input type="text" name="" id="" value="120">
@@ -66,7 +66,7 @@
                                                 <input type="text" name="" id="" value="30">
                                             </div>
                                         </td>
-                                        <td >설정 값(분)</td>
+                                        <td >변경 값(분)</td>
                                         <td>
                                             <div class="input_area">
                                                 <input type="text" name="" id="" value="120">
@@ -86,7 +86,7 @@
                         <p class="tit">센서 감지 주기 및 전송 주기</p>
                     </div>
                     <div class="btn_area">
-                        <button type="button" class="btn form2">저장</button>
+                        <button type="button" class="btn form2" @click="saveSensorsData">저장</button>
                     </div>
                 </div>
                 <div class="list bd_btm">
@@ -99,14 +99,14 @@
                             <col style="width:24%;">
                             <col style="width:24%;">
                         </colgroup>
-                        <thead>
+                        <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">선택</th>
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
                                 <th scope="col">감지 주기(초)</th>
-                                <th scope="col">센서 전송주기(초)</th>
-                                <th scope="col">G/W 전송주기(초)</th>                                                    
+                                <th scope="col">G/W 전송주기(초)</th>
+                                <th scope="col">서버 전송주기(초)</th>               
                             </tr>
                         </thead>
                     </table>
@@ -122,25 +122,30 @@
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index">
-                                    <td>
+                                    <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="chk_area radio">
-                                            <input type="radio" name="radio1" id="radio1_1" >
-                                            <label for="radio1_1" class="chk"><i class="ico_chk"></i></label>
+                                            <input type="radio" name="sensorsDetect" :id="`radio1_${index}`" v-model="sensorsDetect" :value="index" >
+                                            <label :for="`radio1_${index}`" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td>
+                                    <td v-else></td>
                                     <td>{{item.sensorTypeNm}}</td>
-                                    <td>{{locationCode(item.sensorLocCd)}}</td>
-                                    <td>2</td>
-                                    <td>
-                                        <div class="input_area">
-                                            <input type="text" name="" id="" :value="item.svrSendCycle">초
+                                    <!-- {{getCSensorsData[sensorsDetect]}} 이렇게 뽑아서 쓰면 된단말 -->
+                                    <td> {{locationCode(item.sensorLocCd)}}</td>
+                                    <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">{{item.sensorDetectCycle}}</td>
+                                    <td v-else>실시간</td>
+                                    <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
+                                       <div class="input_area">
+                                            <input type="text" name="gwSendCycle"  v-model="item.gwSendCycle"  >초
                                         </div>
                                     </td>
-                                    <td>
+                                    <td v-else>실시간</td>
+                                    <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="input_area">
-                                            <input type="text" name="" id="" :value="item.gwSendCycle">초
+                                            <input type="text" name=""  v-model="item.svrSendCycle">초
                                         </div>
                                     </td>
+                                    <td v-else>실시간</td>
                                 </tr>
                                 
                             </tbody>
@@ -160,57 +165,53 @@
                 <div class="list bd_btm">
                     <table>
                         <colgroup>
-                            <col style="width:13%;">
-                            <col style="width:13%;">
-                            <col style="width:13%;">
-                            <col style="width:13%;">
-                            <col style="width:24%;">
-                            <col style="width:24%;">
+                            <col style="width:15%;">
+                            <col style="width:15%;">
+                            <col style="width:15%;">
+                            <col style="width:26%;">
+                            <col style="width:26%;">
                         </colgroup>
-                        <thead>
+                        <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">선택</th>
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
-                                <th scope="col">감지 주기(초)</th>
-                                <th scope="col">센서 전송주기(배수)</th>
-                                <th scope="col">G/W 전송주기(배수)</th>                                                    
+                                <th scope="col">G/W 전송주기(시간)</th>
+                                <th scope="col">서버 전송주기(시간)</th>                                                
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody htype-03">
                         <table>
                             <colgroup>
-                                <col style="width:13%;">
-                                <col style="width:13%;">
-                                <col style="width:13%;">
-                                <col style="width:13%;">
-                                <col style="width:24%;">
-                                <col style="width:24%;">
+                                <col style="width:15%;">
+                                <col style="width:15%;">
+                                <col style="width:15%;">
+                                <col style="width:26%;">
+                                <col style="width:26%;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index">
                                     <td>
                                         <div class="chk_area radio">
-                                            <input type="radio" name="radio2" id="radio2_1" checked>
+                                            <input type="radio" name="radio2" id="radio2_1" >
                                             <label for="radio2_1" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td>
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
-                                    <td>2</td>
-                                    <td>
+                                    <td >
                                         <div class="input_area">
-                                            <input type="text" name="" id="" :value="item.stateSvrSendCycle">초
+                                            <input type="text" name="" id="" :value="item.stateGwSendCycle/3600">시간
                                         </div>
                                     </td>
-                                    <td>
+                                    <td >
                                         <div class="input_area">
-                                            <input type="text" name="" id="" :value="item.stateGwSendCycle">초
+                                            <input type="text" name="" id="" :value="item.stateSvrSendCycle/3600">시간
                                         </div>
                                     </td>
+                                    
                                 </tr>
-                                
                             </tbody>
                         </table>
                     </div>
@@ -231,12 +232,19 @@ import axios from "axios";
    data () {
      return {
       getCSensorsData: null,
-      
+      sensorsDetect:null,
+      newGwSendCycle: null
 
 
      }
    },
   methods: {
+    updateInput: function(event) {
+        this.$emit('input', event.target.value);
+        console.log(event.target.value)
+        console.log(this)
+    },
+
       async getCSensers(){
       const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30`
         
@@ -278,15 +286,19 @@ import axios from "axios";
         return result
     },
     changeRecipientPhoneno(phone){
-    if(phone){
-      let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
-      return changeNumber
-    }else{
-      return ''
-    }
+        if(phone){
+        let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+        return changeNumber
+        }else{
+        return ''
+        }
     
-  },
+    },
+    saveSensorsData(){
+        console.log(this.sensorsDetect)
+        console.log(this.getCSensorsData[this.sensorsDetect])
     
+    },
     
 
    },
