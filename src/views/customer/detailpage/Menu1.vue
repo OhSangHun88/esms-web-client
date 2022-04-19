@@ -104,19 +104,19 @@ export default {
             //this.reportMeasureData => 선언 처리 수정
             this.reportMeasureData = !lastMeasures ? { TPE005: 0,TPE011: 0,TPE006: 0,TPE008: 0,TPE007: 0,TPE012: 0 }: 
             {
-                TPE005: !lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE005"}) ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE005"}).measureValue.split(',').slice(-1)[0],//심박
-                TPE011: !lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE011"}) ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE011"}).measureValue.split(',').slice(-1)[0],//호흡
-                TPE006: !lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE006"}) ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE006"}).measureValue.split(',').slice(-1)[0],//온도
-                TPE008: !lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE008"}) ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE008"}).measureValue.split(',').slice(-1)[0],//조도
-                TPE007: !lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE007"}) ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE007"}).measureValue.split(',').slice(-1)[0],//습도
-                TPE012: !lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}) ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}).measureValue.split(',').slice(-1)[0],//활동량
+                TPE005: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE005"}).measureValue.split(',').slice(-1)[0],//심박
+                TPE011: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE011"}).measureValue.split(',').slice(-1)[0],//호흡
+                TPE006: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE006"}).measureValue.split(',').slice(-1)[0],//온도
+                TPE008: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE008"}).measureValue.split(',').slice(-1)[0],//조도
+                TPE007: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE007"}).measureValue.split(',').slice(-1)[0],//습도
+                TPE012: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}).measureValue.split(',').slice(-1)[0],//활동량
             }
         }).catch(error => {
             console.log("fail to load")
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
-        setInterval(this.getMeasuresData, 300000)
+        //setInterval(this.getMeasuresData, 300000)
     },
   }
 }
