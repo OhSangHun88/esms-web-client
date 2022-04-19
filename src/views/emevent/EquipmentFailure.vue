@@ -7,7 +7,7 @@
                 <i class="ico_nav"></i>
                 <span class="on">장비 장애</span>
             </div>
-            <div class="box_search_wrap add_btn box_style">
+            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
                 <div class="table_wrap">
                     <table>
                         <colgroup>
@@ -44,7 +44,7 @@
                                 </td>
                                 <td>
                                     <select v-model="selectedTypeItems">
-                                      <option v-for="(type, index) in typeItems"  v-bind:key="index">{{type.label}}</option>
+                                      <option v-for="(type, index) in typeItems" :value="type.value" v-bind:key="index">{{type.label}}</option>
                                     </select>
                                 </td>
                                 <td>

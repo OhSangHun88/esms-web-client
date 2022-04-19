@@ -7,7 +7,7 @@
                 <i class="ico_nav"></i>
                 <span class="on">응급 알람</span>
             </div>
-            <div class="box_search_wrap add_btn box_style">
+            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
                 <div class="table_wrap">
                     <table>
                         <colgroup>
@@ -70,8 +70,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="btn_area">
-                    <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
+                <div class="btn_area" >
+                    <button type="button" class="btn" @click="manageInquiry" >조회</button>
                 </div>
             </div>
             <div class="one_box box_style">
@@ -81,22 +81,24 @@
                 <div class="list result">
                     <table>
                         <colgroup>
+                            <col style="width:3%;">
                             <col style="width:5%;">
                             <col style="width:5%;">
-                            <col style="width:5%;">
+                            <col style="width:3%;">
                             <col style="width:20%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
-                            <col style="width:5%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
+                            <col style="width:3%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
                             
                         </colgroup>
                         <thead>
                             <tr>
                                 <th scope="col">순번</th>
+                                <th scope="col">관리기관</th>
                                 <th scope="col">이름</th>
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
@@ -113,22 +115,24 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
+                            <col style="width:3%;">
                             <col style="width:5%;">
                             <col style="width:5%;">
-                            <col style="width:5%;">
+                            <col style="width:3%;">
                             <col style="width:20%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
-                            <col style="width:5%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
+                            <col style="width:3%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
                             
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                     <td><a href="#">{{index+1}}</a></td>
+                                    <td><a href="#">{{item.orgNm}}</a></td>
                                     <td><a href="#">{{item.recipientNm}}</a></td>
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
                                     <!--<td><a href="#" style="float:left">{{item.addr}}</a></td> -->
@@ -406,6 +410,9 @@ export default {
       return tmp2.diff(tmp1, 'years');
     },
     manageInquiry() {
+        this.getRecipientData();
+    },
+    EmanageInquiry() {
         this.getRecipientData();
     },
   },

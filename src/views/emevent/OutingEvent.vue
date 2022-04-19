@@ -7,8 +7,8 @@
                 <i class="ico_nav"></i>
                 <span class="on">외출이벤트</span>
             </div>
-            <div class="box_search_wrap add_btn box_style">
-                <div class="table_wrap">
+            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
+                <div class="table_wrap" >
                     <table>
                         <colgroup>
                             <col style="width:20%;">
