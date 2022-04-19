@@ -19,7 +19,7 @@
             <li><a href="#"><router-link to ="/emevent/allView">응급알람</router-link></a></li>
             <li><a href="#"><router-link to ="/emevent/outingEvent">외출이벤트</router-link></a></li>
             <li><a href="#"><router-link to ="/emevent/activityDetection">활동 미감지</router-link></a></li>
-            <li><a href="#"><router-link to ="/emevent/equipmentFailure">장비 장애</router-link></a></li>
+            <li><a href="#"><router-link to ="/emevent/equipmentFailure">장비 점검 대상</router-link></a></li>
           </ul>
         </li>
         <li class="drop">

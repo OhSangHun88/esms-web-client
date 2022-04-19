@@ -5,9 +5,9 @@
             <div class="list_title_wrap">
                 <span>이벤트 리포트</span>
                 <i class="ico_nav"></i>
-                <span class="on">장비 장애</span>
+                <span class="on">장비 점검 대상</span>
             </div>
-            <div class="box_search_wrap add_btn box_style">
+            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
                 <div class="table_wrap">
                     <table>
                         <colgroup>
@@ -38,17 +38,17 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select v-model="selectedOrgItems"><!--장비 구문 : equiptype, 장애 구분 : recipientId-->
+                                    <select v-model="selectedOrgItems">
                                       <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                     </select>
                                 </td>
                                 <td>
                                     <select v-model="selectedTypeItems">
-                                      <option v-for="(type, index) in typeItems"  v-bind:key="index">{{type.label}}</option>
+                                      <option v-for="(type, index) in typeItems" :value="type.value" v-bind:key="index">{{type.label}}</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" value="홍길동">
+                                    <input type="text" value="" v-model="selectedRecipientNm">
                                 </td>
                                 <td>
                                     <div class="date_warp">
@@ -79,7 +79,10 @@
                             <col style="width:9%;">
                             <col style="width:auto;">
                             <col style="width:10%;">
-                            <col style="width:14%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
                             <col style="width:17%;">
                         </colgroup>
                         <thead>
@@ -89,8 +92,11 @@
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">대상자 전화번호</th>
+                                <th scope="col">응급관리요원</th>
+                                <th scope="col">응급관리요원 전화번호</th>
                                 <th scope="col">장비구분</th>
-                                <th scope="col">발생일자</th>
+                                <th scope="col">센서타입</th>
+                                <th scope="col">발생일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -102,7 +108,10 @@
                                 <col style="width:9%;">
                                 <col style="width:auto;">
                                 <col style="width:10%;">
-                                <col style="width:14%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
                                 <col style="width:17%;">
                             </colgroup>
                             <tbody >
@@ -112,7 +121,10 @@
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
                                     <td><a href="#" >{{item.addr}}</a></td>
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
                                     <td><a href="#">{{item.equipTypeNm}}</a></td>
+                                    <td><a href="#">{{}}</a></td>
                                     <td><a href="#">{{item.updDtime}}</a></td>
                                 </tr>
                             </tbody>
@@ -157,13 +169,12 @@ export default {
     data() {
       return{
         orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
         partCode: '', statusCode: '', modelName: '',
         sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount:0,
         selectedTypeItems:'',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
       }
     },
     created() {
@@ -305,10 +316,11 @@ export default {
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             let resData = response.data.data
+            const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
             const typeCount = !this.selectedTypeItems? '' : new RegExp(this.selectedTypeItems, 'gi');
 
             this.recipientItems= resData.filter((cd=>{
-              return cd.equipTypeCd.match(typeCount) 
+              return cd.recipientNm.match(RecCount) && cd.equipTypeCd.match(typeCount) 
             }))
             this.NCount =this.recipientItems.length
           })

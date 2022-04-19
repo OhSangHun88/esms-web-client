@@ -7,7 +7,7 @@
                 <i class="ico_nav"></i>
                 <span class="on">사용자관리</span>
             </div>
-            <div class="box_search_wrap add_btn box_style">
+            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
                 <div class="table_wrap">
                     <table>
                         <colgroup>
@@ -40,7 +40,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" value="홍길동">
+                                    <input v-model="selectedRecipientNm" type="text" value="">
                                 </td>
                             </tr>
                         </tbody>
@@ -147,10 +147,9 @@ export default {
     data(){
       return{
         sido:'', sidoCd:'', sgg:'', sggCd:'',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[], userItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
       }
     },
     created(){
@@ -250,22 +249,22 @@ export default {
           console.error("There was an error!", error);
         });
     },
-    getTorgData() {
-      let uri = this.$store.state.serverApi + "/admin/organizations";
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(response => {
-            this.TorgItems = response.data.data
-          })          
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-      },
       getUserData() {
       let uri = this.$store.state.serverApi + "/admin/users";
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
+            const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
+            const sggCount = !this.selectedSggItems? '' : new RegExp(this.selectedSggItems.substring(0, 5), 'gi');
+            const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
             this.userItems = response.data.data
+            let resData = response.data.data
+            if(resData){
+              this.userItems = resData.filter(cd=>{
+                return cd.orgId.match(orgCount) && cd.userNm.match(RecCount)
+              })
+            }else{
+              this.userItems = []
+            }
           })          
           .catch(error => {
             this.errorMessage = error.message;
@@ -289,7 +288,6 @@ export default {
       this.getOrgmData()
     },
     manageInquiry() {
-        this.getTorgData();
         this.getUserData();
     },
     }

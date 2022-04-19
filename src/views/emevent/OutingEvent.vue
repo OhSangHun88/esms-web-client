@@ -7,8 +7,8 @@
                 <i class="ico_nav"></i>
                 <span class="on">외출이벤트</span>
             </div>
-            <div class="box_search_wrap add_btn box_style">
-                <div class="table_wrap">
+            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
+                <div class="table_wrap" >
                     <table>
                         <colgroup>
                             <col style="width:20%;">
@@ -41,7 +41,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" value="홍길동">
+                                    <input type="text" value="" v-model="selectedRecipientNm">
                                 </td>
                                 <td>
                                     <div class="date_warp">
@@ -71,10 +71,13 @@
                             <col style="width:8%;">
                             <col style="width:8%;">
                             <col style="width:auto;">
-                            <col style="width:13%;">
-                            <col style="width:11%;">
-                            <col style="width:11%;">
                             <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:11%;">
+                            
                         </colgroup>
                         <thead>
                             <tr>
@@ -83,9 +86,12 @@
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">대상자 전화번호</th>
-                                <th scope="col">외출 발생일시</th>
-                                <th scope="col">외출 귀가 시간</th>
-                                <th scope="col">외출 지속 시간</th>
+                                <th scope="col">생활관리사</th>
+                                <th scope="col">생활관리사 전화번호</th>
+                                <th scope="col">구분</th>
+                                <th scope="col">발생일시</th>
+                                <th scope="col">서버전송일시</th>
+                                
                             </tr>
                         </thead>
                     </table>
@@ -96,10 +102,13 @@
                                 <col style="width:8%;">
                                 <col style="width:8%;">
                                 <col style="width:auto;">
-                                <col style="width:13%;">
-                                <col style="width:11%;">
-                                <col style="width:11%;">
                                 <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:11%;">
+                                
                             </colgroup>
                             <tbody>  
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index" @click="goToDetailView(item.recipientId)">
@@ -108,9 +117,12 @@
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
                                     <td><a href="#">{{item.addr}}</a></td>
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
+                                    <td><a href="#">{{item.managerNm}}</a></td>
+                                    <td><a href="#">{{changeRecipientPhoneno(item.managerMobileNumber)}}</a></td>
+                                    <td><a href="#">{{item.eventDesc}}</a></td>
                                     <td><a href="#">{{item.occurDtime}}</a></td>
                                     <td><a href="#">{{item.regDtime}}</a></td>
-                                    <td><a href="#">1시간</a></td>
+                                    
                                 </tr>                                
                             </tbody>
                             
@@ -154,12 +166,11 @@ export default {
     data() {
       return{
         orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm:'',
         partCode: '', statusCode: '', modelName: '',
         sidoItems:[], sggItems:[], orgmItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount : 0,
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
       }
     },
     created() {
@@ -279,8 +290,17 @@ export default {
       }
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
-            this.recipientItems = response.data.data
-            this.NCount =this.recipientItems.length
+            const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
+            const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
+
+            let resData = response.data.data
+            if(resData){
+              this.recipientItems = resData.filter((cd=>{
+                return cd.orgId.match(orgCount) && cd.recipientNm.match(RecCount)
+              }))
+              this.NCount =this.recipientItems.length
+            }else
+              this.recipientItems = []
           })
           .catch(error => {
             this.errorMessage = error.message;

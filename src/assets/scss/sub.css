@@ -219,14 +219,14 @@ ul.info_list li .txt p{font-size: 12px;color: rgba(255, 255, 255, 0.8);padding: 
 /* 대시보드 */
 .container .box_style.top_info{padding: 0;}
 .container .top_info{width: 200px;height: 116px;margin: 0 0 0 20px;position: relative;}
-.container .top_info.type-l{width: 350px;font-size: 0;}
+.container .top_info.type-l{width: 370px;font-size: 0;}
 .container .top_info::before{content: '';width: 4px;height: 30px;background-color: #11B787;border-radius: 4px;position: absolute;left: 0;top: 50%;margin-top: -15px;}
 .container .top_info .top_half{display: inline-block;width: 50%;position: relative;}
 .container .top_info i{width: 27px;height: 27px;background-repeat: no-repeat;background-position: left center;background-size: contain;position: absolute;left: 20px;top: 50%;transform: translateY(-50%);}
 .container .top_info i.ico_info_1{background-image: url(../../assets/images/ico_top_info_01.png);}
 .container .top_info i.ico_info_2{background-image: url(../../assets/images/ico_top_info_02.png);}
 .container .top_info i.ico_info_3{background-image: url(../../assets/images/ico_top_info_03.png);}
-.container .top_info .txt_area{display: inline-block;vertical-align: middle;text-align: center;padding: 25px 0 25px 57px;}
+.container .top_info .txt_area{display: inline-block;vertical-align: middle;text-align: center;padding: 25px 0 25px 63px;}
 .container .top_info .txt_area .tit{font-size: 16px;font-weight: 300;color: #BBBBBB;line-height: 1.2;margin: 0;}
 .container .top_info .txt_area .num{font-size: 36px;font-weight: 500;color: #fff;line-height: 1.5;margin: 0;}
 

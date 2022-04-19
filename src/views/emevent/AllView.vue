@@ -7,7 +7,7 @@
                 <i class="ico_nav"></i>
                 <span class="on">응급 알람</span>
             </div>
-            <div class="box_search_wrap add_btn box_style">
+            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
                 <div class="table_wrap">
                     <table>
                         <colgroup>
@@ -45,7 +45,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" value="홍길동">
+                                    <input v-model="selectedRecipientNm" type="text" value="">
                                 </td>
                                 <td>
                                     <select v-model="selectedTypeItems">
@@ -70,8 +70,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="btn_area">
-                    <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
+                <div class="btn_area" >
+                    <button type="button" class="btn" @click="manageInquiry" >조회</button>
                 </div>
             </div>
             <div class="one_box box_style">
@@ -81,24 +81,30 @@
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:6%;">
+                            <col style="width:3%;">
+                            <col style="width:5%;">
+                            <col style="width:5%;">
+                            <col style="width:3%;">
+                            <col style="width:20%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
-                            <col style="width:22%;">
-                            <col style="width:11%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
-                            <col style="width:11%;">
-                            <col style="width:11%;">
+                            <col style="width:3%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
                             
                         </colgroup>
                         <thead>
                             <tr>
                                 <th scope="col">순번</th>
+                                <th scope="col">관리기관</th>
                                 <th scope="col">이름</th>
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">대상자 전화번호</th>
+                                <th scope="col">응급관리요원</th>
+                                <th scope="col">응급관리요원 전화번호</th>
                                 <th scope="col">구분</th>
                                 <th scope="col">상태</th>
                                 <th scope="col">발생일시</th>
@@ -109,25 +115,31 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
-                            <col style="width:6%;">
+                            <col style="width:3%;">
+                            <col style="width:5%;">
+                            <col style="width:5%;">
+                            <col style="width:3%;">
+                            <col style="width:20%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
-                            <col style="width:22%;">
-                            <col style="width:11%;">
                             <col style="width:7%;">
                             <col style="width:7%;">
-                            <col style="width:11%;">
-                            <col style="width:11%;">
+                            <col style="width:3%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
                             
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                     <td><a href="#">{{index+1}}</a></td>
+                                    <td><a href="#">{{item.orgNm}}</a></td>
                                     <td><a href="#">{{item.recipientNm}}</a></td>
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td>
                                     <!--<td><a href="#" style="float:left">{{item.addr}}</a></td> -->
                                     <td><a href="#" >{{item.addr}}</a></td> 
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
+                                    <td><a href="#">{{item.managerNm}}</a></td>
+                                    <td><a href="#">{{changeRecipientPhoneno(item.managerMobileNumber)}}</a></td>
                                     <td><a href="#">{{item.typeNm}}</a></td>
                                     <td><a href="#">{{item.signalStateNm}}</a></td>
                                     <td><a href="#">{{item.occurDtime}}</a></td>
@@ -184,7 +196,7 @@ export default {
         partCode: '', statusCode: '', modelName: '',
         sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], number:[], stateItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedTypeItems:'', selectedStateItems:'',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm:'', selectedTypeItems:'', selectedStateItems:'',
         cBirthday:'', cAddr: '', NCount : 0,
       }
     },
@@ -346,6 +358,7 @@ export default {
           .then(response => {
             //const sidoCount = !this.selectedSidoItems? '' : new RegExp(this.selectedSidoItems, 'gi');
             //const sggCount = !this.selectedSggItems? '' : new RegExp(this.selectedSggItems, 'gi');
+            const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
             const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
             const typeCount = !this.selectedTypeItems? '' : new RegExp(this.selectedTypeItems, 'gi');
             const stateCount = !this.selectedStateItems? '' : new RegExp(this.selectedStateItems, 'gi');
@@ -353,7 +366,7 @@ export default {
             let resData = response.data.data
             if(resData){
               this.recipientItems = resData.filter((cd=>{
-                return cd.orgId.match(orgCount) && cd.typeCd.match(typeCount) && cd.signalStateCd.match(stateCount)
+                return cd.orgId.match(orgCount) && cd.recipientNm.match(RecCount) && cd.typeCd.match(typeCount) && cd.signalStateCd.match(stateCount)
               }))
               this.NCount =this.recipientItems.length
               console.log(uri)
@@ -397,6 +410,9 @@ export default {
       return tmp2.diff(tmp1, 'years');
     },
     manageInquiry() {
+        this.getRecipientData();
+    },
+    EmanageInquiry() {
         this.getRecipientData();
     },
   },
