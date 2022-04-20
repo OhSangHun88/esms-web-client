@@ -40,12 +40,12 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select v-model="selectedOrgItems">
+                                    <select v-model="selectedOrgItems" >
                                       <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                     </select>
                                 </td>
                                 <td>
-                                  <div class="btn_area">
+                                  <div class="btn_area" >
                                     <button type="button" style="width:40%" @click="eList(1)" :class="equipList === 'gateway'? 'btn on' :'btn'">게이트웨이</button>
                                     <button type="button" style="width:27%" @click="eList(2)" :class="equipList === 'tablet'? 'btn on' :'btn'">테블릿</button>
                                     <button type="button" style="width:33%" @click="eList(3)" :class="equipList === 'sensor'? 'btn on' :'btn'">센서</button>
@@ -55,7 +55,7 @@
                                     </select> -->
                                 </td>
                                 <td v-if="equipList === 'sensor'">
-                                    <select name="" id="sensorList" >
+                                    <select v-model="selectedTypeItems">
                                       <option v-for="(sensor, index) in sensorItems" :value="sensor.value" v-bind:key="index">{{sensor.label}}</option>
                                     </select>
                                 </td>
@@ -186,7 +186,7 @@ export default {
       return{
         orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
         partCode: '', statusCode: '', modelName: '',
-        sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], recipientItems:[],
+        sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], recipientItems:[],copyRecipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount:0,
         selectedTypeItems:'',
@@ -337,11 +337,32 @@ export default {
             let resData = response.data.data
             const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
             const typeCount = !this.selectedTypeItems? '' : new RegExp(this.selectedTypeItems, 'gi');
-
-            this.recipientItems= resData.filter((cd=>{
-              return cd.recipientNm.match(RecCount) && cd.equipTypeCd.match(typeCount) 
-            }))
+            this.copyRecipientItems = response.data.data
+            if(this.equipList === 'gateway'){
+              this.recipientItems = resData.filter(cd=>{
+                return cd.recipientNm.match(RecCount) && cd.equipTypeCd.match("TPE000") 
+            })
             this.NCount =this.recipientItems.length
+            }
+            if(this.equipList === 'tablet'){
+              this.recipientItems = resData.filter(cd=>{
+                return cd.recipientNm.match(RecCount) && cd.equipTypeCd.match("TBT000") 
+            })
+            this.NCount =this.recipientItems.length
+            }
+            if(this.equipList === 'sensor'){
+              if(this.selectedTypeItems != ''){
+                this.recipientItems = resData.filter(cd=>{
+                  return cd.recipientNm.match(RecCount) && cd.equipTypeCd.match(typeCount)
+                })
+                this.NCount =this.recipientItems.length
+              }else{
+                this.recipientItems = resData.filter(cd=>{
+                  return cd.recipientNm.match(RecCount) && cd.equipTypeCd !== "TPE000" && cd.equipTypeCd !== "TBT000"
+                })
+                this.NCount =this.recipientItems.length
+              }
+            }
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -405,9 +426,9 @@ export default {
     },
     eList(value){
       switch (value){
-          case 1 : this.equipList="gateway" ;break;
-          case 2 : this.equipList="tablet" ;break;
-          case 3 : this.equipList="sensor" ;break;
+          case 1 : this.equipList="gateway" ; break;
+          case 2 : this.equipList="tablet" ; break;
+          case 3 : this.equipList="sensor" ; break;
       }
     },
     },
