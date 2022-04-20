@@ -107,7 +107,7 @@
 .tabcnt01 ul li i.ico02{background-image: url(../../assets/images/ico_mntr_02.png);}
 .tabcnt01 ul li i.ico03{background-image: url(../../assets/images/ico_mntr_03.png);}
 .tabcnt01 ul li .txt{display: inline-block;vertical-align: top;padding: 0 0 0 20px;text-align: left;}
-.tabcnt01 ul li .txt strong{font-size: 50px;font-weight: 600;color: #fff;line-height: 1;}
+.tabcnt01 ul li .txt strong{font-size: 40px;font-weight: 600;color: #fff;line-height: 1;}
 .tabcnt01 ul li .txt p{font-size: 16px;color: rgba(255, 255, 255, 0.8);padding: 10px 0 0 0;margin: 0;}
 
 /* 가족 내용 */
