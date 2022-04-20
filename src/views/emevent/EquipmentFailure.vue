@@ -11,11 +11,12 @@
                 <div class="table_wrap">
                     <table>
                         <colgroup>
+                            <col style="width:15%;">
+                            <col style="width:15%;">
+                            <col style="width:15%">
                             <col style="width:16%;">
-                            <col style="width:16%;">
-                            <col style="width:16%">
-                            <col style="width:14%;">
-                            <col style="width:14%;">
+                            <col style="width:8%;" v-if="equipList === 'sensor'">
+                            <col style="width:13%;">
                             <col style="width:auto;">
                         </colgroup>
                         <thead>
@@ -23,6 +24,7 @@
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
                             <th scope="row">장비구분</th>
+                            <th scope="row" v-if="equipList === 'sensor'"></th>
                             <th scope="row">대상자 이름 입력</th>
                         </thead>
                         <tbody>
@@ -38,13 +40,23 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select v-model="selectedOrgItems">
+                                    <select v-model="selectedOrgItems" >
                                       <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select v-model="selectedTypeItems">
+                                  <div class="btn_area" >
+                                    <button type="button" style="width:40%" @click="eList(1)" :class="equipList === 'gateway'? 'btn on' :'btn'">게이트웨이</button>
+                                    <button type="button" style="width:27%" @click="eList(2)" :class="equipList === 'tablet'? 'btn on' :'btn'">테블릿</button>
+                                    <button type="button" style="width:33%" @click="eList(3)" :class="equipList === 'sensor'? 'btn on' :'btn'">센서</button>
+                                  </div>
+                                    <!-- <select v-model="selectedTypeItems">
                                       <option v-for="(type, index) in typeItems" :value="type.value" v-bind:key="index">{{type.label}}</option>
+                                    </select> -->
+                                </td>
+                                <td v-if="equipList === 'sensor'">
+                                    <select v-model="selectedTypeItems">
+                                      <option v-for="(sensor, index) in sensorItems" :value="sensor.value" v-bind:key="index">{{sensor.label}}</option>
                                     </select>
                                 </td>
                                 <td>
@@ -66,6 +78,12 @@
                 <div class="btn_area">
                     <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
                 </div>
+                <div class = "black-bg">
+                  <div class = "white-bg">
+                    <h4>경고!</h4>
+                    <p>종료 날짜가 시작 날짜보다 빠릅니다</p>
+                  </div>
+                </div>
             </div>
             <div class="one_box box_style">
                 <div class="result_txt">
@@ -75,15 +93,16 @@
                     <table>
                         <colgroup>
                             <col style="width:6%;">
-                            <col style="width:9%;">
+                            <col style="width:6%;">
                             <col style="width:9%;">
                             <col style="width:auto;">
                             <col style="width:10%;">
+                            <col style="width:6%;">
                             <col style="width:10%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
                             <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:17%;">
                         </colgroup>
                         <thead>
                             <tr>
@@ -96,6 +115,7 @@
                                 <th scope="col">응급관리요원 전화번호</th>
                                 <th scope="col">장비구분</th>
                                 <th scope="col">센서타입</th>
+                                <th scope="col">점검구분</th>
                                 <th scope="col">발생일시</th>
                             </tr>
                         </thead>
@@ -103,29 +123,31 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <col style="width:6%;">
-                                <col style="width:9%;">
-                                <col style="width:9%;">
-                                <col style="width:auto;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
-                                <col style="width:17%;">
+                                <col style="width:6%;"> <!--순번-->
+                                <col style="width:6%;"> <!--이름-->
+                                <col style="width:9%;"> <!--나이-->
+                                <col style="width:auto;"> <!--주소-->
+                                <col style="width:10%;"> <!--대상자 전화번호-->
+                                <col style="width:6%;"> <!--응급관리요원-->
+                                <col style="width:10%;"> <!--응급관리요원 전화번호-->
+                                <col style="width:8%;"> <!--장비구분-->
+                                <col style="width:8%;"> <!--센서타입-->
+                                <col style="width:8%;"> <!--점검구분-->
+                                <col style="width:10%;"> <!--발생일시-->
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                    <td><a href="#">{{index+1}}</a></td>
-                                    <td><a href="#">{{item.recipientNm}}</a></td>
-                                    <td><a href="#">{{makeAge(item.birthday) }}</a></td>
-                                    <td><a href="#" >{{item.addr}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#">{{item.equipTypeNm}}</a></td>
-                                    <td><a href="#">{{}}</a></td>
-                                    <td><a href="#">{{item.updDtime}}</a></td>
+                                    <td><a href="#">{{index+1}}</a></td> <!--순번-->
+                                    <td><a href="#">{{item.recipientNm}}</a></td> <!--이름-->
+                                    <td><a href="#">{{makeAge(item.birthday) }}</a></td> <!--나이-->
+                                    <td><a href="#" >{{item.addr}}</a></td> <!--주소-->
+                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td> <!--대상자 전화번호-->
+                                    <td><a href="#"></a></td> <!--응급관리요원-->
+                                    <td><a href="#"></a></td> <!--응급관리요원 전화번호-->
+                                    <td><a href="#">{{equipList === 'sensor'? '센서' : item.equipTypeNm}}</a></td> <!--장비구분-->
+                                    <td><a href="#" v-if="equipList === 'sensor'">{{item.equipTypeNm}}</a></td> <!--센서타입-->
+                                    <td><a href="#"></a></td> <!--점검구분-->
+                                    <td><a href="#">{{item.updDtime}}</a></td> <!--발생일시-->
                                 </tr>
                             </tbody>
                
@@ -170,11 +192,13 @@ export default {
       return{
         orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
         partCode: '', statusCode: '', modelName: '',
-        sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], recipientItems:[],
+        sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], recipientItems:[],copyRecipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount:0,
         selectedTypeItems:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
+        equipList: 'gateway',
+        sensorItems:[],
       }
     },
     created() {
@@ -182,6 +206,7 @@ export default {
     this.getSggData();
     this.getOrgmData();
     this.getTypeData();
+    this.getsensorData();
     this.getRecipientData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
@@ -318,11 +343,32 @@ export default {
             let resData = response.data.data
             const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
             const typeCount = !this.selectedTypeItems? '' : new RegExp(this.selectedTypeItems, 'gi');
-
-            this.recipientItems= resData.filter((cd=>{
-              return cd.recipientNm.match(RecCount) && cd.equipTypeCd.match(typeCount) 
-            }))
+            this.copyRecipientItems = response.data.data
+            if(this.equipList === 'gateway'){
+              this.recipientItems = resData.filter(cd=>{
+                return cd.recipientNm.match(RecCount) && cd.equipTypeCd.match("TPE000") 
+            })
             this.NCount =this.recipientItems.length
+            }
+            if(this.equipList === 'tablet'){
+              this.recipientItems = resData.filter(cd=>{
+                return cd.recipientNm.match(RecCount) && cd.equipTypeCd.match("TBT000") 
+            })
+            this.NCount =this.recipientItems.length
+            }
+            if(this.equipList === 'sensor'){
+              if(this.selectedTypeItems != ''){
+                this.recipientItems = resData.filter(cd=>{
+                  return cd.recipientNm.match(RecCount) && cd.equipTypeCd.match(typeCount)
+                })
+                this.NCount =this.recipientItems.length
+              }else{
+                this.recipientItems = resData.filter(cd=>{
+                  return cd.recipientNm.match(RecCount) && cd.equipTypeCd !== "TPE000" && cd.equipTypeCd !== "TBT000"
+                })
+                this.NCount =this.recipientItems.length
+              }
+            }
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -366,6 +412,30 @@ export default {
     },
      manageInquiry() {
         this.getRecipientData();
+    },
+    getsensorData() {
+    axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=SENSOR.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            this.sensorItems=[];
+            this.sensorItems.push({label: '전체', value: ''});
+            for(let i=0; i<response.data.data.length; i++) {
+              this.sensorItems.push({
+                label: response.data.data[i].cmmnCdNm,
+                value: response.data.data[i].cmmnCd
+              });
+            }  
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    eList(value){
+      switch (value){
+          case 1 : this.equipList="gateway" ; break;
+          case 2 : this.equipList="tablet" ; break;
+          case 3 : this.equipList="sensor" ; break;
+      }
     },
     },
 }
