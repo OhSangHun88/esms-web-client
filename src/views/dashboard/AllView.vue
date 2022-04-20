@@ -24,7 +24,7 @@
                     </div>
                     <div class="popup_cnt">
                         <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
-                    </div>
+                   </div>
                     <div class="popbtn_area type-02">
                         <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
                     </div>
