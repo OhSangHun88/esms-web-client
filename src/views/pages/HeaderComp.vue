@@ -11,7 +11,7 @@
     </div>
     <nav id="gnb">
       <ul>
-        <li class="on"><a href="#"><router-link to="/dashboard/allView" ><i class="ico-1"></i>모니터링</router-link></a></li>
+        <li><a href="#"><router-link to="/dashboard/allView" ><i class="ico-1"></i>모니터링</router-link></a></li>
         <li><a href="#"><router-link to="/customer/allView" ><i class="ico-2"></i>대상자 관리</router-link></a></li>
         <li class="drop"> <!-- gnb li에 마우스 오버시 드랍메뉴 on -->
           <a href="#"><router-link to="/emevent/allView" ><i class="ico-3"></i>이벤트 리포트</router-link></a>
