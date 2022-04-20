@@ -2,6 +2,34 @@
     <div class="wrap">
         <HeaderComp></HeaderComp>
         <div class="container type-02">
+          <div id="" class="popupLayer" v-if="errorpopup1 == true">
+                <div class="popup_wrap type-02">
+                    <div class="title_wrap">
+                        <div class="title">경고</div>
+                        <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <p class="alert_txt">종료날짜가 시작날짜보다 빠릅니다<br/>날짜를 다시 선택하여 주세요</p>
+                    </div>
+                    <div class="popbtn_area type-02">
+                        <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
+                    </div>
+                </div>
+            </div>
+            <div id="" class="popupLayer" v-if="errorpopup2 == true">
+                <div class="popup_wrap type-02">
+                    <div class="title_wrap">
+                        <div class="title">경고</div>
+                        <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <p class="alert_txt">일주일만 선택 가능합니다<br/>날짜를 다시 선택하여 주세요</p>
+                    </div>
+                    <div class="popbtn_area type-02">
+                        <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
+                    </div>
+                </div>
+            </div>
             <div class="list_title_wrap">
                 <span>시스템관리</span>
                 <i class="ico_nav"></i>
@@ -186,6 +214,7 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
+        errorpopup1: false, errorpopup2: false,
       }
     },
     created(){
@@ -318,7 +347,13 @@ export default {
       this.e_date=moment().format('YYYY-MM-DD');
     },
     manageInquiry() {
+      if(this.s_date > this.e_date){
+        this.errorpopup1 = true
+      }else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
+        this.errorpopup2 = true
+      }else{
         this.getnoticeData();
+      }
     },
     }
 }
