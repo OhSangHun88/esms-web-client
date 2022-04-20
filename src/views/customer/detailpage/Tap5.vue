@@ -86,7 +86,7 @@
                         <p class="tit">센서 감지 주기 및 전송 주기</p>
                     </div>
                     <div class="btn_area">
-                        <button type="button" class="btn form2" @click="saveSensorsData">저장</button>
+                        <button type="button" class="btn form2" @click="saveSensorsDetectData">저장</button>
                     </div>
                 </div>
                 <div class="list bd_btm">
@@ -134,11 +134,7 @@
                                     <td> {{locationCode(item.sensorLocCd)}}</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">{{item.sensorDetectCycle}}</td>
                                     <td v-else>실시간</td>
-                                    <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
-                                       <div class="input_area">
-                                            <input type="text" name="gwSendCycle"  v-model="item.gwSendCycle"  >초
-                                        </div>
-                                    </td>
+                                    <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">{{item.gwSendCycle}}</td>
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="input_area">
@@ -246,7 +242,7 @@ import axios from "axios";
     },
 
       async getCSensers(){
-      const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30`
+        const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30`
         
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -254,8 +250,7 @@ import axios from "axios";
             this.getCSensorsData = res.data.data
             console.log("sensors ")
             console.log(this.getCSensorsData)
-            
-            
+
           })
           .catch(error => {
               console.log("fail to load")
@@ -294,9 +289,29 @@ import axios from "axios";
         }
     
     },
-    saveSensorsData(){
+    saveSensorsDetectData(){
         console.log(this.sensorsDetect)
         console.log(this.getCSensorsData[this.sensorsDetect])
+        let saveSensorsDetectData = this.getCSensorsData[this.sensorsDetect]
+        let sensorsId= this.getCSensorsData[this.sensorsDetect].sensorId
+        const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
+
+        axios.patch(url,saveSensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            let resData = res.data.data
+            console.log(resData)
+            // this.getCSensorsData = res.data.data
+            // console.log("sensors ")
+            // console.log(this.getCSensorsData)
+
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+
+
     
     },
     

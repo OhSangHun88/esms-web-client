@@ -1,7 +1,10 @@
 <template>
   <div class="wrap">
     <HeaderComp></HeaderComp>
-    <div class="container">
+    <div v-if="!this.pending" style="text-align: center;">
+      <img src="../../assets/images/loading.png"  />
+    </div>
+    <div v-else class="container">
       
       <div class="box_search_wrap box_style">
           <table>
@@ -231,6 +234,7 @@ export default {
   name: "DetailView",
   data () {
     return {
+      pending:true,
       d_phone: '', d_sex: '', d_endcycle: '', d_part: '', d_status: '', d_zipCode: '', d_address: '', personinfo: '',
       recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,
     }
@@ -345,9 +349,10 @@ export default {
   },
   },
   created() {
+    this.pending = false;
     this.recipientId = this.$route.params.recipientId
     this.getRecipientInfo();
-    
+    this.pending = true;
   },
   mounted(){
     

@@ -121,15 +121,20 @@
                 <div class="list" v-if="sensorsTap===1">
                     <table>
                         <colgroup>
-                            <col style="width:25%;">
-                            <col style="width:25%;">
-                            <col style="width:25%;">
-                            <col style="width:25%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:20%;">
+                            <col style="width:20%;">
+                            <col style="width:20%;">
+                            <col style="width:20%;">
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
+                                <!-- 센서 상세정보 : 순번, 센서종류, 설치장소, 센서설치버전 시리얼번호, MAC Addr-->
+                                <th scope="col"></th>
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
+                                <th scope="col">센서설치버전</th>
                                 <th scope="col">시리얼번호</th>
                                 <th scope="col">MAC Addr</th>
                             </tr>
@@ -138,15 +143,19 @@
                     <div class="tbody htype-04">
                         <table>
                             <colgroup>
-                                <col style="width:25%;">
-                                <col style="width:25%;">
-                                <col style="width:25%;">
-                                <col style="width:25%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:20%;">
+                                <col style="width:20%;">
+                                <col style="width:20%;">
+                                <col style="width:20%;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index)">
+                                    <td>{{index}}</td>
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
+                                    <td>{{item.sensorVersion}}</td>
                                     <td>{{item.serialNo}}</td>
                                     <td>{{item.macAddr}}</td>
                                 </tr>
@@ -157,35 +166,47 @@
                 <div class="list" v-if="sensorsTap===2">
                     <table>
                         <colgroup>
-                            <col style="width:33%;">
-                            <col style="width:33%;">
-                            <col style="width:33%;">
-                            <!-- <col style="width:20%;">
-                            <col style="width:20%;"> -->
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:16%;">
+                            <col style="width:16%;">
+                            <col style="width:16%;">
+                            <col style="width:16%;">
+                            <col style="width:16%;">
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
-                                <th scope="col">sensorId</th>
-                                <th scope="col">게이트웨이 전송주기(초)</th>
-                                <th scope="col">센서 감지주기(초)</th>
-                                
+                                <!-- 센서 상세정보 : 순번, 센서명, 센서이전버전, 센서설치버전 입고명, 입고일자, 등록일시 -->
+                                <th scope="col"></th>
+                                <th scope="col">센서명</th>
+                                <th scope="col">센서이전버전</th>
+                                <th scope="col">센서설치버전</th>
+                                <th scope="col">입고명</th>
+                                <th scope="col">입고일자</th>
+                                <th scope="col">등록일자</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody htype-04">
                         <table>
                             <colgroup>
-                                <col style="width:33%;">
-                                <col style="width:33%;">
-                                <col style="width:33%;">
-                                <!-- <col style="width:20%;">
-                                <col style="width:20%;"> -->
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:16%;">
+                                <col style="width:16%;">
+                                <col style="width:16%;">
+                                <col style="width:16%;">
+                                <col style="width:16%;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index)">
-                                    <td>{{item.sensorId}}</td>
-                                    <td>{{item.gwSendCycle}}</td>
-                                    <td>{{item.sensorDetectCycle}}</td>
+                                    <td>{{index}}</td>
+                                    <td>{{item.sensorTypeNm}}</td>
+                                    <td>{{item.previousVersion}}</td>
+                                    <td>{{item.sensorVersion}}</td>
+                                    <td>{{item.incomeNm}}</td>
+                                    <td>{{item.incomeDtime}}</td>
+                                    <td>{{item.regDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>

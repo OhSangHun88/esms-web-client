@@ -1,12 +1,15 @@
 <template>
   <div>
     <HeaderComp></HeaderComp>
+    <div v-if="!this.pending" style="text-align: center;">
+      <img src="../../assets/images/loading.png"  />
+    </div>
           <!-- <div class="abtn"><CButton color="primary" @click="openUploadPopup" class="mr-1">엑셀 업로드</CButton></div>
           <div class="abtn"><CButton color="primary" @click="excelDownload" class="mr-1">엑셀 다운로드</CButton></div>
           <div class="abtn">
             <CButton color="primary" @click="addCustomer = true" class="mr-1">고객추가</CButton>
           </div> -->
-    <div class="container">
+    <div v-else  class="container">
       <div class="list_title_wrap">
         <span>대상자 관리</span>
         <i class="ico_nav"></i>
@@ -374,7 +377,7 @@ export default {
   },
   data () {
     return {
-      cName: '', cBirthday: '', cPhone: '', cSex: '', cSocial: '', cPart: '', cStatus: '', cCycle: '', cAddr: '', cDetail: '',
+      pending:true, cName: '', cBirthday: '', cPhone: '', cSex: '', cSocial: '', cPart: '', cStatus: '', cCycle: '', cAddr: '', cDetail: '',
       caption: '', fileName: '',
       counter: 0,pageIndex: 1,
       orgmItems: [], partItems: [], statusItems: [], cycleItems: [], sexItems:[{label: '남', value: 'M'}, {label: '여', value: 'F'}],
@@ -402,6 +405,7 @@ export default {
     }
   },
   created() {
+    this.pending = false
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
@@ -413,7 +417,7 @@ export default {
     this.cBirthday=moment().format('YYYY-MM-DD');
     this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
-    
+    this.pending = true
   },
   methods: {
     getSidoData() {
@@ -538,17 +542,15 @@ export default {
   //     this.modelStatus="전체";
   // },
   getFilteredRecipientData(){
-    console.log("aa")
-    console.log(this.filterName)
-    console.log(this.selectedOrgItems)
     
-    const regExp1 = this.filterName !=='' ? new RegExp(this.filterName, 'gi') : '';
+    const regExp1 = this.selectedOrgItems !=='' ? new RegExp(this.selectedOrgItems, 'gi') : '';
+    const regExp2 = this.filterName !=='' ? new RegExp(this.filterName, 'gi') : '';
     
     let tmpData = this.recipientItems
-    console.log(this.recipientOrginItems)
-    if(this.filterName){
+    
+    if(!this.filterName|| !this.selectedOrgItems){
       this.recipientItems = tmpData.filter(ri=>{
-      return ri.recipientNm.match(regExp1)
+      return ri.orgId.match(regExp1)&&ri.recipientNm.match(regExp2)
     })
     }else 
       return this.recipientItems = this.recipientOrginItems
