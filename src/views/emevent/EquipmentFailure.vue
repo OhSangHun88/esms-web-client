@@ -78,6 +78,12 @@
                 <div class="btn_area">
                     <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
                 </div>
+                <div class = "black-bg">
+                  <div class = "white-bg">
+                    <h4>경고!</h4>
+                    <p>종료 날짜가 시작 날짜보다 빠릅니다</p>
+                  </div>
+                </div>
             </div>
             <div class="one_box box_style">
                 <div class="result_txt">
@@ -117,31 +123,31 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <col style="width:6%;">
-                                <col style="width:6%;">
-                                <col style="width:9%;">
-                                <col style="width:auto;">
-                                <col style="width:10%;">
-                                <col style="width:6%;">
-                                <col style="width:10%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:10%;">
+                                <col style="width:6%;"> <!--순번-->
+                                <col style="width:6%;"> <!--이름-->
+                                <col style="width:9%;"> <!--나이-->
+                                <col style="width:auto;"> <!--주소-->
+                                <col style="width:10%;"> <!--대상자 전화번호-->
+                                <col style="width:6%;"> <!--응급관리요원-->
+                                <col style="width:10%;"> <!--응급관리요원 전화번호-->
+                                <col style="width:8%;"> <!--장비구분-->
+                                <col style="width:8%;"> <!--센서타입-->
+                                <col style="width:8%;"> <!--점검구분-->
+                                <col style="width:10%;"> <!--발생일시-->
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                    <td><a href="#">{{index+1}}</a></td>
-                                    <td><a href="#">{{item.recipientNm}}</a></td>
-                                    <td><a href="#">{{makeAge(item.birthday) }}</a></td>
-                                    <td><a href="#" >{{item.addr}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#">{{item.equipTypeNm}}</a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#">{{item.updDtime}}</a></td>
+                                    <td><a href="#">{{index+1}}</a></td> <!--순번-->
+                                    <td><a href="#">{{item.recipientNm}}</a></td> <!--이름-->
+                                    <td><a href="#">{{makeAge(item.birthday) }}</a></td> <!--나이-->
+                                    <td><a href="#" >{{item.addr}}</a></td> <!--주소-->
+                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td> <!--대상자 전화번호-->
+                                    <td><a href="#"></a></td> <!--응급관리요원-->
+                                    <td><a href="#"></a></td> <!--응급관리요원 전화번호-->
+                                    <td><a href="#">{{equipList === 'sensor'? '센서' : item.equipTypeNm}}</a></td> <!--장비구분-->
+                                    <td><a href="#" v-if="equipList === 'sensor'">{{item.equipTypeNm}}</a></td> <!--센서타입-->
+                                    <td><a href="#"></a></td> <!--점검구분-->
+                                    <td><a href="#">{{item.updDtime}}</a></td> <!--발생일시-->
                                 </tr>
                             </tbody>
                

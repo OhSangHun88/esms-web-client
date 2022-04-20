@@ -24,8 +24,8 @@
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
                             <th scope="row">대상자 이름</th>
-                            <th scope="row">구분</th>
-                            <th scope="row">상태</th>
+                            <th scope="row">응급구분</th>
+                            <th scope="row">응급상태</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -105,8 +105,8 @@
                                 <th scope="col">대상자 전화번호</th>
                                 <th scope="col">응급관리요원</th>
                                 <th scope="col">응급관리요원 전화번호</th>
-                                <th scope="col">구분</th>
-                                <th scope="col">상태</th>
+                                <th scope="col">응급구분</th>
+                                <th scope="col">응급상태</th>
                                 <th scope="col">발생일시</th>
                                 <th scope="col">종료일시</th>
                             </tr>
