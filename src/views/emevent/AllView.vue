@@ -9,7 +9,7 @@
                         <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
                     </div>
                     <div class="popup_cnt">
-                        <p class="alert_txt">종료날짜가 시작날짜보다 빠릅니다<br/>날짜를 다시 선택하여 주세요</p>
+                        <p class="alert_txt">검색 종료일자가 검색 시작일자보다 빠릅니다<br/>조회일자를 다시 선택하여 주십시오</p>
                     </div>
                     <div class="popbtn_area type-02">
                         <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
@@ -23,7 +23,7 @@
                         <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
                     </div>
                     <div class="popup_cnt">
-                        <p class="alert_txt">일주일만 선택 가능합니다<br/>날짜를 다시 선택하여 주세요</p>
+                        <p class="alert_txt">일주일 단위로 조회 가능합니다<br/>조회일자를 다시 선택하여 주십시오</p>
                     </div>
                     <div class="popbtn_area type-02">
                         <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
