@@ -2,6 +2,34 @@
     <div class="wrap">
         <HeaderComp></HeaderComp>
         <div class="container type-02">
+          <div id="" class="popupLayer" v-if="errorpopup1 == true">
+                <div class="popup_wrap type-02">
+                    <div class="title_wrap">
+                        <div class="title">경고</div>
+                        <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <p class="alert_txt">검색 종료일자가 검색 시작일자보다 빠릅니다<br/>조회일자를 다시 선택하여 주십시오</p>
+                    </div>
+                    <div class="popbtn_area type-02">
+                        <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
+                    </div>
+                </div>
+            </div>
+            <div id="" class="popupLayer" v-if="errorpopup2 == true">
+                <div class="popup_wrap type-02">
+                    <div class="title_wrap">
+                        <div class="title">경고</div>
+                        <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <p class="alert_txt">일주일 단위로 조회 가능합니다<br/>조회일자를 다시 선택하여 주십시오</p>
+                    </div>
+                    <div class="popbtn_area type-02">
+                        <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
+                    </div>
+                </div>
+            </div>
             <div class="list_title_wrap">
                 <span>시스템관리</span>
                 <i class="ico_nav"></i>
