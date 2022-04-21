@@ -8,7 +8,7 @@
                             <p class="tit">활동 미감지</p>
                         </div>
                         <div class="btn_area">
-                            <button type="button" class="btn form2" @click="sendActiveUnsensingCycle()">저장</button>
+                            <button type="button" class="btn form2" @click="sendActiveUnsensingCycle">저장</button>
                         </div>
                     </div>
                     <div class="list">
@@ -46,7 +46,7 @@
                             <p class="tit">게이트웨이 상태 전송</p>
                         </div>
                         <div class="btn_area">
-                            <button type="button" class="btn form2" @click="sendCGateway()">저장</button>
+                            <button type="button" class="btn form2" @click="sendCGateway">저장</button>
                         </div>
                     </div>
                     <div class="list">
@@ -63,13 +63,13 @@
                                         <td >설정 값(분)</td>
                                         <td>
                                             <div class="input_area">
-                                                <input type="text" name="gatewaySendTime" id="" :value="getCGatewayData.stateSendCycle">
+                                                <input type="text" name="gatewaySendTime" id="gatewaySendTime" :value="this.getCGatewayData.stateSendCycle">
                                             </div>
                                         </td>
                                         <td >변경 값(분)</td>
                                         <td>
                                             <div class="input_area">
-                                                <input type="text" name="setGatewayStateSendCycle" id="" v-model="setGatewayStateSendCycle">
+                                                <input type="text" name="setGatewayStateSendCycle" id="setGatewayStateSendCycle" v-model="setGatewayStateSendCycle">
                                             </div>
                                         </td>
                                     </tr>
@@ -86,7 +86,7 @@
                         <p class="tit">센서 감지 주기 및 전송 주기</p>
                     </div>
                     <div class="btn_area">
-                        <button type="button" class="btn form2" @click="saveSensorsDetectData()">저장</button>
+                        <button type="button" class="btn form2" @click="saveSensorsDetectData">저장</button>
                     </div>
                 </div>
                 <div class="list bd_btm">
@@ -155,7 +155,7 @@
                         <p class="tit">센서 상태값 전송 주기</p>
                     </div>
                     <div class="btn_area">
-                        <button type="button" class="btn form2" @click="saveSensorsStateData()">저장</button>
+                        <button type="button" class="btn form2" @click="saveSensorsStateData">저장</button>
                     </div>
                 </div>
                 <div class="list bd_btm">
@@ -369,46 +369,42 @@ import axios from "axios";
             console.error("There was an error!", error);
           });
     },
-
-   },
-   //게이트웨이 상태전송
+    //게이트웨이 상태전송
     sendCGateway(){
         console.log(this.getCGatewayData)
-        let sensorsId = this.getCGatewayData.sensorsId
+        let sensorsId = this.getCGatewayData.gwId
         let newGatewayData = this.getCGatewayData
         newGatewayData.stateSendCycle = this.setGatewayStateSendCycle*60
-        const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/gw-send-cycle`
+        const url  = this.$store.state.serverApi + `/admin/gateways/${sensorsId}/state-send-cycle`
         // /sensors/{sensorId}/gw-send-cycle
         axios.patch(url,newGatewayData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
             console.log(resData)
-            // this.getCSensorsData = res.data.data
-            // console.log("sensors ")
-            // console.log(this.getCSensorsData)
-
+            
+            if(this.getCGatewayData.stateSendCycle>60) this.getCGatewayData.stateSendCycle= this.getCGatewayData.stateSendCycle/60
           })
           .catch(error => {
               console.log("fail to load")
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-    
+
 
    },
    //센서 감지 전송주기
     saveSensorsDetectData(){
-        if(this.sensorsState===null || this.sensorsState===undefined){
+        if(this.sensorsDetect===null || this.sensorsDetect===undefined){
             alert('변경하시고자 하는 센서 종류를 선택해주세요')
             return false;
         }
         
         console.log(this.getCSensorsData[this.sensorsDetect])
-        let saveSensorsDetectData = this.getCSensorsData[this.sensorsDetect]
+        let sensorsDetectData = this.getCSensorsData[this.sensorsDetect]
         let sensorsId= this.getCSensorsData[this.sensorsDetect].sensorId
         const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
 
-        axios.patch(url,saveSensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        axios.patch(url,sensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
             console.log(resData)
@@ -434,14 +430,14 @@ import axios from "axios";
             return false;
         }
         console.log(this.getCSensorsData[this.sensorsState])
-        let saveSensorsStateData = this.getCSensorsData[this.sensorsState]
-        saveSensorsStateData.stateGwSendCycle = saveSensorsStateData.stateGwSendCycle*3600
-        saveSensorsStateData.stateSvrSendCycle = saveSensorsStateData.stateSvrSendCycle*3600
-        let saveSensorsDetectData = saveSensorsStateData
+        let sensorsStateData = this.getCSensorsData[this.sensorsState]
+        sensorsStateData.stateGwSendCycle = sensorsStateData.stateGwSendCycle*3600
+        sensorsStateData.stateSvrSendCycle = sensorsStateData.stateSvrSendCycle*3600
+        let sensorsData = sensorsStateData
         let sensorsId= this.getCSensorsData[this.sensorsState].sensorId
         const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
 
-        axios.patch(url,saveSensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        axios.patch(url,sensorsData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
             console.log(resData)
@@ -460,9 +456,9 @@ import axios from "axios";
             console.error("There was an error!", error);
           });
     },
-    
-   
-  
+
+   },
+
 }
  </script>
 
