@@ -30,6 +30,20 @@
                     </div>
                 </div>
             </div>
+            <div id="" class="popupLayer" v-if="errorpopup3 == true">
+                <div class="popup_wrap type-02">
+                    <div class="title_wrap">
+                        <div class="title">경고</div>
+                        <button type="button" class="btn_close" @click="errorpopup3 = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <p class="alert_txt">오늘 일자 이후로 선택 불가능 합니다<br/>일자를 다시 선택하여 주십시요</p>
+                   </div>
+                    <div class="popbtn_area type-02">
+                        <button type="button" class="btn form2" @click="errorpopup3 = false">확인</button>
+                    </div>
+                </div>
+            </div>
         <div class="box_wrap" style="height: 134px;">
           <div class="box_search_wrap box_style type_db">
             <table>
@@ -263,7 +277,7 @@ export default {
     selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
     // 날짜
     s_date: null, e_date: null,
-    errorpopup1: false, errorpopup2: false,
+    errorpopup1: false, errorpopup2: false, errorpopup3: false,
     // 설치 가구수, 응급관리요원, 생활 관리사
     setCount: 0, setEMCount: 0, setLMCount: 0,
     // A/S 현황
@@ -1928,6 +1942,8 @@ export default {
         this.errorpopup1 = true
       }else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
+      }else if(this.e_date > moment().format('YYYY-MM-DD')){
+        this.errorpopup3 = true
       }else{
       this.remakeEuData()
       this.remakeEvData()

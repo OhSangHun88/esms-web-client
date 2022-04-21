@@ -9,7 +9,7 @@
                         <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
                     </div>
                     <div class="popup_cnt">
-                        <p class="alert_txt">검색 종료일자가 검색 시작일자보다 빠릅니다<br/>조회일자를 다시 선택하여 주십시오</p>
+                        <p class="alert_txt">조회 종료일자가 시작일자보다 빠릅니다<br/>조회일자를 다시 선택하여 주십시오</p>
                     </div>
                     <div class="popbtn_area type-02">
                         <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
