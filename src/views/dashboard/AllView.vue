@@ -293,7 +293,7 @@ export default {
     EvchartData1: null, EvchartOptions1: null, EvchartImage1: null,
     TodayEventData: null, TodayEventOptions: null, TodayEventImage: null,
     BtchartData: null, BtchartOptions: null, BtchartImage: null,
-    EuData: [ 82, 89, 23, 75, 42, 63, 87 ], TotalEuData: [ 100, 100, 100, 100, 100, 100, 100 ], EuChartItems:[],
+    EuData: [ 82, 89, 23, 75, 42, 63, 87 ], TotalEuData: [ 88, 95, 85, 94, 82, 88, 98 ], EuChartItems:[],
     EvFireData: [ 12, 19, 7, 5, 8, 13, 7 ], EvEmData: [10, 12, 11, 10, 10, 15, 9], EvSafeData:[5, 12, 10, 7, 7, 8, 17], EvChartItems:[],
     TodayFireData: [7], TodayEmData: [9], TodaySafeData:[17],
     BtFullData: [ 12, 19, 7, 5, 8, 13], BtLackData: [10, 12, 11, 10, 10, 15], BtChangeData:[5, 12, 10, 7, 7, 8],
@@ -660,9 +660,7 @@ export default {
           this.newEuChartLabelArr.push(this.newEuChartMMLabelArr[i] +"-"+ this.newEuChartDDLabelArr[i])
         }
       }else{
-        
         for(let i=0; i<7; i++){
-            
             this.newEuArr[i] = 0
             this.newEuChartMMLabelArr.push(tmpArr1[i].statDate.substring(4, 6))
             this.newEuChartDDLabelArr.push(tmpArr1[i].statDate.substring(6, 8))
@@ -671,6 +669,7 @@ export default {
       }
       this.EuData = this.newEuArr
       this.EuchartData.datasets[0].data = this.EuData
+      this.EuchartData.datasets[1].data = this.EuData
       this.EuchartData.labels = this.newEuChartLabelArr
       this.EuchartRedraw();
     },
