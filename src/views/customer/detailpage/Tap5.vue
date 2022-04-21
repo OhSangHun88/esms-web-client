@@ -8,7 +8,7 @@
                             <p class="tit">활동 미감지</p>
                         </div>
                         <div class="btn_area">
-                            <button type="button" class="btn form2">저장</button>
+                            <button type="button" class="btn form2" @click="sendActiveUnsensingCycle()">저장</button>
                         </div>
                     </div>
                     <div class="list">
@@ -25,13 +25,13 @@
                                         <td >설정 값(분)</td>
                                         <td>
                                             <div class="input_area">
-                                                <input type="text" name="" id="" value="30">
+                                                <input type="text" name="activeUnsensingCycle" id="activeUnsensingCycle" :value="!this.resBodyData.activeUnsensingCycle?0:this.resBodyData.activeUnsensingCycle">
                                             </div>
                                         </td>
                                         <td >변경 값(분)</td>
                                         <td>
                                             <div class="input_area">
-                                                <input type="text" name="" id="" value="120">
+                                                <input type="text" name="setactiveUnsensingCycle" id="setactiveUnsensingCycle" v-model="setactiveUnsensingCycle">
                                             </div>
                                         </td>
                                     </tr>
@@ -46,7 +46,7 @@
                             <p class="tit">게이트웨이 상태 전송</p>
                         </div>
                         <div class="btn_area">
-                            <button type="button" class="btn form2" @click="sendCGateway">저장</button>
+                            <button type="button" class="btn form2" @click="sendCGateway()">저장</button>
                         </div>
                     </div>
                     <div class="list">
@@ -86,7 +86,7 @@
                         <p class="tit">센서 감지 주기 및 전송 주기</p>
                     </div>
                     <div class="btn_area">
-                        <button type="button" class="btn form2" @click="saveSensorsDetectData">저장</button>
+                        <button type="button" class="btn form2" @click="saveSensorsDetectData()">저장</button>
                     </div>
                 </div>
                 <div class="list bd_btm">
@@ -155,7 +155,7 @@
                         <p class="tit">센서 상태값 전송 주기</p>
                     </div>
                     <div class="btn_area">
-                        <button type="button" class="btn form2" @click="saveSensorsStateData">저장</button>
+                        <button type="button" class="btn form2" @click="saveSensorsStateData()">저장</button>
                     </div>
                 </div>
                 <div class="list bd_btm">
@@ -198,12 +198,14 @@
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td >
                                         <div class="input_area">
-                                            <input type="text" name="" id="" v-model="item.stateGwSendCycle">시간
+                                            <input type="text" :name="`stateGwSendCycle_${index}`" :id="`stateGwSendCycle_${index}`" v-model="item.stateGwSendCycle" @keyup="limNum" 
+                                            oninput="this.value = this.value.replace(/[^1-4.]/g, '').replace(/(\..*)\./g, '$1');">시간
                                         </div>
                                     </td>
                                     <td >
                                         <div class="input_area">
-                                            <input type="text" name="" id="" v-model="item.stateSvrSendCycle">시간
+                                            <input type="text" :name="`stateSvrSendCycle_${index}`" :id="`stateSvrSendCycle_${index}`" v-model="item.stateSvrSendCycle" @keyup="limNum" 
+                                            oninput="this.value = this.value.replace(/[^1-4.]/g, '').replace(/(\..*)\./g, '$1');" >시간
                                         </div>
                                     </td>
                                     
@@ -233,59 +235,33 @@ import axios from "axios";
       getCGatewayData: null,
       setGatewayStateSendCycle: 120,
       sensorsState: null,
-
+      resBodyData: null,
+      setactiveUnsensingCycle:120,
      }
    },
+   created() {
+    this.getCSensers();
+    this.getCGateway();
+    this.getRecipientInfo();
+  },
   methods: {
-    updateInput: function(event) {
+    limNum: function(event) {
         this.$emit('input', event.target.value);
-        console.log(event.target.value)
-        console.log(this)
-    },
-
-      async getCSensers(){
-        const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30`
+        if(event.target.value<1 ||event.target.value>4){
+            alert('1~4 사이의 값을 입력해 주세요')
+            event.target.value = 1
+        }
         
-        
-        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(res => {
-            let tmpData = res.data.data
-            console.log(tmpData)
-            tmpData.forEach(element =>{
-                element.stateGwSendCycle = element.stateGwSendCycle/3600
-                element.stateSvrSendCycle = element.stateSvrSendCycle/3600
-            })
-            this.getCSensorsData = tmpData
-            console.log("sensors ")
-            console.log(this.getCSensorsData)
-
-          })
-          .catch(error => {
-              console.log("fail to load")
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-          
-
-    },
-    getCGateway(){
-        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/gateways`
-        
-        
-        axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(res => {
-            let tmpData= res.data.data
-            tmpData.stateSendCycle = tmpData.stateSendCycle/60
-            this.getCGatewayData = tmpData
-            
-          })
-          .catch(error => {
-              console.log("fail to load")
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
     },
     
+    msChange(code,input){
+        let result = 0
+        switch (code){
+          case 1 : result=input/60; break;
+          case 2 : result=input/3600 ;break;
+        }
+        return result
+    },
     locationCode(input){
         let result=''
         switch (input){
@@ -313,14 +289,72 @@ import axios from "axios";
         }
     
     },
-    saveSensorsDetectData(){
-        console.log(this.sensorsDetect)
-        console.log(this.getCSensorsData[this.sensorsDetect])
-        let saveSensorsDetectData = this.getCSensorsData[this.sensorsDetect]
-        let sensorsId= this.getCSensorsData[this.sensorsDetect].sensorId
-        const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
+    //getRecipient value
+    getRecipientInfo() {
+        //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");
+        let uri = this.$store.state.serverApi + "/admin/recipients/" + this.recipientId
+        console.log(uri)
+        axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                this.resBodyData = res.data.data
+                console.log("resbodyData is ");
+                console.log(this.resBodyData)
+                
+            })
+            .catch(error => {
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+        },
+    //getsenser value
+    async getCSensers(){
+    const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30`
+    await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        .then(res => {
+        let tmpData = res.data.data
+        console.log(tmpData)
+        tmpData.forEach(element =>{
+            element.stateGwSendCycle = element.stateGwSendCycle/3600
+            element.stateSvrSendCycle = element.stateSvrSendCycle/3600
+        })
+        this.getCSensorsData = tmpData
+        console.log("sensors ")
+        console.log(this.getCSensorsData)
 
-        axios.patch(url,saveSensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        })
+        .catch(error => {
+            console.log("fail to load")
+        this.errorMessage = error.message;
+        console.error("There was an error!", error);
+        });
+          
+
+    },
+    //getGateWay value
+    getCGateway(){
+        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/gateways`
+        axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            let tmpData= res.data.data
+            tmpData.stateSendCycle = tmpData.stateSendCycle/60
+            this.getCGatewayData = tmpData
+            
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    //활동 미감지
+    sendActiveUnsensingCycle(){
+        console.log(this.recipientId)
+        console.log(this.newActiveUnsensingCycle)
+        let newActiveUnsensingCycle = this.resBodyData
+        newActiveUnsensingCycle.activeUnsensingCycle = this.setactiveUnsensingCycle//*60
+        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/active-unsensing-cycle`
+        // /sensors/{sensorId}/gw-send-cycle
+        axios.patch(url,newActiveUnsensingCycle,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
             console.log(resData)
@@ -336,32 +370,8 @@ import axios from "axios";
           });
     },
 
-    saveSensorsStateData(){
-        //stateGwSendCycle, stateSvrSendCycle
-        console.log(this.sensorsState)
-        console.log(this.getCSensorsData[this.sensorsState])
-        let saveSensorsStateData = this.getCSensorsData[this.sensorsState]
-        saveSensorsStateData.stateGwSendCycle = saveSensorsStateData.stateGwSendCycle*3600
-        saveSensorsStateData.stateSvrSendCycle = saveSensorsStateData.stateSvrSendCycle*3600
-        let saveSensorsDetectData = saveSensorsStateData
-        let sensorsId= this.getCSensorsData[this.sensorsState].sensorId
-        const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
-
-        axios.patch(url,saveSensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(res => {
-            let resData = res.data.data
-            console.log(resData)
-            // this.getCSensorsData = res.data.data
-            // console.log("sensors ")
-            // console.log(this.getCSensorsData)
-
-          })
-          .catch(error => {
-              console.log("fail to load")
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-    },
+   },
+   //게이트웨이 상태전송
     sendCGateway(){
         console.log(this.getCGatewayData)
         let sensorsId = this.getCGatewayData.sensorsId
@@ -383,16 +393,78 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-    }
+    
 
    },
-   created() {
-    this.getCSensers();
-    this.getCGateway();
-  }
- }
+   //센서 감지 전송주기
+    saveSensorsDetectData(){
+        if(this.sensorsState===null || this.sensorsState===undefined){
+            alert('변경하시고자 하는 센서 종류를 선택해주세요')
+            return false;
+        }
+        
+        console.log(this.getCSensorsData[this.sensorsDetect])
+        let saveSensorsDetectData = this.getCSensorsData[this.sensorsDetect]
+        let sensorsId= this.getCSensorsData[this.sensorsDetect].sensorId
+        const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
+
+        axios.patch(url,saveSensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            let resData = res.data.data
+            console.log(resData)
+            // this.getCSensorsData = res.data.data
+            // console.log("sensors ")
+            // console.log(this.getCSensorsData)
+
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+
+
+    },
+    //센서 상태값 전송주기
+    saveSensorsStateData(){
+        //stateGwSendCycle, stateSvrSendCycle
+        console.log(this.sensorsState)
+        if(this.sensorsState===null || this.sensorsState===undefined){
+            alert('변경하시고자 하는 센서 종류를 선택해주세요')
+            return false;
+        }
+        console.log(this.getCSensorsData[this.sensorsState])
+        let saveSensorsStateData = this.getCSensorsData[this.sensorsState]
+        saveSensorsStateData.stateGwSendCycle = saveSensorsStateData.stateGwSendCycle*3600
+        saveSensorsStateData.stateSvrSendCycle = saveSensorsStateData.stateSvrSendCycle*3600
+        let saveSensorsDetectData = saveSensorsStateData
+        let sensorsId= this.getCSensorsData[this.sensorsState].sensorId
+        const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
+
+        axios.patch(url,saveSensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            let resData = res.data.data
+            console.log(resData)
+            // this.getCSensorsData = res.data.data
+            // console.log("sensors ")
+            // console.log(this.getCSensorsData)
+            if(resData){
+                console.log(this.getCSensorsData[this.sensorsState])
+                if(this.getCSensorsData[this.sensorsState].stateGwSendCycle>4)this.getCSensorsData[this.sensorsState].stateGwSendCycle = this.getCSensorsData[this.sensorsState].stateGwSendCycle/3600
+                if(this.getCSensorsData[this.sensorsState].stateSvrSendCycle>4)this.getCSensorsData[this.sensorsState].stateSvrSendCycle = this.getCSensorsData[this.sensorsState].stateSvrSendCycle/3600
+            }
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    
+   
+  
+}
  </script>
 
 <style scoped>
-</style>                                
-            
+</style> 
