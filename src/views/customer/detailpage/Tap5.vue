@@ -257,8 +257,8 @@ import axios from "axios";
     msChange(code,input){
         let result = 0
         switch (code){
-          case 1 : result=input/60; break;
-          case 2 : result=input/3600 ;break;
+          case 1 : result=Math.ceil(input/60); break;
+          case 2 : result=Math.ceil(input/3600) ;break;
         }
         return result
     },
@@ -314,8 +314,8 @@ import axios from "axios";
         let tmpData = res.data.data
         console.log(tmpData)
         tmpData.forEach(element =>{
-            element.stateGwSendCycle = element.stateGwSendCycle/3600
-            element.stateSvrSendCycle = element.stateSvrSendCycle/3600
+            element.stateGwSendCycle = Math.ceil(element.stateGwSendCycle/3600)
+            element.stateSvrSendCycle = Math.ceil(element.stateSvrSendCycle/3600)
         })
         this.getCSensorsData = tmpData
         console.log("sensors ")
@@ -336,7 +336,7 @@ import axios from "axios";
         axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let tmpData= res.data.data
-            tmpData.stateSendCycle = tmpData.stateSendCycle/60
+            tmpData.stateSendCycle = Math.ceil(tmpData.stateSendCycle/60)
             this.getCGatewayData = tmpData
             
           })

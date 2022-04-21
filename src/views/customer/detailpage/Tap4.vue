@@ -152,7 +152,7 @@
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index)">
-                                    <td>{{index}}</td>
+                                    <td>{{index+1}}</td>
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td>{{item.sensorVersion}}</td>
@@ -200,7 +200,7 @@
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index)">
-                                    <td>{{index}}</td>
+                                    <td>{{index+1}}</td>
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{item.previousVersion}}</td>
                                     <td>{{item.sensorVersion}}</td>

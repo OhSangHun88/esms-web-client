@@ -18,12 +18,14 @@
                             <col style="width:10%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
+                            <col style="width:10%;">
                             <col style="width:auto;">
                             <col style="width:auto;">
                             <col style="width:auto;">
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
+                                <th scope="col"></th>
                                 <th scope="col">구분</th>
                                 <th scope="col">상태</th>
                                 <th scope="col">테스트모드</th>
@@ -39,12 +41,14 @@
                                 <col style="width:10%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
+                                <col style="width:10%;">
                                 <col style="width:auto;">
                                 <col style="width:auto;">
                                 <col style="width:auto;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in emergencys" v-bind:key="index">
+                                    <td>{{index+1}}</td>
                                     <td>{{item.signalStateNm}}</td>
                                     <td>{{item.typeNm}}</td>
                                     <td>{{!item.testYn ? '실제상황':'테스트'}}</td> 
