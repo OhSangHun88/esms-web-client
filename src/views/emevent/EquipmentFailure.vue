@@ -9,7 +9,7 @@
                         <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
                     </div>
                     <div class="popup_cnt">
-                        <p class="alert_txt">검색 종료일자가 검색 시작일자보다 빠릅니다<br/>조회일자를 다시 선택하여 주십시오</p>
+                        <p class="alert_txt">조회 종료일자가 시작일자보다 빠릅니다<br/>일자를 다시 선택하여 주십시요</p>
                     </div>
                     <div class="popbtn_area type-02">
                         <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
@@ -23,7 +23,7 @@
                         <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
                     </div>
                     <div class="popup_cnt">
-                        <p class="alert_txt">일주일 단위로 조회 가능합니다<br/>조회일자를 다시 선택하여 주십시오</p>
+                        <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
                     </div>
                     <div class="popbtn_area type-02">
                         <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
@@ -133,8 +133,8 @@
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">대상자 전화번호</th>
-                                <th scope="col">응급관리요원</th>
-                                <th scope="col">응급관리요원 전화번호</th>
+                                <th scope="col">응급요원명</th>
+                                <th scope="col">응급요원 전화번호</th>
                                 <th scope="col">장비구분</th>
                                 <th scope="col">센서타입</th>
                                 <th scope="col">점검구분</th>
