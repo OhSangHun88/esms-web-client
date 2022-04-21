@@ -69,7 +69,7 @@
                             <th scope="row">장비구분</th>
                             <th scope="row" v-if="equipList === 'sensor'">센서타입</th>
                             <th scope="row">점검구분</th>
-                            <th scope="row">대상자 이름 입력</th>
+                            <th scope="row">대상자 이름</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -161,7 +161,8 @@
                                 <th scope="col">장비구분</th>
                                 <th scope="col" v-if="equipList === 'sensor'">센서타입</th>
                                 <th scope="col">점검구분</th>
-                                <th scope="col">발생일시</th>
+                                <th scope="col">상태측정일시</th>
+                                <th scope="col">서버보고일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -179,7 +180,8 @@
                                 <col style="width:6%;"> <!--장비구분-->
                                 <col style="width:6%;" v-if="equipList === 'sensor'"> <!--센서타입-->
                                 <col style="width:6%;"> <!--점검구분-->
-                                <col style="width:10%;"> <!--발생일시-->
+                                <col style="width:10%;"> <!--상태측정일시-->
+                                 <col style="width:10%;"> <!--서버보고일시-->
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
@@ -194,7 +196,8 @@
                                     <td><a href="#">{{equipList === 'sensor'? '센서' : item.equipTypeName}}</a></td> <!--장비구분-->
                                     <td v-if="equipList === 'sensor'"><a href="#">{{item.equipTypeName}}</a></td> <!--센서타입-->
                                     <td><a href="#">{{item.checkTypeName}}</a></td> <!--점검구분-->
-                                    <td><a href="#">{{item.updDtime}}</a></td> <!--발생일시-->
+                                    <td><a href="#">{{item.stateMeasureDtime}}</a></td> <!--상태측정일시-->
+                                    <td><a href="#">{{item.updDtime}}</a></td> <!--서버보고일시-->
                                 </tr>
                             </tbody>
                

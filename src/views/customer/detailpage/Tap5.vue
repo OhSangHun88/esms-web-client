@@ -105,8 +105,8 @@
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
                                 <th scope="col">감지 주기(초)</th>
-                                <th scope="col">G/W 전송주기(초)</th>
-                                <th scope="col">서버 전송주기(초)</th>               
+                                <th scope="col">G/W 전송주기(분)</th>
+                                <th scope="col">서버 전송주기(분)</th>               
                             </tr>
                         </thead>
                     </table>
@@ -138,7 +138,7 @@
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="input_area">
-                                            <input type="text" name=""  v-model="item.svrSendCycle">초
+                                            <input type="text" name=""  v-model="item.svrSendCycle">분
                                         </div>
                                     </td>
                                     <td v-else>실시간</td>
@@ -172,8 +172,8 @@
                                 <th scope="col">선택</th>
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
-                                <th scope="col">G/W 전송주기(시간)</th>
-                                <th scope="col">서버 전송주기(시간)</th>                                                
+                                <th scope="col">G/W 전송주기(분)</th>
+                                <th scope="col">서버 전송주기(분)</th>                                                
                             </tr>
                         </thead>
                     </table>
@@ -199,13 +199,13 @@
                                     <td >
                                         <div class="input_area">
                                             <input type="text" :name="`stateGwSendCycle_${index}`" :id="`stateGwSendCycle_${index}`" v-model="item.stateGwSendCycle" @keyup="limNum" 
-                                            oninput="this.value = this.value.replace(/[^1-4.]/g, '').replace(/(\..*)\./g, '$1');">시간
+                                            oninput="this.value = this.value.replace(/[^1-4.]/g, '').replace(/(\..*)\./g, '$1');">분
                                         </div>
                                     </td>
                                     <td >
                                         <div class="input_area">
                                             <input type="text" :name="`stateSvrSendCycle_${index}`" :id="`stateSvrSendCycle_${index}`" v-model="item.stateSvrSendCycle" @keyup="limNum" 
-                                            oninput="this.value = this.value.replace(/[^1-4.]/g, '').replace(/(\..*)\./g, '$1');" >시간
+                                            oninput="this.value = this.value.replace(/[^1-4.]/g, '').replace(/(\..*)\./g, '$1');" >분
                                         </div>
                                     </td>
                                     

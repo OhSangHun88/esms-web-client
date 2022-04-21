@@ -131,7 +131,7 @@
                         <thead class="thead htype-01">
                             <tr>
                                 <!-- 센서 상세정보 : 순번, 센서종류, 설치장소, 센서설치버전 시리얼번호, MAC Addr-->
-                                <th scope="col"></th>
+                                <th scope="col">순번</th>
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
                                 <th scope="col">센서설치버전</th>
@@ -177,13 +177,13 @@
                         <thead class="thead htype-01">
                             <tr>
                                 <!-- 센서 상세정보 : 순번, 센서명, 센서이전버전, 센서설치버전 입고명, 입고일자, 등록일시 -->
-                                <th scope="col"></th>
+                                <th scope="col">순번</th>
                                 <th scope="col">센서명</th>
                                 <th scope="col">센서이전버전</th>
                                 <th scope="col">센서설치버전</th>
                                 <th scope="col">입고명</th>
-                                <th scope="col">입고일자</th>
-                                <th scope="col">등록일자</th>
+                                <th scope="col">입고일시</th>
+                                <th scope="col">등록일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -239,7 +239,7 @@
                         <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">통신상태</th>
-                                <th scope="col">장애여부</th>
+                                <th scope="col">점검대상여부</th>
                                 <th scope="col">배터리</th>
                                 <th scope="col">Keep-Alive</th>
                                 <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
@@ -391,17 +391,17 @@ import axios from "axios";
     locationCode(input){
         let result=''
         switch (input){
-          case "LOC001" : result="거실1"; break;
+          case "LOC001" : result="거실"; break;
           case "LOC002" : result="거실2" ;break;
-          case "LOC003" : result="안방1"; break;
+          case "LOC003" : result="안방"; break;
           case "LOC004" : result="안방2" ;break;
-          case "LOC005" : result="화장실1" ;break;
+          case "LOC005" : result="화장실" ;break;
           case "LOC006" : result="화장실2" ;break;
-          case "LOC007" : result="현관1" ;break;
-          case "LOC008" : result="현관2" ;break;
-          case "LOC009" : result="주방1" ;break;
+          case "LOC007" : result="현관" ;break;
+          case "LOC008" : result="뒷문" ;break;
+          case "LOC009" : result="주방" ;break;
           case "LOC010" : result="주방2" ;break;
-          case "LOC011" : result="작은방1" ;break;
+          case "LOC011" : result="작은방" ;break;
           case "LOC012" : result="작은방2" ;break;
       }
         return result

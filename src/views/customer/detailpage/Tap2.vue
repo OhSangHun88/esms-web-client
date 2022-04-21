@@ -25,7 +25,7 @@
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
-                                <th scope="col"></th>
+                                <th scope="col">순번</th>
                                 <th scope="col">구분</th>
                                 <th scope="col">상태</th>
                                 <th scope="col">테스트모드</th>

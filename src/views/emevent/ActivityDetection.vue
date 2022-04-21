@@ -63,7 +63,7 @@
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
-                            <th scope="row">대상자 이름 입력</th>
+                            <th scope="row">대상자 이름</th>
                         </thead>
                         <tbody>
                             <tr>

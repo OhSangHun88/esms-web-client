@@ -24,12 +24,12 @@
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
-                                <th scope="col"></th>
+                                <th scope="col">순번</th>
                                 <th scope="col">통화구분</th>
                                 <th scope="col">전화번호</th>
-                                <th scope="col">통화시작</th>
-                                <th scope="col">통화종료</th>
-                                <th scope="col">통화시시간</th>
+                                <th scope="col">통화시작일시</th>
+                                <th scope="col">통화종료일시</th>
+                                <th scope="col">통화시간</th>
                             </tr>
                         </thead>
                     </table>

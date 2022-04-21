@@ -24,7 +24,7 @@
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
                             <th scope="row">장비구분</th>
-                            <th scope="row">대상자 이름 입력</th>
+                            <th scope="row">대상자 이름</th>
                             <th scope="row">현재상태</th>
                         </thead>
                         <tbody>

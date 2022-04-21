@@ -68,7 +68,7 @@
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
-                                <th scope="col"></th>
+                                <th scope="col">순번</th>
                                 <th scope="col">설치장소</th>
                                 <th scope="col">측정일시</th>
                                 <th scope="col">보고일시</th>
@@ -471,17 +471,17 @@ import moment from "moment";
     locationCode(input){
         let result=''
         switch (input){
-          case "LOC001" : result="거실1"; break;
+          case "LOC001" : result="거실"; break;
           case "LOC002" : result="거실2" ;break;
-          case "LOC003" : result="안방1"; break;
+          case "LOC003" : result="안방"; break;
           case "LOC004" : result="안방2" ;break;
-          case "LOC005" : result="화장실1" ;break;
+          case "LOC005" : result="화장실" ;break;
           case "LOC006" : result="화장실2" ;break;
-          case "LOC007" : result="현관1" ;break;
-          case "LOC008" : result="현관2" ;break;
-          case "LOC009" : result="주방1" ;break;
+          case "LOC007" : result="현관" ;break;
+          case "LOC008" : result="뒷문" ;break;
+          case "LOC009" : result="주방" ;break;
           case "LOC010" : result="주방2" ;break;
-          case "LOC011" : result="작은방1" ;break;
+          case "LOC011" : result="작은방" ;break;
           case "LOC012" : result="작은방2" ;break;
       }
         return result
