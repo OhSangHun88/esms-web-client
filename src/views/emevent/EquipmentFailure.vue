@@ -53,20 +53,22 @@
                 <div class="table_wrap">
                     <table>
                         <colgroup>
-                            <col style="width:15%;">
-                            <col style="width:15%;">
-                            <col style="width:15%">
-                            <col style="width:16%;">
-                            <col style="width:8%;" v-if="equipList === 'sensor'">
                             <col style="width:13%;">
-                            <col style="width:auto;">
+                            <col style="width:13%;">
+                            <col style="width:13%">
+                            <col style="width:15%;">
+                            <col style="width:8%;" v-if="equipList === 'sensor'">
+                            <col style="width:8%;">
+                            <col style="width:12%;">
+                            <col style="width:18%;">
                         </colgroup>
                         <thead>
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
                             <th scope="row">장비구분</th>
-                            <th scope="row" v-if="equipList === 'sensor'"></th>
+                            <th scope="row" v-if="equipList === 'sensor'">센서타입</th>
+                            <th scope="row">점검구분</th>
                             <th scope="row">대상자 이름 입력</th>
                         </thead>
                         <tbody>
@@ -89,8 +91,8 @@
                                 <td>
                                   <div class="btn_area" >
                                     <button type="button" style="width:40%" @click="eList(1)" :class="equipList === 'gateway'? 'btn on' :'btn'">게이트웨이</button>
-                                    <button type="button" style="width:27%" @click="eList(2)" :class="equipList === 'tablet'? 'btn on' :'btn'">테블릿</button>
-                                    <button type="button" style="width:33%" @click="eList(3)" :class="equipList === 'sensor'? 'btn on' :'btn'">센서</button>
+                                    <button type="button" style="width:28%" @click="eList(2)" :class="equipList === 'tablet'? 'btn on' :'btn'">테블릿</button>
+                                    <button type="button" style="width:32%" @click="eList(3)" :class="equipList === 'sensor'? 'btn on' :'btn'">센서</button>
                                   </div>
                                     <!-- <select v-model="selectedTypeItems">
                                       <option v-for="(type, index) in typeItems" :value="type.value" v-bind:key="index">{{type.label}}</option>
@@ -100,6 +102,11 @@
                                     <select v-model="selectedTypeItems">
                                       <option v-for="(sensor, index) in sensorItems" :value="sensor.value" v-bind:key="index">{{sensor.label}}</option>
                                     </select>
+                                </td>
+                                <td>
+                                  <select >
+                                    <option v-for="(checkType, index) in checkTypeItems" :value="checkType.value" v-bind:key="index">{{checkType.label}}</option>
+                                  </select>
                                 </td>
                                 <td>
                                     <input type="text" value="" v-model="selectedRecipientNm">
@@ -235,10 +242,10 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], recipientItems:[],copyRecipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount:0,
-        selectedTypeItems:'',
+        selectedTypeItems:'', selectedCheckTypeItems:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
         equipList: 'gateway',
-        sensorItems:[],
+        sensorItems:[], checktypeItems:[],
         errorpopup1: false, errorpopup2: false, errorpopup3: false,
       }
     },
@@ -248,6 +255,7 @@ export default {
     this.getOrgmData();
     this.getTypeData();
     this.getsensorData();
+    this.getcheckTypeData();
     this.getRecipientData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
@@ -380,28 +388,29 @@ export default {
             const OrgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
             const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
             const typeCount = !this.selectedTypeItems? '' : new RegExp(this.selectedTypeItems, 'gi');
-            this.copyRecipientItems = response.data.data
+            console.log(typeCount)
+            console.log(OrgCount)
             if(this.equipList === 'gateway'){
               this.recipientItems = resData.filter(cd=>{
-                return cd.orgNm.match(OrgCount) && cd.recipientNm.match(RecCount) 
+                return cd.recipientNm.match(RecCount) 
             })
             this.NCount =this.recipientItems.length
             }
             if(this.equipList === 'tablet'){
               this.recipientItems = resData.filter(cd=>{
-                return cd.orgNm.match(OrgCount) && cd.recipientNm.match(RecCount)
+                return cd.recipientNm.match(RecCount)
             })
             this.NCount =this.recipientItems.length
             }
             if(this.equipList === 'sensor'){
               if(this.selectedTypeItems != ''){
                 this.recipientItems = resData.filter(cd=>{
-                  return cd.orgNm.match(OrgCount) && cd.recipientNm.match(RecCount) && cd.equipTypeCd.match(typeCount)
+                  return cd.recipientNm.match(RecCount) && cd.equipTypeCd.match(typeCount)
                 })
                 this.NCount =this.recipientItems.length
               }else{
                 this.recipientItems = resData.filter(cd=>{
-                  return cd.orgNm.match(OrgCount) && cd.recipientNm.match(RecCount)
+                  return cd.recipientNm.match(RecCount)
                 })
                 this.NCount =this.recipientItems.length
               }
@@ -458,13 +467,30 @@ export default {
         this.getRecipientData();
       }
     },
-    getsensorData() {
-    axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=SENSOR.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
+    async getsensorData() {
+    await axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=SENSOR.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.sensorItems=[];
             this.sensorItems.push({label: '전체', value: ''});
             for(let i=0; i<response.data.data.length; i++) {
               this.sensorItems.push({
+                label: response.data.data[i].cmmnCdNm,
+                value: response.data.data[i].cmmnCd
+              });
+            }  
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    async getcheckTypeData() {
+    await axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=GATEWAY.INSPCD", {headers: {"Authorization": sessionStorage.getItem("token")}})
+          .then(response => {
+            this.checktypeItems=[];
+            this.checktypeItems.push({label: '전체', value: ''});
+            for(let i=0; i<response.data.data.length; i++) {
+              this.checktypeItems.push({
                 label: response.data.data[i].cmmnCdNm,
                 value: response.data.data[i].cmmnCd
               });
