@@ -17,13 +17,15 @@
                             <!-- <col style="width:31.5%;">
                             <col style="width:31.5%;">
                             <col style="width:31.5%;"> -->
-                            <col style="width:33%;">
-                            <col style="width:33%;">
+                            <col style="width:10%;">
+                            <col style="width:28%;">
+                            <col style="width:28%;">
                             <col style="width:33%;">
                         </colgroup>
                         <thead>
                             <tr>
                                 <!-- <th scope="col"></th> -->
+                                <th scope="col"></th>
                                 <th scope="col">이름</th>
                                 <th scope="col">관계</th>
                                 <th scope="col">핸드폰번호</th>
@@ -37,9 +39,10 @@
                                 <col style="width:31.5%;">
                                 <col style="width:31.5%;">
                                 <col style="width:31.5%;"> -->
+                                <col style="width:10%;">
+                                <col style="width:28%;">
+                                <col style="width:28%;">
                                 <col style="width:33%;">
-                            <col style="width:33%;">
-                            <col style="width:33%;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in relationPhoneData" v-bind:key="index">
@@ -49,9 +52,8 @@
                                             <label for="chk1_1" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td> -->
-                                    <td>
-                                        {{item.relationNm}}
-                                    </td>
+                                    <td>{{index+1}}</td>
+                                    <td>{{item.relationNm}}</td>
                                     <td>
                                         <!-- <input type="text" name="" id="" :value="item.relationCdNm"> -->
                                         응급요원

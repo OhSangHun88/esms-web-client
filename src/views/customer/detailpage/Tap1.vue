@@ -60,13 +60,15 @@
                 <div class="list">
                     <table>
                         <colgroup>
-                            <col style="width:25%;">
+                            <col style="width:10%;">
+                            <col style="width:15%;">
                             <col style="width:25%;">
                             <col style="width:25%;">
                             <col style="width:25%;">
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
+                                <th scope="col"></th>
                                 <th scope="col">설치장소</th>
                                 <th scope="col">측정일시</th>
                                 <th scope="col">보고일시</th>
@@ -86,13 +88,15 @@
                     <div class="tbody htype-05">
                         <table>
                             <colgroup>
-                                <col style="width:25%;">
+                                <col style="width:10%;">
+                                <col style="width:15%;">
                                 <col style="width:25%;">
                                 <col style="width:25%;">
                                 <col style="width:25%;">
                             </colgroup>
                             <tbody>
                                 <tr  v-for="(item,index) in sensorsData" v-bind:key="index">
+                                    <td>{{index+1}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td>{{item.measureDtime}}</td>
                                     <td>{{item.regDtime}}</td>
@@ -145,7 +149,7 @@ import moment from "moment";
       envData:[{text: '환경 정보', value:''},{text: '전체', value: 1},{text: '온도', value: 2},{text: '조도', value: 3},{text: '습도', value: 4}, ],
       bioData:[{text: '바이오 정보', value: ''},{text: '전체', value: 5},{text: '심장박동', value: 6},{text: '호흡', value: 7},{text: '활동량', value: 8}, ],
       actPData:[{text: '활동감지기{P) 정보', value: ''},{text: '전체', value: 9},{text: '화장실', value: 10},{text: '안방', value: 11}, ],
-      doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 12},{text: '뒷문', value: 13},{text: '대문', value: 14}, ],
+      doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 12},{text: '현관', value: 13},{text: '뒷문', value: 14}, ],
       selectedValue : null,
       sensorsTmp1Data: [],
       sensorsTmp2Data: [],

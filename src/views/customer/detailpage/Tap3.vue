@@ -15,7 +15,8 @@
                 <div class="list">
                     <table>
                         <colgroup>
-                            <col style="width:20%;">
+                        <col style="width:10%;">
+                            <col style="width:10%;">
                             <col style="width:20%;">
                             <col style="width:20%;">
                             <col style="width:20%;">
@@ -23,6 +24,7 @@
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
+                                <th scope="col"></th>
                                 <th scope="col">통화구분</th>
                                 <th scope="col">전화번호</th>
                                 <th scope="col">통화시작</th>
@@ -34,7 +36,8 @@
                     <div class="tbody htype-01">
                         <table>
                             <colgroup>
-                                <col style="width:20%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
                                 <col style="width:20%;">
                                 <col style="width:20%;">
                                 <col style="width:20%;">
@@ -42,6 +45,7 @@
                             </colgroup>
                             <tbody class="">
                                 <tr v-for="(item,index) in call_historys" v-bind:key="index">
+                                    <td>{{index+1}}</td>
                                     <td>{{item.callTypeNm}}</td>
                                     <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
                                     <td>{{item.startTime}}</td>

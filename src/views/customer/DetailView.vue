@@ -262,7 +262,7 @@ export default {
   },
   methods: {
     async getRecipientInfo() {
-      
+      //this.$store.mutation.logout
       //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");
       let uri = this.$store.state.serverApi + "/admin/recipients/" + this.recipientId
       console.log(uri)
