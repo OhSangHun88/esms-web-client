@@ -2,6 +2,34 @@
     <div class="wrap">
       <HeaderComp></HeaderComp>
         <div class="container type-02">
+          <div id="" class="popupLayer" v-if="errorpopup1 == true">
+                <div class="popup_wrap type-02">
+                    <div class="title_wrap">
+                        <div class="title">경고</div>
+                        <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <p class="alert_txt">조회 종료일자가 시작일자보다 빠릅니다<br/>일자를 다시 선택하여 주십시요</p>
+                    </div>
+                    <div class="popbtn_area type-02">
+                        <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
+                    </div>
+                </div>
+            </div>
+            <div id="" class="popupLayer" v-if="errorpopup2 == true">
+                <div class="popup_wrap type-02">
+                    <div class="title_wrap">
+                        <div class="title">경고</div>
+                        <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
+                    </div>
+                    <div class="popbtn_area type-02">
+                        <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
+                    </div>
+                </div>
+            </div>
             <div class="list_title_wrap">
                 <span>이벤트 리포트</span>
                 <i class="ico_nav"></i>
@@ -103,8 +131,8 @@
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">대상자 전화번호</th>
-                                <th scope="col">응급관리요원</th>
-                                <th scope="col">응급관리요원 전화번호</th>
+                                <th scope="col">응급요원명</th>
+                                <th scope="col">응급요원 전화번호</th>
                                 <th scope="col">응급구분</th>
                                 <th scope="col">응급상태</th>
                                 <th scope="col">발생일시</th>
@@ -198,6 +226,7 @@ export default {
         orgSido:'', orgSgg:'', orgCode:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm:'', selectedTypeItems:'', selectedStateItems:'',
         cBirthday:'', cAddr: '', NCount : 0,
+        errorpopup1: false, errorpopup2: false,
       }
     },
     created() {
@@ -410,10 +439,13 @@ export default {
       return tmp2.diff(tmp1, 'years');
     },
     manageInquiry() {
+      if(this.s_date > this.e_date){
+        this.errorpopup1 = true
+      }else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
+        this.errorpopup2 = true
+      }else{
         this.getRecipientData();
-    },
-    EmanageInquiry() {
-        this.getRecipientData();
+      }
     },
   },
 }
