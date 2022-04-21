@@ -209,15 +209,15 @@
 </template>
 
 <script>
-import CEmPerson from "./detailpage/EmPerson";
-import CVisitLog from "./detailpage/VisitLog";
-import CCollectInfo from "./detailpage/CollectInfo";
-import CFamily from "./detailpage/Family";
-import CSocilaWork from "./detailpage/SocilaWork";
-import CEmSignal from "./detailpage/EmSignal";
-import CCallHistory from "./detailpage/CallHistory";
-import CConnectDevice from "./detailpage/ConnectDevice";
-import CCycleSetting from "./detailpage/CycleSetting";
+// import CEmPerson from "./detailpage/EmPerson";
+// import CVisitLog from "./detailpage/VisitLog";
+// import CCollectInfo from "./detailpage/CollectInfo";
+// import CFamily from "./detailpage/Family";
+// import CSocilaWork from "./detailpage/SocilaWork";
+// import CEmSignal from "./detailpage/EmSignal";
+// import CCallHistory from "./detailpage/CallHistory";
+// import CConnectDevice from "./detailpage/ConnectDevice";
+// import CCycleSetting from "./detailpage/CycleSetting";
 import axios from "axios";
 import HeaderComp from "../pages/HeaderComp.vue";
 import tap1 from "./detailpage/Tap1.vue";
@@ -240,15 +240,15 @@ export default {
     }
   },
   components: {
-    CEmPerson,
-    CVisitLog,
-    CCollectInfo,
-    CFamily,
-    CSocilaWork,
-    CEmSignal,
-    CCallHistory,
-    CConnectDevice,
-    CCycleSetting,
+    // CEmPerson,
+    // CVisitLog,
+    // CCollectInfo,
+    // CFamily,
+    // CSocilaWork,
+    // CEmSignal,
+    // CCallHistory,
+    // CConnectDevice,
+    // CCycleSetting,
     HeaderComp,
     tap1,
     tap2,
