@@ -46,7 +46,7 @@
                             <p class="tit">게이트웨이 상태 전송</p>
                         </div>
                         <div class="btn_area">
-                            <button type="button" class="btn form2">저장</button>
+                            <button type="button" class="btn form2" @click="sendCGateway">저장</button>
                         </div>
                     </div>
                     <div class="list">
@@ -63,13 +63,13 @@
                                         <td >설정 값(분)</td>
                                         <td>
                                             <div class="input_area">
-                                                <input type="text" name="" id="" value="30">
+                                                <input type="text" name="gatewaySendTime" id="" :value="getCGatewayData.stateSendCycle">
                                             </div>
                                         </td>
                                         <td >변경 값(분)</td>
                                         <td>
                                             <div class="input_area">
-                                                <input type="text" name="" id="" value="120">
+                                                <input type="text" name="setGatewayStateSendCycle" id="" v-model="setGatewayStateSendCycle">
                                             </div>
                                         </td>
                                     </tr>
@@ -155,7 +155,7 @@
                         <p class="tit">센서 상태값 전송 주기</p>
                     </div>
                     <div class="btn_area">
-                        <button type="button" class="btn form2">저장</button>
+                        <button type="button" class="btn form2" @click="saveSensorsStateData">저장</button>
                     </div>
                 </div>
                 <div class="list bd_btm">
@@ -190,20 +190,20 @@
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index">
                                     <td>
                                         <div class="chk_area radio">
-                                            <input type="radio" name="radio2" id="radio2_1" >
-                                            <label for="radio2_1" class="chk"><i class="ico_chk"></i></label>
+                                            <input type="radio" name="sensorsState" :id="`radio2_${index}`" v-model="sensorsState" :value="index" >
+                                            <label :for="`radio2_${index}`" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td>
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td >
                                         <div class="input_area">
-                                            <input type="text" name="" id="" :value="item.stateGwSendCycle/3600">시간
+                                            <input type="text" name="" id="" v-model="item.stateGwSendCycle">시간
                                         </div>
                                     </td>
                                     <td >
                                         <div class="input_area">
-                                            <input type="text" name="" id="" :value="item.stateSvrSendCycle/3600">시간
+                                            <input type="text" name="" id="" v-model="item.stateSvrSendCycle">시간
                                         </div>
                                     </td>
                                     
@@ -229,8 +229,10 @@ import axios from "axios";
      return {
       getCSensorsData: null,
       sensorsDetect:null,
-      newGwSendCycle: null
-
+      newGwSendCycle: null,
+      getCGatewayData: null,
+      setGatewayStateSendCycle: 120,
+      sensorsState: null,
 
      }
    },
@@ -247,7 +249,13 @@ import axios from "axios";
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
-            this.getCSensorsData = res.data.data
+            let tmpData = res.data.data
+            console.log(tmpData)
+            tmpData.forEach(element =>{
+                element.stateGwSendCycle = element.stateGwSendCycle/3600
+                element.stateSvrSendCycle = element.stateSvrSendCycle/3600
+            })
+            this.getCSensorsData = tmpData
             console.log("sensors ")
             console.log(this.getCSensorsData)
 
@@ -260,7 +268,23 @@ import axios from "axios";
           
 
     },
-
+    getCGateway(){
+        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/gateways`
+        
+        
+        axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            let tmpData= res.data.data
+            tmpData.stateSendCycle = tmpData.stateSendCycle/60
+            this.getCGatewayData = tmpData
+            
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
     
     locationCode(input){
         let result=''
@@ -310,15 +334,61 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-
-
-    
     },
-    
+
+    saveSensorsStateData(){
+        //stateGwSendCycle, stateSvrSendCycle
+        console.log(this.sensorsState)
+        console.log(this.getCSensorsData[this.sensorsState])
+        let saveSensorsStateData = this.getCSensorsData[this.sensorsState]
+        saveSensorsStateData.stateGwSendCycle = saveSensorsStateData.stateGwSendCycle*3600
+        saveSensorsStateData.stateSvrSendCycle = saveSensorsStateData.stateSvrSendCycle*3600
+        let saveSensorsDetectData = saveSensorsStateData
+        let sensorsId= this.getCSensorsData[this.sensorsState].sensorId
+        const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
+
+        axios.patch(url,saveSensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            let resData = res.data.data
+            console.log(resData)
+            // this.getCSensorsData = res.data.data
+            // console.log("sensors ")
+            // console.log(this.getCSensorsData)
+
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    sendCGateway(){
+        console.log(this.getCGatewayData)
+        let sensorsId = this.getCGatewayData.sensorsId
+        let newGatewayData = this.getCGatewayData
+        newGatewayData.stateSendCycle = this.setGatewayStateSendCycle*60
+        const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/gw-send-cycle`
+        // /sensors/{sensorId}/gw-send-cycle
+        axios.patch(url,newGatewayData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            let resData = res.data.data
+            console.log(resData)
+            // this.getCSensorsData = res.data.data
+            // console.log("sensors ")
+            // console.log(this.getCSensorsData)
+
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    }
 
    },
    created() {
     this.getCSensers();
+    this.getCGateway();
   }
  }
  </script>
