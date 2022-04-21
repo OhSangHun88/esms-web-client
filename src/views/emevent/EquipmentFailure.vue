@@ -104,8 +104,8 @@
                                     </select>
                                 </td>
                                 <td>
-                                  <select >
-                                    <option v-for="(checkType, index) in checkTypeItems" :value="checkType.value" v-bind:key="index">{{checkType.label}}</option>
+                                  <select v-model="selectedCheckTypeItems">
+                                    <option v-for="(check, index) in checktypeItems" :value="check.value" v-bind:key="index">{{check.label}}</option>
                                   </select>
                                 </td>
                                 <td>
@@ -245,7 +245,7 @@ export default {
         selectedTypeItems:'', selectedCheckTypeItems:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
         equipList: 'gateway',
-        sensorItems:[], checktypeItems:[],
+        sensorItems:[], checktypeItems: [],
         errorpopup1: false, errorpopup2: false, errorpopup3: false,
       }
     },
@@ -255,7 +255,7 @@ export default {
     this.getOrgmData();
     this.getTypeData();
     this.getsensorData();
-    this.getcheckTypeData();
+    this.getcheckTypeData(1);
     this.getRecipientData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
@@ -309,9 +309,7 @@ export default {
           let tmpResult = tempArr.filter(cd=>{
             return cd.value2 === this.sidoCd
           });
-          
           this.sggItems = [...tmpResult2,...tmpResult]
-          console.log(this.sggItems )
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -388,29 +386,28 @@ export default {
             const OrgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
             const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
             const typeCount = !this.selectedTypeItems? '' : new RegExp(this.selectedTypeItems, 'gi');
-            console.log(typeCount)
-            console.log(OrgCount)
+            const checkCount = !this.selectedCheckTypeItems? '' : new RegExp(this.selectedCheckTypeItems, 'gi');
             if(this.equipList === 'gateway'){
               this.recipientItems = resData.filter(cd=>{
-                return cd.recipientNm.match(RecCount) 
+                return cd.checkTypeCd.match(checkCount) && cd.recipientNm.match(RecCount) 
             })
             this.NCount =this.recipientItems.length
             }
             if(this.equipList === 'tablet'){
               this.recipientItems = resData.filter(cd=>{
-                return cd.recipientNm.match(RecCount)
+                return cd.checkTypeCd.match(checkCount) && cd.recipientNm.match(RecCount)
             })
             this.NCount =this.recipientItems.length
             }
             if(this.equipList === 'sensor'){
               if(this.selectedTypeItems != ''){
                 this.recipientItems = resData.filter(cd=>{
-                  return cd.recipientNm.match(RecCount) && cd.equipTypeCd.match(typeCount)
+                  return cd.checkTypeCd.match(checkCount) && cd.recipientNm.match(RecCount) && cd.equipTypeCd.match(typeCount)
                 })
                 this.NCount =this.recipientItems.length
               }else{
                 this.recipientItems = resData.filter(cd=>{
-                  return cd.recipientNm.match(RecCount)
+                  return cd.checkTypeCd.match(checkCount) && cd.recipientNm.match(RecCount)
                 })
                 this.NCount =this.recipientItems.length
               }
@@ -430,7 +427,6 @@ export default {
       }
     },
     onChangeSido(event){
-      console.log("====onChangeSido($event) execution")
       this.getSggData()
       this.orgSido = event.target.value;
     },
@@ -467,8 +463,8 @@ export default {
         this.getRecipientData();
       }
     },
-    async getsensorData() {
-    await axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=SENSOR.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
+    getsensorData() {
+    axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=SENSOR.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.sensorItems=[];
             this.sensorItems.push({label: '전체', value: ''});
@@ -484,8 +480,19 @@ export default {
             console.error("There was an error!", error);
           });
     },
-    async getcheckTypeData() {
-    await axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=GATEWAY.INSPCD", {headers: {"Authorization": sessionStorage.getItem("token")}})
+    getcheckTypeData(value) {
+      let uri = ''
+      if(value === 1){
+        uri = this.$store.state.serverApi + "/admin/codes?cmmnCdGroup=GATEWAY.INSPCD";
+        console.log(uri)
+      }else if(value === 2){
+        uri = this.$store.state.serverApi + "/admin/codes?cmmnCdGroup=TABLET.INSPCD";
+        console.log(uri)
+      }else{
+        uri = this.$store.state.serverApi + "/admin/codes?cmmnCdGroup=SENSOR.INSPCD";
+        console.log(uri)
+      }
+      axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             this.checktypeItems=[];
             this.checktypeItems.push({label: '전체', value: ''});
@@ -503,10 +510,11 @@ export default {
     },
     eList(value){
       switch (value){
-          case 1 : this.equipList="gateway" ; break;
-          case 2 : this.equipList="tablet" ; break;
-          case 3 : this.equipList="sensor" ; break;
+          case 1 : this.equipList="gateway"; break;
+          case 2 : this.equipList="tablet"; break;
+          case 3 : this.equipList="sensor"; break;
       }
+      this.getcheckTypeData(value);
     },
     },
 }
