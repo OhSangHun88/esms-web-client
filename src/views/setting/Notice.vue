@@ -24,9 +24,23 @@
                     </div>
                     <div class="popup_cnt">
                         <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
-                    </div>
+                   </div>
                     <div class="popbtn_area type-02">
                         <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
+                    </div>
+                </div>
+            </div>
+            <div id="" class="popupLayer" v-if="errorpopup3 == true">
+                <div class="popup_wrap type-02">
+                    <div class="title_wrap">
+                        <div class="title">경고</div>
+                        <button type="button" class="btn_close" @click="errorpopup3 = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <p class="alert_txt">오늘 일자 이후로 선택 불가능 합니다<br/>일자를 다시 선택하여 주십시요</p>
+                   </div>
+                    <div class="popbtn_area type-02">
+                        <button type="button" class="btn form2" @click="errorpopup3 = false">확인</button>
                     </div>
                 </div>
             </div>
@@ -188,7 +202,7 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[],
         orgSido:'', orgSgg:'', orgCode:'',selectedOrgItems:'', selectedSidoItems:'', selectedSggItems:'', selectedRegId: '',
         NCount: 0,
-        errorpopup1: false, errorpopup2: false,
+        errorpopup1: false, errorpopup2: false, errorpopup3: false,
       }
     },
     created(){
@@ -336,6 +350,8 @@ export default {
         this.errorpopup1 = true
       }else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
+      }else if(this.e_date > moment().format('YYYY-MM-DD')){
+        this.errorpopup3 = true
       }else{
         this.getnoticeData();
       }
