@@ -52,7 +52,7 @@
 
                       </td>
                         <td>
-                            <input type="text" value=" " v-model="filterName" placeholder="이름을 입력해 주세요">
+                            <input type="text" value=" " v-model="filterName" @keypress.enter="getFilteredRecipientData()">
                         </td>
                         
                     </tr>
@@ -548,7 +548,8 @@ export default {
     
     let tmpData = this.recipientItems
     
-    if(!this.filterName|| !this.selectedOrgItems){
+    if( this.filterName || this.selectedOrgItems){
+      
       this.recipientItems = tmpData.filter(ri=>{
       return ri.orgId.match(regExp1)&&ri.recipientNm.match(regExp2)
     })
