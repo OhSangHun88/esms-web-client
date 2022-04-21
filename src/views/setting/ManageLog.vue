@@ -82,7 +82,7 @@
                                         <div class="customerBts" style="justify-content: flex-start;">
                                             <input type="date" v-model="s_date"/>
                                             <span class="tilde">~</span>
-                                            <input type="date" v-model="e_date"/>
+                                            <input type="date" v-model="e_date" :max="this.$moment().format('YYYY-MM-DD')"/>
                                         </div>
                                     </div>
                                 </td>
