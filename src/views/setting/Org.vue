@@ -20,7 +20,7 @@
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
-                            <th scope="row">관리자</th>
+                            <th scope="row">관리기관명</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -60,10 +60,11 @@
                             <col style="width:5%;">
                             <col style="width:7%;">
                             <col style="width:10%;">
+                            <col style="width:8%;">
                             <col style="width:10%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
+                            <col style="width:14%;">
                             <col style="width:auto;">
+                            <col style="width:10%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
                         </colgroup>
@@ -78,6 +79,7 @@
                                 <th scope="col">주소</th>
                                 <th scope="col">세부주소</th>
                                 <th scope="col">등록일시</th>
+                                <th scope="col">수정일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -86,11 +88,12 @@
                             <colgroup>
                             <col style="width:5%;">
                             <col style="width:7%;">
+                            <col style="width:8%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
+                            <col style="width:14%;">
                             <col style="width:auto;">
+                            <col style="width:10%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
                             </colgroup>
@@ -105,6 +108,7 @@
                                     <td><a href="#">{{item.addr}}</a></td>
                                     <td><a href="#">{{item.addrDetail}}</a></td>
                                     <td><a href="#">{{item.regDtime}}</a></td>
+                                    <td></td>
                                 </tr>
                             </tbody>
 
@@ -219,7 +223,6 @@ export default {
     },
 
     // 관리 기관 목록
-
     getOrgmData() {
       let url =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
