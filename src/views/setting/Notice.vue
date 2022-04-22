@@ -30,20 +30,6 @@
                     </div>
                 </div>
             </div>
-            <div id="" class="popupLayer" v-if="errorpopup3 == true">
-                <div class="popup_wrap type-02">
-                    <div class="title_wrap">
-                        <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup3 = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <p class="alert_txt">오늘 일자 이후로 선택 불가능 합니다<br/>일자를 다시 선택하여 주십시요</p>
-                   </div>
-                    <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup3 = false">확인</button>
-                    </div>
-                </div>
-            </div>
             <div class="list_title_wrap">
                 <span>시스템관리</span>
                 <i class="ico_nav"></i>
@@ -202,7 +188,7 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[],
         orgSido:'', orgSgg:'', orgCode:'',selectedOrgItems:'', selectedSidoItems:'', selectedSggItems:'', selectedRegId: '',
         NCount: 0,
-        errorpopup1: false, errorpopup2: false, errorpopup3: false,
+        errorpopup1: false, errorpopup2: false,
       }
     },
     created(){
@@ -305,7 +291,6 @@ export default {
           console.error("There was an error!", error);
         });
     },
-    
       getnoticeData(){
       let url = this.$store.state.serverApi +"/admin/notices?startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
@@ -336,7 +321,6 @@ export default {
       this.sggCd = ''
       this.getOrgmData()
     },
-
     onChangeOrg(event) {
       this.sggCd = event.target.value
       this.getOrgmData()

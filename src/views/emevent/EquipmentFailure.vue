@@ -121,17 +121,17 @@
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:5%;">
+                            <col style="width:3%;">
                             <col style="width:12%;">
-                            <col style="width:5%;">
-                            <col style="width:5%;">
+                            <col style="width:4%;">
+                            <col style="width:4%;">
                             <col style="width:auto;">
                             <col style="width:10%;">
+                            <col style="width:4%;">
+                            <col style="width:8%;">
                             <col style="width:5%;">
-                            <col style="width:10%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;" v-if="equipList === 'sensor'">
-                            <col style="width:6%;">
+                            <col style="width:5%;" v-if="equipList === 'sensor'">
+                            <col style="width:5%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
                         </colgroup>
@@ -156,17 +156,17 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <col style="width:5%;"> <!--순번-->
+                                <col style="width:3%;"> <!--순번-->
                                 <col style="width:12%;"> <!--순번-->
-                                <col style="width:5%;"> <!--이름-->
-                                <col style="width:5%;"> <!--나이-->
+                                <col style="width:4%;"> <!--이름-->
+                                <col style="width:4%;"> <!--나이-->
                                 <col style="width:auto;"> <!--주소-->
                                 <col style="width:10%;"> <!--대상자 전화번호-->
-                                <col style="width:5%;"> <!--응급관리요원-->
-                                <col style="width:10%;"> <!--응급관리요원 전화번호-->
-                                <col style="width:6%;"> <!--장비구분-->
-                                <col style="width:6%;" v-if="equipList === 'sensor'"> <!--센서타입-->
-                                <col style="width:6%;"> <!--점검구분-->
+                                <col style="width:4%;"> <!--응급관리요원-->
+                                <col style="width:8%;"> <!--응급관리요원 전화번호-->
+                                <col style="width:5%;"> <!--장비구분-->
+                                <col style="width:5%;" v-if="equipList === 'sensor'"> <!--센서타입-->
+                                <col style="width:5%;"> <!--점검구분-->
                                 <col style="width:10%;"> <!--상태측정일시-->
                                  <col style="width:10%;"> <!--서버보고일시-->
                             </colgroup>
