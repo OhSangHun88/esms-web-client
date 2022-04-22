@@ -30,20 +30,6 @@
                     </div>
                 </div>
             </div>
-            <div id="" class="popupLayer" v-if="errorpopup3 == true">
-                <div class="popup_wrap type-02">
-                    <div class="title_wrap">
-                        <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup3 = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <p class="alert_txt">오늘 일자 이후로 선택 불가능 합니다<br/>일자를 다시 선택하여 주십시요</p>
-                   </div>
-                    <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup3 = false">확인</button>
-                    </div>
-                </div>
-            </div>
             <div class="list_title_wrap">
                 <span>이벤트 리포트</span>
                 <i class="ico_nav"></i>
@@ -235,24 +221,23 @@ export default {
     data() {
       return{
         orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-        partCode: '', statusCode: '', modelName: '',
         sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], number:[], stateItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm:'', selectedTypeItems:'', selectedStateItems:'',
         cBirthday:'', cAddr: '', NCount : 0,
-        errorpopup1: false, errorpopup2: false, errorpopup3: false,
+        errorpopup1: false, errorpopup2: false,
       }
     },
     created() {
-    this.getSidoData();
-    this.getSggData();
-    this.getOrgmData();
-    this.getTypeData();
-    this.getStateData();
-    this.getRecipientData();
-    this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
-    this.e_date=moment().format('YYYY-MM-DD');
-    this.cBirthday=moment().format('YYYY-MM-DD');
+      this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
+      this.e_date=moment().format('YYYY-MM-DD');
+      this.getSidoData();
+      this.getSggData();
+      this.getOrgmData();
+      this.getTypeData();
+      this.getStateData();
+      this.getRecipientData();
+      this.cBirthday=moment().format('YYYY-MM-DD');
     },
     
     methods:{
@@ -364,7 +349,6 @@ export default {
             console.error("There was an error!", error);
           });
     },
-
     //상태 목록
     getStateData() {
     axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=ALARM.STATECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
@@ -383,39 +367,34 @@ export default {
             console.error("There was an error!", error);
           });
     },
-    
-
     getRecipientData() {
-      let uri = '';
-      if(this.orgId == '' && this.partCode == '' && this.statusCode == '' && this.modelName == '') {
-        uri = this.$store.state.serverApi + "/admin/emergencys?pageIndex=1&recordCountPerPage=100";
-      } else {
-        uri = this.$store.state.serverApi + "/admin/emergencys?pageIndex=1&recordCountPerPage=100";
-
-        var fIdx = uri.indexOf("&", 0);
-        var uriArray = uri.split('');
-        uriArray.splice(fIdx, 1);
-        uri = uriArray.join('');
+      let addrCd = ''
+      let occurStartDate = this.s_date
+      let occurEndDate = this.e_date
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
+      let uri = this.$store.state.serverApi+"/admin/emergencys?pageIndex=1&recordCountPerPage=100"+"&occurStartDate="+occurStartDate+"&occurEndDate="+occurEndDate;
+      if(this.selectedSidoItems != '' || this.selectedRecipientNm != '' || this.selectedTypeItems != '' || this.selectedStateItems != ''){
+        uri = this.$store.state.serverApi
+        +"/admin/emergencys?pageIndex=1&recordCountPerPage=100"
+        +"&addrCd="+addrCd
+        +"&orgId="+this.selectedOrgItems
+        +"&typeCd="+this.selectedTypeItems
+        +"&signalStateCd="+this.selectedStateItems
+        +"&recipientNm="+this.selectedRecipientNm
+        +"&occurStartDate="+occurStartDate
+        +"&occurEndDate="+occurEndDate;
       }
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
-            //const sidoCount = !this.selectedSidoItems? '' : new RegExp(this.selectedSidoItems, 'gi');
-            //const sggCount = !this.selectedSggItems? '' : new RegExp(this.selectedSggItems, 'gi');
-            const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
-            const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
-            const typeCount = !this.selectedTypeItems? '' : new RegExp(this.selectedTypeItems, 'gi');
-            const stateCount = !this.selectedStateItems? '' : new RegExp(this.selectedStateItems, 'gi');
-
-            let resData = response.data.data
-            if(resData){
-              this.recipientItems = resData.filter((cd=>{
-                return cd.orgId.match(orgCount) && cd.recipientNm.match(RecCount) && cd.typeCd.match(typeCount) && cd.signalStateCd.match(stateCount)
-              }))
-              this.NCount =this.recipientItems.length
-              console.log(uri)
-            }
-            else 
-              this.recipientItems= []
+            this.recipientItems = response.data.data
+            this.NCount =this.recipientItems.length
+            console.log(uri)
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -436,16 +415,9 @@ export default {
       this.sggCd = ''
       this.getOrgmData()
     },
-
     onChangeOrg(event) {
       this.sggCd = event.target.value
       this.getOrgmData()
-    },
-    onChangePart(event) {
-      this.partCode = event.target.value;
-    },
-    onChangeStatus(event) {
-      this.statusCode = event.target.value;
     },
     makeAge(birthDay){
       let tmp1 = this.$moment(birthDay).format('YYYY')
@@ -457,8 +429,6 @@ export default {
         this.errorpopup1 = true
       }else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
-      }else if(this.e_date > moment().format('YYYY-MM-DD')){
-        this.errorpopup3 = true
       }else{
         this.getRecipientData();
       }

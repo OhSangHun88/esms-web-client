@@ -30,20 +30,6 @@
                     </div>
                 </div>
             </div>
-            <div id="" class="popupLayer" v-if="errorpopup3 == true">
-                <div class="popup_wrap type-02">
-                    <div class="title_wrap">
-                        <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup3 = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <p class="alert_txt">오늘 일자 이후로 선택 불가능 합니다<br/>일자를 다시 선택하여 주십시요</p>
-                   </div>
-                    <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup3 = false">확인</button>
-                    </div>
-                </div>
-            </div>
             <div class="list_title_wrap">
                 <span>이벤트 리포트</span>
                 <i class="ico_nav"></i>
@@ -209,11 +195,10 @@ export default {
       return{
         orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm:'',
-        partCode: '', statusCode: '', modelName: '',
         sidoItems:[], sggItems:[], orgmItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount : 0,
-        errorpopup1: false, errorpopup2: false, errorpopup3: false,
+        errorpopup1: false, errorpopup2: false,
       }
     },
     created() {
@@ -225,16 +210,13 @@ export default {
     this.e_date=moment().format('YYYY-MM-DD');
     this.cBirthday=moment().format('YYYY-MM-DD');
     },
-    
     methods:{
     // 시/도 목록
     getSidoData() {
     axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            
             this.sidoItems=[];
             this.sidoItems.push({label: '전체', value: ''});
-
             for(let i=0; i<response.data.data.length; i++) {
               this.sidoItems.push({
                 label: response.data.data[i].sido,
@@ -247,7 +229,6 @@ export default {
             console.error("There was an error!", error);
           });
     },
-
     // 시/군/구 목록
     getSggData() {
       let url =this.$store.state.serverApi + "/admin/address/sgg";
@@ -273,7 +254,6 @@ export default {
           let tmpResult = tempArr.filter(cd=>{
             return cd.value2 === this.sidoCd
           });
-          
           this.sggItems = [...tmpResult2,...tmpResult]
           console.log(this.sggItems )
         })
@@ -282,7 +262,6 @@ export default {
           console.error("There was an error!", error);
         });
     },
-
     // 관리 기관 목록
     getOrgmData() {
       let url =this.$store.state.serverApi + "/admin/organizations";
@@ -316,34 +295,28 @@ export default {
         });
     },
     getRecipientData() {
-      let uri = '';
-      if(this.orgCode == '' && this.partCode == '' && this.statusCode == '' && this.modelName == '') {
-        uri = this.$store.state.serverApi + "/admin/emergencys/out-events?pageIndex=1&recordCountPerPage=100";
-      } else {
-        uri = this.$store.state.serverApi + "/admin/emergencys/out-events?pageIndex=1&recordCountPerPage=100";
-        if(this.orgCode != '') uri += "&orgId=" + this.orgCode;
-        if(this.partCode != '') uri += "&typeCd=" + this.partCode;
-        if(this.statusCode != '') uri += "&stateCd=" + this.statusCode;
-        if(this.modelName != '') uri += "&recipientNm=" + this.modelName;
-
-        var fIdx = uri.indexOf("&", 0);
-        var uriArray = uri.split('');
-        uriArray.splice(fIdx, 1);
-        uri = uriArray.join('');
+      let addrCd = ''
+      let occurStartDate = this.s_date
+      let occurEndDate = this.e_date
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
       }
+      let uri = this.$store.state.serverApi
+      +"/admin/emergencys/out-events?pageIndex=1&recordCountPerPage=100"
+      +"&addrCd="+addrCd
+      +"&orgId="+this.selectedOrgItems
+      +"&recipientNm="+this.selectedRecipientNm
+      +"&occurStartDate="+occurStartDate
+      +"&occurEndDate="+occurEndDate;
+      
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
-            const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
-            const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
-
-            let resData = response.data.data
-            if(resData){
-              this.recipientItems = resData.filter((cd=>{
-                return cd.orgId.match(orgCount) && cd.recipientNm.match(RecCount)
-              }))
-              this.NCount =this.recipientItems.length
-            }else
-              this.recipientItems = []
+            this.recipientItems = response.data.data
+            this.NCount =this.recipientItems.length
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -369,16 +342,9 @@ export default {
       this.sggCd = ''
       this.getOrgmData()
     },
-
     onChangeOrg(event) {
       this.sggCd = event.target.value
       this.getOrgmData()
-    },
-    onChangePart(event) {
-      this.partCode = event.target.value;
-    },
-    onChangeStatus(event) {
-      this.statusCode = event.target.value;
     },
     makeAge(birthDay){
       let tmp1 = this.$moment(birthDay).format('YYYY')
@@ -390,8 +356,6 @@ export default {
         this.errorpopup1 = true
       }else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
-      }else if(this.e_date > moment().format('YYYY-MM-DD')){
-        this.errorpopup3 = true
       }else{
         this.getRecipientData();
       }
