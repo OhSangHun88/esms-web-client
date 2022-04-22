@@ -217,7 +217,73 @@
                     </div>
                 </div>
             </div>
-            <div class="tablist">
+            <div class="tablist" v-if="connectTap===2">
+                <div class="list_top">
+                    <div class="title_area">
+                        <p class="tit">장비상태 정보</p>
+                        <div class="select_area">
+                            <input type="text" name="" id="" :value="connectTap===3?'tablet':connectTap===2?'gateway':'sensors'">
+                        </div>
+                        <div class="toggle_btn">
+                            <button type="button" class="btn on">최신정보</button>
+                            <button type="button" class="btn">직전정보</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="list">
+                    <table>
+                        <colgroup>
+                            <col style="width:12%;">
+                            <col style="width:12%;">
+                            <col style="width:12%;">
+                            <col style="width:12%;">
+                            <col style="width:12%;">
+                            <col style="width:12%;">
+                            <col style="width:12%;">
+                            <col style="width:auto;">
+                        </colgroup>
+                        <thead class="thead htype-01">
+                            <tr>
+                                <th scope="col">통신상태</th>
+                                <th scope="col">전원연결상태</th>
+                                <th scope="col">점검대상여부</th>
+                                <th scope="col">배터리</th>
+                                <th scope="col">Keep-Alive</th>
+                                <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
+                                <th scope="col">상태측정 일시</th>
+                                <th scope="col">서버 보고 일시</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="tbody ">
+                        <table>
+                            <colgroup>
+                                <col style="width:12%;">
+                                <col style="width:12%;">
+                                <col style="width:12%;">
+                                <col style="width:12%;">
+                                <col style="width:12%;">
+                                <col style="width:12%;">
+                                <col style="width:12%;">
+                                <col style="width:auto;">
+                            </colgroup>
+                            <tbody v-if="connectTap===2">
+                                <tr>
+                                    <td>수신</td>
+                                    <td>{{this.getCGatewayData.faultYnNm}}</td>
+                                    <td>{{this.getCGatewayData.powerLinkYn===undefined||this.getCGatewayData.powerLinkYn===null ? '' : this.getCGatewayData.powerLinkYn===1?'연결':'차단'}}</td>
+                                    <td>{{this.getCGatewayData.batteryValue}}</td>
+                                    <td>수신</td>
+                                    <td>{{changeRssi(this.getCGatewayData.rssi)}}</td>
+                                    <td></td>
+                                    <td>{{this.getCGatewayData.incomeDtime}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tablist" v-else>
                 <div class="list_top">
                     <div class="title_area">
                         <p class="tit">장비상태 정보</p>
