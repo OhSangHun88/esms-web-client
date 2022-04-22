@@ -26,12 +26,13 @@
                         <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">순번</th>
-                                <th scope="col">구분</th>
+                                <th scope="col">응급구분</th>
                                 <th scope="col">상태</th>
-                                <th scope="col">테스트모드</th>
-                                <th scope="col">발생일시</th>
-                                <th scope="col">해제일시</th>
-                                <th scope="col">보고일시</th>
+                                <th scope="col">테스트구분</th>
+                                <th scope="col">신호발생일시</th>
+                                <th scope="col">발생보고일시</th>
+                                <th scope="col">신호종료일시</th>
+                                <th scope="col">종료보고일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -45,16 +46,20 @@
                                 <col style="width:auto;">
                                 <col style="width:auto;">
                                 <col style="width:auto;">
+                                <col style="width:auto;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in emergencys" v-bind:key="index">
                                     <td>{{index+1}}</td>
-                                    <td>{{item.signalStateNm}}</td>
                                     <td>{{item.typeNm}}</td>
+                                    <td>{{item.signalStateNm}}</td>
                                     <td>{{!item.testYn ? '실제상황':'테스트'}}</td> 
                                     <td>{{item.occurDtime}}</td>
-                                    <td>{{item.closeDtime}}</td>
                                     <td>{{item.rcvDtime}}</td>
+                                    <td v-if="item.signalStateCd !== 'STE001'">{{item.closeDtime}}</td>
+                                    <td v-else></td>
+                                    <td v-if="item.signalStateCd !== 'STE001'">{{item.updDtime}}</td>
+                                    <td v-else></td>
                                 </tr>   
                                 
                             </tbody>
@@ -82,7 +87,7 @@ import moment from "moment";
    },
   methods: {
     async getEmergencysData(){
-        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/emergencys?pageIndex=1&recordCountPerPage=100&occurStartDate=${this.occurStartDate}&occurEndDate=${this.occurEndDate}`
+        const url  = this.$store.state.serverApi + `/admin/emergencys?recipientId=${this.recipientId}&pageIndex=1&recordCountPerPage=100&occurStartDate=${this.occurStartDate}&occurEndDate=${this.occurEndDate}`
         
         console.log("emergencys is ")
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})

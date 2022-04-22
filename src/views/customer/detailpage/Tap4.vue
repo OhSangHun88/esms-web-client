@@ -11,46 +11,50 @@
                     <div class="title_area">
                         <p class="tit">Tablet PC</p>
                         <div class="toggle_btn">
-                            <button type="button" class="btn on" >기본정보</button>
-                            <button type="button" class="btn" >상세정보</button>
+                            <!-- <button type="button" class="btn on" >기본정보</button>
+                            <button type="button" class="btn" >상세정보</button> -->
                         </div>
                     </div>
                 </div>
                 <div class="list">
                     <table>
                         <colgroup>
-                            <col style="width:20%;">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
+                            <col style="width:16%;">
+                            <col style="width:16%;">
+                            <col style="width:16%;">
+                            <col style="width:16%;">
+                            <col style="width:16%;">
+                            <col style="width:17%;">
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">전화번호</th>
                                 <th scope="col">통신사</th>
                                 <th scope="col">모델</th>
-                                <th scope="col">통신상태</th>
-                                <th scope="col">배터리</th>
+                                <th scope="col">앱버전</th>
+                                <th scope="col">OS버전</th>
+                                <th scope="col">mac address</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody htype-04">
                         <table>
                             <colgroup>
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
+                                <col style="width:16%;">
+                                <col style="width:16%;">
+                                <col style="width:16%;">
+                                <col style="width:16%;">
+                                <col style="width:16%;">
+                                <col style="width:17%;">
                             </colgroup>
                             <tbody>
                                 <tr>
                                     <td>{{changeRecipientPhoneno(this.getCTabletsData.phoneNumber)}}</td>
                                     <td>{{this.getCTabletsData.provider}}</td>
                                     <td>{{this.getCTabletsData.modelNm}}</td>
-                                    <td>{{this.getCTabletsData.gwLinkYnNm}}</td>
-                                    <td>{{this.getCTabletsData.batteryValue}}</td>
+                                    <td>{{this.getCTabletsData.appVersion}}</td>
+                                    <td>{{this.getCTabletsData.osVersion}}</td>
+                                    <td>{{this.getCTabletsData.macAddr}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -229,11 +233,12 @@
                 <div class="list">
                     <table>
                         <colgroup>
-                            <col style="width:16%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
+                            <col style="width:14%;">
+                            <col style="width:14%;">
+                            <col style="width:14%;">
+                            <col style="width:14%;">
+                            <col style="width:14%;">
+                            <col style="width:14%;">
                             <col style="width:auto;">
                         </colgroup>
                         <thead class="thead htype-01">
@@ -243,6 +248,7 @@
                                 <th scope="col">배터리</th>
                                 <th scope="col">Keep-Alive</th>
                                 <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
+                                <th scope="col">상태측정 일시</th>
                                 <th scope="col">서버 보고 일시</th>
                             </tr>
                         </thead>
@@ -250,20 +256,22 @@
                     <div class="tbody ">
                         <table>
                             <colgroup>
-                                <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:16%;">
+                                <col style="width:14%;">
+                                <col style="width:14%;">
+                                <col style="width:14%;">
+                                <col style="width:14%;">
+                                <col style="width:14%;">
+                                <col style="width:14%;">
                                 <col style="width:auto;">
                             </colgroup>
                             <tbody v-if="connectTap===3">
                                 <tr>
                                     <td>{{!this.getCTabletsData.gwLinkYnNm? '': this.getCTabletsData.gwLinkYnNm}}</td>
-                                    <td>{{!this.getCTabletsData.faultYnNm? '': this.getCTabletsData.faultYnNm}}</td>
+                                    <td>{{this.getCTabletsData.faultYnNm===null||this.getCTabletsData.faultYnNm===undefined||this.getCTabletsData.faultYnNm===''? '': this.getCTabletsData.faultYnNm===0? 'N':'Y'}}</td>
                                     <td>{{this.getCTabletsData.batteryValue}}</td>
                                     <td>수신</td>
                                     <td>{{this.getCTabletsData.tabletStateNm}}</td>
+                                    <td></td>
                                     <td>{{this.getCTabletsData.tabletRptDtime}}</td>
                                 </tr>
                             </tbody>
@@ -274,6 +282,7 @@
                                     <td>{{this.getCGatewayData.batteryValue}}</td>
                                     <td>수신</td>
                                     <td>{{changeRssi(this.getCGatewayData.rssi)}}</td>
+                                    <td></td>
                                     <td>{{this.getCGatewayData.incomeDtime}}</td>
                                 </tr>
                             </tbody>
@@ -284,6 +293,7 @@
                                     <td>{{this.getBSensorsData.batteryValue}}</td>
                                     <td>수신</td>
                                     <td>{{changeRssi(this.getBSensorsData.rssi)}}</td>
+                                    <td></td>
                                     <td>{{this.getBSensorsData.incomeDtime}}</td>
                                 </tr>
                             </tbody>
