@@ -56,8 +56,10 @@
                                     <td>{{!item.testYn ? '실제상황':'테스트'}}</td> 
                                     <td>{{item.occurDtime}}</td>
                                     <td>{{item.closeDtime}}</td>
-                                    <td>{{item.rcvDtime}}</td>
-                                    <td>{{item.updDtime}}</td>
+                                    <td v-if="item.signalStateCd !== 'STE001'">{{item.rcvDtime}}</td>
+                                    <td v-else></td>
+                                    <td v-if="item.signalStateCd !== 'STE001'">{{item.updDtime}}</td>
+                                    <td v-else></td>
                                 </tr>   
                                 
                             </tbody>
@@ -85,7 +87,7 @@ import moment from "moment";
    },
   methods: {
     async getEmergencysData(){
-        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/emergencys?pageIndex=1&recordCountPerPage=100&occurStartDate=${this.occurStartDate}&occurEndDate=${this.occurEndDate}`
+        const url  = this.$store.state.serverApi + `/admin/emergencys?recipientId=${this.recipientId}&pageIndex=1&recordCountPerPage=100&occurStartDate=${this.occurStartDate}&occurEndDate=${this.occurEndDate}`
         
         console.log("emergencys is ")
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
