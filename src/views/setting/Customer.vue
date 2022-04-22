@@ -2,34 +2,6 @@
     <div class="wrap">
         <HeaderComp></HeaderComp>
         <div class="container type-02">
-          <div id="" class="popupLayer" v-if="errorpopup1 == true">
-                <div class="popup_wrap type-02">
-                    <div class="title_wrap">
-                        <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <p class="alert_txt">조회 종료일자가 시작일자보다 빠릅니다<br/>조회일자를 다시 선택하여 주십시오</p>
-                    </div>
-                    <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
-                    </div>
-                </div>
-            </div>
-            <div id="" class="popupLayer" v-if="errorpopup2 == true">
-                <div class="popup_wrap type-02">
-                    <div class="title_wrap">
-                        <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <p class="alert_txt">일주일 단위로 조회 가능합니다<br/>조회일자를 다시 선택하여 주십시오</p>
-                    </div>
-                    <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
-                    </div>
-                </div>
-            </div>
             <div class="list_title_wrap">
                 <span>시스템관리</span>
                 <i class="ico_nav"></i>
@@ -68,7 +40,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input v-model="selectedRecipientNm" type="text" value="">
+                                    <input v-model="selectedUserNm" type="text" value="">
                                 </td>
                             </tr>
                         </tbody>
@@ -177,7 +149,7 @@ export default {
         sido:'', sidoCd:'', sgg:'', sggCd:'',
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[], userItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedUserNm: '',
       }
     },
     created(){
@@ -185,14 +157,11 @@ export default {
       this.getSggData();
       this.getOrgmData();
       this.getUserData();
-      //this.getTorgData();
-      //this.getUserData();
     },
     methods:{
     getSidoData() {
     axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            
             this.sidoItems=[];
             this.sidoItems.push({label: '전체', value: ''});
 
@@ -208,8 +177,6 @@ export default {
             console.error("There was an error!", error);
           });
     },
-
-    // 시/군/구 목록
     // 시/군/구 목록
     getSggData() {
       let url =this.$store.state.serverApi + "/admin/address/sgg";
@@ -278,21 +245,10 @@ export default {
         });
     },
       getUserData() {
-      let uri = this.$store.state.serverApi + "/admin/users";
+      let uri = this.$store.state.serverApi + "/admin/users?pageIndex=1&recordCountPerPage=100"+"&orgId="+this.selectedOrgItems+"&userNm="+this.selectedUserNm;
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
-            const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
-            const sggCount = !this.selectedSggItems? '' : new RegExp(this.selectedSggItems.substring(0, 5), 'gi');
-            const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
             this.userItems = response.data.data
-            let resData = response.data.data
-            if(resData){
-              this.userItems = resData.filter(cd=>{
-                return cd.orgId.match(orgCount) && cd.userNm.match(RecCount)
-              })
-            }else{
-              this.userItems = []
-            }
           })          
           .catch(error => {
             this.errorMessage = error.message;

@@ -40,7 +40,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" value="">
+                                    <input type="text" value="" v-model="selectedOrgNm">
                                 </td>
                             </tr>
                         </tbody>
@@ -59,7 +59,7 @@
                         <colgroup>
                             <col style="width:5%;">
                             <col style="width:7%;">
-                            <col style="width:10%;">
+                            <col style="width:8%;">
                             <col style="width:8%;">
                             <col style="width:10%;">
                             <col style="width:14%;">
@@ -89,7 +89,7 @@
                             <col style="width:5%;">
                             <col style="width:7%;">
                             <col style="width:8%;">
-                            <col style="width:10%;">
+                            <col style="width:8%;">
                             <col style="width:10%;">
                             <col style="width:14%;">
                             <col style="width:auto;">
@@ -152,9 +152,9 @@ export default {
     data(){
       return{
         sido:'', sidoCd:'', sgg:'', sggCd:'',
-        sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[], userItems:[],
+        sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm:'',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedOrgNm:'',
       }
     },
     created(){
@@ -170,7 +170,6 @@ export default {
     getSidoData() {
     axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            
             this.sidoItems=[];
             this.sidoItems.push({label: '전체', value: ''});
 
@@ -186,7 +185,6 @@ export default {
             console.error("There was an error!", error);
           });
     },
-
     // 시/군/구 목록
     getSggData() {
       let url =this.$store.state.serverApi + "/admin/address/sgg";
@@ -212,7 +210,6 @@ export default {
           let tmpResult = tempArr.filter(cd=>{
             return cd.value2 === this.sidoCd
           });
-          
           this.sggItems = [...tmpResult2,...tmpResult]
           console.log(this.sggItems )
         })
@@ -221,7 +218,6 @@ export default {
           console.error("There was an error!", error);
         });
     },
-
     // 관리 기관 목록
     getOrgmData() {
       let url =this.$store.state.serverApi + "/admin/organizations";
@@ -255,31 +251,19 @@ export default {
         });
     },
     getTorgData() {
-      let uri = this.$store.state.serverApi + "/admin/organizations";
+      let addrCd = ''
+      let sgg = this.sggCd.substring(0,5)
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
+      let uri = this.$store.state.serverApi + "/admin/organizations?orgId="+this.selectedOrgItems+"&orgNm="+this.selectedOrgNm+"&sggCd="+sgg;
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
-            const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
-            const sggCount = !this.selectedSggItems.substring(0, 5)? '' : new RegExp(this.selectedSggItems.substring(0, 5), 'gi');
-            const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
-            let resData = response.data.data
-            if(resData){
-              this.TorgItems = resData.filter(cd=>{
-                return cd.addrCd.match(sggCount) && cd.orgId.match(orgCount)
-              })
-            }else{
-              this.TorgItems = []
-            }
-          })          
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-      },
-      getUserData() {
-      let uri = this.$store.state.serverApi + "/admin/users";
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(response => {
-            this.userItems = response.data.data
+            this.TorgItems = response.data.data
           })          
           .catch(error => {
             this.errorMessage = error.message;
@@ -297,7 +281,6 @@ export default {
       this.sggCd = ''
       this.getOrgmData()
     },
-
     onChangeOrg(event) {
       this.sggCd = event.target.value
       this.getOrgmData()
