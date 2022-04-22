@@ -354,9 +354,9 @@ export default {
     manageInquiry() {
       if(this.s_date > this.e_date){
         this.errorpopup1 = true
-      }else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
+      }/*else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
-      }else{
+      }*/else{
         this.getRecipientData();
       }
     },

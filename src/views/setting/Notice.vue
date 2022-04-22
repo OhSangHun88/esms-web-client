@@ -332,11 +332,9 @@ export default {
     manageInquiry() {
       if(this.s_date > this.e_date){
         this.errorpopup1 = true
-      }else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
+      }/*else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
-      }else if(this.e_date > moment().format('YYYY-MM-DD')){
-        this.errorpopup3 = true
-      }else{
+      }*/else{
         this.getnoticeData();
       }
     },
