@@ -26,12 +26,13 @@
                         <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">순번</th>
-                                <th scope="col">구분</th>
+                                <th scope="col">응급구분</th>
                                 <th scope="col">상태</th>
-                                <th scope="col">테스트모드</th>
-                                <th scope="col">발생일시</th>
-                                <th scope="col">해제일시</th>
-                                <th scope="col">보고일시</th>
+                                <th scope="col">테스트여부</th>
+                                <th scope="col">응급발생일시</th>
+                                <th scope="col">발생등록일시</th>
+                                <th scope="col">응급종료일시</th>
+                                <th scope="col">종료등록일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -45,16 +46,18 @@
                                 <col style="width:auto;">
                                 <col style="width:auto;">
                                 <col style="width:auto;">
+                                <col style="width:auto;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in emergencys" v-bind:key="index">
                                     <td>{{index+1}}</td>
-                                    <td>{{item.signalStateNm}}</td>
                                     <td>{{item.typeNm}}</td>
+                                    <td>{{item.signalStateNm}}</td>
                                     <td>{{!item.testYn ? '실제상황':'테스트'}}</td> 
                                     <td>{{item.occurDtime}}</td>
                                     <td>{{item.closeDtime}}</td>
                                     <td>{{item.rcvDtime}}</td>
+                                    <td>{{item.updDtime}}</td>
                                 </tr>   
                                 
                             </tbody>
