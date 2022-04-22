@@ -456,7 +456,15 @@ export default {
     },
     //--------------------------총 설치 가구수--------------------------
     getTotalCount(){
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
+      let addrCd = ''
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?orgId="+this.selectedOrgItems+"&addrCd="+addrCd+"&startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           let totalCData = response.data.data
@@ -473,7 +481,15 @@ export default {
     },
     //--------------------------응급관리요원수--------------------------
     getEMCount(){
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
+      let addrCd = ''
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?orgId="+this.selectedOrgItems+"&addrCd="+addrCd+"&startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           let EMCData = response.data.data
@@ -490,7 +506,15 @@ export default {
     },
     //--------------------------생활관리사수--------------------------
     getLMCount(){
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?startDate="+this.s_date+"&endDate="+this.e_date;
+      let addrCd = ''
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?orgId="+this.selectedOrgItems+"&addrCd="+addrCd+"&startDate="+this.s_date+"&endDate="+this.e_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           let LMCData = response.data.data
@@ -594,9 +618,16 @@ export default {
     },
     async remakeEuData(){
       this.EuchartImage.destroy();
-      let addrCode =  this.sggCd.substring(0,5);
+      let addrCd = ''
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
       this.e_date =  moment(this.s_date).add(6,'days').format('YYYYMMDD')
-      let urlEuChart = this.$store.state.serverApi + "/admin/organizations/stat/oper?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      let urlEuChart = this.$store.state.serverApi + "/admin/organizations/stat/oper?addrCd="+addrCd+"&orgId="+this.selectedOrgItems+"&startDate="+this.s_date+"&endDate="+this.e_date;
       await axios.get(urlEuChart, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           this.EuChartItems=[];     
@@ -826,9 +857,16 @@ export default {
     },
     async remakeEvData(){
       this.EvchartImage1.destroy();  
-      let addrCode =  this.sggCd.substring(0,5);
+      let addrCd = ''
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
       this.e_date = moment(this.s_date).add(6,'days').format('YYYYMMDD')
-      let urlEventStatus = this.$store.state.serverApi + "/admin/organizations/stat/alarm?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      let urlEventStatus = this.$store.state.serverApi + "/admin/organizations/stat/alarm?addrCd="+addrCd+"&orgId="+this.selectedOrgItems+"&startDate="+this.s_date+"&endDate="+this.e_date
       await axios.get(urlEventStatus, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             const EvtempArr = [];
@@ -840,7 +878,7 @@ export default {
                 occurDate: response.data.data[i].occurDate,
               });
             } 
-            
+            console.log(urlEventStatus)
             this.EvChartItems=EvtempArr;
           })
           .catch(error => {
@@ -991,9 +1029,16 @@ export default {
     },
     async remakeBtData(){
       this.BtchartImage.destroy();
-      let addrCode =  this.sggCd.substring(0,5);
+      let addrCd = ''
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
       this.e_date =  moment(this.s_date).add(6,'days').format('YYYYMMDD')
-      let urlBattery =this.$store.state.serverApi + "/admin/organizations/stat/battery?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      let urlBattery =this.$store.state.serverApi + "/admin/organizations/stat/battery?addrCd="+addrCd+"&orgId="+this.selectedOrgItems+"&startDate="+this.s_date+"&endDate="+this.e_date;
       await axios.get(urlBattery, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             const BttempArr = [];
@@ -1252,9 +1297,16 @@ export default {
       this.PwchartImage4.destroy();
       this.PwchartImage5.destroy();
       this.PwchartImage6.destroy();
-      let addrCode =  this.sggCd.substring(0,5);
+      let addrCd = ''
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
       this.e_date =  moment(this.s_date).add(6,'days').format('YYYYMMDD')
-      let urlPower = this.$store.state.serverApi + "/admin/organizations/stat/rssi?startDate="+this.s_date+"&endDate="+this.e_date+"&addrCd="+addrCode;
+      let urlPower = this.$store.state.serverApi + "/admin/organizations/stat/rssi?addrCd="+addrCd+"&orgId="+this.selectedOrgItems+"&startDate="+this.s_date+"&endDate="+this.e_date
       await axios.get(urlPower, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             const PwtempArr = [];

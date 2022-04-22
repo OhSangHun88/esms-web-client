@@ -30,20 +30,6 @@
                     </div>
                 </div>
             </div>
-            <div id="" class="popupLayer" v-if="errorpopup3 == true">
-                <div class="popup_wrap type-02">
-                    <div class="title_wrap">
-                        <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup3 = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <p class="alert_txt">오늘 일자 이후로 선택 불가능 합니다<br/>일자를 다시 선택하여 주십시요</p>
-                   </div>
-                    <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup3 = false">확인</button>
-                    </div>
-                </div>
-            </div>
             <div class="list_title_wrap">
                 <span>이벤트 리포트</span>
                 <i class="ico_nav"></i>
@@ -137,8 +123,8 @@
                         <colgroup>
                             <col style="width:5%;">
                             <col style="width:12%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
+                            <col style="width:5%;">
+                            <col style="width:5%;">
                             <col style="width:auto;">
                             <col style="width:10%;">
                             <col style="width:5%;">
@@ -146,6 +132,7 @@
                             <col style="width:6%;">
                             <col style="width:6%;" v-if="equipList === 'sensor'">
                             <col style="width:6%;">
+                            <col style="width:10%;">
                             <col style="width:10%;">
                         </colgroup>
                         <thead>
@@ -171,8 +158,8 @@
                             <colgroup>
                                 <col style="width:5%;"> <!--순번-->
                                 <col style="width:12%;"> <!--순번-->
-                                <col style="width:6%;"> <!--이름-->
-                                <col style="width:6%;"> <!--나이-->
+                                <col style="width:5%;"> <!--이름-->
+                                <col style="width:5%;"> <!--나이-->
                                 <col style="width:auto;"> <!--주소-->
                                 <col style="width:10%;"> <!--대상자 전화번호-->
                                 <col style="width:5%;"> <!--응급관리요원-->
@@ -241,7 +228,6 @@ export default {
     data() {
       return{
         orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-        partCode: '', statusCode: '', modelName: '',
         sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], recipientItems:[],copyRecipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount:0,
@@ -249,7 +235,7 @@ export default {
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
         equipList: 'gateway',
         sensorItems:[], checktypeItems: [],
-        errorpopup1: false, errorpopup2: false, errorpopup3: false,
+        errorpopup1: false, errorpopup2: false,
       }
     },
     created() {
@@ -374,47 +360,48 @@ export default {
     },
     getRecipientData() {
       let uri = '';
-      let addrCode =  this.sggCd.substring(0,5);
-      if(this.equipList == 'gateway'){
-        uri = this.$store.state.serverApi + "/admin/equipment/gateway-checklist?pageIndex=1&recordCountPerPage=100"+"&addrCd="+addrCode;
-      }else if(this.equipList == 'tablet'){
-        uri = this.$store.state.serverApi + "/admin/equipment/tablet-checklist?pageIndex=1&recordCountPerPage=100"+"&addrCd="+addrCode;
+      let addrCode = '';
+      let occurStartDate = this.s_date;
+      let occurEndDate = this.e_date;
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCode = this.sidoCd.substring(0, 2);
+      }else if(this.selectedSggItems != ''){
+        addrCode = this.sggCd.substring(0, 5);
       }else{
-        uri = this.$store.state.serverApi + "/admin/equipment/sensor-checklist?pageIndex=1&recordCountPerPage=100"+"&addrCd="+addrCode;
+        addrCode = '';
       }
-      
+      if(this.equipList == 'gateway' ){
+        uri = this.$store.state.serverApi 
+        +"/admin/equipment/gateway-checklist?pageIndex=1&recordCountPerPage=100"
+        +"&addrCd="+addrCode
+        +"&orgId="+this.selectedOrgItems
+        +"&recipientNm="+this.selectedRecipientNm
+        +"&checkTypeCd="+this.selectedCheckTypeItems
+        +"&occurStartDate="+occurStartDate
+        +"&occurEndDate="+occurEndDate;
+      }else if(this.equipList == 'tablet'){
+        uri = this.$store.state.serverApi 
+        +"/admin/equipment/tablet-checklist?pageIndex=1&recordCountPerPage=100"
+        +"&addrCd="+addrCode
+        +"&orgId="+this.selectedOrgItems
+        +"&recipientNm="+this.selectedRecipientNm
+        +"&checkTypeCd="+this.selectedCheckTypeItems
+        +"&occurStartDate="+occurStartDate
+        +"&occurEndDate="+occurEndDate;
+      }else{
+        uri = this.$store.state.serverApi 
+        +"/admin/equipment/sensor-checklist?pageIndex=1&recordCountPerPage=100"
+        +"&addrCd="+addrCode
+        +"&orgId="+this.selectedOrgItems
+        +"&recipientNm="+this.selectedRecipientNm
+        +"&checkTypeCd="+this.selectedCheckTypeItems
+        +"&occurStartDate="+occurStartDate
+        +"&occurEndDate="+occurEndDate;
+      }
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
-            let resData = response.data.data
-            const OrgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
-            const RecCount = !this.selectedRecipientNm? '' : new RegExp(this.selectedRecipientNm, 'gi');
-            const typeCount = !this.selectedTypeItems? '' : new RegExp(this.selectedTypeItems, 'gi');
-            const checkCount = !this.selectedCheckTypeItems? '' : new RegExp(this.selectedCheckTypeItems, 'gi');
-            if(this.equipList === 'gateway'){
-              this.recipientItems = resData.filter(cd=>{
-                return cd.checkTypeCd.match(checkCount) && cd.recipientNm.match(RecCount) 
-            })
+            this.recipientItems = response.data.data
             this.NCount =this.recipientItems.length
-            }
-            if(this.equipList === 'tablet'){
-              this.recipientItems = resData.filter(cd=>{
-                return cd.checkTypeCd.match(checkCount) && cd.recipientNm.match(RecCount)
-            })
-            this.NCount =this.recipientItems.length
-            }
-            if(this.equipList === 'sensor'){
-              if(this.selectedTypeItems != ''){
-                this.recipientItems = resData.filter(cd=>{
-                  return cd.checkTypeCd.match(checkCount) && cd.recipientNm.match(RecCount) && cd.equipTypeCd.match(typeCount)
-                })
-                this.NCount =this.recipientItems.length
-              }else{
-                this.recipientItems = resData.filter(cd=>{
-                  return cd.checkTypeCd.match(checkCount) && cd.recipientNm.match(RecCount)
-                })
-                this.NCount =this.recipientItems.length
-              }
-            }
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -439,16 +426,9 @@ export default {
       this.sggCd = ''
       this.getOrgmData()
     },
-
     onChangeOrg(event) {
       this.sggCd = event.target.value
       this.getOrgmData()
-    },
-    onChangePart(event) {
-      this.partCode = event.target.value;
-    },
-    onChangeStatus(event) {
-      this.statusCode = event.target.value;
     },
     makeAge(birthDay){
       let tmp1 = this.$moment(birthDay).format('YYYY')
@@ -460,8 +440,6 @@ export default {
         this.errorpopup1 = true
       }else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
-      }else if(this.e_date > moment().format('YYYY-MM-DD')){
-        this.errorpopup3 = true
       }else{
         this.getRecipientData();
       }
