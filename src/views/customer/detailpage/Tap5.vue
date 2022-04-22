@@ -134,7 +134,11 @@
                                     <td> {{locationCode(item.sensorLocCd)}}</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">{{item.sensorDetectCycle}}</td>
                                     <td v-else>실시간</td>
-                                    <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">{{item.gwSendCycle}}</td>
+                                    <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
+                                        <div class="input_area">
+                                            <input type="text" name="" v-model="item.gwSendCycle">분
+                                        </div>
+                                    </td>
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="input_area">
@@ -198,14 +202,15 @@
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td >
                                         <div class="input_area">
-                                            <input type="text" :name="`stateGwSendCycle_${index}`" :id="`stateGwSendCycle_${index}`" v-model="item.stateGwSendCycle" @keyup="limNum" 
-                                            oninput="this.value = this.value.replace(/[^1-4.]/g, '').replace(/(\..*)\./g, '$1');">분
+                                            <input type="text" :name="`stateGwSendCycle_${index}`" :id="`stateGwSendCycle_${index}`" v-model="item.stateGwSendCycle"
+                                            >분
+                                            <!-- oninput="this.value = this.value.replace(/[^1-4.]/g, '').replace(/(\..*)\./g, '$1');" -->
                                         </div>
                                     </td>
                                     <td >
                                         <div class="input_area">
-                                            <input type="text" :name="`stateSvrSendCycle_${index}`" :id="`stateSvrSendCycle_${index}`" v-model="item.stateSvrSendCycle" @keyup="limNum" 
-                                            oninput="this.value = this.value.replace(/[^1-4.]/g, '').replace(/(\..*)\./g, '$1');" >분
+                                            <input type="text" :name="`stateSvrSendCycle_${index}`" :id="`stateSvrSendCycle_${index}`" v-model="item.stateSvrSendCycle"
+                                             >분
                                         </div>
                                     </td>
                                     
@@ -233,10 +238,10 @@ import axios from "axios";
       sensorsDetect:null,
       newGwSendCycle: null,
       getCGatewayData: null,
-      setGatewayStateSendCycle: 120,
+      setGatewayStateSendCycle: 60,
       sensorsState: null,
       resBodyData: null,
-      setactiveUnsensingCycle:120,
+      setactiveUnsensingCycle:60,
      }
    },
    created() {
@@ -247,10 +252,7 @@ import axios from "axios";
   methods: {
     limNum: function(event) {
         this.$emit('input', event.target.value);
-        if(event.target.value<1 ||event.target.value>4){
-            alert('1~4 사이의 값을 입력해 주세요')
-            event.target.value = 1
-        }
+        
         
     },
     
@@ -313,10 +315,10 @@ import axios from "axios";
         .then(res => {
         let tmpData = res.data.data
         console.log(tmpData)
-        tmpData.forEach(element =>{
-            element.stateGwSendCycle = Math.ceil(element.stateGwSendCycle/3600)
-            element.stateSvrSendCycle = Math.ceil(element.stateSvrSendCycle/3600)
-        })
+        // tmpData.forEach(element =>{
+        //     element.stateGwSendCycle = Math.ceil(element.stateGwSendCycle/3600)
+        //     element.stateSvrSendCycle = Math.ceil(element.stateSvrSendCycle/3600)
+        // })
         this.getCSensorsData = tmpData
         console.log("sensors ")
         console.log(this.getCSensorsData)
@@ -336,7 +338,7 @@ import axios from "axios";
         axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let tmpData= res.data.data
-            tmpData.stateSendCycle = Math.ceil(tmpData.stateSendCycle/60)
+            
             this.getCGatewayData = tmpData
             
           })
@@ -361,7 +363,9 @@ import axios from "axios";
             // this.getCSensorsData = res.data.data
             // console.log("sensors ")
             // console.log(this.getCSensorsData)
-
+            if(resData){
+                alert("저장이 완료되었습니다.")
+            }
           })
           .catch(error => {
               console.log("fail to load")
@@ -374,15 +378,17 @@ import axios from "axios";
         console.log(this.getCGatewayData)
         let sensorsId = this.getCGatewayData.gwId
         let newGatewayData = this.getCGatewayData
-        newGatewayData.stateSendCycle = this.setGatewayStateSendCycle*60
+        newGatewayData.stateSendCycle = this.setGatewayStateSendCycle
         const url  = this.$store.state.serverApi + `/admin/gateways/${sensorsId}/state-send-cycle`
         // /sensors/{sensorId}/gw-send-cycle
         axios.patch(url,newGatewayData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
             console.log(resData)
+            if(resData){
+                alert("저장이 완료되었습니다.")
+            }
             
-            if(this.getCGatewayData.stateSendCycle>60) this.getCGatewayData.stateSendCycle= this.getCGatewayData.stateSendCycle/60
           })
           .catch(error => {
               console.log("fail to load")
@@ -398,10 +404,12 @@ import axios from "axios";
             alert('변경하시고자 하는 센서 종류를 선택해주세요')
             return false;
         }
-        
+        //svrSendCycle, gwSendCycle
         console.log(this.getCSensorsData[this.sensorsDetect])
         let sensorsDetectData = this.getCSensorsData[this.sensorsDetect]
         let sensorsId= this.getCSensorsData[this.sensorsDetect].sensorId
+        //sensorsDetectData.svrSendCycle = 
+
         const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
 
         axios.patch(url,sensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -411,6 +419,9 @@ import axios from "axios";
             // this.getCSensorsData = res.data.data
             // console.log("sensors ")
             // console.log(this.getCSensorsData)
+            if(resData){
+                alert("저장이 완료되었습니다.")
+            }
 
           })
           .catch(error => {
@@ -425,14 +436,30 @@ import axios from "axios";
     saveSensorsStateData(){
         //stateGwSendCycle, stateSvrSendCycle
         console.log(this.sensorsState)
+
         if(this.sensorsState===null || this.sensorsState===undefined){
             alert('변경하시고자 하는 센서 종류를 선택해주세요')
             return false;
         }
         console.log(this.getCSensorsData[this.sensorsState])
         let sensorsStateData = this.getCSensorsData[this.sensorsState]
-        sensorsStateData.stateGwSendCycle = sensorsStateData.stateGwSendCycle*3600
-        sensorsStateData.stateSvrSendCycle = sensorsStateData.stateSvrSendCycle*3600
+        sensorsStateData.stateGwSendCycle = sensorsStateData.stateGwSendCycle
+        sensorsStateData.stateSvrSendCycle = sensorsStateData.stateSvrSendCycle
+
+        if(sensorsStateData.stateGwSendCycle !==60 && sensorsStateData.stateGwSendCycle !==120 && sensorsStateData.stateGwSendCycle !==180 && sensorsStateData.stateGwSendCycle !==240){
+            alert('60,120,180,240 중 값을 입력해 주세요')
+            this.getCSensorsData[this.sensorsState].stateGwSendCycle = 60
+            return false;
+        }
+
+        if(sensorsStateData.stateSvrSendCycle !==60 && sensorsStateData.stateSvrSendCycle !==120 && sensorsStateData.stateSvrSendCycle !==180 && sensorsStateData.stateSvrSendCycle !==240){
+            alert('60,120,180,240 중 값을 입력해 주세요')
+            this.getCSensorsData[this.sensorsState].stateSvrSendCycle = 60
+            return false;
+
+        }
+
+
         let sensorsData = sensorsStateData
         let sensorsId= this.getCSensorsData[this.sensorsState].sensorId
         const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
@@ -441,14 +468,13 @@ import axios from "axios";
           .then(res => {
             let resData = res.data.data
             console.log(resData)
+            if(resData){
+                alert("저장이 완료되었습니다.")
+            }
             // this.getCSensorsData = res.data.data
             // console.log("sensors ")
             // console.log(this.getCSensorsData)
-            if(resData){
-                console.log(this.getCSensorsData[this.sensorsState])
-                if(this.getCSensorsData[this.sensorsState].stateGwSendCycle>4)this.getCSensorsData[this.sensorsState].stateGwSendCycle = this.getCSensorsData[this.sensorsState].stateGwSendCycle/3600
-                if(this.getCSensorsData[this.sensorsState].stateSvrSendCycle>4)this.getCSensorsData[this.sensorsState].stateSvrSendCycle = this.getCSensorsData[this.sensorsState].stateSvrSendCycle/3600
-            }
+            
           })
           .catch(error => {
               console.log("fail to load")
