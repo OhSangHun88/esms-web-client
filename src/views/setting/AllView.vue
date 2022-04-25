@@ -210,7 +210,7 @@
 					<a href="#" class="back">마지막 페이지</a>
 				</div>
             </div>
-        </div>
+      </div>
     </div>
 </template>
 <style lang="scss">
@@ -258,7 +258,6 @@ export default {
     getSidoData() {
     axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            
             this.sidoItems=[];
             this.sidoItems.push({label: '전체', value: ''});
 
@@ -274,7 +273,6 @@ export default {
             console.error("There was an error!", error);
           });
     },
-
     // 시/군/구 목록
     getSggData() {
       let url =this.$store.state.serverApi + "/admin/address/sgg";
@@ -307,7 +305,6 @@ export default {
           console.error("There was an error!", error);
         });
     },
-
     // 관리 기관 목록
     getOrgmData() {
       let url =this.$store.state.serverApi + "/admin/organizations";

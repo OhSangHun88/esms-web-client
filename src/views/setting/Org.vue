@@ -71,9 +71,9 @@
                         <thead>
                             <tr>
                                 <th scope="col">순번</th>
+                                <th scope="col">기관ID</th>
                                 <th scope="col">시/도</th>
                                 <th scope="col">시/군/구</th>
-                                <th scope="col">기관ID</th>
                                 <th scope="col">관리기관명</th>
                                 <th scope="col">대표 전화번호</th>
                                 <th scope="col">주소</th>
@@ -100,9 +100,9 @@
                             <tbody >
                                 <tr v-for="(item,index) in TorgItems" v-bind:key="index">
                                     <td><a href="#">{{index+1}}</a></td>
+                                    <td><a href="#">{{item.orgId}}</a></td>
                                     <td><a href="#">{{item.sidoName}}</a></td>
                                     <td><a href="#">{{item.sggName}}</a></td>
-                                    <td><a href="#">{{item.orgId}}</a></td>
                                     <td><a href="#">{{item.orgNm}}</a></td>
                                     <td><a href="#">{{item.phoneNumber}}</a></td>
                                     <td><a href="#">{{item.addr}}</a></td>
