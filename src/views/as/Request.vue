@@ -97,57 +97,89 @@
                         <colgroup>
                             <col style="width:6%;">
                             <col style="width:6%;">
-                            <col style="width:6%;">
                             <col style="width:auto;">
-                            <col style="width:10%;">
                             <col style="width:6%;">
-                            <col style="width:10%;">
-                            <col style="width:11%;">
-                            <col style="width:11%;">
-                            <col style="width:11%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            
                         </colgroup>
                         <thead>
                             <tr>
-                                <th scope="col">순번</th>
-                                <th scope="col">이름</th>
-                                <th scope="col">나이</th>
+                                <th scope="col">AS아이디</th>
+                                <th scope="col">대상자명</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">대상자 전화번호</th>
-                                <th scope="col">생활관리사</th>
-                                <th scope="col">생활관리사 전화번호</th>
-                                <th scope="col">구분</th>
-                                <th scope="col">발생일시</th>
-                                <th scope="col">서버전송일시</th>
+                                <th scope="col">대상자ID</th>
+                                <th scope="col">대상자통합ID</th>
+                                <th scope="col">요청자ID</th>
+                                <th scope="col">요청자명</th>
+                                <th scope="col">요청자전화번호</th>
+                                <th scope="col">장비구분</th>
+                                <th scope="col">센서타입</th>
+                                <th scope="col">맥주소</th>
+                                <th scope="col">시리얼번호</th>
+                                <th scope="col">A/S타입</th>
+                                <th scope="col">A/S상태</th>
+                                <th scope="col">요청사항설명</th>
+                                <th scope="col">요청일시</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <col style="width:6%;">
-                                <col style="width:6%;">
-                                <col style="width:6%;">
-                                <col style="width:auto;">
-                                <col style="width:10%;">
-                                <col style="width:6%;">
-                                <col style="width:10%;">
-                                <col style="width:11%;">
-                                <col style="width:11%;">
-                                <col style="width:11%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:auto;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
                             </colgroup>
                             <tbody >
+                
+                            <!--  
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                     <td><a href="#" >{{index+1}}</a></td>
                                     <td><a href="#" >{{item.recipientNm}}</a></td>
-                                    <td><a href="#">{{makeAge(item.birthday) }}</a></td>
-                                    <td><a href="#" >{{item.addr}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
-                                    <td><a href="#">{{item.managerNm}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.managerMobileNumber)}}</a></td>
-                                    <td><a href="#">{{item.eventDesc}}</a></td>
-                                    <td><a href="#">{{item.occurDtime}}</a></td>
-                                    <td><a href="#">{{item.regDtime}}</a></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>                                
+                             -->
                             </tbody>
                   
                         </table>
