@@ -95,58 +95,58 @@
                 <div class="list result">
                     <table>
                         <colgroup>
+                            <col style="width:4%;">
                             <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:auto;">
+                            <col style="width:8%;">
                             <col style="width:10%;">
-                            <col style="width:6%;">
                             <col style="width:10%;">
-                            <col style="width:11%;">
-                            <col style="width:11%;">
-                            <col style="width:11%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:12%;">
+                            <col style="width:12%;">
+                            
                         </colgroup>
                         <thead>
                             <tr>
+                                <th scope="col"></th>
                                 <th scope="col">순번</th>
-                                <th scope="col">이름</th>
-                                <th scope="col">나이</th>
-                                <th scope="col">주소</th>
-                                <th scope="col">대상자 전화번호</th>
-                                <th scope="col">생활관리사</th>
-                                <th scope="col">생활관리사 전화번호</th>
-                                <th scope="col">구분</th>
-                                <th scope="col">발생일시</th>
-                                <th scope="col">서버전송일시</th>
+                                <th scope="col">지역명</th>
+                                <th scope="col">지역번호</th>
+                                <th scope="col">IP-PBX-화재</th>
+                                <th scope="col">IP-PBX-응급</th>
+                                <th scope="col">시작우편번호</th>
+                                <th scope="col">종료우편번호</th>
+                                <th scope="col">등록일시</th>
+                                <th scope="col">수정일시</th>
+                                
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <col style="width:6%;">
-                                <col style="width:6%;">
-                                <col style="width:6%;">
-                                <col style="width:auto;">
-                                <col style="width:10%;">
-                                <col style="width:6%;">
-                                <col style="width:10%;">
-                                <col style="width:11%;">
-                                <col style="width:11%;">
-                                <col style="width:11%;">
+                            <col style="width:4%;">
+                            <col style="width:6%;">
+                            <col style="width:8%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:12%;">
+                            <col style="width:12%;">
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                    <td><a href="#" >{{index+1}}</a></td>
-                                    <td><a href="#" >{{item.recipientNm}}</a></td>
-                                    <td><a href="#">{{makeAge(item.birthday) }}</a></td>
-                                    <td><a href="#" >{{item.addr}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
-                                    <td><a href="#">{{item.managerNm}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.managerMobileNumber)}}</a></td>
-                                    <td><a href="#">{{item.eventDesc}}</a></td>
-                                    <td><a href="#">{{item.occurDtime}}</a></td>
-                                    <td><a href="#">{{item.regDtime}}</a></td>
+                                    <td><input type="radio" name="ippbxDetect" :id="`radio1_${index}`" v-model="ippbxDetect" :value="index"></td>
+                                    <td><a href="#">{{index+1}}</a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
+                                    <td><a href="#"></a></td>
                                 </tr>                                
                             </tbody>
                   
