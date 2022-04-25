@@ -468,9 +468,9 @@ import axios from "axios";
         let result=''
         switch (input){
           case "LOC001" : result="거실"; break;
-          case "LOC002" : result="거실2" ;break;
+          case "LOC002" : result="거실2";break;
           case "LOC003" : result="안방"; break;
-          case "LOC004" : result="안방2" ;break;
+          case "LOC004" : result="안방2";break;
           case "LOC005" : result="화장실" ;break;
           case "LOC006" : result="화장실2" ;break;
           case "LOC007" : result="현관" ;break;

@@ -154,6 +154,7 @@ import moment from "moment";
       sensorsTmp1Data: [],
       sensorsTmp2Data: [],
       sensorsTmp3Data: [],
+      locCode: '',
       //{text: '전체', value: 1},{text: '전체', value: 5},
      }
    },
@@ -179,6 +180,15 @@ import moment from "moment";
           case 2 : this.selectedValue = 'TPE006'; break;
           case 3 : this.selectedValue = 'TPE008'; break;
           case 4 : this.selectedValue = 'TPE007'; break;
+          case 6 : this.selectedValue = 'TPE005'; break;
+          case 7 : this.selectedValue = 'TPE011'; break;
+          case 8 : this.selectedValue = 'TPE012'; break;
+          case 9 : this.selectedValue = 'TPE002'; break;
+          case 10 : this.selectedValue = 'TPE002'; break;
+          case 11 : this.selectedValue = 'TPE002'; break;
+          case 12 : this.selectedValue = 'TPE004'; break;
+          case 13 : this.selectedValue = 'TPE004'; break;
+          case 14 : this.selectedValue = 'TPE004'; break;
         }
         
         //드롭다운 코드화 및 라벨 설정
@@ -189,24 +199,42 @@ import moment from "moment";
           case 6 : this.labelText="심장박동"; this.codeText=" 회"; break;
           case 7 : this.labelText="호흡"; this.codeText=" 회"; break;
           case 8 : this.labelText="활동량"; this.codeText=" "; break;
-          case 10 : this.labelText="횟수"; this.codeText=" 회"; break;
-          case 11 : this.labelText="횟수"; this.codeText=" 회"; break;
-          case 13 : this.labelText="횟수"; this.codeText=" 회"; break;
-          case 14 : this.labelText="횟수"; this.codeText=" 회"; break;
+          case 9 : this.labelText="횟수"; this.codeText=" 회"; break; // 활동감지기 전체
+          case 10 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC005"; break; //화장실
+          case 11 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC003"; break; //안방
+          case 12 : this.labelText="횟수"; this.codeText=" 회"; break; //도어감지기 전체
+          case 13 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC007"; break; //현관
+          case 14 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC008"; break; break; //뒷문
           
       }
         
         //TPE011
         //&sensorLocCd=${code2}
+
+        /*case "LOC001" : result="거실"; break;
+          case "LOC002" : result="거실2" ;break;
+          case "LOC003" : result="안방"; break;
+          case "LOC004" : result="안방2" ;break;
+          case "LOC005" : result="화장실" ;break;
+          case "LOC006" : result="화장실2" ;break;
+          case "LOC007" : result="현관" ;break;
+          case "LOC008" : result="뒷문" ;break;
+          case "LOC009" : result="주방" ;break;
+          case "LOC010" : result="주방2" ;break;
+          case "LOC011" : result="작은방" ;break;
+          case "LOC012" : result="작은방2" ;break;
+           */
         let url=''
-        if(this.selectedValue==="TPE012"){
+        if(code ===8 ){
             url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/actmeasures?sensorTypeCd=${this.selectedValue}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
+        }else if(code ===10 || code ===11|| code ===13||code ===14){
+            url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${this.selectedValue}&sensorLocCd=${this.locCode}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
         }else{
             url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${this.selectedValue}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
         }
         console.log(code)    
         //const url  = `/admin/recipients/${this.recipientId}/sensors`
-        if(code !== 1 &&code !== 5 &&code !== 9 &&code !== 12){
+        if(code !== 1 &&code !== 5){
             await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
                 let tmpData = []
@@ -240,14 +268,14 @@ import moment from "moment";
                         tmp = res.data.data[i].measureValue.split(',')
                         for(let j=0; j <tmp.length ;j++ ){
                             this.sensorsData.push({
-                            sensorId: tmpData.sensorId,
-                            sensorTypeCd: tmpData.sensorTypeCd,
-                            measureValue: tmp[j] + this.codeText,
-                            testYn: tmpData.testYn,
-                            sensorLocCd: tmpData.sensorLocCd,
-                            measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
-                            regDtime : tmpData.regDtime,
-                        })
+                                sensorId: tmpData.sensorId,
+                                sensorTypeCd: tmpData.sensorTypeCd,
+                                measureValue: tmp[j] + this.codeText,
+                                testYn: tmpData.testYn,
+                                sensorLocCd: tmpData.sensorLocCd,
+                                measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                                regDtime : tmpData.regDtime,
+                            })
                         
                         }
                         
@@ -258,14 +286,14 @@ import moment from "moment";
                         tmp = res.data.data[i].measureValue.split(',')
                         for(let j=0; j <tmp.length ;j++ ){
                             this.sensorsData.push({
-                            sensorId: tmpData.sensorId,
-                            sensorTypeCd: tmpData.sensorTypeCd,
-                            measureValue: tmp[j] + this.codeText,
-                            testYn: tmpData.testYn,
-                            sensorLocCd: tmpData.sensorLocCd,
-                            measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
-                            regDtime : tmpData.regDtime,
-                        })
+                                sensorId: tmpData.sensorId,
+                                sensorTypeCd: tmpData.sensorTypeCd,
+                                measureValue: tmp[j] + this.codeText,
+                                testYn: tmpData.testYn,
+                                sensorLocCd: tmpData.sensorLocCd,
+                                measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                                regDtime : tmpData.regDtime,
+                            })
                         
                         }
                         
