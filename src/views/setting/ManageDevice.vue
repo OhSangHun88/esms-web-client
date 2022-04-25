@@ -55,7 +55,7 @@
                             <th scope="row">장비구분</th>
                             <th scope="row" v-if="equipList === 'sensor'">센서타입</th>
                             <th scope="row">점검구분</th>
-                            <th scope="row">대상자 이름</th>
+                            <th scope="row">대상자명</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -139,7 +139,7 @@
                             <tr>
                                 <th scope="col">순번</th>
                                 <th scope="col">관리기관</th>
-                                <th scope="col">이름</th>
+                                <th scope="col">대상자명</th>
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">대상자 전화번호</th>
@@ -158,7 +158,7 @@
                             <colgroup>
                                 <col style="width:3%;"> <!--순번-->
                                 <col style="width:12%;"> <!--순번-->
-                                <col style="width:4%;"> <!--이름-->
+                                <col style="width:4%;"> <!--대상자명-->
                                 <col style="width:4%;"> <!--나이-->
                                 <col style="width:auto;"> <!--주소-->
                                 <col style="width:10%;"> <!--대상자 전화번호-->
@@ -174,7 +174,7 @@
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                     <td><a href="#">{{index+1}}</a></td> <!--순번-->
                                     <td><a href="#">{{item.orgNm}}</a></td> <!--순번-->
-                                    <td><a href="#">{{item.recipientNm}}</a></td> <!--이름-->
+                                    <td><a href="#">{{item.recipientNm}}</a></td> <!--대상자명-->
                                     <td><a href="#">{{makeAge(item.birthday) }}</a></td> <!--나이-->
                                     <td><a href="#" >{{item.addr}}</a></td> <!--주소-->
                                     <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td> <!--대상자 전화번호-->

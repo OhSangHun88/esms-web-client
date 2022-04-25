@@ -22,7 +22,7 @@
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
-                            <th scope="row">대상자 이름</th>
+                            <th scope="row">대상자명</th>
                             <th scope="row">조치유형</th>
                         </thead>
                         <tbody>
@@ -89,7 +89,7 @@
                         </colgroup>
                         <thead>
                             <tr>
-                                <th scope="col">이름</th>
+                                <th scope="col">대상자명</th>
                                 <th scope="col">대상자 전화번호</th>
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>

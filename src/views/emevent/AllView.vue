@@ -51,7 +51,7 @@
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
-                            <th scope="row">대상자 이름</th>
+                            <th scope="row">대상자명</th>
                             <th scope="row">응급구분</th>
                             <th scope="row">응급상태</th>
                         </thead>
@@ -127,7 +127,7 @@
                             <tr>
                                 <th scope="col">순번</th>
                                 <th scope="col">관리기관</th>
-                                <th scope="col">이름</th>
+                                <th scope="col">대상자명</th>
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">대상자 전화번호</th>
