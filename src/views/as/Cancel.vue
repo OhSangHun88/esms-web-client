@@ -31,9 +31,9 @@
                 </div>
             </div>
             <div class="list_title_wrap">
-                <span>시스템관리</span>
+                <span>A/S 관리</span>
                 <i class="ico_nav"></i>
-                <span class="on">IP-PBX 관리</span>
+                <span class="on">A/S 취소</span>
             </div>
             <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
                 <div class="table_wrap">
@@ -184,7 +184,7 @@ import moment from "moment";
 import HeaderComp from "../pages/HeaderComp.vue";
 
 export default {
-    name: 'Ippbx',
+    name: 'ActivityDetection',
     components :{
       HeaderComp
     },

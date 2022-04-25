@@ -82,6 +82,13 @@ const SettingIppbx = () => import('@/views/setting/Ippbx')
 const SettingManageDevice = () => import('@/views/setting/ManageDevice')
 const SettingNotice = () => import('@/views/setting/Notice')
 
+//AS
+const AsAllView = () => import('@/views/as/AllView')
+const SettingAsRequest = () => import('@/views/as/Request')
+const SettingAsConfirm = () => import('@/views/as/Confirm')
+const SettingAsCancel = () => import('@/views/as/Cancel')
+const SettingAsComplete = () => import('@/views/as/Complete')
+
 Vue.use(Router)
 
 export default new Router({
@@ -187,6 +194,41 @@ function configRoutes () {
               path: 'modals',
               name: 'Modals',
               component: Modals
+            }
+          ]
+        },
+        {
+          path: 'as',
+          redirect: '/as/allView',
+          name: 'As',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'allView',
+              name: 'AllView',
+              component: AsAllView
+            },
+            {
+              path: 'request',
+              name: 'Request',
+              component: SettingAsRequest
+            },
+            {
+              path: 'confirm',
+              name: 'Confirm',
+              component: SettingAsConfirm
+            },
+            {
+              path: 'cancel',
+              name: 'Cancel',
+              component: SettingAsCancel
+            },
+            {
+              path: 'complete',
+              name: 'Complete',
+              component: SettingAsComplete
             }
           ]
         },

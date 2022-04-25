@@ -36,14 +36,12 @@
           </ul>
         </li>
         <li class="drop">
-          <a href="#"><router-link to="" ><i class="ico-5"></i>A/S관리</router-link></a>
+          <a href="#"><router-link to="/as/allView" ><i class="ico-5"></i>A/S관리</router-link></a>
           <ul class="sub_menu">
-            <li><a href="#">A/S 현황</a></li>
-            <li><a href="#">A/S 접수 요청</a></li>
-            <li><a href="#">장비 입고</a></li>
-            <li><a href="#">A/S 완료</a></li>
-            <li><a href="#">장비 배송</a></li>
-            <li><a href="#">A/S 접수 취소</a></li>
+            <li><a href="#"><router-link to ="/as/Request">A/S 요청</router-link></a></li>
+            <li><a href="#"><router-link to ="/as/Confirm">A/S 접수</router-link></a></li>
+            <li><a href="#"><router-link to ="/as/Cancel">A/S 취소</router-link></a></li>
+            <li><a href="#"><router-link to ="/as/Complete">A/S 완료</router-link></a></li>
           </ul>
         </li>
       </ul>
