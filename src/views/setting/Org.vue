@@ -264,6 +264,7 @@ export default {
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.TorgItems = response.data.data
+            console.log("URI ==> "+uri)
           })          
           .catch(error => {
             this.errorMessage = error.message;

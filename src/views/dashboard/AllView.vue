@@ -325,8 +325,6 @@ export default {
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.getTotalCount();
-    this.getEMCount();
-    this.getLMCount();
     this.ASs_date = this.s_date;
     this.ASe_date = this.e_date;
     this.ASs_date=moment().subtract(999, 'days').format('YYYY-MM-DD');
@@ -455,59 +453,19 @@ export default {
         .then(response => {
           let totalCData = response.data.data
           let totalCArrToString = ''
+          let EMCArrToString = ''
+          let LMCArrToString = ''
           totalCArrToString = totalCData.filter(cd=>{
             return cd.typeCd ==="1"
           })
-          this.setCount =totalCArrToString[0].typeCnt
-        })
-        .catch(error => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-    },
-    //--------------------------응급관리요원수--------------------------
-    getEMCount(){
-      let addrCd = ''
-      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
-        addrCd = this.sidoCd.substring(0,2)
-      }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
-      }else{
-        addrCd = ''
-      }
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?orgId="+this.selectedOrgItems+"&addrCd="+addrCd+"&startDate="+this.s_date+"&endDate="+this.e_date;
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-        .then(response => {
-          let EMCData = response.data.data
-          let EMCArrToString = ''
-          EMCArrToString = EMCData.filter(cd=>{
+          EMCArrToString = totalCData.filter(cd=>{
             return cd.typeCd ==="2"
           })
-          this.setEMCount =EMCArrToString[0].typeCnt
-        })
-        .catch(error => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-    },
-    //--------------------------생활관리사수--------------------------
-    getLMCount(){
-      let addrCd = ''
-      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
-        addrCd = this.sidoCd.substring(0,2)
-      }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
-      }else{
-        addrCd = ''
-      }
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?orgId="+this.selectedOrgItems+"&addrCd="+addrCd+"&startDate="+this.s_date+"&endDate="+this.e_date;
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-        .then(response => {
-          let LMCData = response.data.data
-          let LMCArrToString = ''
-          LMCArrToString = LMCData.filter(cd=>{
+          LMCArrToString = totalCData.filter(cd=>{
             return cd.typeCd ==="3"
           })
+          this.setCount =totalCArrToString[0].typeCnt
+          this.setEMCount =EMCArrToString[0].typeCnt
           this.setLMCount =LMCArrToString[0].typeCnt
         })
         .catch(error => {

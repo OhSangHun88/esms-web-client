@@ -134,7 +134,6 @@ export default {
           .then(response => {
             this.logItems = response.data.data
           })          
-          console.log("=====1 ok")
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
@@ -144,12 +143,10 @@ export default {
       let uri = this.$store.state.serverApi + "/admin/logs/equipments?startDate="+this.s_date+"&endDate="+this.e_date;;
       if(this.tabletId != '') uri+="&tabletId=" + this.tabletId;
       if(this.recipientId != '') uri+="&recipientId=" + this.recipientId;
-        console.log("=======2 ok")
         axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.comLogItems = response.data.data
           })
-          
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);

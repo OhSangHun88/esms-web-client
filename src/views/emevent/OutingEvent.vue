@@ -305,14 +305,19 @@ export default {
       }else{
         addrCd = ''
       }
-      let uri = this.$store.state.serverApi
+      let uri = ''
+      //uri = this.$store.state.serverApi+"/admin/emergencys/out-events?pageIndex=1&recordCountPerPage=100";
+      //if(this.selectedSidoItems != '' || this.selectedRecipientNm != '' || this.selectedOrgItems != ''){
+      uri = this.$store.state.serverApi
       +"/admin/emergencys/out-events?pageIndex=1&recordCountPerPage=100"
       +"&addrCd="+addrCd
       +"&orgId="+this.selectedOrgItems
       +"&recipientNm="+this.selectedRecipientNm
       +"&occurStartDate="+occurStartDate
       +"&occurEndDate="+occurEndDate;
-      
+      console.log("this uri = "+uri)
+      //}
+      console.log(uri)
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.recipientItems = response.data.data
