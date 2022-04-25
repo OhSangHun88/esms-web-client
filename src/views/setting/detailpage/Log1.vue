@@ -1,8 +1,8 @@
 <template>
     <div class="wrap">
-        <HeaderComp></HeaderComp>
+
                 <div class="result_txt">
-                    <p>조회결과 : <strong>235</strong>건</p>
+                    <p>조회결과 : <strong class="num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
                 </div>
                 <div class="list result"><!-- 로그 선택시 -->
                     <table>
@@ -74,21 +74,23 @@
 @import '../../../assets/scss/common.css';
 @import '../../../assets/scss/sub.css';
 </style>
+
 <script>
 
 export default {
     name: 'Log1',
+
     props:{
-        logItems: String,
+        logItems: Array,
         s_date: String,
-        e_date: String
+        e_date: String,
+        NCount: Number,
     },
     data(){
       return{
         tabletId: '',
         isTablet: false, isCustomer: false,
         isLog: true,
-        logItems: [], 
       }
     },
 }

@@ -1,8 +1,8 @@
 <template>
     <div class="wrap">
-        <HeaderComp></HeaderComp>
+
                 <div class="result_txt">
-                    <p>조회결과 : <strong>235</strong>건</p>
+                    <p>조회결과 : <strong class="num">{{!this.ENCount? 0 : this.ENCount}}</strong>건</p>
                 </div>
                 <div class="list result"><!-- 통신로그 선택시 -->
                     <table>
@@ -70,22 +70,23 @@
 @import '../../../assets/scss/common.css';
 @import '../../../assets/scss/sub.css';
 </style>
+
 <script>
-import axios from "axios";
 
 export default {
     name: 'Log2',
+
     props:{
-        comLogItems: String,
+        comLogItems: Array,
         s_date: String,
-        e_date: String
+        e_date: String,
+        ENCount: Number,
     },
     data(){
       return{
         tabletId: '',recipientId:'',
         isTablet: false, isCustomer: false,
         isComLog: false,
-        comLogItems: [],
       }
     },
 }

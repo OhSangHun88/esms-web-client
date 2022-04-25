@@ -177,7 +177,7 @@
                                   <td><a href="#">{{item.orgNm}}</a></td> <!--순번-->
                                   <td><a href="#">{{item.recipientNm}}</a></td> <!--이름-->
                                   <td><a href="#"></a></td> <!--나이-->
-                                  <td><a href="#" ></a></td> <!--주소-->
+                                  <td><a href="#"></a></td> <!--주소-->
                                   <td><a href="#"></a></td> <!--대상자 전화번호-->
                                   <td><a href="#"></a></td> <!--응급관리요원-->
                                   <td><a href="#"></a></td> <!--응급관리요원 전화번호-->

@@ -35,7 +35,7 @@
                 <i class="ico_nav"></i>
                 <span class="on">로그 관리</span>
             </div>
-            <div class="box_search_wrap add_btn box_style">
+            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
                 <div class="table_wrap type-02">
                     <table>
                         <colgroup>
@@ -58,10 +58,10 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="text" value="">
+                                    <input type="text" value="" v-model="selectedtabletId">
                                 </td>
                                 <td>
-                                    <input type="text" value="">
+                                    <input type="text" value="" v-model="selectedrecipientId">
                                 </td>
                                 <td>
                                     <div class="date_warp">
@@ -83,8 +83,8 @@
             </div>
             <div class="one_box box_style">
                 <div class="list result"><!-- 로그 선택시 -->
-                    <log1  :logItems="this.logItems" v-if="this.logtoggle===1"></log1>
-                    <log2  :comLogItems="this.comLogItems" v-if="this.logtoggle===2"></log2>
+                    <log1 :NCount="this.NCount" :logItems="this.logItems" v-if="this.logtoggle===1"></log1>
+                    <log2 :ENCount="this.ENCount" :comLogItems="this.comLogItems" v-if="this.logtoggle===2"></log2>
                 </div>
             </div>
         </div>
@@ -114,7 +114,8 @@ export default {
         isTablet: false, isCustomer: false,
         isLog: true, isComLog: false,
         logItems: [], comLogItems: [],
-        logtoggle: 1,
+        logtoggle: 1, selectedtabletId: '', selectedrecipientId: '',
+        NCount:0, ENCount:0,
         errorpopup1: false, errorpopup2: false, 
       }
     },
@@ -123,9 +124,6 @@ export default {
       this.e_date=moment().format('YYYY-MM-DD');
       this.getLogData();
       this.getEquLogData();
-      //this.getLogData();
-      //this.EquLogData();
-      //this.getEquLogData();
     },
     methods:{
       getLogData() {
@@ -133,6 +131,7 @@ export default {
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.logItems = response.data.data
+            this.NCount =this.logItems.length
           })          
           .catch(error => {
             this.errorMessage = error.message;
@@ -141,11 +140,12 @@ export default {
       },
       getEquLogData() {
       let uri = this.$store.state.serverApi + "/admin/logs/equipments?startDate="+this.s_date+"&endDate="+this.e_date;;
-      if(this.tabletId != '') uri+="&tabletId=" + this.tabletId;
-      if(this.recipientId != '') uri+="&recipientId=" + this.recipientId;
+      if(this.selectedtabletId != '') uri+="&tabletId=" + this.selectedtabletId;
+      if(this.selectedrecipientId != '') uri+="&recipientId=" + this.selectedrecipientId;
         axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.comLogItems = response.data.data
+            this.ENCount =this.comLogItems.length
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -156,11 +156,13 @@ export default {
       let optionValue = event.target.value;
       switch (optionValue) {
         case "1":
+          this.logtoggle=1
           this.isLog=true; this.isComLog=false;
           this.isTablet=false; this.isCustomer=false;
           this.getLogData();
           break;
         case "2":
+          this.logtoggle=2
           this.isLog=false; this.isComLog=true;
           this.isTablet=true; this.isCustomer=true;
           this.getEquLogData();
