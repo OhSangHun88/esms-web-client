@@ -251,7 +251,7 @@
                                 <th scope="col">Keep-Alive</th>
                                 <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
                                 <th scope="col">상태측정 일시</th>
-                                <th scope="col">서버 보고 일시</th>
+                                <th scope="col">서버 등록 일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -315,7 +315,7 @@
                                 <th scope="col">Keep-Alive</th>
                                 <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
                                 <th scope="col">상태측정 일시</th>
-                                <th scope="col">서버 보고 일시</th>
+                                <th scope="col">서버 등록 일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -337,8 +337,8 @@
                                     <td>{{this.getCTabletsData.batteryValue}}</td>
                                     <td>수신</td>
                                     <td>{{this.getCTabletsData.tabletStateNm}}</td>
-                                    <td></td>
-                                    <td>{{this.getCTabletsData.tabletRptDtime}}</td>
+                                    <td>{{this.getCTabletsData.stateMeasureDtime}}</td>
+                                    <td>{{this.getCTabletsData.regDtime}}</td>
                                 </tr>
                             </tbody>
                             <tbody v-if="connectTap===2">
