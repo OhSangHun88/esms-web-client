@@ -30,20 +30,6 @@
                     </div>
                 </div>
             </div>
-            <div id="" class="popupLayer" v-if="errorpopup3 == true">
-                <div class="popup_wrap type-02">
-                    <div class="title_wrap">
-                        <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup3 = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <p class="alert_txt">오늘 일자 이후로 선택 불가능 합니다<br/>일자를 다시 선택하여 주십시요</p>
-                   </div>
-                    <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup3 = false">확인</button>
-                    </div>
-                </div>
-            </div>
             <div class="list_title_wrap">
                 <span>시스템관리</span>
                 <i class="ico_nav"></i>
@@ -202,7 +188,7 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[],
         orgSido:'', orgSgg:'', orgCode:'',selectedOrgItems:'', selectedSidoItems:'', selectedSggItems:'', selectedRegId: '',
         NCount: 0,
-        errorpopup1: false, errorpopup2: false, errorpopup3: false,
+        errorpopup1: false, errorpopup2: false,
       }
     },
     created(){
@@ -239,16 +225,16 @@ export default {
 
     // 시/군/구 목록
     getSggData() {
-      let url =this.$store.state.serverApi + "/admin/address/sgg";
+      let uri =this.$store.state.serverApi + "/admin/address/sgg";
       if(this.sidoCd != ''){
-        url += "?sidoCd="+this.sidoCd;
+        uri += "?sidoCd="+this.sidoCd;
       }else{
         this.selectedSggItems = ''
         this.sggItems=[];
         this.sggItems.push({label: '전체', value: ''});
         return ; 
       }
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+      axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           const tempArr = [{label: '전체', value: ''}];
           let tmpResult2 = [{label: '전체', value: ''}];
@@ -275,17 +261,17 @@ export default {
     // 관리 기관 목록
 
     getOrgmData() {
-      let url =this.$store.state.serverApi + "/admin/organizations";
+      let uri =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
         let sggCode = this.sggCd.substring(0, 5);
-        url += "?sggCd="+sggCode;
+        uri += "?sggCd="+sggCode;
       }else{
         this.selectedOrgItems = ''
         this.orgmItems=[];
         this.orgmItems.push({label: '전체', value: ''});
         return ; 
       }
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+      axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           const tmpArr = [{label: '전체', value: ''}];
           let tmpResult2 = [{label: '전체', value: ''}];
@@ -305,20 +291,25 @@ export default {
           console.error("There was an error!", error);
         });
     },
-    
       getnoticeData(){
-      let url = this.$store.state.serverApi +"/admin/notices?startDate="+this.s_date+"&endDate="+this.e_date;
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+      let addrCd = ''
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
+      let uri = this.$store.state.serverApi 
+      +"/admin/notices?pageIndex=1&recordCountPerPage=100"
+      +"&startDate="+this.s_date
+      +"&endDate="+this.e_date
+
+      axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            let totalCData = response.data.data
-            //const sidoCount = !this.selectedSidoItems? '' : new RegExp(this.selectedSidoItems, 'gi');
-            //const sggCount = !this.selectedSggItems? '' : new RegExp(this.selectedSggItems, 'gi');
-            const orgCount = !this.selectedOrgItems? '' : new RegExp(this.selectedOrgItems, 'gi');
-            const regIdCount = !this.selectedRegId? '' : new RegExp(this.selectedRegId, 'gi');
-            this.noticItems= totalCData.filter((cd=>{
-              return cd.orgId.match(orgCount) && cd.regId.match(regIdCount)
-            }))
+            this.noticItems = response.data.data
             this.NCount =this.noticItems.length
+            console.log(uri)
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -336,7 +327,6 @@ export default {
       this.sggCd = ''
       this.getOrgmData()
     },
-
     onChangeOrg(event) {
       this.sggCd = event.target.value
       this.getOrgmData()
@@ -348,11 +338,9 @@ export default {
     manageInquiry() {
       if(this.s_date > this.e_date){
         this.errorpopup1 = true
-      }else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
+      }/*else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
-      }else if(this.e_date > moment().format('YYYY-MM-DD')){
-        this.errorpopup3 = true
-      }else{
+      }*/else{
         this.getnoticeData();
       }
     },

@@ -77,8 +77,17 @@ const SettingAllView = () => import('@/views/setting/AllView')
 const SettingCustomer = () => import('@/views/setting/Customer')
 const SettingOrg = () => import('@/views/setting/Org')
 const SettingManageLog = () => import('@/views/setting/ManageLog')
+const SettingFirmware = () => import('@/views/setting/Firmware')
+const SettingIppbx = () => import('@/views/setting/Ippbx')
 const SettingManageDevice = () => import('@/views/setting/ManageDevice')
 const SettingNotice = () => import('@/views/setting/Notice')
+
+//AS
+const AsAllView = () => import('@/views/as/AllView')
+const SettingAsRequest = () => import('@/views/as/Request')
+const SettingAsConfirm = () => import('@/views/as/Confirm')
+const SettingAsCancel = () => import('@/views/as/Cancel')
+const SettingAsComplete = () => import('@/views/as/Complete')
 
 Vue.use(Router)
 
@@ -189,6 +198,41 @@ function configRoutes () {
           ]
         },
         {
+          path: 'as',
+          redirect: '/as/allView',
+          name: 'As',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'allView',
+              name: 'AllView',
+              component: AsAllView
+            },
+            {
+              path: 'request',
+              name: 'Request',
+              component: SettingAsRequest
+            },
+            {
+              path: 'confirm',
+              name: 'Confirm',
+              component: SettingAsConfirm
+            },
+            {
+              path: 'cancel',
+              name: 'Cancel',
+              component: SettingAsCancel
+            },
+            {
+              path: 'complete',
+              name: 'Complete',
+              component: SettingAsComplete
+            }
+          ]
+        },
+        {
           path: 'emevent',
           redirect: '/emevent/allView',
           name: 'Emevent',
@@ -250,6 +294,16 @@ function configRoutes () {
               path: 'manageLog',
               name: 'ManageLog',
               component: SettingManageLog
+            },
+            {
+              path: 'ippbx',
+              name: 'Ippbx',
+              component: SettingIppbx
+            },
+            {
+              path: 'firmware',
+              name: 'Firmware',
+              component: SettingFirmware
             },
             {
               path: 'manageDevice',

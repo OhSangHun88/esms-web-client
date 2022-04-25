@@ -88,10 +88,6 @@ export default {
         comLogItems: [],
       }
     },
-    created(){
-      this.getEquLogData();
-    },
-    
 }
 </script>
 <style>

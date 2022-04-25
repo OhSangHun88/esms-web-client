@@ -30,20 +30,6 @@
                     </div>
                 </div>
             </div>
-            <div id="" class="popupLayer" v-if="errorpopup3 == true">
-                <div class="popup_wrap type-02">
-                    <div class="title_wrap">
-                        <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup3 = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <p class="alert_txt">오늘 일자 이후로 선택 불가능 합니다<br/>일자를 다시 선택하여 주십시요</p>
-                   </div>
-                    <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup3 = false">확인</button>
-                    </div>
-                </div>
-            </div>
             <div class="list_title_wrap">
                 <span>시스템관리</span>
                 <i class="ico_nav"></i>
@@ -129,7 +115,7 @@ export default {
         isLog: true, isComLog: false,
         logItems: [], comLogItems: [],
         logtoggle: 1,
-        errorpopup1: false, errorpopup2: false, errorpopup3: false,
+        errorpopup1: false, errorpopup2: false, 
       }
     },
     created(){
@@ -148,7 +134,6 @@ export default {
           .then(response => {
             this.logItems = response.data.data
           })          
-          console.log("=====1 ok")
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
@@ -158,12 +143,10 @@ export default {
       let uri = this.$store.state.serverApi + "/admin/logs/equipments?startDate="+this.s_date+"&endDate="+this.e_date;;
       if(this.tabletId != '') uri+="&tabletId=" + this.tabletId;
       if(this.recipientId != '') uri+="&recipientId=" + this.recipientId;
-        console.log("=======2 ok")
         axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.comLogItems = response.data.data
           })
-          
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
@@ -187,11 +170,9 @@ export default {
       manageInquiry() {
       if(this.s_date > this.e_date){
         this.errorpopup1 = true
-      }else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
+      }/*else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
-      }else if(this.e_date > moment().format('YYYY-MM-DD')){
-        this.errorpopup3 = true
-      }else{
+      }*/else{
       if(this.logtoggle===1){
         this.getLogData();
       } else {

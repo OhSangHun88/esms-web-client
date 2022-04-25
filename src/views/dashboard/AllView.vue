@@ -30,20 +30,6 @@
                     </div>
                 </div>
             </div>
-            <div id="" class="popupLayer" v-if="errorpopup3 == true">
-                <div class="popup_wrap type-02">
-                    <div class="title_wrap">
-                        <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup3 = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <p class="alert_txt">오늘 일자 이후로 선택 불가능 합니다<br/>일자를 다시 선택하여 주십시요</p>
-                   </div>
-                    <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup3 = false">확인</button>
-                    </div>
-                </div>
-            </div>
         <div class="box_wrap" style="height: 134px;">
           <div class="box_search_wrap box_style type_db">
             <table>
@@ -277,7 +263,7 @@ export default {
     selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
     // 날짜
     s_date: null, e_date: null,
-    errorpopup1: false, errorpopup2: false, errorpopup3: false,
+    errorpopup1: false, errorpopup2: false,
     // 설치 가구수, 응급관리요원, 생활 관리사
     setCount: 0, setEMCount: 0, setLMCount: 0,
     // A/S 현황
@@ -339,8 +325,6 @@ export default {
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.getTotalCount();
-    this.getEMCount();
-    this.getLMCount();
     this.ASs_date = this.s_date;
     this.ASe_date = this.e_date;
     this.ASs_date=moment().subtract(999, 'days').format('YYYY-MM-DD');
@@ -469,59 +453,19 @@ export default {
         .then(response => {
           let totalCData = response.data.data
           let totalCArrToString = ''
+          let EMCArrToString = ''
+          let LMCArrToString = ''
           totalCArrToString = totalCData.filter(cd=>{
             return cd.typeCd ==="1"
           })
-          this.setCount =totalCArrToString[0].typeCnt
-        })
-        .catch(error => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-    },
-    //--------------------------응급관리요원수--------------------------
-    getEMCount(){
-      let addrCd = ''
-      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
-        addrCd = this.sidoCd.substring(0,2)
-      }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
-      }else{
-        addrCd = ''
-      }
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?orgId="+this.selectedOrgItems+"&addrCd="+addrCd+"&startDate="+this.s_date+"&endDate="+this.e_date;
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-        .then(response => {
-          let EMCData = response.data.data
-          let EMCArrToString = ''
-          EMCArrToString = EMCData.filter(cd=>{
+          EMCArrToString = totalCData.filter(cd=>{
             return cd.typeCd ==="2"
           })
-          this.setEMCount =EMCArrToString[0].typeCnt
-        })
-        .catch(error => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-    },
-    //--------------------------생활관리사수--------------------------
-    getLMCount(){
-      let addrCd = ''
-      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
-        addrCd = this.sidoCd.substring(0,2)
-      }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
-      }else{
-        addrCd = ''
-      }
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/total?orgId="+this.selectedOrgItems+"&addrCd="+addrCd+"&startDate="+this.s_date+"&endDate="+this.e_date;
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-        .then(response => {
-          let LMCData = response.data.data
-          let LMCArrToString = ''
-          LMCArrToString = LMCData.filter(cd=>{
+          LMCArrToString = totalCData.filter(cd=>{
             return cd.typeCd ==="3"
           })
+          this.setCount =totalCArrToString[0].typeCnt
+          this.setEMCount =EMCArrToString[0].typeCnt
           this.setLMCount =LMCArrToString[0].typeCnt
         })
         .catch(error => {
@@ -1991,11 +1935,9 @@ export default {
     manageInquiry(){
       if(this.s_date > this.e_date){
         this.errorpopup1 = true
-      }else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
+      }/*else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
-      }else if(this.e_date > moment().format('YYYY-MM-DD')){
-        this.errorpopup3 = true
-      }else{
+      }*/else{
       this.remakeEuData()
       this.remakeEvData()
       this.remakeBtData()

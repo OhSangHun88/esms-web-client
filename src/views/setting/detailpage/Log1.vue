@@ -75,7 +75,6 @@
 @import '../../../assets/scss/sub.css';
 </style>
 <script>
-import axios from "axios";
 
 export default {
     name: 'Log1',
@@ -86,17 +85,12 @@ export default {
     },
     data(){
       return{
-        
         tabletId: '',
         isTablet: false, isCustomer: false,
         isLog: true,
         logItems: [], 
       }
     },
-    created(){
-
-    },
-    
 }
 </script>
 <style>
