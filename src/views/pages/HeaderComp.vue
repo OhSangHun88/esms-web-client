@@ -69,7 +69,7 @@ export default {
       alert("로그아웃 되었습니다")
       sessionStorage.setItem("token", null);
       console.log(sessionStorage.getItem("token"));
-      this.$router.push({ path: '../pages/login' });
+      this.$router.push({ name: 'Home' });
     }
   },
 }
