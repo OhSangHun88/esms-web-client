@@ -267,22 +267,22 @@ import axios from "axios";
     locationCode(input){
         let result=''
         switch (input){
-          case "LOC001" : result="거실1"; break;
+          case "LOC001" : result="거실"; break;
           case "LOC002" : result="거실2" ;break;
-          case "LOC003" : result="안방1"; break;
+          case "LOC003" : result="안방"; break;
           case "LOC004" : result="안방2" ;break;
-          case "LOC005" : result="화장실1" ;break;
+          case "LOC005" : result="화장실" ;break;
           case "LOC006" : result="화장실2" ;break;
-          case "LOC007" : result="현관1" ;break;
+          case "LOC007" : result="현관" ;break;
           case "LOC008" : result="현관2" ;break;
-          case "LOC009" : result="주방1" ;break;
+          case "LOC009" : result="주방" ;break;
           case "LOC010" : result="주방2" ;break;
-          case "LOC011" : result="작은방1" ;break;
+          case "LOC011" : result="작은방" ;break;
           case "LOC012" : result="작은방2" ;break;
       }
         return result
     },
-    changeRecipientPhoneno(phone){
+    changeRecipientPhoneno(phone){  
         if(phone){
         let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
         return changeNumber
@@ -408,7 +408,23 @@ import axios from "axios";
         console.log(this.getCSensorsData[this.sensorsDetect])
         let sensorsDetectData = this.getCSensorsData[this.sensorsDetect]
         let sensorsId= this.getCSensorsData[this.sensorsDetect].sensorId
+        
         //sensorsDetectData.svrSendCycle = 
+
+        if(sensorsDetectData.gwSendCycle !=60 && sensorsDetectData.gwSendCycle !=120 && sensorsDetectData.gwSendCycle !=180 && sensorsDetectData.gwSendCycle !=240){
+            alert('60,120,180,240 중 값을 입력해 주세요')
+            console.log("sensorsStateData.stateGwSendCycle")
+            console.log(sensorsDetectData.gwSendCycle)
+            this.getCSensorsData[this.sensorsDetect].gwSendCycle = 60
+            return false;
+        }
+
+        if(sensorsDetectData.svrSendCycle !=60 && sensorsDetectData.svrSendCycle !=120 && sensorsDetectData.svrSendCycle !=180 && sensorsDetectData.svrSendCycle !=240){
+            alert('60,120,180,240 중 값을 입력해 주세요')
+            this.getCSensorsData[this.sensorsDetect].svrSendCycle = 60
+            return false;
+
+        }
 
         const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
 
@@ -446,13 +462,15 @@ import axios from "axios";
         sensorsStateData.stateGwSendCycle = sensorsStateData.stateGwSendCycle
         sensorsStateData.stateSvrSendCycle = sensorsStateData.stateSvrSendCycle
 
-        if(sensorsStateData.stateGwSendCycle !==60 && sensorsStateData.stateGwSendCycle !==120 && sensorsStateData.stateGwSendCycle !==180 && sensorsStateData.stateGwSendCycle !==240){
+        if(sensorsStateData.stateGwSendCycle !=60 && sensorsStateData.stateGwSendCycle !=120 && sensorsStateData.stateGwSendCycle !=180 && sensorsStateData.stateGwSendCycle !=240){
             alert('60,120,180,240 중 값을 입력해 주세요')
+            console.log("sensorsStateData.stateGwSendCycle")
+            console.log(sensorsStateData.stateGwSendCycle)
             this.getCSensorsData[this.sensorsState].stateGwSendCycle = 60
             return false;
         }
 
-        if(sensorsStateData.stateSvrSendCycle !==60 && sensorsStateData.stateSvrSendCycle !==120 && sensorsStateData.stateSvrSendCycle !==180 && sensorsStateData.stateSvrSendCycle !==240){
+        if(sensorsStateData.stateSvrSendCycle !=60 && sensorsStateData.stateSvrSendCycle !=120 && sensorsStateData.stateSvrSendCycle !=180 && sensorsStateData.stateSvrSendCycle !=240){
             alert('60,120,180,240 중 값을 입력해 주세요')
             this.getCSensorsData[this.sensorsState].stateSvrSendCycle = 60
             return false;
