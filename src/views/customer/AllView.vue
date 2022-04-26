@@ -84,7 +84,7 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th scope="col">이름</th>
+                        <th scope="col">대상자 이름</th>
                         <th scope="col">생년월일</th>
                         <th scope="col">나이</th>
                         <th scope="col">성별</th>

@@ -275,7 +275,7 @@
                                     <td>{{this.getCGatewayData.batteryValue}}</td>
                                     <td>수신</td>
                                     <td>{{changeRssi(this.getCGatewayData.rssi)}}</td>
-                                    <td></td>
+                                    <td>{{this.getCGatewayData.stateMeasureDtime}}</td>
                                     <td>{{this.getCGatewayData.incomeDtime}}</td>
                                 </tr>
                             </tbody>
@@ -333,7 +333,7 @@
                             <tbody v-if="connectTap===3">
                                 <tr>
                                     <td>{{!this.getCTabletsData.gwLinkYnNm? '': this.getCTabletsData.gwLinkYnNm}}</td>
-                                    <td>{{this.getCTabletsData.faultYnNm===null||this.getCTabletsData.faultYnNm===undefined||this.getCTabletsData.faultYnNm===''? '': this.getCTabletsData.faultYnNm===0? 'N':'Y'}}</td>
+                                    <td>{{this.getCTabletsData.faultYnNm===null||this.getCTabletsData.faultYnNm===undefined||this.getCTabletsData.faultYnNm===''? '': this.getCTabletsData.faultYnNm===0? '정상':'점검대상'}}</td>
                                     <td>{{this.getCTabletsData.batteryValue}}</td>
                                     <td>수신</td>
                                     <td>{{this.getCTabletsData.tabletStateNm}}</td>
@@ -348,7 +348,7 @@
                                     <td>{{this.getCGatewayData.batteryValue}}</td>
                                     <td>수신</td>
                                     <td>{{changeRssi(this.getCGatewayData.rssi)}}</td>
-                                    <td></td>
+                                    <td>{{this.getCGatewayData.stateMeasureDtime}}</td>
                                     <td>{{this.getCGatewayData.incomeDtime}}</td>
                                 </tr>
                             </tbody>
@@ -359,7 +359,7 @@
                                     <td>{{this.getBSensorsData.batteryValue}}</td>
                                     <td>수신</td>
                                     <td>{{changeRssi(this.getBSensorsData.rssi)}}</td>
-                                    <td></td>
+                                    <td>{{this.getBSensorsData.stateMeasureDtime}}</td>
                                     <td>{{this.getBSensorsData.incomeDtime}}</td>
                                 </tr>
                             </tbody>
@@ -384,8 +384,9 @@ import axios from "axios";
       getCGatewayData: null,
       getCTabletsData: null,
       getBSensorsData: null,
-      
-      
+      beforeVersionSensorsData: null,
+      beforeVersionGatewayData: null,
+      beforeVersionTabletsData: null,
       connectTap: 1,
       sensorsTap: 1,
 
@@ -418,7 +419,8 @@ import axios from "axios";
 
 
     async getCGateway(){
-        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/gateways`
+        
+        const url  = this.$store.state.serverApi + `/admin/gateways/recipient/${this.recipientId}`
         
         
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -449,6 +451,53 @@ import axios from "axios";
             console.error("There was an error!", error);
           });
     },
+    //이전버전 호출
+    async getBeforeVersionSensors(input){
+      const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/states?sensorId=${input}`
+        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.beforeVersionSensorsData = res.data.data
+            console.log("이전버전센서")
+            console.log(this.beforeVersionSensorsData)
+        })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+        });
+    },
+    async getBeforeVersionTablets(){
+        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets/states`
+            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                this.beforeVersionTabletsData = res.data.data
+                console.log("이전버전태블릿")
+                console.log(this.beforeVersionTabletsData)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+        },
+    async getBeforeVersionGateway(){
+        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/gateways/states`
+            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                this.beforeVersionGatewayData = res.data.data
+                console.log("이전버전게이트웨이")
+                console.log(this.beforeVersionGatewayData)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+        },
+
+
+
+
     dataTogle(value){
         switch (value){
           case 1 : this.connectTap=1 ;break;
@@ -508,6 +557,9 @@ import axios from "axios";
     this.getCSensers();
     this.getCGateway();
     this.getCTablets();
+    this.getBeforeVersionSensors(0);
+    this.getBeforeVersionTablets();
+    this.getBeforeVersionGateway();
   }
  }
  </script>
