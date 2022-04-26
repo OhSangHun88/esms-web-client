@@ -1441,7 +1441,7 @@ export default {
             })
             if(gwrqCArrToString.length != ''){
             fgwrqCArrToString = gwrqCArrToString.filter(cd=>{
-              return cd.stateCd === "STE001"
+              return cd.stateCd === "STE005"
             })
             if(fgwrqCArrToString.length != ''){
             this.gwrqCount = fgwrqCArrToString[0].typeCnt
@@ -1456,7 +1456,7 @@ export default {
             })
             if(gwrcCArrToString != ''){
             fgwrcCArrToString = gwrcCArrToString.filter(cd=>{
-              return cd.stateCd === "STE002"
+              return cd.stateCd === "STE006"
             })
             if(fgwrcCArrToString != ''){
             this.gwrcCount = fgwrcCArrToString[0].typeCnt
@@ -1471,7 +1471,7 @@ export default {
             })
             if(gwcpCArrToString != ''){
             fgwcpCArrToString = gwcpCArrToString.filter(cd=>{
-              return cd.stateCd === "STE003"
+              return cd.stateCd === "STE007"
             })
             if(fgwcpCArrToString != ''){
             this.gwcpCount =fgwcpCArrToString[0].typeCnt
@@ -1486,7 +1486,7 @@ export default {
             })
             if(gwcaCArrToString != ''){
             fgwcaCArrToString = gwcaCArrToString.filter(cd=>{
-              return cd.stateCd === "STE004"
+              return cd.stateCd === "STE008"
             })
             if(fgwcaCArrToString != ''){
             this.gwcaCount =fgwcaCArrToString[0].typeCnt

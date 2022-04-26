@@ -127,7 +127,7 @@
                                 <th scope="col">A/S타입</th>
                                 <th scope="col">A/S상태</th>
                                 <th scope="col">요청사항설명</th>
-                                <th scope="col">요청일시</th>
+                                <th scope="col">접수일시</th>
                             </tr>
                         </thead>
                     </table>
