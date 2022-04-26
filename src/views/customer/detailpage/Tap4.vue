@@ -338,7 +338,7 @@
                                     <td>수신</td>
                                     <td>{{this.getCTabletsData.tabletStateNm}}</td>
                                     <td>{{this.getCTabletsData.stateMeasureDtime}}</td>
-                                    <td>{{this.getCTabletsData.regDtime}}</td>
+                                    <td>{{this.getCTabletsData.updDtime}}</td>
                                 </tr>
                             </tbody>
                             <tbody v-if="connectTap===2">
@@ -348,8 +348,8 @@
                                     <td>{{this.getCGatewayData.batteryValue}}</td>
                                     <td>수신</td>
                                     <td>{{changeRssi(this.getCGatewayData.rssi)}}</td>
-                                    <td></td>
-                                    <td>{{this.getCGatewayData.incomeDtime}}</td>
+                                    <td>{{this.getCGatewayData.stateMeasureDtime}}</td>
+                                    <td>{{this.getCGatewayData.updDtime}}</td>
                                 </tr>
                             </tbody>
                             <tbody v-if="connectTap===1">
@@ -359,8 +359,8 @@
                                     <td>{{this.getBSensorsData.batteryValue}}</td>
                                     <td>수신</td>
                                     <td>{{changeRssi(this.getBSensorsData.rssi)}}</td>
-                                    <td></td>
-                                    <td>{{this.getBSensorsData.incomeDtime}}</td>
+                                    <td>{{this.getBSensorsData.stateMeasureDtime}}</td>
+                                    <td>{{this.getBSensorsData.updDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
