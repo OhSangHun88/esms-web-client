@@ -1,6 +1,9 @@
 <template>
     <div >
-        <div class="tabcontent">
+        <div v-if="!this.pending" style="text-align: center;">
+            <img src="../../../assets/images/loading.png"  />
+        </div>
+        <div v-else class="tabcontent">
             <div class="toggle_btn2" style="margin-top : -25px">
                 <button type="button" :class="connectTap===3?'btn on':'btn'" @click="dataTogle(3)" style="font-size: 16px;">태블릿</button>
                 <button type="button" :class="connectTap===2?'btn on':'btn'" @click="dataTogle(2)" style="font-size: 16px;">게이트웨이</button>
@@ -344,7 +347,7 @@
                             
                             <tbody v-if="connectTap===1">
                                 <tr>
-                                    <td>{{this.getBSensorsData.sensorStateNm===null||this.getBSensorsData.sensorStateNm===undefined? '': this.getBSensorsData.sensorStateNm}}</td>
+                                    <td>{{!this.getBSensorsData.sensorStateNm? '': this.getBSensorsData.sensorStateNm}}</td>
                                     <td>{{this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
                                     <td>{{this.getBSensorsData.batteryValue}}</td>
                                     <td>{{this.getBSensorsData.keepAliveRcvYn===1?'정상':this.getBSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
@@ -379,24 +382,26 @@ import axios from "axios";
       beforeVersionTabletsData: null,
       connectTap: 1,
       sensorsTap: 1,
+      tmpIdx: null,
+      pending : false,
 
      }
    },
    created() {
+    this.pending=false;
     this.getCSensers();
     this.getCGateway();
     this.getCTablets();
-    let tmpIdx = this.getCSensorsData[0].sensorId;
+    console.log("getTmpData")
+    this.tmpIdx = this.getCSensorsData[0].sensorId;
     console.log(this.getCSensorsData[0].sensorId);
-    this.getBeforeVersionSensors(tmpIdx);
+    //this.getBeforeVersionSensors(this.tmpIdx);
     this.getBeforeVersionTablets();
     this.getBeforeVersionGateway();
   },
   methods: {
       async getCSensers(){
-      const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30`
-        
-        
+      const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30` 
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.getCSensorsData = res.data.data
@@ -410,19 +415,17 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
+          console.log("pending false")
+          this.pending=true;
+          console.log("pending true")
     },
     getBSensers(input){
         
         this.getBSensorsData = this.getCSensorsData[input]
         console.log(this.getBSensorsData)
     },
-
-
     async getCGateway(){
-        
         const url  = this.$store.state.serverApi + `/admin/gateways/recipient/${this.recipientId}`
-        
-        
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.getCGatewayData = res.data.data
@@ -437,8 +440,6 @@ import axios from "axios";
     },
     async getCTablets(){
       const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets`
-        
-        
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.getCTabletsData = res.data.data
