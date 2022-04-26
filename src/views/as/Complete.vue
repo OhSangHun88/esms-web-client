@@ -95,30 +95,27 @@
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:auto;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
+                            <col style="width:4%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:auto;">
+                              <col style="width:auto;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
                             
                         </colgroup>
                         <thead>
                             <tr>
-                                <th scope="col">AS아이디</th>
+                                <th scope="col">ID</th>
                                 <th scope="col">대상자명</th>
-                                <th scope="col">주소</th>
                                 <th scope="col">대상자 전화번호</th>
                                 <th scope="col">대상자ID</th>
                                 <th scope="col">대상자통합ID</th>
@@ -126,60 +123,52 @@
                                 <th scope="col">요청자명</th>
                                 <th scope="col">요청자전화번호</th>
                                 <th scope="col">장비구분</th>
-                                <th scope="col">센서타입</th>
                                 <th scope="col">맥주소</th>
+                                <th scope="col">시리얼번호</th>
                                 <th scope="col">A/S타입</th>
                                 <th scope="col">A/S상태</th>
                                 <th scope="col">요청사항설명</th>
                                 <th scope="col">요청일시</th>
-                                <th scope="col">완료일시</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody">
                         <table>
                             <colgroup>
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:auto;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
+                              <col style="width:4%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:auto;">
+                              <col style="width:auto;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
+                              <col style="width:6%;">
                             </colgroup>
                             <tbody >
-                
-                            <!--  
-                                <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                    <td><a href="#" >{{index+1}}</a></td>
-                                    <td><a href="#" >{{item.recipientNm}}</a></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>                                
-                             -->
+                              <tr v-for="(item,index) in asRequestData" v-bind:key="index">
+                                  <td><a href="#" >{{item.asId}}</a></td>
+                                  <td><a href="#" >{{item.recipientName}}</a></td>
+                                  <td>{{changeRecipientPhoneno(item.recipientPhone)}}</td>
+                                  <td>{{item.recipientId}}</td>
+                                  <td>{{item.recipientServerId}}</td>
+                                  <td>{{item.requestUserId}}</td>
+                                  <td>{{item.requestUserName}}</td>
+                                  <td>{{changeRecipientPhoneno(item.requestUserPhone)}}</td>
+                                  <td>{{changeEqTypeCode(item.equipTypeCd)}}</td>
+                                  <td>{{item.macAddr}}</td>
+                                  <td>{{item.serialNo}}</td>
+                                  <td>{{changeAsTypeCode(item.asTypeCd)}}</td>
+                                  <td>{{changeAsStateCode(item.asStateCd)}}</td>
+                                  <td>{{item.requestDesc}}</td>
+                                  <td>{{item.updDtime}}</td>
+                              </tr>
                             </tbody>
                   
                         </table>
@@ -397,6 +386,41 @@ export default {
       }*/else{
         this.getRecipientData();
       }
+    },
+    changeRecipientPhoneno(phone){
+      if(phone){
+        let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+        return changeNumber
+      }else{
+        return ''
+      }
+    },
+    changeEqTypeCode(input){
+      let result=''
+      switch (input){
+          case "EQP001" : result='게이트웨이'; break;
+          case "EQP002" : result='태블릿'; break;
+          case "EQP003" : result='센서'; break;
+        }
+        return result
+    },
+    changeAsStateCode(input){
+      let result=''
+      switch (input){
+          case "STE005" : result='AS요청'; break;
+          case "STE006" : result='AS접수'; break;
+          case "STE007" : result='AS완료'; break;
+          case "STE008" : result='AS취소'; break;
+        }
+        return result
+    },
+    changeAsTypeCode(input){
+      let result=''
+      switch (input){
+          case "TPE001" : result='배터리부족'; break;
+          case "TPE002" : result='고장'; break;
+        }
+        return result
     },
     async getAsCompleteList(){
       const url  = this.$store.state.serverApi + `/admin/as/list.do?asStateCd=ste003&pageIndex=1&recordCountPerPage=100`
