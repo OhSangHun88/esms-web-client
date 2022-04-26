@@ -5,10 +5,10 @@
                 <div class="list_top">
                     <div class="date_warp">
                         <div class="customerBts" style="justify-content: flex-start;">
-                            <input type="date" v-model="this.callStartDate"/>
+                            <input type="date" v-model="callStartDate"/>
                             <span class="tilde">~</span>
-                            <input type="date" v-model="this.callEndDate"/>
-                            <button type="button" class="btn">조회</button>
+                            <input type="date" v-model="callEndDate"/>
+                            <button type="button" class="btn" @click="getCall_historysData">조회</button>
                         </div>
                     </div>
                 </div>

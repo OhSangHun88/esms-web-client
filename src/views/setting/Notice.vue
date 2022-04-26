@@ -97,25 +97,25 @@
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:6%;">
+                          <col style="width:6%;">
                             <col style="width:8%;">
                             <col style="width:8%;">
+                            <col style="width:9%;">
+                            <col style="width:8%;">
+                            <col style="width:9%;">
                             <col style="width:3%;">
                             <col style="width:auto;">
-                            <col style="width:8%;">
-                            <col style="width:9%;">
-                            <col style="width:9%;">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th scope="col">순번</th>
                                 <th scope="col">관리기관</th>
                                 <th scope="col">제목</th>
-                                <th scope="col"></th>
-                                <th scope="col">공지내용</th>
                                 <th scope="col">작성자</th>
                                 <th scope="col">등록일시</th>
                                 <th scope="col">수정일시</th>
+                                <th scope="col"></th>
+                                <th scope="col">공지내용</th>
                             </tr>
                         </thead>
                     </table>
@@ -125,22 +125,22 @@
                             <col style="width:6%;">
                             <col style="width:8%;">
                             <col style="width:8%;">
-                            <col style="width:3%;">
-                            <col style="width:auto;">
+                            <col style="width:9%;">
                             <col style="width:8%;">
                             <col style="width:9%;">
-                            <col style="width:9%;">
+                            <col style="width:3%;">
+                            <col style="width:auto;">
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in noticItems" v-bind:key="index">
                                     <td>{{index+1}}</td>
                                     <td>{{item.orgNm}}</td>
                                     <td>{{item.title}}</td>
-                                    <td></td>
-                                    <td>{{item.details}}</td>
                                     <td>{{item.regId}}</td>
                                     <td>{{item.regDtime}}</td>
                                     <td>{{item.updDtime}}</td>
+                                    <td></td>
+                                    <td style="text-align:left">{{item.details}}</td>
                                 </tr>
                               </tbody>
 

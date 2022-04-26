@@ -19,7 +19,7 @@
                   <col style="width:18.17%;">
               </colgroup>
               <thead>
-                  <th scope="row">이름</th>
+                  <th scope="row">대상자 이름</th>
                   <th scope="row">생년월일</th>
                   <th scope="row">나이</th>
                   <th scope="row">주소</th>
@@ -315,7 +315,7 @@ export default {
         const container = document.getElementById("map");
         const mapOptions = {
           center: new kakao.maps.LatLng(33.450701, 126.570667),
-          level: 3
+          level: 5
         }
         let map = new kakao.maps.Map(container, mapOptions)
         let geocoder =  new daum.maps.services.Geocoder();

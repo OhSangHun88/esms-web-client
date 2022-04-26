@@ -4,7 +4,7 @@
       <h1><a href="http://www.ib-care.com//#/dashboard/allView"><img alt="Vue logo" src="../../assets/images/logo_ib.png">IB-Care System</a></h1>
       <div class="util_wrap">
         <div class="user_name">
-          <button type="button" class="btn" @click="logOut"> 로그아웃</button>
+          <button type="button" class="btn form2" @click="logOut"> 로그아웃</button>
           <i class="pf_img" style="background-image: url(../assets/images/img_profile.png)"></i>
           <a href="#" class="name"><em>admin</em> 님</a>
         </div>
