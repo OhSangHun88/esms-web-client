@@ -254,11 +254,11 @@ export default {
       let addrCd = ''
       let sgg = this.sggCd.substring(0,5)
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
-        addrCd = this.sidoCd.substring(0,2)
+        sgg = this.sidoCd.substring(0,2)
       }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
+        sgg = this.sggCd.substring(0,5)
       }else{
-        addrCd = ''
+        sgg = ''
       }
       let uri = this.$store.state.serverApi + "/admin/organizations?orgId="+this.selectedOrgItems+"&orgNm="+this.selectedOrgNm+"&sggCd="+sgg;
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
