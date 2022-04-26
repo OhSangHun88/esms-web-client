@@ -95,7 +95,6 @@
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:4%;">
                             <col style="width:6%;">
                             <col style="width:8%;">
                             <col style="width:10%;">
@@ -109,7 +108,6 @@
                         </colgroup>
                         <thead>
                             <tr>
-                                <th scope="col"></th>
                                 <th scope="col">순번</th>
                                 <th scope="col">지역명</th>
                                 <th scope="col">지역번호</th>
@@ -126,7 +124,6 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
-                            <col style="width:4%;">
                             <col style="width:6%;">
                             <col style="width:8%;">
                             <col style="width:10%;">
@@ -139,14 +136,16 @@
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                    <td><input type="radio" name="ippbxDetect" :id="`radio1_${index}`" v-model="ippbxDetect" :value="index"></td>
-                                    <td><a href="#">{{index+1}}</a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#"></a></td>
-                                    <td><a href="#"></a></td>
+                                    <!-- <td><input type="radio" name="ippbxDetect" :id="`radio1_${index}`" v-model="ippbxDetect" :value="index"></td> -->
+                                    <td>{{index+1}}</td>
+                                    <td>{{item.numberAreaString}}</td>
+                                    <td>{{item.numberArea}}</td>
+                                    <td>{{changeRecipientPhoneno(item.numberFire)}}</td>
+                                    <td>{{changeRecipientPhoneno(item.numberEmg)}}</td>
+                                    <td>{{item.firstZip}}</td>
+                                    <td>{{item.lastZip}}</td>
+                                    <td>{{item.regDtime}}</td>
+                                    <td>{{item.updDtime}}</td>
                                 </tr>                                
                             </tbody>
                   
@@ -311,12 +310,7 @@ export default {
       }
       let uri = ''
         uri = this.$store.state.serverApi
-        +"/admin/emergencys/active-unsensing-events?pageIndex=1&recordCountPerPage=100"
-        +"&addrCd="+addrCd
-        +"&orgId="+this.selectedOrgItems
-        +"&recipientNm="+this.selectedRecipientNm
-        +"&occurStartDate="+occurStartDate
-        +"&occurEndDate="+occurEndDate;
+        +"/admin/ippbx/list.do"
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.recipientItems = response.data.data

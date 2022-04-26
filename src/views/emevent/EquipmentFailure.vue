@@ -172,19 +172,19 @@
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                    <td><a href="#">{{index+1}}</a></td> <!--순번-->
-                                    <td><a href="#">{{item.orgNm}}</a></td> <!--순번-->
-                                    <td><a href="#">{{item.recipientNm}}</a></td> <!--대상자명-->
-                                    <td><a href="#">{{makeAge(item.birthday) }}</a></td> <!--나이-->
-                                    <td><a href="#" >{{item.addr}}</a></td> <!--주소-->
-                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td> <!--대상자 전화번호-->
-                                    <td><a href="#">{{item.relationNm}}</a></td> <!--응급관리요원-->
-                                    <td><a href="#">{{changeRecipientPhoneno(item.relationPhone)}}</a></td> <!--응급관리요원 전화번호-->
-                                    <td><a href="#">{{equipList === 'sensor'? '센서' : item.equipTypeName}}</a></td> <!--장비구분-->
-                                    <td v-if="equipList === 'sensor'"><a href="#">{{item.equipTypeName}}</a></td> <!--센서타입-->
-                                    <td><a href="#">{{item.checkTypeName}}</a></td> <!--점검구분-->
-                                    <td><a href="#">{{item.stateMeasureDtime}}</a></td> <!--상태측정일시-->
-                                    <td><a href="#">{{item.updDtime}}</a></td> <!--서버보고일시-->
+                                    <td>{{index+1}}</td> <!--순번-->
+                                    <td>{{item.orgNm}}</td> <!--순번-->
+                                    <td>{{item.recipientNm}}</td> <!--대상자명-->
+                                    <td>{{makeAge(item.birthday) }}</td> <!--나이-->
+                                    <td>{{item.addr}}</td> <!--주소-->
+                                    <td>{{changeRecipientPhoneno(item.recipientPhoneno)}}</td> <!--대상자 전화번호-->
+                                    <td>{{item.relationNm}}</td> <!--응급관리요원-->
+                                    <td>{{changeRecipientPhoneno(item.relationPhone)}}</td> <!--응급관리요원 전화번호-->
+                                    <td>{{equipList === 'sensor'? '센서' : item.equipTypeName}}</td> <!--장비구분-->
+                                    <td v-if="equipList === 'sensor'">{{item.equipTypeName}}</td> <!--센서타입-->
+                                    <td>{{item.checkTypeName}}</td> <!--점검구분-->
+                                    <td>{{item.stateMeasureDtime}}</td> <!--상태측정일시-->
+                                    <td>{{item.updDtime}}</td> <!--서버보고일시-->
                                 </tr>
                             </tbody>
                

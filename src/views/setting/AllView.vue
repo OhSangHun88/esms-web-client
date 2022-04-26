@@ -139,54 +139,54 @@
                             </colgroup>
                             <tbody v-if="equipList === 'gateway'">
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                  <td><a href="#">{{index+1}}</a></td> <!--순번-->
-                                  <td><a href="#">{{item.orgNm}}</a></td> <!--순번-->
-                                  <td><a href="#">{{item.recipientNm}}</a></td> <!--대상자명-->
-                                  <td><a href="#"></a></td> <!--나이-->
-                                  <td><a href="#"></a></td> <!--주소-->
-                                  <td><a href="#"></a></td> <!--대상자 전화번호-->
-                                  <td><a href="#"></a></td> <!--응급관리요원-->
-                                  <td><a href="#"></a></td> <!--응급관리요원 전화번호-->
-                                  <td><a href="#">GATEWAY</a></td> <!--장비구분-->
-                                  <td><a href="#">{{item.serialNo}}</a></td> <!--시리얼번호-->
-                                  <td><a href="#">{{item.macAddr}}</a></td> <!--MAC Address-->
-                                  <td><a href="#">{{item.gwStateNm}}</a></td> <!--상태구분-->
-                                  <td><a href="#"></a></td> <!--서버보고일시-->
+                                  <td>{{index+1}}</td> <!--순번-->
+                                  <td>{{item.orgNm}}</td> <!--순번-->
+                                  <td>{{item.recipientNm}}</td> <!--대상자명-->
+                                  <td></td> <!--나이-->
+                                  <td></td> <!--주소-->
+                                  <td></td> <!--대상자 전화번호-->
+                                  <td></td> <!--응급관리요원-->
+                                  <td></td> <!--응급관리요원 전화번호-->
+                                  <td>GATEWAY</td> <!--장비구분-->
+                                  <td>{{item.serialNo}}</td> <!--시리얼번호-->
+                                  <td>{{item.macAddr}}</td> <!--MAC Address-->
+                                  <td>{{item.gwStateNm}}</td> <!--상태구분-->
+                                  <td></td> <!--서버보고일시-->
                                 </tr>
                             </tbody>
                             <tbody v-if="equipList === 'tablet'">
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                  <td><a href="#">{{index+1}}</a></td> <!--순번-->
-                                  <td><a href="#">{{item.orgNm}}</a></td> <!--순번-->
-                                  <td><a href="#">{{item.recipientNm}}</a></td> <!--대상자명-->
-                                  <td><a href="#"></a></td> <!--나이-->
-                                  <td><a href="#"></a></td> <!--주소-->
-                                  <td><a href="#"></a></td> <!--대상자 전화번호-->
-                                  <td><a href="#"></a></td> <!--응급관리요원-->
-                                  <td><a href="#"></a></td> <!--응급관리요원 전화번호-->
-                                  <td><a href="#">TABLET</a></td> <!--장비구분-->
-                                  <td><a href="#">{{item.serialNo}}</a></td> <!--시리얼번호-->
-                                  <td><a href="#">{{item.macAddr}}</a></td> <!--MAC Address-->
-                                  <td><a href="#">{{item.tabletStateNm}}</a></td> <!--상태구분-->
-                                  <td><a href="#"></a></td> <!--서버보고일시-->
+                                  <td>{{index+1}}</td> <!--순번-->
+                                  <td>{{item.orgNm}}</td> <!--순번-->
+                                  <td>{{item.recipientNm}}</td> <!--대상자명-->
+                                  <td></td> <!--나이-->
+                                  <td></td> <!--주소-->
+                                  <td></td> <!--대상자 전화번호-->
+                                  <td></td> <!--응급관리요원-->
+                                  <td></td> <!--응급관리요원 전화번호-->
+                                  <td>TABLET</td> <!--장비구분-->
+                                  <td>{{item.serialNo}}</td> <!--시리얼번호-->
+                                  <td>{{item.macAddr}}</td> <!--MAC Address-->
+                                  <td>{{item.tabletStateNm}}</td> <!--상태구분-->
+                                  <td></td> <!--서버보고일시-->
                                 </tr>
                             </tbody>
                             <tbody v-if="equipList === 'sensor'">
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                  <td><a href="#">{{index+1}}</a></td> <!--순번-->
-                                  <td><a href="#">{{item.orgNm}}</a></td> <!--순번-->
-                                  <td><a href="#">{{item.recipientNm}}</a></td> <!--대상자명-->
-                                  <td><a href="#"></a></td> <!--나이-->
-                                  <td><a href="#"></a></td> <!--주소-->
-                                  <td><a href="#"></a></td> <!--대상자 전화번호-->
-                                  <td><a href="#"></a></td> <!--응급관리요원-->
-                                  <td><a href="#"></a></td> <!--응급관리요원 전화번호-->
-                                  <td><a href="#">SENSOR</a></td> <!--장비구분-->
-                                  <td><a href="#">{{item.sensorTypeNm}}</a></td> <!--센서타입-->
-                                  <td><a href="#">{{item.serialNo}}</a></td> <!--시리얼번호-->
-                                  <td><a href="#">{{item.macAddr}}</a></td> <!--MAC Address-->
-                                  <td><a href="#">{{item.sensorStateNm}}</a></td> <!--상태구분-->
-                                  <td><a href="#"></a></td> <!--서버보고일시-->
+                                  <td>{{index+1}}</td> <!--순번-->
+                                  <td>{{item.orgNm}}</td> <!--순번-->
+                                  <td>{{item.recipientNm}}</td> <!--대상자명-->
+                                  <td></td> <!--나이-->
+                                  <td></td> <!--주소-->
+                                  <td></td> <!--대상자 전화번호-->
+                                  <td></td> <!--응급관리요원-->
+                                  <td></td> <!--응급관리요원 전화번호-->
+                                  <td>SENSOR</td> <!--장비구분-->
+                                  <td>{{item.sensorTypeNm}}</td> <!--센서타입-->
+                                  <td>{{item.serialNo}}</td> <!--시리얼번호-->
+                                  <td>{{item.macAddr}}</td> <!--MAC Address-->
+                                  <td>{{item.sensorStateNm}}</td> <!--상태구분-->
+                                  <td></td> <!--서버보고일시-->
                                 </tr>
                             </tbody>
                

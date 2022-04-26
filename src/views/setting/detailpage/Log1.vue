@@ -40,13 +40,13 @@
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in logItems" v-bind:key="index">
-                                    <td><a href="#" >{{index+1}}</a></td>
-                                    <td><a href="#">{{item.userId}}</a></td>
-                                    <td><a href="#">{{item.applicationNm}}</a></td>
-                                    <td><a href="#">{{item.actionDetails}}</a></td>
-                                    <td><a href="#">{{item.accessIp}}</a></td>
-                                    <td><a href="#">{{item.logDetails}}</a></td>
-                                    <td><a href="#">{{item.logDtime}}</a></td>
+                                    <td>{{index+1}}</td>
+                                    <td>{{item.userId}}</td>
+                                    <td>{{item.applicationNm}}</td>
+                                    <td>{{item.actionDetails}}</td>
+                                    <td>{{item.accessIp}}</td>
+                                    <td>{{item.logDetails}}</td>
+                                    <td>{{item.logDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>

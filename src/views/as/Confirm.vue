@@ -228,7 +228,7 @@ export default {
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount: 0,
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
-        errorpopup1: false, errorpopup2: false,
+        errorpopup1: false, errorpopup2: false,asConfirmData: null,
       }
     },
     created() {
@@ -239,6 +239,7 @@ export default {
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.cBirthday=moment().format('YYYY-MM-DD');
+    this.getAsConfirmList();
     },
     
     methods:{
@@ -397,7 +398,21 @@ export default {
         this.getRecipientData();
       }
     },
-    },
+    async getAsConfirmList(){
+        const url  = this.$store.state.serverApi + `/admin/as/list.do?asStateCd=ste002&pageIndex=1&recordCountPerPage=100`
+            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                this.asConfirmData = res.data.data
+                console.log("as 요청")
+                console.log(this.asConfirmData)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+      },
+  },
 }
 </script>
 <style>

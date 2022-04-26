@@ -269,14 +269,14 @@
                             </colgroup>
                             <tbody v-if="connectTap===2">
                                 <tr>
-                                    <td>수신</td>
-                                    <td>{{this.getCGatewayData.faultYnNm}}</td>
+                                    <td>{{!this.getCGatewayData.gwStateNm? '': this.getCGatewayData.gwStateNm}}</td>
                                     <td>{{this.getCGatewayData.powerLinkYn===undefined||this.getCGatewayData.powerLinkYn===null ? '' : this.getCGatewayData.powerLinkYn===1?'연결':'차단'}}</td>
+                                    <td>{{this.getCGatewayData.checkYnCd===null||this.getCGatewayData.checkYnCd===undefined||this.getCGatewayData.checkYnCd===''? '': this.getCGatewayData.checkYnCd===0? '정상':'점검대상'}}</td>
                                     <td>{{this.getCGatewayData.batteryValue}}</td>
-                                    <td>수신</td>
+                                    <td>{{this.getCGatewayData.keepAliveRcvYn===1?'정상':this.getCGatewayData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
                                     <td>{{changeRssi(this.getCGatewayData.rssi)}}</td>
                                     <td>{{this.getCGatewayData.stateMeasureDtime}}</td>
-                                    <td>{{this.getCGatewayData.incomeDtime}}</td>
+                                    <td>{{this.getCGatewayData.updDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -333,34 +333,24 @@
                             <tbody v-if="connectTap===3">
                                 <tr>
                                     <td>{{!this.getCTabletsData.gwLinkYnNm? '': this.getCTabletsData.gwLinkYnNm}}</td>
-                                    <td>{{this.getCTabletsData.faultYnNm===null||this.getCTabletsData.faultYnNm===undefined||this.getCTabletsData.faultYnNm===''? '': this.getCTabletsData.faultYnNm===0? '정상':'점검대상'}}</td>
+                                    <td>{{this.getCTabletsData.checkYnCd===null||this.getCTabletsData.checkYnCd===undefined||this.getCTabletsData.checkYnCd===''? '': this.getCTabletsData.checkYnCd===0? '정상':'점검대상'}}</td>
                                     <td>{{this.getCTabletsData.batteryValue}}</td>
-                                    <td>수신</td>
+                                    <td>{{this.getCTabletsData.keepAliveRcvYn===1?'정상':this.getCTabletsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
                                     <td>{{this.getCTabletsData.tabletStateNm}}</td>
                                     <td>{{this.getCTabletsData.stateMeasureDtime}}</td>
-                                    <td>{{this.getCTabletsData.regDtime}}</td>
+                                    <td>{{this.getCTabletsData.updDtime}}</td>
                                 </tr>
                             </tbody>
-                            <tbody v-if="connectTap===2">
-                                <tr>
-                                    <td>수신</td>
-                                    <td>{{this.getCGatewayData.faultYnNm}}</td>
-                                    <td>{{this.getCGatewayData.batteryValue}}</td>
-                                    <td>수신</td>
-                                    <td>{{changeRssi(this.getCGatewayData.rssi)}}</td>
-                                    <td>{{this.getCGatewayData.stateMeasureDtime}}</td>
-                                    <td>{{this.getCGatewayData.incomeDtime}}</td>
-                                </tr>
-                            </tbody>
+                            
                             <tbody v-if="connectTap===1">
                                 <tr>
-                                    <td>수신</td>
-                                    <td>{{!this.getBSensorsData.faultYnNm? '' : this.getBSensorsData.faultYnNm}}</td>
+                                    <td>{{this.getBSensorsData.sensorStateNm===null||this.getBSensorsData.sensorStateNm===undefined? '': this.getBSensorsData.sensorStateNm}}</td>
+                                    <td>{{this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
                                     <td>{{this.getBSensorsData.batteryValue}}</td>
-                                    <td>수신</td>
+                                    <td>{{this.getBSensorsData.keepAliveRcvYn===1?'정상':this.getBSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
                                     <td>{{changeRssi(this.getBSensorsData.rssi)}}</td>
                                     <td>{{this.getBSensorsData.stateMeasureDtime}}</td>
-                                    <td>{{this.getBSensorsData.incomeDtime}}</td>
+                                    <td>{{this.getBSensorsData.updDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -392,6 +382,16 @@ import axios from "axios";
 
      }
    },
+   created() {
+    this.getCSensers();
+    this.getCGateway();
+    this.getCTablets();
+    let tmpIdx = this.getCSensorsData[0].sensorId;
+    console.log(this.getCSensorsData[0].sensorId);
+    this.getBeforeVersionSensors(tmpIdx);
+    this.getBeforeVersionTablets();
+    this.getBeforeVersionGateway();
+  },
   methods: {
       async getCSensers(){
       const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30`
@@ -453,7 +453,8 @@ import axios from "axios";
     },
     //이전버전 호출
     async getBeforeVersionSensors(input){
-      const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/states?sensorId=${input}`
+        
+      const url  = this.$store.state.serverApi + `/admin/recipients/sensors/statehistory?sensorId=${input}`
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.beforeVersionSensorsData = res.data.data
@@ -479,7 +480,7 @@ import axios from "axios";
                 this.errorMessage = error.message;
                 console.error("There was an error!", error);
             });
-        },
+    },
     async getBeforeVersionGateway(){
         const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/gateways/states`
             await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -493,11 +494,7 @@ import axios from "axios";
                 this.errorMessage = error.message;
                 console.error("There was an error!", error);
             });
-        },
-
-
-
-
+    },  
     dataTogle(value){
         switch (value){
           case 1 : this.connectTap=1 ;break;
@@ -510,7 +507,6 @@ import axios from "axios";
         switch (value){
           case 1 : this.sensorsTap=1 ;break;
           case 2 : this.sensorsTap=2 ;break;
-
       }
     },
     locationCode(input){
@@ -533,10 +529,10 @@ import axios from "axios";
     },
     changeRecipientPhoneno(phone){
         if(phone){
-        let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
-        return changeNumber
+            let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+            return changeNumber
         }else{
-        return ''
+            return ''
         }
     
     },
@@ -553,14 +549,7 @@ import axios from "axios";
     
 
    },
-   created() {
-    this.getCSensers();
-    this.getCGateway();
-    this.getCTablets();
-    this.getBeforeVersionSensors(0);
-    this.getBeforeVersionTablets();
-    this.getBeforeVersionGateway();
-  }
+   
  }
  </script>
 

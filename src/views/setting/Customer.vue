@@ -95,15 +95,15 @@
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in userItems" v-bind:key="index">
-                                    <td><a href="#">{{index+1}}</a></td>
-                                    <td><a href="#">{{item.userId}}</a></td>
-                                    <td><a href="#">{{item.userNm}}</a></td>
-                                    <td><a href="#">{{item.phoneNumber}}</a></td>
-                                    <td><a href="#">{{item.mobileNumber}}</a></td>
-                                    <td><a href="#">{{item.email}}</a></td>
-                                    <td><a href="#">{{item.employStateNm}}</a></td>
-                                    <td><a href="#">{{item.regDtime}}</a></td>
-                                    <td><a href="#">{{item.loginDtime}}</a></td>
+                                    <td>{{index+1}}</td>
+                                    <td>{{item.userId}}</td>
+                                    <td>{{item.userNm}}</td>
+                                    <td>{{item.phoneNumber}}</td>
+                                    <td>{{item.mobileNumber}}</td>
+                                    <td>{{item.email}}</td>
+                                    <td>{{item.employStateNm}}</td>
+                                    <td>{{item.regDtime}}</td>
+                                    <td>{{item.loginDtime}}</td>
                                     
                                 </tr>
                             </tbody>
