@@ -372,12 +372,14 @@ export default {
         +"&recipientNm="+this.selectedRecipientNm
         +"&addrCd="+addrCode
         +"&macAddr="+this.selectedMacAddress
+        +"&stateCd="+this.selectedStatedItems
       }else if(this.equipList == 'tablet'){
         uri = this.$store.state.serverApi 
         +"/admin/equipment/tablet-searchlist?&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
         +"&addrCd="+addrCode
         +"&macAddr="+this.selectedMacAddress
+        +"&stateCd="+this.selectedStatedItems
       }else{
         uri = this.$store.state.serverApi 
         +"/admin/equipment/sensor-searchlist?&orgId="+this.selectedOrgItems
@@ -385,6 +387,7 @@ export default {
         +"&addrCd="+addrCode
         +"&macAddr="+this.selectedMacAddress
         +"&sensorTypeCd="+this.selectedTypeItems
+        +"&stateCd="+this.selectedStatedItems
       }
       console.log(uri)
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
