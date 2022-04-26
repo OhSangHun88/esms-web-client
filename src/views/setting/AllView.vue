@@ -27,8 +27,8 @@
                             <th scope="row">장비구분</th>
                             <th scope="row" v-if="equipList === 'sensor'">센서타입</th>
                             <th scope="row">상태구분</th>
-                            <th scope="row">대상자명</th>
                             <th scope="row">MAC Address</th>
+                            <th scope="row">대상자명</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -65,10 +65,10 @@
                                   </select>
                                 </td>
                                 <td>
-                                    <input type="text" value="" v-model="selectedRecipientNm">
+                                    <input type="text" value="" v-model="selectedMacAddress">
                                 </td>
                                 <td>
-                                    <input type="text" value="" v-model="selectedMacAddress">
+                                    <input type="text" value="" v-model="selectedRecipientNm">
                                 </td>
                             </tr>
                         </tbody>
@@ -115,7 +115,7 @@
                                 <th scope="col">Serial NO</th>
                                 <th scope="col">MAC Address</th>
                                 <th scope="col">상태구분</th>
-                                <th scope="col">서버보고일시</th>
+                                <th scope="col">등록일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -135,23 +135,23 @@
                                 <col style="width:8%;"> <!---시리얼번호-->
                                 <col style="width:8%;"> <!---MAC Address-->
                                 <col style="width:5%;"> <!--상태구분-->
-                                <col style="width:10%;"> <!--서버보고일시-->
+                                <col style="width:10%;"> <!--등록일시-->
                             </colgroup>
                             <tbody v-if="equipList === 'gateway'">
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                   <td>{{index+1}}</td> <!--순번-->
                                   <td>{{item.orgNm}}</td> <!--순번-->
                                   <td>{{item.recipientNm}}</td> <!--대상자명-->
-                                  <td></td> <!--나이-->
-                                  <td></td> <!--주소-->
-                                  <td></td> <!--대상자 전화번호-->
-                                  <td></td> <!--응급관리요원-->
-                                  <td></td> <!--응급관리요원 전화번호-->
-                                  <td>GATEWAY</td> <!--장비구분-->
+                                  <td>{{makeAge(item.birthday)? makeAge(item.birthday): ''}}</td> <!--나이-->
+                                  <td>{{item.addr}}</td> <!--주소-->
+                                  <td>{{changeRecipientPhoneno(item.recipientPhoneno)}}</td> <!--대상자 전화번호-->
+                                  <td>{{item.relationNm}}</td> <!--응급관리요원-->
+                                  <td>{{changeRecipientPhoneno(item.relationPhone)}}</td> <!--응급관리요원 전화번호-->
+                                  <td>{{item.equipTypeName}}</td> <!--장비구분-->
                                   <td>{{item.serialNo}}</td> <!--시리얼번호-->
                                   <td>{{item.macAddr}}</td> <!--MAC Address-->
-                                  <td>{{item.gwStateNm}}</td> <!--상태구분-->
-                                  <td></td> <!--서버보고일시-->
+                                  <td>{{item.stateNm}}</td> <!--상태구분-->
+                                  <td>{{item.regDtime}}</td> <!--등록일시-->
                                 </tr>
                             </tbody>
                             <tbody v-if="equipList === 'tablet'">
@@ -159,16 +159,16 @@
                                   <td>{{index+1}}</td> <!--순번-->
                                   <td>{{item.orgNm}}</td> <!--순번-->
                                   <td>{{item.recipientNm}}</td> <!--대상자명-->
-                                  <td></td> <!--나이-->
-                                  <td></td> <!--주소-->
-                                  <td></td> <!--대상자 전화번호-->
-                                  <td></td> <!--응급관리요원-->
-                                  <td></td> <!--응급관리요원 전화번호-->
-                                  <td>TABLET</td> <!--장비구분-->
+                                  <td>{{makeAge(item.birthday)? makeAge(item.birthday): ''}}</td> <!--나이-->
+                                  <td>{{item.addr}}</td> <!--주소-->
+                                  <td>{{changeRecipientPhoneno(item.recipientPhoneno)}}</td> <!--대상자 전화번호-->
+                                  <td>{{item.relationNm}}</td> <!--응급관리요원-->
+                                  <td>{{changeRecipientPhoneno(item.relationPhone)}}</td> <!--응급관리요원 전화번호-->
+                                  <td>{{item.equipTypeName}}</td> <!--장비구분-->
                                   <td>{{item.serialNo}}</td> <!--시리얼번호-->
                                   <td>{{item.macAddr}}</td> <!--MAC Address-->
-                                  <td>{{item.tabletStateNm}}</td> <!--상태구분-->
-                                  <td></td> <!--서버보고일시-->
+                                  <td>{{item.stateNm}}</td> <!--상태구분-->
+                                  <td>{{item.regDtime}}</td> <!--등록일시-->
                                 </tr>
                             </tbody>
                             <tbody v-if="equipList === 'sensor'">
@@ -176,17 +176,17 @@
                                   <td>{{index+1}}</td> <!--순번-->
                                   <td>{{item.orgNm}}</td> <!--순번-->
                                   <td>{{item.recipientNm}}</td> <!--대상자명-->
-                                  <td></td> <!--나이-->
-                                  <td></td> <!--주소-->
-                                  <td></td> <!--대상자 전화번호-->
-                                  <td></td> <!--응급관리요원-->
-                                  <td></td> <!--응급관리요원 전화번호-->
+                                  <td>{{makeAge(item.birthday)? makeAge(item.birthday): ''}}</td> <!--나이-->
+                                  <td>{{item.addr}}</td> <!--주소-->
+                                  <td>{{changeRecipientPhoneno(item.recipientPhoneno)}}</td> <!--대상자 전화번호-->
+                                  <td>{{item.relationNm}}</td> <!--응급관리요원-->
+                                  <td>{{changeRecipientPhoneno(item.relationPhone)}}</td> <!--응급관리요원 전화번호-->
                                   <td>SENSOR</td> <!--장비구분-->
-                                  <td>{{item.sensorTypeNm}}</td> <!--센서타입-->
+                                  <td>{{item.equipTypeName}}</td> <!--센서타입-->
                                   <td>{{item.serialNo}}</td> <!--시리얼번호-->
                                   <td>{{item.macAddr}}</td> <!--MAC Address-->
-                                  <td>{{item.sensorStateNm}}</td> <!--상태구분-->
-                                  <td></td> <!--서버보고일시-->
+                                  <td>{{item.stateNm}}</td> <!--상태구분-->
+                                  <td>{{item.regDtime}}</td> <!--등록일시-->
                                 </tr>
                             </tbody>
                
@@ -368,26 +368,23 @@ export default {
       }
       if(this.equipList == 'gateway' ){
         uri = this.$store.state.serverApi 
-        +"/admin/gateways?pageIndex=1&recordCountPerPage=100"
-        +"&orgId="+this.selectedOrgItems
-        +"&gwStateCd="+this.selectedStatedItems
-        +"&macAddr="+this.selectedMacAddress
+        +"/admin/equipment/gateway-searchlist?&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
+        +"&addrCd="+addrCode
+        +"&macAddr="+this.selectedMacAddress
       }else if(this.equipList == 'tablet'){
         uri = this.$store.state.serverApi 
-        +"/admin/tablets?pageIndex=1&recordCountPerPage=100"
-        +"&orgId="+this.selectedOrgItems
-        +"&tabletStateCd="+this.selectedStatedItems
-        +"&macAddr="+this.selectedMacAddress
+        +"/admin/equipment/tablet-searchlist?&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
+        +"&addrCd="+addrCode
+        +"&macAddr="+this.selectedMacAddress
       }else{
         uri = this.$store.state.serverApi 
-        +"/admin/sensors?pageIndex=1&recordCountPerPage=100"
-        +"&orgId="+this.selectedOrgItems
-        +"&sensorTypeCd="+this.selectedTypeItems
-        +"&sensorStateCd="+this.selectedStatedItems
-        +"&macAddr="+this.selectedMacAddress
+        +"/admin/equipment/sensor-searchlist?&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
+        +"&addrCd="+addrCode
+        +"&macAddr="+this.selectedMacAddress
+        +"&sensorTypeCd="+this.selectedTypeItems
       }
       console.log(uri)
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})

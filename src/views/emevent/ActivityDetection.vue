@@ -184,32 +184,32 @@ import moment from "moment";
 import HeaderComp from "../pages/HeaderComp.vue";
 
 export default {
-    name: 'ActivityDetection',
-    components :{
-      HeaderComp
-    },
-    data() {
-      return{
-        orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
-        sidoItems:[], sggItems:[], orgmItems:[], recipientItems:[],
-        cBirthday:'', cAddr: '', NCount: 0,
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
-        errorpopup1: false, errorpopup2: false,
-      }
-    },
-    created() {
-      this.getSidoData();
-      this.getSggData();
-      this.getOrgmData();
-      this.getRecipientData();
-      this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
-      this.e_date=moment().format('YYYY-MM-DD');
-      this.cBirthday=moment().format('YYYY-MM-DD');
-    },
-    methods:{
-      // 시/도 목록
-      getSidoData() {
+  name: 'ActivityDetection',
+  components :{
+    HeaderComp
+  },
+  data() {
+    return{
+      orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
+      selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
+      sidoItems:[], sggItems:[], orgmItems:[], recipientItems:[],
+      cBirthday:'', cAddr: '', NCount: 0,
+      selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
+      errorpopup1: false, errorpopup2: false,
+    }
+  },
+  created() {
+    this.getSidoData();
+    this.getSggData();
+    this.getOrgmData();
+    this.getRecipientData();
+    this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
+    this.e_date=moment().format('YYYY-MM-DD');
+    this.cBirthday=moment().format('YYYY-MM-DD');
+  },
+  methods:{
+    // 시/도 목록
+    getSidoData() {
       axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           this.sidoItems=[];
@@ -225,34 +225,34 @@ export default {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
-      },
-      // 시/군/구 목록
-      getSggData() {
-        let url =this.$store.state.serverApi + "/admin/address/sgg";
-        if(this.sidoCd != ''){
-          url += "?sidoCd="+this.sidoCd;
-        }else{
-          this.selectedSggItems = ''
-          this.sggItems=[];
-          this.sggItems.push({label: '전체', value: ''});
-          return ; 
-        }
-        axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-           const tempArr = [{label: '전체', value: ''}];
-            let tmpResult2 = [{label: '전체', value: ''}];
-            for(let i=0; i<response.data.data.length; i++) {
-              tempArr.push({
-                label: response.data.data[i].sgg,
-                value: response.data.data[i].sggCd,
-                value2: response.data.data[i].sidoCd
-              });
-            } 
-            let tmpResult = tempArr.filter(cd=>{
-              return cd.value2 === this.sidoCd
+    },
+    // 시/군/구 목록
+    getSggData() {
+      let url =this.$store.state.serverApi + "/admin/address/sgg";
+      if(this.sidoCd != ''){
+        url += "?sidoCd="+this.sidoCd;
+      }else{
+        this.selectedSggItems = ''
+        this.sggItems=[];
+        this.sggItems.push({label: '전체', value: ''});
+        return ; 
+      }
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          const tempArr = [{label: '전체', value: ''}];
+          let tmpResult2 = [{label: '전체', value: ''}];
+          for(let i=0; i<response.data.data.length; i++) {
+            tempArr.push({
+              label: response.data.data[i].sgg,
+              value: response.data.data[i].sggCd,
+              value2: response.data.data[i].sidoCd
             });
-            this.sggItems = [...tmpResult2,...tmpResult]
-          })
+          } 
+          let tmpResult = tempArr.filter(cd=>{
+            return cd.value2 === this.sidoCd
+          });
+          this.sggItems = [...tmpResult2,...tmpResult]
+        })
         .catch(error => {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
@@ -283,7 +283,7 @@ export default {
           } 
           let tmpResult = tmpArr
           this.orgmItems = [...tmpResult2,...tmpResult]
-        this.orgmItems=tmpArr;
+          this.orgmItems=tmpArr;
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -302,23 +302,22 @@ export default {
         addrCd = ''
       }
       let uri = ''
-        uri = this.$store.state.serverApi
-        +"/admin/emergencys/active-unsensing-events?pageIndex=1&recordCountPerPage=100"
-        +"&addrCd="+addrCd
-        +"&orgId="+this.selectedOrgItems
-        +"&recipientNm="+this.selectedRecipientNm
-        +"&occurStartDate="+occurStartDate
-        +"&occurEndDate="+occurEndDate;
+      uri = this.$store.state.serverApi
+      +"/admin/emergencys/active-unsensing-events?pageIndex=1&recordCountPerPage=100"
+      +"&addrCd="+addrCd
+      +"&orgId="+this.selectedOrgItems
+      +"&recipientNm="+this.selectedRecipientNm
+      +"&occurStartDate="+occurStartDate
+      +"&occurEndDate="+occurEndDate;
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(response => {
-            this.recipientItems = response.data.data
-            this.NCount = this.recipientItems.length
-            console.log(uri)
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
+        .then(response => {
+          this.recipientItems = response.data.data
+          this.NCount = this.recipientItems.length
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
     },
     changeRecipientPhoneno(phone){
       if(phone){
@@ -356,7 +355,7 @@ export default {
         this.getRecipientData();
       }
     },
-    },
+  },
 }
 </script>
 <style>
