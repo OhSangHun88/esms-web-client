@@ -49,7 +49,7 @@
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
-                            <th scope="row">대상자 이름</th>
+                            <th scope="row">대상자명</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -96,20 +96,20 @@
                     <table>
                         <colgroup>
                             <col style="width:4%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:auto;">
-                              <col style="width:auto;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:auto;">
+                            <col style="width:auto;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
                         </colgroup>
                         <thead>
                             <tr>
@@ -127,7 +127,7 @@
                                 <th scope="col">A/S타입</th>
                                 <th scope="col">A/S상태</th>
                                 <th scope="col">요청사항설명</th>
-                                <th scope="col">요청일시</th>
+                                <th scope="col">취소일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -167,13 +167,12 @@
                                   <td>{{changeAsStateCode(item.asStateCd)}}</td>
                                   <td>{{item.requestDesc}}</td>
                                   <td>{{item.updDtime}}</td>
-                              </tr>
+                              </tr>                                
                             </tbody>
-                  
                         </table>
                     </div>
                 </div>
-                <div class="pagination mt0">
+        <div class="pagination mt0">
 					<a href="#" class="front">첫 페이지</a>
 					<a href="#" class="prev">이전 페이지</a>
 					<a href="#" class="on">1</a>
@@ -216,7 +215,7 @@ export default {
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount: 0,
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
-        errorpopup1: false, errorpopup2: false,asCancelData: null,
+        errorpopup1: false, errorpopup2: false, asRequestData: null,
       }
     },
     created() {
@@ -227,7 +226,7 @@ export default {
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.cBirthday=moment().format('YYYY-MM-DD');
-    this.getAsCancelList()
+    this.getAsRequestList();
     },
     
     methods:{
@@ -421,20 +420,22 @@ export default {
         }
         return result
     },
-    async getAsCancelList(){
-      const url  = this.$store.state.serverApi + `/admin/as/list.do?asStateCd=ste004&pageIndex=1&recordCountPerPage=100`
-      await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-      .then(res => {
-          this.asCancelData = res.data.data
-          console.log("as 요청")
-          console.log(this.asCancelData)
-      })
-      .catch(error => {
-          console.log("fail to load")
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-      });
-    },
+    async getAsRequestList(){
+        const url  = this.$store.state.serverApi + `/admin/as/list.do?asStateCd=STE008&pageIndex=0&recordCountPerPage=100`
+            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                this.asRequestData = res.data.data
+                console.log("as 요청")
+                console.log(this.asRequestData)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+      },
+
+
   },
 }
 </script>

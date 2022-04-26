@@ -421,7 +421,7 @@ export default {
         return result
     },
     async getAsRequestList(){
-        const url  = this.$store.state.serverApi + `/admin/as/list.do?asStateCd=ste001&pageIndex=1&recordCountPerPage=100`
+        const url  = this.$store.state.serverApi + `/admin/as/list.do?asStateCd=STE005&pageIndex=0&recordCountPerPage=100`
             await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
                 this.asRequestData = res.data.data
