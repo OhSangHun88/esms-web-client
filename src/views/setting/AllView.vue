@@ -49,9 +49,9 @@
                                 </td>
                                 <td>
                                   <div class="btn_area" >
-                                    <button type="button" style="width:40%" @click="eList(1)" :class="equipList === 'gateway'? 'btn on' :'btn'">게이트웨이</button>
-                                    <button type="button" style="width:28%" @click="eList(2)" :class="equipList === 'tablet'? 'btn on' :'btn'">테블릿</button>
-                                    <button type="button" style="width:32%" @click="eList(3)" :class="equipList === 'sensor'? 'btn on' :'btn'">센서</button>
+                                    <button type="button" style="width:40%"  @click="eList(1)" :class="equipList === 'gateway'? 'btn on' :'btn'">게이트웨이</button>
+                                    <button type="button" style="width:28%"  @click="eList(2)" :class="equipList === 'tablet'? 'btn on' :'btn'">테블릿</button>
+                                    <button type="button" style="width:32%"  @click="eList(3)" :class="equipList === 'sensor'? 'btn on' :'btn'">센서</button>
                                   </div>
                                 </td>
                                 <td v-if="equipList === 'sensor'">
@@ -94,7 +94,7 @@
                             <col style="width:4%;">
                             <col style="width:8%;">
                             <col style="width:5%;">
-                            <col style="width:5%;" v-if="equipList === 'sensor'">
+                            <col style="width:5%;" v-if="equipList === 'sensor' && this.changeLookup == true">
                             <col style="width:8%;">
                             <col style="width:8%;">
                             <col style="width:5%;">
@@ -111,7 +111,7 @@
                                 <th scope="col">응급요원명</th>
                                 <th scope="col">응급요원 전화번호</th>
                                 <th scope="col">장비구분</th>
-                                <th scope="col" v-if="equipList === 'sensor'">센서타입</th>
+                                <th scope="col" v-if="(equipList === 'sensor') && this.changeLookup == true">센서타입</th>
                                 <th scope="col">Serial NO</th>
                                 <th scope="col">MAC Address</th>
                                 <th scope="col">상태구분</th>
@@ -131,13 +131,13 @@
                                 <col style="width:4%;"> <!--응급관리요원-->
                                 <col style="width:8%;"> <!--응급관리요원 전화번호-->
                                 <col style="width:5%;"> <!--장비구분-->
-                                <col style="width:5%;" v-if="equipList === 'sensor'"> <!--센서타입-->
+                                <col style="width:5%;" v-if="equipList === 'sensor' && this.changeLookup == true"> <!--센서타입-->
                                 <col style="width:8%;"> <!---시리얼번호-->
                                 <col style="width:8%;"> <!---MAC Address-->
                                 <col style="width:5%;"> <!--상태구분-->
                                 <col style="width:10%;"> <!--등록일시-->
                             </colgroup>
-                            <tbody v-if="equipList === 'gateway'">
+                            <tbody v-if="equipList === 'gateway' && this.changeLookup == true">
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                   <td>{{index+1}}</td> <!--순번-->
                                   <td>{{item.orgNm}}</td> <!--순번-->
@@ -147,14 +147,14 @@
                                   <td>{{changeRecipientPhoneno(item.recipientPhoneno)}}</td> <!--대상자 전화번호-->
                                   <td>{{item.relationNm}}</td> <!--응급관리요원-->
                                   <td>{{changeRecipientPhoneno(item.relationPhone)}}</td> <!--응급관리요원 전화번호-->
-                                  <td>{{item.equipTypeName}}</td> <!--장비구분-->
+                                  <td>게이트웨이</td> <!--장비구분-->
                                   <td>{{item.serialNo}}</td> <!--시리얼번호-->
                                   <td>{{item.macAddr}}</td> <!--MAC Address-->
                                   <td>{{item.stateNm}}</td> <!--상태구분-->
                                   <td>{{item.regDtime}}</td> <!--등록일시-->
                                 </tr>
                             </tbody>
-                            <tbody v-if="equipList === 'tablet'">
+                            <tbody v-if="equipList === 'tablet' && this.changeLookup == true">
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                   <td>{{index+1}}</td> <!--순번-->
                                   <td>{{item.orgNm}}</td> <!--순번-->
@@ -164,14 +164,14 @@
                                   <td>{{changeRecipientPhoneno(item.recipientPhoneno)}}</td> <!--대상자 전화번호-->
                                   <td>{{item.relationNm}}</td> <!--응급관리요원-->
                                   <td>{{changeRecipientPhoneno(item.relationPhone)}}</td> <!--응급관리요원 전화번호-->
-                                  <td>{{item.equipTypeName}}</td> <!--장비구분-->
+                                  <td>태블릿</td> <!--장비구분-->
                                   <td>{{item.serialNo}}</td> <!--시리얼번호-->
                                   <td>{{item.macAddr}}</td> <!--MAC Address-->
                                   <td>{{item.stateNm}}</td> <!--상태구분-->
                                   <td>{{item.regDtime}}</td> <!--등록일시-->
                                 </tr>
                             </tbody>
-                            <tbody v-if="equipList === 'sensor'">
+                            <tbody v-if="equipList === 'sensor' && this.changeLookup == true">
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                   <td>{{index+1}}</td> <!--순번-->
                                   <td>{{item.orgNm}}</td> <!--순번-->
@@ -181,7 +181,7 @@
                                   <td>{{changeRecipientPhoneno(item.recipientPhoneno)}}</td> <!--대상자 전화번호-->
                                   <td>{{item.relationNm}}</td> <!--응급관리요원-->
                                   <td>{{changeRecipientPhoneno(item.relationPhone)}}</td> <!--응급관리요원 전화번호-->
-                                  <td>SENSOR</td> <!--장비구분-->
+                                  <td>센서</td> <!--장비구분-->
                                   <td>{{item.equipTypeName}}</td> <!--센서타입-->
                                   <td>{{item.serialNo}}</td> <!--시리얼번호-->
                                   <td>{{item.macAddr}}</td> <!--MAC Address-->
@@ -235,9 +235,10 @@ export default {
         cBirthday:'', cAddr: '', NCount:0,
         selectedTypeItems:'', selectedStatedItems:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '', selectedMacAddress: '',
-        equipList: 'gateway',
+        equipList: 'sensor',
         sensorItems:[], StatedItems: [],
         errorpopup1: false, errorpopup2: false,
+        changeLookup: false,
       }
     },
     created() {
@@ -427,8 +428,12 @@ export default {
       let tmp2 = this.$moment()
       return tmp2.diff(tmp1, 'years');
     },
-     manageInquiry() {
-        this.getRecipientData();
+     manageInquiry() {  
+      this.changeLookup = true;
+      this.getRecipientData();
+    },
+    changelu(){
+      this.changeLookup = false
     },
     getsensorData() {
     axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=SENSOR.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
@@ -479,6 +484,7 @@ export default {
           case 3 : this.equipList="sensor"; break;
       }
       this.getcheckTypeData(value);
+      this.changelu();
     },
     },
 }
