@@ -171,7 +171,7 @@
                                   <td>{{item.regDtime}}</td> <!--등록일시-->
                                 </tr>
                             </tbody>
-                            <tbody v-if="equipList === 'sensor' && this.changeLookup == true">
+                            <tbody v-if="equipList === 'sensor'">
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                   <td>{{index+1}}</td> <!--순번-->
                                   <td>{{item.orgNm}}</td> <!--순번-->
