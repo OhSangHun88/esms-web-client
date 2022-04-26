@@ -97,7 +97,7 @@
                         <colgroup>
                             <col style="width:6%;">
                             <col style="width:6%;">
-                            <col style="width:auto;">
+                            
                             <col style="width:6%;">
                             <col style="width:6%;">
                             <col style="width:6%;">
@@ -118,7 +118,7 @@
                             <tr>
                                 <th scope="col">AS아이디</th>
                                 <th scope="col">대상자명</th>
-                                <th scope="col">주소</th>
+                                
                                 <th scope="col">대상자 전화번호</th>
                                 <th scope="col">대상자ID</th>
                                 <th scope="col">대상자통합ID</th>
@@ -141,7 +141,7 @@
                             <colgroup>
                             <col style="width:6%;">
                             <col style="width:6%;">
-                            <col style="width:auto;">
+                            
                             <col style="width:6%;">
                             <col style="width:6%;">
                             <col style="width:6%;">
@@ -158,30 +158,26 @@
                             <col style="width:6%;">
                             </colgroup>
                             <tbody >
-                
-                            <!--  
-                                <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                    <td><a href="#" >{{index+1}}</a></td>
-                                    <td><a href="#" >{{item.recipientNm}}</a></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>                                
-                             -->
+                              <tr v-for="(item,index) in asRequestData" v-bind:key="index">
+                                  <td><a href="#" >{{item.asId}}</a></td>
+                                  <td><a href="#" >{{item.recipientName}}</a></td>
+                                  
+                                  <td>{{changeRecipientPhoneno(item.recipientPhone)}}</td>
+                                  <td>{{item.recipientId}}</td>
+                                  <td>{{item.recipientServerId}}</td>
+                                  <td>{{item.requestUserId}}</td>
+                                  <td>{{item.requestUserName}}</td>
+                                  <td>{{changeRecipientPhoneno(item.requestUserPhone)}}</td>
+                                  <td>{{item.equipTypeCd}}</td>
+                                  <td>장비타입</td>
+                                  <td>{{item.macAddr}}</td>
+                                  <td>{{item.serialNo}}</td>
+                                  <td>{{item.asTypeCd}}</td>
+                                  <td>{{item.asStateCd}}</td>
+                                  <td>요청사항</td>
+                                  <td>upd{{item.updDtime}}</td>
+                              </tr>                                
                             </tbody>
-                  
                         </table>
                     </div>
                 </div>
@@ -397,6 +393,15 @@ export default {
       }*/else{
         this.getRecipientData();
       }
+    },
+    changeRecipientPhoneno(phone){
+      if(phone){
+        let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+        return changeNumber
+      }else{
+        return ''
+      }
+    
     },
     async getAsRequestList(){
         const url  = this.$store.state.serverApi + `/admin/as/list.do?asStateCd=ste001&pageIndex=1&recordCountPerPage=100`
