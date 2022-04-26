@@ -140,16 +140,16 @@
                             </colgroup>
                             <tbody>  
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index" @click="goToDetailView(item.recipientId)">
-                                    <td><a href="#" >{{index+1}}</a></td>
-                                    <td><a href="#" >{{item.recipientNm}}</a></td>
-                                    <td><a href="#">{{makeAge(item.birthday) }}</a></td>
-                                    <td><a href="#">{{item.addr}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
-                                    <td><a href="#">{{item.managerNm}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.managerMobileNumber)}}</a></td>
-                                    <td><a href="#">{{item.eventDesc}}</a></td>
-                                    <td><a href="#">{{item.occurDtime}}</a></td>
-                                    <td><a href="#">{{item.regDtime}}</a></td>
+                                    <td>{{index+1}}</td>
+                                    <td>{{item.recipientNm}}</td>
+                                    <td>{{makeAge(item.birthday) }}</td>
+                                    <td>{{item.addr}}</td>
+                                    <td>{{changeRecipientPhoneno(item.recipientPhoneno)}}</td>
+                                    <td>{{item.managerNm}}</td>
+                                    <td>{{changeRecipientPhoneno(item.managerMobileNumber)}}</td>
+                                    <td>{{item.eventDesc}}</td>
+                                    <td>{{item.occurDtime}}</td>
+                                    <td>{{item.regDtime}}</td>
                                     
                                 </tr>                                
                             </tbody>

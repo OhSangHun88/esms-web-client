@@ -99,15 +99,15 @@
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in TorgItems" v-bind:key="index">
-                                    <td><a href="#">{{index+1}}</a></td>
-                                    <td><a href="#">{{item.orgId}}</a></td>
-                                    <td><a href="#">{{item.sidoName}}</a></td>
-                                    <td><a href="#">{{item.sggName}}</a></td>
-                                    <td><a href="#">{{item.orgNm}}</a></td>
-                                    <td><a href="#">{{item.phoneNumber}}</a></td>
-                                    <td><a href="#">{{item.addr}}</a></td>
-                                    <td><a href="#">{{item.addrDetail}}</a></td>
-                                    <td><a href="#">{{item.regDtime}}</a></td>
+                                    <td>{{index+1}}</td>
+                                    <td>{{item.orgId}}</td>
+                                    <td>{{item.sidoName}}</td>
+                                    <td>{{item.sggName}}</td>
+                                    <td>{{item.orgNm}}</td>
+                                    <td>{{item.phoneNumber}}</td>
+                                    <td>{{item.addr}}</td>
+                                    <td>{{item.addrDetail}}</td>
+                                    <td>{{item.regDtime}}</td>
                                     <td></td>
                                 </tr>
                             </tbody>

@@ -128,20 +128,19 @@
                             <col style="width:3%;">
                             <col style="width:auto;">
                             <col style="width:8%;">
-                            
                             <col style="width:9%;">
                             <col style="width:9%;">
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in noticItems" v-bind:key="index">
-                                    <td><a href="#" >{{index+1}}</a></td>
-                                    <td><a href="#">{{item.orgNm}}</a></td>
-                                    <td><a href="#">{{item.title}}</a></td>
+                                    <td>{{index+1}}</td>
+                                    <td>{{item.orgNm}}</td>
+                                    <td>{{item.title}}</td>
                                     <td></td>
-                                    <td><a href="#">{{item.details}}</a></td>
-                                    <td><a href="#">{{item.regId}}</a></td>
-                                    <td><a href="#">{{item.regDtime}}</a></td>
-                                    <td><a href="#">{{item.updDtime}}</a></td>
+                                    <td>{{item.details}}</td>
+                                    <td>{{item.regId}}</td>
+                                    <td>{{item.regDtime}}</td>
+                                    <td>{{item.updDtime}}</td>
                                 </tr>
                               </tbody>
 

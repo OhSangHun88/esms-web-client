@@ -37,12 +37,12 @@
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in comLogItems" v-bind:key="index">
-                                    <td><a href="#">{{item.logDtime}}</a></td>
-                                    <td><a href="#">{{item.logSource}}</a></td>
-                                    <td><a href="#">{{item.logTarget}}</a></td>
-                                    <td><a href="#">{{item.tabletId}}</a></td>
-                                    <td><a href="#">{{item.recipientId}}</a></td>
-                                    <td><a href="#">{{item.logDetails}}</a></td>
+                                    <td>{{item.logDtime}}</td>
+                                    <td>{{item.logSource}}</td>
+                                    <td>{{item.logTarget}}</td>
+                                    <td>{{item.tabletId}}</td>
+                                    <td>{{item.recipientId}}</td>
+                                    <td>{{item.logDetails}}</td>
                                 </tr>
                             </tbody>
                         </table>

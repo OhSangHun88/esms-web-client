@@ -155,24 +155,22 @@
                             <col style="width:3%;">
                             <col style="width:8%;">
                             <col style="width:8%;">
-                            
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                    <td><a href="#">{{index+1}}</a></td>
-                                    <td><a href="#">{{item.orgNm}}</a></td>
-                                    <td><a href="#">{{item.recipientNm}}</a></td>
-                                    <td><a href="#">{{makeAge(item.birthday) }}</a></td>
+                                    <td>{{index+1}}</td>
+                                    <td>{{item.orgNm}}</td>
+                                    <td>{{item.recipientNm}}</td>
+                                    <td>{{makeAge(item.birthday) }}</td>
                                     <!--<td><a href="#" style="float:left">{{item.addr}}</a></td> -->
-                                    <td><a href="#" >{{item.addr}}</a></td> 
-                                    <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
-                                    <td><a href="#">{{item.managerNm}}</a></td>
-                                    <td><a href="#">{{changeRecipientPhoneno(item.managerMobileNumber)}}</a></td>
-                                    <td><a href="#">{{item.typeNm}}</a></td>
-                                    <td><a href="#">{{item.signalStateNm}}</a></td>
-                                    <td><a href="#">{{item.occurDtime}}</a></td>
-                                    <td><a href="#">{{item.closeDtime}}</a></td>
-                                    
+                                    <td>{{item.addr}}</td> 
+                                    <td>{{changeRecipientPhoneno(item.recipientPhoneno)}}</td>
+                                    <td>{{item.managerNm}}</td>
+                                    <td>{{changeRecipientPhoneno(item.managerMobileNumber)}}</td>
+                                    <td>{{item.typeNm}}</td>
+                                    <td>{{item.signalStateNm}}</td>
+                                    <td>{{item.occurDtime}}</td>
+                                    <td>{{item.closeDtime}}</td>
                                 </tr>                                
                               </tbody>
                             <!--  
