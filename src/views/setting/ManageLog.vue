@@ -127,7 +127,9 @@ export default {
     },
     methods:{
       getLogData() {
-      let uri = this.$store.state.serverApi + "/admin/logs/servers?startDate="+this.s_date+"&endDate="+this.e_date;;
+      let uri = this.$store.state.serverApi + "/admin/logs/servers?pageIndex=1&recordCountPerPage=100"
+      +"&startDate="+this.s_date
+      +"&endDate="+this.e_date;;
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.logItems = response.data.data
@@ -139,9 +141,12 @@ export default {
           });
       },
       getEquLogData() {
-      let uri = this.$store.state.serverApi + "/admin/logs/equipments?startDate="+this.s_date+"&endDate="+this.e_date;;
-      if(this.selectedtabletId != '') uri+="&tabletId=" + this.selectedtabletId;
-      if(this.selectedrecipientId != '') uri+="&recipientId=" + this.selectedrecipientId;
+      let uri = this.$store.state.serverApi+"/admin/logs/equipments?pageIndex=1&recordCountPerPage=100"
+      +"&startDate="+this.s_date
+      +"&endDate="+this.e_date
+      +"&recipientId=" + this.selectedrecipientId
+      +"&tabletId=" + this.selectedtabletId;
+
         axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.comLogItems = response.data.data

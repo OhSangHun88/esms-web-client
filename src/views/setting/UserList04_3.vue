@@ -72,10 +72,10 @@
                             <col style="width:8%;">
                             <col style="width:8%;">
                             <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
                             <col style="width:auto;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:atuo;">
                         </colgroup>
                         <thead>
                             <tr>
@@ -92,13 +92,13 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:auto;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:atuo;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:auto;">
                             </colgroup>
                             <tbody>
                                 <tr>

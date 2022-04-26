@@ -50,8 +50,7 @@
                     <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
                 </div>
             </div>
-         
-            <div class="one_box box_style mt30">
+            <div class="one_box box_style ">
                 <div class="result_txt">
                     <p>사용자 정보</p>
                 </div>

@@ -104,7 +104,6 @@
                             <col style="width:10%;">
                             <col style="width:12%;">
                             <col style="width:12%;">
-                            
                         </colgroup>
                         <thead>
                             <tr>
