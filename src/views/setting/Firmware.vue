@@ -98,9 +98,9 @@
                             <col style="width:6%;">
                             <col style="width:6%;">
                             <col style="width:6%;">
-                            <col style="width:auto;">
-                            <col style="width:10%;">
                             <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:auto;">
                             <col style="width:10%;">
                             <col style="width:11%;">
                             <col style="width:11%;">
@@ -109,15 +109,15 @@
                         <thead>
                             <tr>
                                 <th scope="col">순번</th>
+                                <th scope="col">시도</th>
+                                <th scope="col">시군구</th>
+                                <th scope="col">관리기관</th>
                                 <th scope="col">대상자명</th>
-                                <th scope="col">나이</th>
                                 <th scope="col">주소</th>
-                                <th scope="col">대상자 전화번호</th>
-                                <th scope="col">생활관리사</th>
-                                <th scope="col">생활관리사 전화번호</th>
-                                <th scope="col">구분</th>
-                                <th scope="col">발생일시</th>
-                                <th scope="col">서버전송일시</th>
+                                <th scope="col">시리얼번호</th>
+                                <th scope="col">MAC Address</th>
+                                <th scope="col">현재적용버전</th>
+                                <th scope="col">업데이트일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -127,15 +127,16 @@
                                 <col style="width:6%;">
                                 <col style="width:6%;">
                                 <col style="width:6%;">
-                                <col style="width:auto;">
-                                <col style="width:10%;">
                                 <col style="width:6%;">
+                                <col style="width:6%;">
+                                <col style="width:auto;">
                                 <col style="width:10%;">
                                 <col style="width:11%;">
                                 <col style="width:11%;">
                                 <col style="width:11%;">
                             </colgroup>
                             <tbody >
+                              <!--
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                     <td>{{index+1}}</td>
                                     <td>{{item.recipientNm}}</td>
@@ -148,6 +149,7 @@
                                     <td>{{item.occurDtime}}</td>
                                     <td>{{item.regDtime}}</td>
                                 </tr>                                
+                                -->
                             </tbody>
                   
                         </table>
