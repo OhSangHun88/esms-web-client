@@ -2,6 +2,57 @@
     <div class="wrap">
         <HeaderComp></HeaderComp>
         <div class="container type-02">
+          <div id="" class="popupLayer" v-if="writeOrg === true">
+                <div class="popup_wrap">
+                    <div class="title_wrap">
+                        <div class="title">관리기관 등록</div>
+                        <button type="button" class="btn_close" @click="writeOrg = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">시/도</p>
+                                <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
+                                  <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">시/군/구</p>
+                                <select v-model="selectedSggItems" @change="onChangeOrg($event)">
+                                  <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">관리기관</p>
+                                <select v-model="selectedOrgItems">
+                                  <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                                </select>
+                            </div>
+                            <hr/>
+                            <div class="input_area">
+                                <p class="input_tit">대표전화번호</p>
+                                <input type="text" value="" v-model="selectedPhoneNumber">
+                            </div>
+                        </div>
+                        <div class="input_wrap type-02">
+                            <div class="input_area">
+                                <p class="input_tit">주소</p>
+                                <input type="text" value="" v-model="selectedAddr">
+                            </div>
+                        </div>
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">세부주소</p>
+                                <input type="text" value="" v-model="selectedAddrDetail">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popbtn_area">
+                        <button type="button" class="btn" @click="writeOrg = false">취소</button>
+                        <button type="button" class="btn form2" @click="uploadData()">추가</button>
+                    </div>
+                </div>
+            </div>
             <div class="list_title_wrap">
                 <span>시스템관리</span>
                 <i class="ico_nav"></i>
@@ -53,6 +104,9 @@
             <div class="one_box box_style">
                 <div class="result_txt">
                     <p>관리기관 정보</p>
+                    <div class="btn_area">
+                    <button type="button" class="btn" @click="createData()">등록</button>
+                  </div>
                 </div>
                 <div class="list result">
                     <table>
@@ -154,7 +208,9 @@ export default {
         sido:'', sidoCd:'', sgg:'', sggCd:'',
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedOrgNm:'',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedOrgNm:'', selectedPhoneNumber:'',
+        selectedAddr: '', selectedAddrDetail: '',
+        writeOrg: false,
       }
     },
     created(){
@@ -289,6 +345,26 @@ export default {
     manageInquiry() {
         this.getTorgData();
     },
+    createData(){
+      this.writeOrg = true
+    },
+    uploadData(){
+      let addrCd = ''
+      let sgg = this.sggCd.substring(0,5)
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        sgg = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        sgg = this.sggCd.substring(0,5)
+      }else{
+        sgg = ''
+      }
+      let tmpUploadData = {
+        addr:this.selectedAddr,
+        addrCd:this.selectedSggItems,
+        addrDetail:this.selectedAddrDetail,
+        orgCd:this.selectedOrgItems
+      }
+    }
     }
 }
 </script>
