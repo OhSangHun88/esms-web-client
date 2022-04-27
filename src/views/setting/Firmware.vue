@@ -33,7 +33,7 @@
             <div class="list_title_wrap">
                 <span>시스템관리</span>
                 <i class="ico_nav"></i>
-                <span class="on">Firmware관리</span>
+                <span class="on">펌웨어관리</span>
             </div>
             <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
                 <div class="table_wrap">
