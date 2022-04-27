@@ -122,4 +122,5 @@ export default {
 #gnb .emerg_area .btn{display: inline-block;padding: 0 20px;height: 40px;line-height: 40px;font-size: 16px;color: #fff;border-radius: 50px;background-color: #3C4858;}
 #gnb .emerg_area .btn.on{background-color: #F61919;}
 #gnb .emerg_area .btn i{display: inline-block;vertical-align: top;width: 19px;height: 23px;background-image: url(../../assets/images/ico_emerg.png);;background-repeat: no-repeat;background-position: center;margin: 9px 10px 0 0;}
+#header .header_top .user_name .btn.form2{display: inline-block;width: auto;height: 40px;line-height: 40px;font-size: 14px;font-weight: 300;padding: 0 20px;background-color: #11B787;border-radius: 30px;color: #fff;box-shadow: 0px 6px 12px #0000000F;margin: 0 10px 0 0;}
 </style>
