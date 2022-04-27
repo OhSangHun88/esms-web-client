@@ -141,7 +141,7 @@
                                 <th scope="col">순번</th>
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
-                                <th scope="col">센서설치버전</th>
+                                <th scope="col">센서버전</th>
                                 <th scope="col">시리얼번호</th>
                                 <th scope="col">MAC Addr</th>
                             </tr>
@@ -187,7 +187,7 @@
                                 <th scope="col">순번</th>
                                 <th scope="col">센서명</th>
                                 <th scope="col">센서이전버전</th>
-                                <th scope="col">센서설치버전</th>
+                                <th scope="col">센서버전</th>
                                 <th scope="col">입고명</th>
                                 <th scope="col">입고일시</th>
                                 <th scope="col">등록일시</th>
