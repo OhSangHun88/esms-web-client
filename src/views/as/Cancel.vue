@@ -105,15 +105,15 @@
                             <col style="width:6%;">
                             <col style="width:6%;">
                             <col style="width:auto;">
+                            <col style="width:8%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
                             <col style="width:auto;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
-                            <col style="width:6%;">
+                            <col style="width:10%;">
                         </colgroup>
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
+                                <th scope="col">요청ID</th>
                                 <th scope="col">대상자명</th>
                                 <th scope="col">대상자 전화번호</th>
                                 <th scope="col">대상자ID</th>
@@ -126,7 +126,7 @@
                                 <th scope="col">시리얼번호</th>
                                 <th scope="col">A/S타입</th>
                                 <th scope="col">A/S상태</th>
-                                <th scope="col">요청사항설명</th>
+                                <th scope="col">취소내용</th>
                                 <th scope="col">취소일시</th>
                             </tr>
                         </thead>
@@ -134,21 +134,21 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
-                              <col style="width:4%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:auto;">
-                              <col style="width:auto;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
-                              <col style="width:6%;">
+                            <col style="width:4%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:auto;">
+                            <col style="width:8%;">
+                            <col style="width:6%;">
+                            <col style="width:6%;">
+                            <col style="width:auto;">
+                            <col style="width:10%;">
                             </colgroup>
                             <tbody >
                               <tr v-for="(item,index) in asRequestData" v-bind:key="index">

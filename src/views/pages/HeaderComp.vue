@@ -29,8 +29,8 @@
             <li><a href="#"><router-link to ="/setting/org">기관관리</router-link></a></li>
             <li><a href="#"><router-link to ="/setting/customer">사용자관리</router-link></a></li>
             <li><a href="#"><router-link to ="/setting/allView">장비관리</router-link></a></li>
-            <li><a href="#"><router-link to ="/setting/firmware">Firmware 관리</router-link></a></li>
             <li><a href="#"><router-link to ="/setting/ippbx">IP-PBX 관리</router-link></a></li>
+            <li><a href="#"><router-link to ="/setting/firmware">펌웨어 관리</router-link></a></li>
             <li><a href="#"><router-link to ="/setting/notice">공지사항</router-link></a></li>
             <li><a href="#"><router-link to ="/setting/manageLog">로그관리</router-link></a></li>
             
@@ -41,8 +41,8 @@
           <ul class="sub_menu">
             <li><a href="#"><router-link to ="/as/Request">A/S 요청</router-link></a></li>
             <li><a href="#"><router-link to ="/as/Confirm">A/S 접수</router-link></a></li>
-            <li><a href="#"><router-link to ="/as/Cancel">A/S 취소</router-link></a></li>
             <li><a href="#"><router-link to ="/as/Complete">A/S 완료</router-link></a></li>
+            <li><a href="#"><router-link to ="/as/Cancel">A/S 취소</router-link></a></li>
           </ul>
         </li>
       </ul>

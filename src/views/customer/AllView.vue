@@ -13,7 +13,7 @@
       <div class="list_title_wrap">
         <span>대상자 관리</span>
         <i class="ico_nav"></i>
-        <span class="on">리스트</span>
+        <span class="on">대상자조회</span>
       </div>
       <div class="box_search_wrap add_btn box_style">
         <div class="table_wrap">
@@ -29,7 +29,7 @@
                     <th scope="row">시/도</th>
                     <th scope="row">시/군/구</th>
                     <th scope="row">관리기관</th>
-                    <th scope="row">대상자 이름</th>
+                    <th scope="row">대상자명</th>
                     
                 </thead>
                 <tbody>
@@ -84,7 +84,7 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th scope="col">대상자 이름</th>
+                        <th scope="col">대상자명</th>
                         <th scope="col">생년월일</th>
                         <th scope="col">나이</th>
                         <th scope="col">성별</th>
