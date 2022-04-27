@@ -329,12 +329,7 @@ export default {
     this.ASe_date = this.e_date;
     this.ASs_date=moment().subtract(999, 'days').format('YYYY-MM-DD');
     this.ASe_date=moment().format('YYYY-MM-DD');
-    this.getGwCount();
-    this.getEmCount();
-    this.getAcCount();
-    this.getFiCount();
-    this.getDoCount();
-    this.getLiCount();
+    this.getASCount();
   },
   mounted(){
     this.createEuData();
@@ -1414,31 +1409,95 @@ export default {
       this.PwchartRedraw();
     },
     //--------------------------A/S 현황--------------------------
-    // 게이트웨이 AS 요청,접수,완료
-    getGwCount(){
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.ASs_date+"&endDate="+this.ASe_date;
+    // AS 요청,접수,완료
+    getASCount(){
+      let addrCd = ''
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
+      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?orgId="+this.selectedOrgItems+"&addrCd="+addrCd+"&startDate="+this.ASs_date+"&endDate="+this.ASe_date;
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            let gwrqData = response.data.data
+            let rqData = response.data.data
             let gwrqCArrToString = ''
             let fgwrqCArrToString = ''
+            let emrqCArrToString = ''
+            let femrqCArrToString = ''
+            let acrqCArrToString = ''
+            let facrqCArrToString = ''
+            let firqCArrToString = ''
+            let ffirqCArrToString = ''
+            let dorqCArrToString = ''
+            let fdorqCArrToString = ''
+            let lirqCArrToString = ''
+            let flirqCArrToString = ''
 
-            let gwrcData = response.data.data
+            let rcData = response.data.data
             let gwrcCArrToString = ''
             let fgwrcCArrToString = ''
+            let emrcCArrToString = ''
+            let femrcCArrToString = ''
+            let acrcCArrToString = ''
+            let facrcCArrToString = ''
+            let fircCArrToString = ''
+            let ffircCArrToString = ''
+            let dorcCArrToString = ''
+            let fdorcCArrToString = ''
+            let lircCArrToString = ''
+            let flircCArrToString = ''
 
-            let gwcpData = response.data.data
-            let gwcpCArrToString = ''
-            let fgwcpCArrToString = ''
-
-            let gwcaData = response.data.data
+            let caData = response.data.data
             let gwcaCArrToString = ''
             let fgwcaCArrToString = ''
+            let emcaCArrToString = ''
+            let femcaCArrToString = ''
+            let accaCArrToString = ''
+            let faccaCArrToString = ''
+            let ficaCArrToString = ''
+            let fficaCArrToString = ''
+            let docaCArrToString = ''
+            let fdocaCArrToString = ''
+            let licaCArrToString = ''
+            let flicaCArrToString = ''
+
+            let cpData = response.data.data
+            let gwcpCArrToString = ''
+            let fgwcpCArrToString = ''
+            let emcpCArrToString = ''
+            let femcpCArrToString = ''
+            let accpCArrToString = ''
+            let faccpCArrToString = ''
+            let ficpCArrToString = ''
+            let fficpCArrToString = '' 
+            let docpCArrToString = ''
+            let fdocpCArrToString = ''
+            let licpCArrToString = ''
+            let flicpCArrToString = ''         
 
             // 요청
-            gwrqCArrToString = gwrqData.filter(cd=>{
+            gwrqCArrToString = rqData.filter(cd=>{
             return cd.typeCd ==="TPE000"
             })
+            emrqCArrToString = rqData.filter(cd=>{
+            return cd.typeCd ==="TPE001"
+            })
+            acrqCArrToString = rqData.filter(cd=>{
+            return cd.typeCd ==="TPE002"
+            })
+            firqCArrToString = rqData.filter(cd=>{
+            return cd.typeCd ==="TPE003"
+            })
+            dorqCArrToString = rqData.filter(cd=>{
+            return cd.typeCd ==="TPE004"
+            })
+            lirqCArrToString = rqData.filter(cd=>{
+            return cd.typeCd ==="TPE005"
+            })
+
             if(gwrqCArrToString.length != ''){
             fgwrqCArrToString = gwrqCArrToString.filter(cd=>{
               return cd.stateCd === "STE005"
@@ -1450,10 +1509,82 @@ export default {
             }}else{
               this.gwrqCount = '0';
             }
+            if(emrqCArrToString.length != ''){
+            femrqCArrToString = emrqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE005"
+            })
+            if(femrqCArrToString.length != ''){
+            this.emrqCount = femrqCArrToString[0].typeCnt
+            }else{
+              this.emrqCount = '0';
+            }}else{
+              this.emrqCount = '0';
+            }
+            if(acrqCArrToString.length != ''){
+            facrqCArrToString = acrqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE005"
+            })
+            if(facrqCArrToString.length != ''){
+            this.acrqCount = facrqCArrToString[0].typeCnt
+            }else{
+              this.acrqCount = '0';
+            }}else{
+              this.acrqCount = '0';
+            }
+            if(firqCArrToString.length != ''){
+            ffirqCArrToString = firqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE005"
+            })
+            if(ffirqCArrToString.length != ''){
+            this.firqCount = ffirqCArrToString[0].typeCnt
+            }else{
+              this.firqCount = '0';
+            }}else{
+              this.firqCount = '0';
+            }
+            if(dorqCArrToString.length != ''){
+            fdorqCArrToString = dorqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE005"
+            })
+            if(fdorqCArrToString.length != ''){
+            this.dorqCount = fdorqCArrToString[0].typeCnt
+            }else{
+              this.dorqCount = '0';
+            }}else{
+              this.dorqCount = '0';
+            }
+            if(lirqCArrToString.length != ''){
+            flirqCArrToString = lirqCArrToString.filter(cd=>{
+              return cd.stateCd === "STE005"
+            })
+            if(flirqCArrToString.length != ''){
+            this.lirqCount = flirqCArrToString[0].typeCnt
+            }else{
+              this.lirqCount = '0';
+            }}else{
+              this.lirqCount = '0';
+            }
+
             // 접수
-            gwrcCArrToString = gwrcData.filter(cd=>{
+            gwrcCArrToString = rcData.filter(cd=>{
             return cd.typeCd ==="TPE000"
             })
+            emrcCArrToString = rcData.filter(cd=>{
+            return cd.typeCd ==="TPE001"
+            })
+            acrcCArrToString = rcData.filter(cd=>{
+            return cd.typeCd ==="TPE002"
+            })
+            fircCArrToString = rcData.filter(cd=>{
+            return cd.typeCd ==="TPE003"
+            })
+            dorcCArrToString = rcData.filter(cd=>{
+            return cd.typeCd ==="TPE004"
+            })
+            lircCArrToString = rcData.filter(cd=>{
+            return cd.typeCd ==="TPE005"
+            })
+
             if(gwrcCArrToString != ''){
             fgwrcCArrToString = gwrcCArrToString.filter(cd=>{
               return cd.stateCd === "STE006"
@@ -1465,25 +1596,82 @@ export default {
             }}else{
               this.gwrcCount = '0';
             }
-            // 완료
-            gwcpCArrToString = gwcpData.filter(cd=>{
-            return cd.typeCd ==="TPE000"
+            if(emrcCArrToString != ''){
+            femrcCArrToString = emrcCArrToString.filter(cd=>{
+              return cd.stateCd === "STE006"
             })
-            if(gwcpCArrToString != ''){
-            fgwcpCArrToString = gwcpCArrToString.filter(cd=>{
-              return cd.stateCd === "STE007"
-            })
-            if(fgwcpCArrToString != ''){
-            this.gwcpCount =fgwcpCArrToString[0].typeCnt
+            if(femrcCArrToString != ''){
+            this.emrcCount = femrcCArrToString[0].typeCnt
             }else{
-              this.gwcpCount = '0';
+              this.emrcCount = '0';
             }}else{
-              this.gwcpCount = '0';
+              this.emrcCount = '0';
             }
+            if(acrcCArrToString != ''){
+            facrcCArrToString = acrcCArrToString.filter(cd=>{
+              return cd.stateCd === "STE006"
+            })
+            if(facrcCArrToString != ''){
+            this.acrcCount = facrcCArrToString[0].typeCnt
+            }else{
+              this.acrcCount = '0';
+            }}else{
+              this.acrcCount = '0';
+            }
+            if(fircCArrToString != ''){
+            ffircCArrToString = fircCArrToString.filter(cd=>{
+              return cd.stateCd === "STE006"
+            })
+            if(ffircCArrToString != ''){
+            this.fircCount = ffircCArrToString[0].typeCnt
+            }else{
+              this.fircCount = '0';
+            }}else{
+              this.fircCount = '0';
+            }
+            if(dorcCArrToString != ''){
+            fdorcCArrToString = dorcCArrToString.filter(cd=>{
+              return cd.stateCd === "STE006"
+            })
+            if(fdorcCArrToString != ''){
+            this.dorcCount = fdorcCArrToString[0].typeCnt
+            }else{
+              this.dorcCount = '0';
+            }}else{
+              this.dorcCount = '0';
+            }
+            if(lircCArrToString != ''){
+            flircCArrToString = lircCArrToString.filter(cd=>{
+              return cd.stateCd === "STE006"
+            })
+            if(flircCArrToString != ''){
+            this.lircCount = flircCArrToString[0].typeCnt
+            }else{
+              this.lircCount = '0';
+            }}else{
+              this.lircCount = '0';
+            }
+
             // 취소
-            gwcaCArrToString = gwcaData.filter(cd=>{
+            gwcaCArrToString = caData.filter(cd=>{
             return cd.typeCd ==="TPE000"
             })
+            emcaCArrToString = caData.filter(cd=>{
+            return cd.typeCd ==="TPE001"
+            })
+            accaCArrToString = caData.filter(cd=>{
+            return cd.typeCd ==="TPE002"
+            })
+            ficaCArrToString = caData.filter(cd=>{
+            return cd.typeCd ==="TPE003"
+            })
+            docaCArrToString = caData.filter(cd=>{
+            return cd.typeCd ==="TPE004"
+            })
+            licaCArrToString = caData.filter(cd=>{
+            return cd.typeCd ==="TPE005"
+            })
+            
             if(gwcaCArrToString != ''){
             fgwcaCArrToString = gwcaCArrToString.filter(cd=>{
               return cd.stateCd === "STE008"
@@ -1495,84 +1683,9 @@ export default {
             }}else{
               this.gwcaCount = '0';
             }
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-    },
-    getEmCount(){
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.ASs_date+"&endDate="+this.ASe_date;
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            let emrqData = response.data.data
-            let emrqCArrToString = ''
-            let femrqCArrToString = ''
-
-            let emrcData = response.data.data
-            let emrcCArrToString = ''
-            let femrcCArrToString = ''
-
-            let emcpData = response.data.data
-            let emcpCArrToString = ''
-            let femcpCArrToString = ''
-
-            let emcaData = response.data.data
-            let emcaCArrToString = ''
-            let femcaCArrToString = ''
-
-            // 요청
-            emrqCArrToString = emrqData.filter(cd=>{
-            return cd.typeCd ==="TPE001"
-            })
-            if(emrqCArrToString.length != ''){
-            femrqCArrToString = emrqCArrToString.filter(cd=>{
-              return cd.stateCd === "STE001"
-            })
-            if(femrqCArrToString.length != ''){
-            this.emrqCount = femrqCArrToString[0].typeCnt
-            }else{
-              this.emrqCount = '0';
-            }}else{
-              this.emrqCount = '0';
-            }
-            // 접수
-            emrcCArrToString = emrcData.filter(cd=>{
-            return cd.typeCd ==="TPE001"
-            })
-            if(emrcCArrToString != ''){
-            femrcCArrToString = emrcCArrToString.filter(cd=>{
-              return cd.stateCd === "STE002"
-            })
-            if(femrcCArrToString != ''){
-            this.emrcCount = femrcCArrToString[0].typeCnt
-            }else{
-              this.emrcCount = '0';
-            }}else{
-              this.emrcCount = '0';
-            }
-            // 완료
-            emcpCArrToString = emcpData.filter(cd=>{
-            return cd.typeCd ==="TPE001"
-            })
-            if(emcpCArrToString != ''){
-            femcpCArrToString = emcpCArrToString.filter(cd=>{
-              return cd.stateCd === "STE003"
-            })
-            if(femcpCArrToString != ''){
-            this.emcpCount =femcpCArrToString[0].typeCnt
-            }else{
-              this.emcpCount = '0';
-            }}else{
-              this.emcpCount = '0';
-            }
-            // 취소
-            emcaCArrToString = emcaData.filter(cd=>{
-            return cd.typeCd ==="TPE000"
-            })
             if(emcaCArrToString != ''){
             femcaCArrToString = emcaCArrToString.filter(cd=>{
-              return cd.stateCd === "STE004"
+              return cd.stateCd === "STE008"
             })
             if(femcaCArrToString != ''){
             this.emcaCount =femcaCArrToString[0].typeCnt
@@ -1581,84 +1694,9 @@ export default {
             }}else{
               this.emcaCount = '0';
             }
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-    },
-    getAcCount(){
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.ASs_date+"&endDate="+this.ASe_date;
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            let acrqData = response.data.data
-            let acrqCArrToString = ''
-            let facrqCArrToString = ''
-
-            let acrcData = response.data.data
-            let acrcCArrToString = ''
-            let facrcCArrToString = ''
-
-            let accpData = response.data.data
-            let accpCArrToString = ''
-            let faccpCArrToString = ''
-
-            let accaData = response.data.data
-            let accaCArrToString = ''
-            let faccaCArrToString = ''
-
-            // 요청
-            acrqCArrToString = acrqData.filter(cd=>{
-            return cd.typeCd ==="TPE002"
-            })
-            if(acrqCArrToString.length != ''){
-            facrqCArrToString = acrqCArrToString.filter(cd=>{
-              return cd.stateCd === "STE001"
-            })
-            if(facrqCArrToString.length != ''){
-            this.acrqCount = facrqCArrToString[0].typeCnt
-            }else{
-              this.acrqCount = '0';
-            }}else{
-              this.acrqCount = '0';
-            }
-            // 접수
-            acrcCArrToString = acrcData.filter(cd=>{
-            return cd.typeCd ==="TPE002"
-            })
-            if(acrcCArrToString != ''){
-            facrcCArrToString = acrcCArrToString.filter(cd=>{
-              return cd.stateCd === "STE002"
-            })
-            if(facrcCArrToString != ''){
-            this.acrcCount = facrcCArrToString[0].typeCnt
-            }else{
-              this.acrcCount = '0';
-            }}else{
-              this.acrcCount = '0';
-            }
-            // 완료
-            accpCArrToString = accpData.filter(cd=>{
-            return cd.typeCd ==="TPE002"
-            })
-            if(accpCArrToString != ''){
-            faccpCArrToString = accpCArrToString.filter(cd=>{
-              return cd.stateCd === "STE003"
-            })
-            if(faccpCArrToString != ''){
-            this.accpCount =faccpCArrToString[0].typeCnt
-            }else{
-              this.accpCount = '0';
-            }}else{
-              this.accpCount = '0';
-            }
-            // 취소
-            accaCArrToString = accaData.filter(cd=>{
-            return cd.typeCd ==="TPE000"
-            })
             if(accaCArrToString != ''){
             faccaCArrToString = accaCArrToString.filter(cd=>{
-              return cd.stateCd === "STE004"
+              return cd.stateCd === "STE008"
             })
             if(faccaCArrToString != ''){
             this.accaCount =faccaCArrToString[0].typeCnt
@@ -1667,84 +1705,9 @@ export default {
             }}else{
               this.accaCount = '0';
             }
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-    },
-    getFiCount(){
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.ASs_date+"&endDate="+this.ASe_date;
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            let firqData = response.data.data
-            let firqCArrToString = ''
-            let ffirqCArrToString = ''
-
-            let fircData = response.data.data
-            let fircCArrToString = ''
-            let ffircCArrToString = ''
-
-            let ficpData = response.data.data
-            let ficpCArrToString = ''
-            let fficpCArrToString = ''
-
-            let ficaData = response.data.data
-            let ficaCArrToString = ''
-            let fficaCArrToString = ''
-
-            // 요청
-            firqCArrToString = firqData.filter(cd=>{
-            return cd.typeCd ==="TPE003"
-            })
-            if(firqCArrToString.length != ''){
-            ffirqCArrToString = firqCArrToString.filter(cd=>{
-              return cd.stateCd === "STE001"
-            })
-            if(ffirqCArrToString.length != ''){
-            this.firqCount = ffirqCArrToString[0].typeCnt
-            }else{
-              this.firqCount = '0';
-            }}else{
-              this.firqCount = '0';
-            }
-            // 접수
-            fircCArrToString = fircData.filter(cd=>{
-            return cd.typeCd ==="TPE003"
-            })
-            if(fircCArrToString != ''){
-            ffircCArrToString = fircCArrToString.filter(cd=>{
-              return cd.stateCd === "STE002"
-            })
-            if(ffircCArrToString != ''){
-            this.fircCount = ffircCArrToString[0].typeCnt
-            }else{
-              this.fircCount = '0';
-            }}else{
-              this.fircCount = '0';
-            }
-            // 완료
-            ficpCArrToString = ficpData.filter(cd=>{
-            return cd.typeCd ==="TPE003"
-            })
-            if(ficpCArrToString != ''){
-            fficpCArrToString = ficpCArrToString.filter(cd=>{
-              return cd.stateCd === "STE003"
-            })
-            if(fficpCArrToString != ''){
-            this.ficpCount =fficpCArrToString[0].typeCnt
-            }else{
-              this.ficpCount = '0';
-            }}else{
-              this.ficpCount = '0';
-            }
-            // 취소
-            ficaCArrToString = ficaData.filter(cd=>{
-            return cd.typeCd ==="TPE000"
-            })
             if(ficaCArrToString != ''){
             fficaCArrToString = ficaCArrToString.filter(cd=>{
-              return cd.stateCd === "STE004"
+              return cd.stateCd === "STE008"
             })
             if(fficaCArrToString != ''){
             this.ficaCount =fficaCArrToString[0].typeCnt
@@ -1753,84 +1716,9 @@ export default {
             }}else{
               this.ficaCount = '0';
             }
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-    },
-    getDoCount(){
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.ASs_date+"&endDate="+this.ASe_date;
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            let dorqData = response.data.data
-            let dorqCArrToString = ''
-            let fdorqCArrToString = ''
-
-            let dorcData = response.data.data
-            let dorcCArrToString = ''
-            let fdorcCArrToString = ''
-
-            let docpData = response.data.data
-            let docpCArrToString = ''
-            let fdocpCArrToString = ''
-
-            let docaData = response.data.data
-            let docaCArrToString = ''
-            let fdocaCArrToString = ''
-
-            // 요청
-            dorqCArrToString = dorqData.filter(cd=>{
-            return cd.typeCd ==="TPE004"
-            })
-            if(dorqCArrToString.length != ''){
-            fdorqCArrToString = dorqCArrToString.filter(cd=>{
-              return cd.stateCd === "STE001"
-            })
-            if(fdorqCArrToString.length != ''){
-            this.dorqCount = fdorqCArrToString[0].typeCnt
-            }else{
-              this.dorqCount = '0';
-            }}else{
-              this.dorqCount = '0';
-            }
-            // 접수
-            dorcCArrToString = dorcData.filter(cd=>{
-            return cd.typeCd ==="TPE004"
-            })
-            if(dorcCArrToString != ''){
-            fdorcCArrToString = dorcCArrToString.filter(cd=>{
-              return cd.stateCd === "STE002"
-            })
-            if(fdorcCArrToString != ''){
-            this.dorcCount = fdorcCArrToString[0].typeCnt
-            }else{
-              this.dorcCount = '0';
-            }}else{
-              this.dorcCount = '0';
-            }
-            // 완료
-            docpCArrToString = docpData.filter(cd=>{
-            return cd.typeCd ==="TPE004"
-            })
-            if(docpCArrToString != ''){
-            fdocpCArrToString = docpCArrToString.filter(cd=>{
-              return cd.stateCd === "STE003"
-            })
-            if(fdocpCArrToString != ''){
-            this.docpCount =fdocpCArrToString[0].typeCnt
-            }else{
-              this.docpCount = '0';
-            }}else{
-              this.docpCount = '0';
-            }
-            // 취소
-            docaCArrToString = docaData.filter(cd=>{
-            return cd.typeCd ==="TPE000"
-            })
             if(docaCArrToString != ''){
             fdocaCArrToString = docaCArrToString.filter(cd=>{
-              return cd.stateCd === "STE004"
+              return cd.stateCd === "STE008"
             })
             if(fdocaCArrToString != ''){
             this.docaCount =fdocaCArrToString[0].typeCnt
@@ -1839,84 +1727,10 @@ export default {
             }}else{
               this.docaCount = '0';
             }
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-    },
-    getLiCount(){
-      let url =this.$store.state.serverApi + "/admin/organizations/stat/as?startDate="+this.ASs_date+"&endDate="+this.ASe_date;
-      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            let lirqData = response.data.data
-            let lirqCArrToString = ''
-            let flirqCArrToString = ''
-
-            let lircData = response.data.data
-            let lircCArrToString = ''
-            let flircCArrToString = ''
-
-            let licpData = response.data.data
-            let licpCArrToString = ''
-            let flicpCArrToString = ''
-
-            let licaData = response.data.data
-            let licaCArrToString = ''
-            let flicaCArrToString = ''
-
-            // 요청
-            lirqCArrToString = lirqData.filter(cd=>{
-            return cd.typeCd ==="TPE005"
-            })
-            if(lirqCArrToString.length != ''){
-            flirqCArrToString = lirqCArrToString.filter(cd=>{
-              return cd.stateCd === "STE001"
-            })
-            if(flirqCArrToString.length != ''){
-            this.lirqCount = flirqCArrToString[0].typeCnt
-            }else{
-              this.lirqCount = '0';
-            }}else{
-              this.lirqCount = '0';
-            }
-            // 접수
-            lircCArrToString = lircData.filter(cd=>{
-            return cd.typeCd ==="TPE005"
-            })
-            if(lircCArrToString != ''){
-            flircCArrToString = lircCArrToString.filter(cd=>{
-              return cd.stateCd === "STE002"
-            })
-            if(flircCArrToString != ''){
-            this.lircCount = flircCArrToString[0].typeCnt
-            }else{
-              this.lircCount = '0';
-            }}else{
-              this.lircCount = '0';
-            }
-            // 완료
-            licpCArrToString = licpData.filter(cd=>{
-            return cd.typeCd ==="TPE005"
-            })
-            if(licpCArrToString != ''){
-            flicpCArrToString = licpCArrToString.filter(cd=>{
-              return cd.stateCd === "STE003"
-            })
-            if(flicpCArrToString != ''){
-            this.licpCount =flicpCArrToString[0].typeCnt
-            }else{
-              this.licpCount = '0';
-            }}else{
-              this.licpCount = '0';
-            }
-            // 취소
-            licaCArrToString = licaData.filter(cd=>{
-            return cd.typeCd ==="TPE000"
-            })
+            
             if(licaCArrToString != ''){
             flicaCArrToString = licaCArrToString.filter(cd=>{
-              return cd.stateCd === "STE004"
+              return cd.stateCd === "STE008"
             })
             if(flicaCArrToString != ''){
             this.licaCount =flicaCArrToString[0].typeCnt
@@ -1925,6 +1739,94 @@ export default {
             }}else{
               this.licaCount = '0';
             }
+
+            // 완료
+            gwcpCArrToString = cpData.filter(cd=>{
+            return cd.typeCd ==="TPE000"
+            })
+            emcpCArrToString = cpData.filter(cd=>{
+            return cd.typeCd ==="TPE001"
+            })
+            accpCArrToString = cpData.filter(cd=>{
+            return cd.typeCd ==="TPE002"
+            })
+            ficpCArrToString = cpData.filter(cd=>{
+            return cd.typeCd ==="TPE003"
+            })
+            docpCArrToString = cpData.filter(cd=>{
+            return cd.typeCd ==="TPE004"
+            })
+            licpCArrToString = cpData.filter(cd=>{
+            return cd.typeCd ==="TPE005"
+            })
+
+            if(gwcpCArrToString != ''){
+            fgwcpCArrToString = gwcpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE007"
+            })
+            if(fgwcpCArrToString != ''){
+            this.gwcpCount =fgwcpCArrToString[0].typeCnt
+            }else{
+              this.gwcpCount = '0';
+            }}else{
+              this.gwcpCount = '0';
+            }
+            if(emcpCArrToString != ''){
+            femcpCArrToString = emcpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE007"
+            })
+            if(femcpCArrToString != ''){
+            this.emcpCount =femcpCArrToString[0].typeCnt
+            }else{
+              this.emcpCount = '0';
+            }}else{
+              this.emcpCount = '0';
+            }
+            if(accpCArrToString != ''){
+            faccpCArrToString = accpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE007"
+            })
+            if(faccpCArrToString != ''){
+            this.accpCount =faccpCArrToString[0].typeCnt
+            }else{
+              this.accpCount = '0';
+            }}else{
+              this.accpCount = '0';
+            }
+            if(ficpCArrToString != ''){
+            fficpCArrToString = ficpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE007"
+            })
+            if(fficpCArrToString != ''){
+            this.ficpCount =fficpCArrToString[0].typeCnt
+            }else{
+              this.ficpCount = '0';
+            }}else{
+              this.ficpCount = '0';
+            }
+            if(docpCArrToString != ''){
+            fdocpCArrToString = docpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE007"
+            })
+            if(fdocpCArrToString != ''){
+            this.docpCount =fdocpCArrToString[0].typeCnt
+            }else{
+              this.docpCount = '0';
+            }}else{
+              this.docpCount = '0';
+            }
+            if(licpCArrToString != ''){
+            flicpCArrToString = licpCArrToString.filter(cd=>{
+              return cd.stateCd === "STE007"
+            })
+            if(flicpCArrToString != ''){
+            this.licpCount =flicpCArrToString[0].typeCnt
+            }else{
+              this.licpCount = '0';
+            }}else{
+              this.licpCount = '0';
+            }
+
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -1942,6 +1844,7 @@ export default {
       this.remakeEvData()
       this.remakeBtData()
       this.remakePwData()
+      this.getASCount()
       }
     },
   }
