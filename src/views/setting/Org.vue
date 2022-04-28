@@ -65,21 +65,15 @@
                         <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">시/도</p>
-                                <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
-                                  <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
-                                </select>
+                                <input type="text" value="" v-model="selectDetailsido">
                             </div>
                             <div class="input_area">
-                                <p class="input_tit">시/군/구</p>
-                                <select v-model="selectedSggItems" @change="onChangeOrg($event)">
-                                  <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
-                                </select>
+                              <p class="input_tit">시/군/구</p>
+                              <input type="text" value="" v-model="selectDetailSgg">
                             </div>
                             <div class="input_area">
-                                <p class="input_tit">관리기관</p>
-                                <select v-model="selectedOrgItems">
-                                  <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
-                                </select>
+                              <p class="input_tit">관리기관</p>
+                              <input type="text" value="" v-model="selectDetailOrg">
                             </div>
                             <hr/>
                             <div class="input_area">
@@ -168,7 +162,7 @@
                 </div>
                 <div class="popbtn_area type-02">
                   <button type="button" class="btn form2" @click="deleteOrg = false">취소</button>
-                  <button type="button" class="btn form2" @click="deleteOrg = false">확인</button>
+                  <button type="button" class="btn form3" @click="deleteOrg = false, detailOrg = false">확인</button>
                 </div>
               </div>
             </div>
@@ -271,7 +265,7 @@
                             <col style="width:10%;">
                             </colgroup>
                             <tbody >
-                                <tr v-for="(item,index) in TorgItems" v-bind:key="index" @click="detailOrgpopup()">
+                                <tr v-for="(item,index) in TorgItems" v-bind:key="index" :ref="`target_${index}`">
                                   <td>{{index+1}}</td>
                                   <td>{{item.orgId}}</td>
                                   <td>{{item.sidoName}}</td>
@@ -328,9 +322,12 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedOrgNm:'', selectedPhoneNumber:'',
+        selectDetailsido:'',selectDetailSgg:'',selectDetailOrg:'',
         selectedAddr: '', selectedAddrDetail: '',
         writeOrg: false, changeOrg: false, deleteOrg: false, detailOrg: false,
         saveChangeData: null,
+        detailOrgId: '',
+        detailArr: [],
       }
     },
     created(){
@@ -466,10 +463,29 @@ export default {
         this.getTorgData();
     },
     createData(){
+      this.selectedPhoneNumber = ''
+      this.selectedSidoItems = ''
       this.writeOrg = true
-    },
-    detailOrgpopup(){
+    }, 
+    detailOrgpopup(index){
+      this.detailArr = this.TorgItems[index]
+      console.log(this.detailArr)
+      this.selectedPhoneNumber = ''
+      this.selectDetailsido = ''
+      this.selectDetailSgg = ''
+      this.selectDetailOrg = ''
+      this.selectedAddr = ''
+      this.selectedAddrDetail = ''
+
+      this.selectedPhoneNumber = this.detailArr.phoneNumber
+      this.selectDetailsido = this.detailArr.sidoName
+      this.selectDetailSgg = this.detailArr.sggName
+      this.selectDetailOrg = this.detailArr.orgNm
+      this.selectedAddr = this.detailArr.addr
+      this.selectedAddrDetail = this.detailArr.addrDetail
+
       this.detailOrg = true
+      
     },
     changeData(){
       if(this.saveChangeData === null || this.saveChangeData === undefined){

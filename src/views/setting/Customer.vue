@@ -61,7 +61,59 @@
                     </div>
                 </div>
             </div>
-            <div id="" class="popupLayer" v-if="changeCus === true">
+            <div id="" class="popupLayer" v-if="detailcus === true">
+                <div class="popup_wrap">
+                    <div class="title_wrap">
+                        <div class="title">사용자 상세 정보</div>
+                        <button type="button" class="btn_close" @click="detailcus = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <div class="input_wrap">
+                            <div class="input_area">
+                              <p class="input_tit">시/도</p>
+                              <input type="text" value="" v-model="selectDetailsido">
+                            </div>
+                            <div class="input_area">
+                              <p class="input_tit">시/군/구</p>
+                              <input type="text" value="" >
+                            </div>
+                            <div class="input_area">
+                              <p class="input_tit">관리기관</p>
+                              <input type="text" value="" v-model="selectDetailOrg">
+                            </div>
+                            <hr/>
+                            <div class="input_area">
+                                <p class="input_tit">사용자 ID</p>
+                                <input type="text" value="" v-model="selectedUserId">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">사용자명</p>
+                                <input type="text" value="" v-model="selectedUserNm">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">전화번호</p>
+                                <input type="text" value="" v-model="selectedphoneNumber">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">핸드폰번호</p>
+                                <input type="text" value="" v-model="selectedmobileNumber">
+                            </div>
+                            <div class="input_area" >
+                                <p class="input_tit">이메일주소</p>
+                                <input type="text" value="" v-model="selectedEmail">
+                            </div>
+                            <div class="input_area" >
+                                <p class="input_tit">현재상태</p>
+                                <input type="text" value="" v-model="selectedemployStateNm">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popbtn_area">
+                        <button type="button" class="btn form2" @click="changeCus = true">수정</button>
+                        <button type="button" class="btn form3" @click="deleteCus = true">삭제</button>
+                    </div>
+                </div>
+            </div><div id="" class="popupLayer" v-if="changeCus === true">
                 <div class="popup_wrap">
                     <div class="title_wrap">
                         <div class="title">사용자 정보 수정</div>
@@ -131,7 +183,7 @@
                 </div>
                 <div class="popbtn_area type-02">
                   <button type="button" class="btn form2" @click="deleteCus = false">취소</button>
-                  <button type="button" class="btn form2" @click="deleteCus = false">삭제</button>
+                  <button type="button" class="btn form3" @click="deleteCus = false, detailcus = false">확인</button>
                 </div>
               </div>
             </div>
@@ -188,8 +240,6 @@
                     <p>사용자 정보</p>
                     <div class="btn_area">
                     <button type="button" style="margin-right:10px" class="btn" @click="createData()">등록</button>
-                    <button type="button" style="margin-right:10px" class="btn" @click="changeData()">수정</button>
-                    <button type="button" style="margin-right:10px" class="btn" @click="deleteData()">삭제</button>
                   </div>
                 </div>
                 <div class="list result">
@@ -231,7 +281,7 @@
                                 <col style="width:12%;">
                             </colgroup>
                             <tbody >
-                                <tr v-for="(item,index) in userItems" v-bind:key="index">
+                                <tr v-for="(item,index) in userItems" v-bind:key="index" >
                                   <td>{{index+1}}</td>
                                   <td>{{item.userId}}</td>
                                   <td>{{item.userNm}}</td>
@@ -286,8 +336,11 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[], userItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedUserNm: '',
-        writeCus: false, changeCus: false, deleteCus: false,
+        selectedUserId:'',selectedphoneNumber:'',selectedmobileNumber:'',selectedEmail:'',selectedemployStateNm:'',
+        selectDetailsido:'',selectDetailSgg:'',selectDetailOrg:'',
+        writeCus: false, changeCus: false, deleteCus: false, detailcus:false,
         saveChangeData: null,
+        detailArr:[],
       }
     },
     created(){
@@ -410,6 +463,30 @@ export default {
     },
     createData(){
       this.writeCus = true
+    },
+    detailCuspopup(index){
+      this.detailArr=this.userItems[index]
+      this.selectDetailsido = ''
+      this.selectDetailSgg = ''
+      this.selectDetailOrg = ''
+      this.selectedUserNm = ''
+      this.selectedUserId=''
+      this.selectedphoneNumber=''
+      this.selectedmobileNumber=''
+      this.selectedEmail=''
+      this.selectedemployStateNm=''
+
+      this.selectDetailsido = this.detailArr.sido
+      this.selectDetailSgg = this.detailArr.sgg
+      this.selectDetailOrg = this.detailArr.orgNm
+      this.selectedUserNm = this.detailArr.userNm
+      this.selectedUserId = this.detailArr.userId
+      this.selectedphoneNumber = this.detailArr.phoneNumber
+      this.selectedmobileNumber = this.detailArr.mobileNumber
+      this.selectedEmail = this.detailArr.email
+      this.selectedemployStateNm = this.detailArr.employStateNm
+      console.log(this.detailArr)
+      this.detailcus = true
     },
     changeData(){
       if(this.saveChangeData === null || this.saveChangeData === undefined){
