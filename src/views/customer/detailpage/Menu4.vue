@@ -61,6 +61,7 @@ import axios from "axios";
 
 export default {
     name: "Menu4",
+    //생활관리사
     props:{
         recipientId: String
     },
