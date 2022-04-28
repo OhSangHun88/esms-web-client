@@ -67,23 +67,15 @@
                             <div class="input_area">
                                 <div class="tit_area">
                                     <p class="input_tit">공지내용</p>
-                                    <p class="file_txt">Add a file: <i class="ico_file"></i><em>첨부한 파일명.확장자</em></p><!--em태그 안에 업로드한 파일 이름 입력-->
                                 </div>
                                 <textarea name="" id="" v-model="selectedDetail">1.공지내용</textarea>
                             </div>
                         </div>
                     </div>
                     <div class="popbtn_wrap">
-                        <div class="popbtn_area left">
-                            <button type="button" class="btn">삭제</button>
-                            <div class="input_area file">
-                                <input type="file" name="FileBtn" id="FileBtn">
-                                <label for="FileBtn" class="btn form2">파일 업로드</label>
-                            </div>
-                        </div>
                         <div class="popbtn_area right">
                             <button type="button" class="btn" @click="writeNotice = false">취소</button>
-                            <button type="button" class="btn form2">저장</button>
+                            <button type="button" class="btn form2" @click="UploadData()">저장</button>
                         </div>
                     </div>
                 </div>
@@ -423,23 +415,23 @@ export default {
         title: this.selectedTitle,
         details: this.selectedDetail
       }
-      const uri = this.$store.state.serverApi+'/admin/notices?orgId='+objectData.orgId
-      +"&title="+objectData.title
-      +"&details="+objectData.details
+      // const uri = this.$store.state.serverApi+'/admin/notices?orgId='+objectData.orgId
+      // +"&title="+objectData.title
+      // +"&details="+objectData.details
 
-      axios.post(uri,objectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(response => {
-            let resData = response.data.data
-            console.log(uri)
-            if(resData){
-              alert("저장이 완료되었습니다.")
-              this.writeNotice = false
-            }
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
+      // axios.post(uri,objectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      //     .then(response => {
+      //       let resData = response.data.data
+      //       console.log(uri)
+      //       if(resData){
+      //         alert("저장이 완료되었습니다.")
+      //         this.writeNotice = false
+      //       }
+      //     })
+      //     .catch(error => {
+      //       this.errorMessage = error.message;
+      //       console.error("There was an error!", error);
+      //     });
     }
     }
 }

@@ -142,33 +142,38 @@
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                     <td>
                                         <div class="chk_area radio">
-                                            <input type="radio" name="saveChangeData" :id="`radio1_${index}`" v-model="saveChangeData" :value="index" >
+                                            <input type="radio" name="saveChangeData" :id="`radio1_${index}`" v-model="saveChangeData" :value="index">
                                             <label :for="`radio1_${index}`" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td>
                                     <td>{{index+1}}</td>
                                     <td>{{item.numberAreaString}}</td>
-                                    <td>{{item.numberArea}}</td>
-                                    <td>
+                                    <td>{{item.numberArea}}</td><!--[this.saveChangeData]-->
+                                    <td v-if="saveChangeData === index">
                                       <div class="input_area" style="margin-left:10px; margin-right:10px;">
-                                        <input type="text" name="" id="" v-model="item.numberFire" @change="changeRecipientPhoneno(item.numberFire)" >
+                                        <input type="text" name="" :id="`radio1_${index}`" v-model="item.numberFire" @change="changeRecipientPhoneno(item.numberFire)" >
                                       </div>
                                     </td>
-                                    <td>
+                                    <td v-else>{{changeRecipientPhoneno(item.numberFire)}}</td>
+                                    <td v-if="saveChangeData === index">
                                       <div class="input_area" style="margin-left:10px; margin-right:10px;">
                                         <input type="text" name="" id="" v-model="item.numberEmg">
                                       </div>
                                     </td>
-                                    <td>
+                                    <td v-else>{{changeRecipientPhoneno(item.numberEmg)}}</td>
+                                    <td v-if="saveChangeData === index">
                                       <div class="input_area" style="margin-left:10px; margin-right:10px;">
                                         <input type="text" name="" id="" v-model="item.firstZip">
                                       </div>
                                     </td>
-                                    <td>
+                                    <td v-else>{{item.firstZip}}</td>
+                                    <td v-if="saveChangeData === index">
                                       <div class="input_area" style="margin-left:10px; margin-right:10px;">
                                         <input type="text" name="" id="" v-model="item.lastZip">
                                       </div>
                                     </td>
+                                    <td v-else>{{item.lastZip}}</td>
+                                    
                                     <td>{{item.regDtime}}</td>
                                     <td>{{item.updDtime}}</td>
                                 </tr>                                
@@ -177,22 +182,6 @@
                         </table>
                     </div>
                 </div>
-                <div class="pagination mt0">
-					<a href="#" class="front">첫 페이지</a>
-					<a href="#" class="prev">이전 페이지</a>
-					<a href="#" class="on">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">6</a>
-					<a href="#">7</a>
-					<a href="#">8</a>
-					<a href="#">9</a>
-					<a href="#">10</a>
-					<a href="#" class="next">다음 페이지</a>
-					<a href="#" class="back">마지막 페이지</a>
-				</div>
             </div>
         </div>
     </div>

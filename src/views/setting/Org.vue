@@ -34,6 +34,59 @@
                                 <input type="text" value="" v-model="selectedPhoneNumber">
                             </div>
                         </div>
+                        <div>
+                        <div class="input_wrap type-02">
+                            <div class="input_area" >
+                                <p class="input_tit">주소</p>
+                                <input type="text" value="" v-model="selectedAddr">
+                            </div>
+                        </div>
+                        <div class="input_wrap">
+                            <div class="input_area" >
+                                <p class="input_tit">세부주소</p>
+                                <input type="text" value="" v-model="selectedAddrDetail">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="popbtn_area">
+                        <button type="button" class="btn" @click="writeOrg = false">취소</button>
+                        <button type="button" class="btn form2" @click="uploadData()">등록</button>
+                    </div>
+                </div>
+            </div>
+            <div id="" class="popupLayer" v-if="detailOrg === true">
+                <div class="popup_wrap">
+                    <div class="title_wrap">
+                        <div class="title">관리기관 상세정보</div>
+                        <button type="button" class="btn_close" @click="detailOrg = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">시/도</p>
+                                <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
+                                  <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">시/군/구</p>
+                                <select v-model="selectedSggItems" @change="onChangeOrg($event)">
+                                  <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">관리기관</p>
+                                <select v-model="selectedOrgItems">
+                                  <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                                </select>
+                            </div>
+                            <hr/>
+                            <div class="input_area">
+                                <p class="input_tit">대표전화번호</p>
+                                <input type="text" value="" v-model="selectedPhoneNumber">
+                            </div>
+                        </div>
                         <div class="input_wrap type-02">
                             <div class="input_area">
                                 <p class="input_tit">주소</p>
@@ -48,10 +101,76 @@
                         </div>
                     </div>
                     <div class="popbtn_area">
-                        <button type="button" class="btn" @click="writeOrg = false">취소</button>
-                        <button type="button" class="btn form2" @click="uploadData()">추가</button>
+                        <button type="button" class="btn form2" @click="detailOrg = true">수정</button>
+                        <button type="button" class="btn form3" @click="deleteOrg = true">삭제</button>
                     </div>
                 </div>
+            </div>
+            <div id="" class="popupLayer" v-if="changeOrg === true">
+                <div class="popup_wrap">
+                    <div class="title_wrap">
+                        <div class="title">관리기관 정보 수정</div>
+                        <button type="button" class="btn_close" @click="changeOrg = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">시/도</p>
+                                <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
+                                  <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">시/군/구</p>
+                                <select v-model="selectedSggItems" @change="onChangeOrg($event)">
+                                  <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">관리기관</p>
+                                <select v-model="selectedOrgItems">
+                                  <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                                </select>
+                            </div>
+                            <hr/>
+                            <div class="input_area">
+                                <p class="input_tit">대표전화번호</p>
+                                <input type="text" value="" v-model="selectedPhoneNumber">
+                            </div>
+                        </div>
+                        <div class="input_wrap type-02">
+                            <div class="input_area">
+                                <p class="input_tit">주소</p>
+                                <input type="text" value="" v-model="selectedAddr">
+                            </div>
+                        </div>
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">세부주소</p>
+                                <input type="text" value="" v-model="selectedAddrDetail">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popbtn_area">
+                        <button type="button" class="btn" @click="changeOrg = false">취소</button>
+                        <button type="button" class="btn form2" @click="changeOrg = false">수정</button>
+                    </div>
+                </div>
+            </div>
+            <div id="" class="popupLayer" v-if="deleteOrg == true">
+              <div class="popup_wrap type-02">
+                <div class="title_wrap">
+                  <div class="title">경고</div>
+                  <button type="button" class="btn_close" @click="deleteOrg = false">닫기</button>
+                </div>
+                <div class="popup_cnt">
+                  <p class="alert_txt">선택하신 관리기관을 삭제하시겠습니까?</p>
+                </div>
+                <div class="popbtn_area type-02">
+                  <button type="button" class="btn form2" @click="deleteOrg = false">취소</button>
+                  <button type="button" class="btn form2" @click="deleteOrg = false">확인</button>
+                </div>
+              </div>
             </div>
             <div class="list_title_wrap">
                 <span>시스템관리</span>
@@ -103,37 +222,37 @@
             </div>
             <div class="one_box box_style">
                 <div class="result_txt">
-                    <p>관리기관 정보</p>
-                    <div class="btn_area">
-                    <button type="button" class="btn" @click="createData()">등록</button>
+                  <p>관리기관 정보</p>
+                  <div class="btn_area">
+                    <button type="button" style="margin-right:10px" class="btn" @click="createData()">등록</button>
                   </div>
                 </div>
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:5%;">
-                            <col style="width:7%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:10%;">
-                            <col style="width:14%;">
-                            <col style="width:auto;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
+                          <col style="width:5%;">
+                          <col style="width:7%;">
+                          <col style="width:8%;">
+                          <col style="width:8%;">
+                          <col style="width:10%;">
+                          <col style="width:14%;">
+                          <col style="width:auto;">
+                          <col style="width:10%;">
+                          <col style="width:10%;">
+                          <col style="width:10%;">
                         </colgroup>
                         <thead>
                             <tr>
-                                <th scope="col">순번</th>
-                                <th scope="col">기관ID</th>
-                                <th scope="col">시/도</th>
-                                <th scope="col">시/군/구</th>
-                                <th scope="col">관리기관명</th>
-                                <th scope="col">대표 전화번호</th>
-                                <th scope="col">주소</th>
-                                <th scope="col">세부주소</th>
-                                <th scope="col">등록일시</th>
-                                <th scope="col">수정일시</th>
+                              <th scope="col">순번</th>
+                              <th scope="col">기관ID</th>
+                              <th scope="col">시/도</th>
+                              <th scope="col">시/군/구</th>
+                              <th scope="col">관리기관명</th>
+                              <th scope="col">대표 전화번호</th>
+                              <th scope="col">주소</th>
+                              <th scope="col">세부주소</th>
+                              <th scope="col">등록일시</th>
+                              <th scope="col">수정일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -152,17 +271,17 @@
                             <col style="width:10%;">
                             </colgroup>
                             <tbody >
-                                <tr v-for="(item,index) in TorgItems" v-bind:key="index">
-                                    <td>{{index+1}}</td>
-                                    <td>{{item.orgId}}</td>
-                                    <td>{{item.sidoName}}</td>
-                                    <td>{{item.sggName}}</td>
-                                    <td>{{item.orgNm}}</td>
-                                    <td>{{item.phoneNumber}}</td>
-                                    <td>{{item.addr}}</td>
-                                    <td>{{item.addrDetail}}</td>
-                                    <td>{{item.regDtime}}</td>
-                                    <td></td>
+                                <tr v-for="(item,index) in TorgItems" v-bind:key="index" @click="detailOrgpopup()">
+                                  <td>{{index+1}}</td>
+                                  <td>{{item.orgId}}</td>
+                                  <td>{{item.sidoName}}</td>
+                                  <td>{{item.sggName}}</td>
+                                  <td>{{item.orgNm}}</td>
+                                  <td>{{item.phoneNumber}}</td>
+                                  <td>{{item.addr}}</td>
+                                  <td>{{item.addrDetail}}</td>
+                                  <td>{{item.regDtime}}</td>
+                                  <td></td>
                                 </tr>
                             </tbody>
 
@@ -210,7 +329,8 @@ export default {
         orgSido:'', orgSgg:'', orgCode:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedOrgNm:'', selectedPhoneNumber:'',
         selectedAddr: '', selectedAddrDetail: '',
-        writeOrg: false,
+        writeOrg: false, changeOrg: false, deleteOrg: false, detailOrg: false,
+        saveChangeData: null,
       }
     },
     created(){
@@ -347,6 +467,23 @@ export default {
     },
     createData(){
       this.writeOrg = true
+    },
+    detailOrgpopup(){
+      this.detailOrg = true
+    },
+    changeData(){
+      if(this.saveChangeData === null || this.saveChangeData === undefined){
+        alert("관리기관을 선택하여 주세요")
+      }else{
+      this.changeOrg = true
+      }
+    },
+    deleteData(){
+      if(this.saveChangeData === null || this.saveChangeData === undefined){
+        alert("관리기관을 선택하여 주세요")
+      }else{
+      this.deleteOrg = true
+      }
     },
     uploadData(){
       let addrCd = ''

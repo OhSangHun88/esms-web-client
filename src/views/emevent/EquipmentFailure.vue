@@ -393,10 +393,12 @@ export default {
         +"&addrCd="+addrCode
         +"&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
+        +"&sensorTypeCd="+this.selectedTypeItems
         +"&checkTypeCd="+this.selectedCheckTypeItems
         +"&occurStartDate="+occurStartDate
         +"&occurEndDate="+occurEndDate;
       }
+      console.log(uri)
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.recipientItems = response.data.data

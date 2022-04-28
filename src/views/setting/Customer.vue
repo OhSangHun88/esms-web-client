@@ -2,6 +2,139 @@
     <div class="wrap">
         <HeaderComp></HeaderComp>
         <div class="container type-02">
+          <div id="" class="popupLayer" v-if="writeCus === true">
+                <div class="popup_wrap">
+                    <div class="title_wrap">
+                        <div class="title">사용자 등록</div>
+                        <button type="button" class="btn_close" @click="writeCus = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">시/도</p>
+                                <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
+                                  <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">시/군/구</p>
+                                <select v-model="selectedSggItems" @change="onChangeOrg($event)">
+                                  <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">관리기관</p>
+                                <select v-model="selectedOrgItems">
+                                  <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                                </select>
+                            </div>
+                            <hr/>
+                            <div class="input_area">
+                                <p class="input_tit">사용자 ID</p>
+                                <input type="text" value="">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">사용자명</p>
+                                <input type="text" value="">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">전화번호</p>
+                                <input type="text" value="">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">핸드폰번호</p>
+                                <input type="text" value="">
+                            </div>
+                            <div class="input_area" >
+                                <p class="input_tit">이메일주소</p>
+                                <input type="text" value="">
+                            </div>
+                            <div class="input_area" >
+                                <p class="input_tit">현재상태</p>
+                                <input type="text" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popbtn_area">
+                        <button type="button" class="btn" @click="writeCus = false">취소</button>
+                        <button type="button" class="btn form2" @click="uploadData()">등록</button>
+                    </div>
+                </div>
+            </div>
+            <div id="" class="popupLayer" v-if="changeCus === true">
+                <div class="popup_wrap">
+                    <div class="title_wrap">
+                        <div class="title">사용자 정보 수정</div>
+                        <button type="button" class="btn_close" @click="changeCus = false">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">시/도</p>
+                                <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
+                                  <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">시/군/구</p>
+                                <select v-model="selectedSggItems" @change="onChangeOrg($event)">
+                                  <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">관리기관</p>
+                                <select v-model="selectedOrgItems">
+                                  <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                                </select>
+                            </div>
+                            <hr/>
+                            <div class="input_area">
+                                <p class="input_tit">사용자 ID</p>
+                                <input type="text" value="">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">사용자명</p>
+                                <input type="text" value="">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">전화번호</p>
+                                <input type="text" value="">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">핸드폰번호</p>
+                                <input type="text" value="">
+                            </div>
+                            <div class="input_area" >
+                                <p class="input_tit">이메일주소</p>
+                                <input type="text" value="">
+                            </div>
+                            <div class="input_area" >
+                                <p class="input_tit">현재상태</p>
+                                <input type="text" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popbtn_area">
+                        <button type="button" class="btn" @click="changeCus = false">취소</button>
+                        <button type="button" class="btn form2" @click="changeCus = false">수정</button>
+                    </div>
+                </div>
+            </div>
+            <div id="" class="popupLayer" v-if="deleteCus == true">
+              <div class="popup_wrap type-02">
+                <div class="title_wrap">
+                  <div class="title">경고</div>
+                  <button type="button" class="btn_close" @click="deleteCus = false">닫기</button>
+                </div>
+                <div class="popup_cnt">
+                  <p class="alert_txt">선택하신 사용자를 삭제하시겠습니까?</p>
+                </div>
+                <div class="popbtn_area type-02">
+                  <button type="button" class="btn form2" @click="deleteCus = false">취소</button>
+                  <button type="button" class="btn form2" @click="deleteCus = false">삭제</button>
+                </div>
+              </div>
+            </div>
             <div class="list_title_wrap">
                 <span>시스템관리</span>
                 <i class="ico_nav"></i>
@@ -53,18 +186,23 @@
             <div class="one_box box_style ">
                 <div class="result_txt">
                     <p>사용자 정보</p>
+                    <div class="btn_area">
+                    <button type="button" style="margin-right:10px" class="btn" @click="createData()">등록</button>
+                    <button type="button" style="margin-right:10px" class="btn" @click="changeData()">수정</button>
+                    <button type="button" style="margin-right:10px" class="btn" @click="deleteData()">삭제</button>
+                  </div>
                 </div>
                 <div class="list result">
                     <table>
                         <colgroup>
                                 <col style="width:5%;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
+                                <col style="width:8%;">
+                                <col style="width:8%;">
+                                <col style="width:8%;">
                                 <col style="width:16%;">
-                                <col style="width:auto%;">
+                                <col style="width:10%;">
                                 <col style="width:12%;">
-                                <col style="width:18%;">
+                                <col style="width:12%;">
                         </colgroup>
                         <thead>
                             <tr>
@@ -84,26 +222,25 @@
                         <table>
                             <colgroup>
                                 <col style="width:5%;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
-                                <col style="width:10%;">
+                                <col style="width:8%;">
+                                <col style="width:8%;">
+                                <col style="width:8%;">
                                 <col style="width:16%;">
-                                <col style="width:auto%;">
+                                <col style="width:10%;">
                                 <col style="width:12%;">
-                                <col style="width:18%;">
+                                <col style="width:12%;">
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in userItems" v-bind:key="index">
-                                    <td>{{index+1}}</td>
-                                    <td>{{item.userId}}</td>
-                                    <td>{{item.userNm}}</td>
-                                    <td>{{item.phoneNumber}}</td>
-                                    <td>{{item.mobileNumber}}</td>
-                                    <td>{{item.email}}</td>
-                                    <td>{{item.employStateNm}}</td>
-                                    <td>{{item.regDtime}}</td>
-                                    <td>{{item.loginDtime}}</td>
-                                    
+                                  <td>{{index+1}}</td>
+                                  <td>{{item.userId}}</td>
+                                  <td>{{item.userNm}}</td>
+                                  <td>{{item.phoneNumber}}</td>
+                                  <td>{{item.mobileNumber}}</td>
+                                  <td>{{item.email}}</td>
+                                  <td>{{item.employStateNm}}</td>
+                                  <td>{{item.regDtime}}</td>
+                                  <td>{{item.loginDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -149,6 +286,8 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[], userItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedUserNm: '',
+        writeCus: false, changeCus: false, deleteCus: false,
+        saveChangeData: null,
       }
     },
     created(){
@@ -265,10 +404,26 @@ export default {
       this.sggCd = ''
       this.getOrgmData()
     },
-
     onChangeOrg(event) {
       this.sggCd = event.target.value
       this.getOrgmData()
+    },
+    createData(){
+      this.writeCus = true
+    },
+    changeData(){
+      if(this.saveChangeData === null || this.saveChangeData === undefined){
+        alert("사용자를 선택하여 주세요")
+      }else{
+      this.changeCus = true
+      }  
+    },
+    deleteData(){
+      if(this.saveChangeData === null || this.saveChangeData === undefined){
+        alert("사용자를 선택하여 주세요")
+      }else{
+      this.deleteCus = true
+      }
     },
     manageInquiry() {
         this.getUserData();
