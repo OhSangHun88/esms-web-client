@@ -79,7 +79,13 @@
                           <div class="tabcontent">
                             <!-- :recipientId="this.recipientId" -->
                             <menu1 :recipientId="this.recipientId" v-if="this.menutoggle===1"></menu1>
-                            <menu3 :recipientId="this.recipientId" v-if="this.menutoggle===3"></menu3>  
+                            <menu3 ref="menu3"
+                                   :recipientId="this.recipientId" 
+                                   :menu3Refresh="this.menu3Refresh"
+                                   v-if="this.menutoggle===3" 
+                                   @sendData1="getFromMenuData" 
+                                   @openPop="openModal"
+                                   @sendMenu3Lending="menu3Lending"></menu3>  
                             <menu2 :recipientId="this.recipientId" v-if="this.menutoggle===2"></menu2>  
                             <menu4 :recipientId="this.recipientId" v-if="this.menutoggle===4"></menu4>    
                           </div>
@@ -111,7 +117,84 @@
           </div>
       </div>
     </div>
-    
+    <div id="" class="popupLayer" v-if="popCheck">
+      <div class="popup_wrap">
+          <div class="title_wrap">
+              <div class="title">응급관리요원 추가</div>
+              <button type="button" class="btn_close" @click="closeModal">닫기</button>
+          </div>
+          <div class="popup_cnt">
+            <div class="input_wrap">
+                <div class="input_area">
+                    <p class="input_tit">이름</p>
+                    <input type="text" v-model="managerName">
+                </div>
+                <!-- <div class="input_area">
+                    <p class="input_tit">생년월일</p>
+                    <input type="text" value="">
+                </div> -->
+                <div class="input_area">
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text" v-model="managerPhone">
+                </div>
+                <div class="input_area">
+                    <p class="input_tit">관계</p>
+                    <select name="managerRelationCd" id="managerRelationCd" v-model="managerRelationCd" > <!--v-model="managerRelationNm"-->
+                      <option v-for="(items, index ) in relationArr" v-bind:value="items.value" v-bind:key="index"> 
+                                    {{ items.text }}
+                      </option>
+                    </select> 
+                    
+                </div>
+            </div>
+            <!-- <div class="input_wrap type-02">
+                <div class="input_area">
+                    <p class="input_tit">이메일</p>
+                    <input type="text" v-model="managerEMail">
+                </div>
+                <div class="btn_area">
+                    <p class="input_tit">생년월일</p>
+                    <div class="toggle_btn">
+                        <button type="button" class="btn on">남</button>
+                        <button type="button" class="btn">여</button>
+                    </div>
+                </div> 
+            </div>-->
+            <!--<div class="input_wrap type-02">
+                <div class="input_area">
+                    <p class="input_tit">관리기관</p>
+                    <input type="text" v-model="managerRelationOrg">
+                         <option value="">경기도 용인시 사회복지관 2관</option> 
+                    </select> 
+                </div>
+                 <div class="input_area size-s">
+                    <p class="input_tit">담당지역</p>
+                    <input type="text" value="풍덕천 1동">
+                </div> 
+            </div>-->
+              <!-- <div class="input_wrap">
+                  <div class="input_area">
+                      <p class="input_tit">상태</p>
+                      <select name="" id="">
+                          <option value="">근무중</option>
+                      </select>
+                  </div>
+                  <div class="input_area">
+                      <p class="input_tit">입사일</p>
+                      <input type="text" value="2022.06.23">
+                  </div>
+                  <div class="input_area">
+                      <p class="input_tit">퇴사일</p>
+                      <input type="text" disabled>
+                  </div>
+              </div> -->
+          </div>
+          <div class="popbtn_area">
+              <button type="button" class="btn" @click="closeModal">취소</button>
+              <button type="button" class="btn form2" @click="insertManager()">추가</button>
+          </div>
+      </div>
+    </div>
     <!-- <CRow>
       <CCol xs="12" lg="5">
         <CCard class="mx-6 mb-0" >
@@ -236,7 +319,9 @@ export default {
     return {
       pending:true,
       d_phone: '', d_sex: '', d_endcycle: '', d_part: '', d_status: '', d_zipCode: '', d_address: '', personinfo: '',
-      recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,
+      recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,popCheck:false,insertData:null,
+      managerName: null,managerPhone: null,managerRelationNm: null,managerRelationCd:null,menu3Refresh:1,
+      relationArr : [{value:'RL001', text: '남편'},{value:'RL002', text: '와이프'},{value:'RL003', text: '아들'},{value:'RL004', text: '딸'},{value:'RL005', text: '사위'},{value:'RL006', text: '며느리'},{value:'RL007', text: '손자'},{value:'RL008', text: '손녀'},{value:'RL009' , text:'기타'},]
     }
   },
   components: {
@@ -261,6 +346,19 @@ export default {
     menu4,
   },
   methods: {
+    getFromMenuData(data) {
+      console.log(data);
+    },
+    openModal(data) {
+      this.popCheck = data
+    },
+    menu3Lending(data) {
+      console.log("stop", data)
+      this.menu3Refresh = data
+    },
+    closeModal() {
+      this.popCheck = false
+    },
     async getRecipientInfo() {
       //this.$store.mutation.logout
       //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");
@@ -347,6 +445,41 @@ export default {
       }
     
     },
+    insertManager(){
+      // /recipients/{recipientId}/phoneNumbers
+      let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
+      this.managerRelationNm = this.relationArr.filter(cd=>{
+       return cd.value === this.managerRelationCd
+      })[0].text
+      console.log(this.managerRelationNm)
+      let data = {
+        recipientId: this.recipientId,
+        relationNm: this.managerName,
+        relationPhone: this.managerPhone,
+        relationCd: this.managerRelationCd, 
+        relationCdNm: this.managerRelationNm,
+        typeCd: "TPE008"
+      }
+
+      console.log(data)
+      axios.post(uri,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.insertData = res.data.data
+            this.$refs.menu3.sendMenu3Lending();
+            this.popCheck = false
+            console.log("insertData is ");
+            console.log(this.insertData)
+            
+            alert("등록성공")
+            
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+          
+    },
+
   },
   created() {
     this.pending = false;

@@ -4,9 +4,9 @@
             <div class="tabcnt01">
                 <div class="list_top">
                     <div class="btn_area">
-                        <!--<button type="button" class="btn form2">추가</button>
-                        <button type="button" class="btn form2">수정</button>
-                        <button type="button" class="btn form3">삭제</button>-->
+                        <button type="button" class="btn form2" @click="sendParent">추가</button>
+                        <!-- <button type="button" class="btn form2">수정</button>
+                        <button type="button" class="btn form3">삭제</button> -->
                     </div>
                 </div>
                 <div class="list">
@@ -58,18 +58,47 @@ import axios from "axios";
 
 export default {
     name: "Menu3",
+    //말벗
     props:{
-        recipientId: String
+        recipientId: String,
+        menu3Refresh: Number
     },
     data () {
         return {
-            relationPhoneData: null
+            relationPhoneData: null,
+            popCheck: false,
+            lending : 0,
         }
     },
     created(){
         this.getRelationPhoneData();
     },
     methods:{
+        sendParent(){
+            this.popCheck=true
+            this.$emit("sendData1",this.relationPhoneData)
+            this.$emit("openPop",this.popCheck) 
+        },
+        sendMenu3Lending(){
+            console.log("lending")
+            const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers?typeCd=TPE008`
+                axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+                .then(res => {
+                this.relationPhoneData = res.data.data
+                //   = res.data.data.filter(pd =>{
+                //       return pd.typeCd === "TPE008"
+                //   })
+                
+                console.log(this.relationPhoneData)
+                this.$emit("lending3",this.lending)
+                }).catch(error => {
+                    console.log("fail to load")
+                    this.errorMessage = error.message;
+                    console.error("There was an error!", error);
+                });
+            
+             
+        },
         changeRecipientPhoneno(phone){
             if(phone){
                 let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
@@ -79,23 +108,29 @@ export default {
             }
 
         },
-      async getRelationPhoneData(){
-          console.log("menu3")
-      //여기
-      const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers`
-      await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-        .then(res => {
-          this.relationPhoneData  = res.data.data.filter(pd =>{
-              return pd.typeCd === "TPE008"
-          })
-          console.log(this.relationPhoneData)
-        }).catch(error => {
-            console.log("fail to load")
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
+        async getRelationPhoneData(){
+            console.log("menu3")
+        //여기
+            console.log("this.menu3Refresh",this.$props.menu3Refresh)
+            if(this.$props.menu3Refresh===1){
+                const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers?typeCd=TPE008`
+                await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+                .then(res => {
+                this.relationPhoneData = res.data.data
+                //   = res.data.data.filter(pd =>{
+                //       return pd.typeCd === "TPE008"
+                //   })
+                this.sendMenu3Lending()
+                console.log(this.relationPhoneData)
+                }).catch(error => {
+                    console.log("fail to load")
+                    this.errorMessage = error.message;
+                    console.error("There was an error!", error);
+                });
+            }
+            
 
-    },
+        },
   }
 }
 </script>

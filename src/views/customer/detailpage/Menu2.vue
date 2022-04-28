@@ -76,6 +76,7 @@ import axios from "axios";
 
 export default {
     name: "Menu2",
+    //응급요원
     props:{
         recipientId: String
     },
