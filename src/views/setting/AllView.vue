@@ -111,7 +111,7 @@
                                 <th scope="col">응급요원명</th>
                                 <th scope="col">응급요원 전화번호</th>
                                 <th scope="col">장비구분</th>
-                                <th scope="col" v-if="(equipList === 'sensor') && this.changeLookup == true">센서타입</th>
+                                <th scope="col" v-if="(equipList === 'sensor') ">센서타입</th>
                                 <th scope="col">Serial NO</th>
                                 <th scope="col">MAC Address</th>
                                 <th scope="col">상태구분</th>
