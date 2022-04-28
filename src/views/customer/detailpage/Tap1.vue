@@ -202,9 +202,9 @@ import moment from "moment";
           case 9 : this.labelText="횟수"; this.codeText=" 회"; break; // 활동감지기 전체
           case 10 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC005"; break; //화장실
           case 11 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC003"; break; //안방
-          case 12 : this.labelText="횟수"; this.codeText=" 회"; break; //도어감지기 전체
-          case 13 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC007"; break; //현관
-          case 14 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC008"; break; break; //뒷문
+          case 12 : this.labelText="횟수"; this.codeText=" "; break; //도어감지기 전체
+          case 13 : this.labelText="횟수"; this.codeText=" "; this.locCode="LOC007"; break; //현관
+          case 14 : this.labelText="횟수"; this.codeText=" "; this.locCode="LOC008"; break;  //뒷문
           
       }
         

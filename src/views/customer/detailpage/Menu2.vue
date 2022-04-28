@@ -76,6 +76,7 @@ import axios from "axios";
 
 export default {
     name: "Menu2",
+    //응급요원
     props:{
         recipientId: String
     },
@@ -91,12 +92,13 @@ export default {
       async getRelationPhoneData(){
           console.log("menu1")
       //여기
-      const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers`
+      const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers?typeCd=TPE007`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
-          this.relationPhoneData  = res.data.data.filter(pd =>{
-              return pd.typeCd === "TPE007"
-          })
+          this.relationPhoneData  = res.data.data
+        //   .filter(pd =>{
+        //       return pd.typeCd === "TPE007"
+        //   })
           console.log(this.relationPhoneData)
         }).catch(error => {
             console.log("fail to load")
