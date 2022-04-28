@@ -88,7 +88,9 @@
                                    @openPopMsg="openModalMsg"
                                    @sendMenu3Lending="menu3Lending"></menu3>  
                             <menu2 :recipientId="this.recipientId" v-if="this.menutoggle===2"></menu2>  
-                            <menu4 :recipientId="this.recipientId" v-if="this.menutoggle===4"></menu4>    
+                            <menu4 :recipientId="this.recipientId" v-if="this.menutoggle===4"></menu4>
+
+                                
                           </div>
                       </div><!--tab-->
                   </div>
