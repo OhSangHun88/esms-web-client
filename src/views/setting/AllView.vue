@@ -49,9 +49,9 @@
                                 </td>
                                 <td>
                                   <div class="btn_area" >
-                                    <button type="button" style="width:40%"  @click="eList(1)" :class="equipList === 'gateway'? 'btn on' :'btn'">게이트웨이</button>
-                                    <button type="button" style="width:28%"  @click="eList(2)" :class="equipList === 'tablet'? 'btn on' :'btn'">테블릿</button>
-                                    <button type="button" style="width:32%"  @click="eList(3)" :class="equipList === 'sensor'? 'btn on' :'btn'">센서</button>
+                                    <button type="button" style="width:40%"  @click="[eList(1), changelu()]" :class="equipList === 'gateway'? 'btn on' :'btn'">게이트웨이</button>
+                                    <button type="button" style="width:28%"  @click="[eList(2), changelu()]" :class="equipList === 'tablet'? 'btn on' :'btn'">테블릿</button>
+                                    <button type="button" style="width:32%"  @click="[eList(3), changelu()]" :class="equipList === 'sensor'? 'btn on' :'btn'">센서</button>
                                   </div>
                                 </td>
                                 <td v-if="equipList === 'sensor'">
@@ -358,6 +358,49 @@ export default {
           });
     },
     getRecipientData() {
+      let uri = '';
+      let addrCode = '';
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCode = this.sidoCd.substring(0, 2);
+      }else if(this.selectedSggItems != ''){
+        addrCode = this.sggCd.substring(0, 5);
+      }else{
+        addrCode = '';
+      }
+      if(this.equipList == 'gateway' ){
+        uri = this.$store.state.serverApi 
+        +"/admin/equipment/gateway-searchlist?&orgId="+this.selectedOrgItems
+        +"&recipientNm="+this.selectedRecipientNm
+        +"&addrCd="+addrCode
+        +"&macAddr="+this.selectedMacAddress
+        +"&stateCd="+this.selectedStatedItems
+      }else if(this.equipList == 'tablet'){
+        uri = this.$store.state.serverApi 
+        +"/admin/equipment/tablet-searchlist?&orgId="+this.selectedOrgItems
+        +"&recipientNm="+this.selectedRecipientNm
+        +"&addrCd="+addrCode
+        +"&macAddr="+this.selectedMacAddress
+        +"&stateCd="+this.selectedStatedItems
+      }else{
+        uri = this.$store.state.serverApi 
+        +"/admin/equipment/sensor-searchlist?&orgId="+this.selectedOrgItems
+        +"&recipientNm="+this.selectedRecipientNm
+        +"&addrCd="+addrCode
+        +"&macAddr="+this.selectedMacAddress
+        +"&sensorTypeCd="+this.selectedTypeItems
+        +"&stateCd="+this.selectedStatedItems
+      }
+      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(response => {
+            this.recipientItems = response.data.data
+            this.NCount =this.recipientItems.length
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    getRemakeRecipientData() {
       let uri = '';
       let addrCode = '';
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){

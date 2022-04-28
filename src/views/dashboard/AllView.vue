@@ -565,7 +565,7 @@ export default {
       }else{
         addrCd = ''
       }
-      this.e_date =  moment(this.s_date).add(6,'days').format('YYYYMMDD')
+      this.e_date =  moment(this.s_date).add(6,'days').format('YYYY-MM-DD')
       let urlEuChart = this.$store.state.serverApi + "/admin/organizations/stat/oper?addrCd="+addrCd+"&orgId="+this.selectedOrgItems+"&startDate="+this.s_date+"&endDate="+this.e_date;
       await axios.get(urlEuChart, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
@@ -976,7 +976,7 @@ export default {
       }else{
         addrCd = ''
       }
-      this.e_date =  moment(this.s_date).add(6,'days').format('YYYYMMDD')
+      this.e_date =  moment(this.s_date).add(6,'days').format('YYYY-MM-DD')
       let urlBattery =this.$store.state.serverApi + "/admin/organizations/stat/battery?addrCd="+addrCd+"&orgId="+this.selectedOrgItems+"&startDate="+this.s_date+"&endDate="+this.e_date;
       await axios.get(urlBattery, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {

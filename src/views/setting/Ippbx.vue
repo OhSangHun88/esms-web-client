@@ -90,59 +90,85 @@
             </div>
             <div class="one_box box_style">
                 <div class="result_txt">
-                    <p>조회결과 : <strong class = "num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
+                  <p>조회결과 : <strong class = "num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
+                  <div class="btn_area">
+                    <button type="button" class="btn" @click="saveIPPBX()">저장</button>
+                  </div>
                 </div>
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:6%;">
-                            <col style="width:8%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:12%;">
-                            <col style="width:12%;">
+                          <col style="width:4%;">
+                          <col style="width:6%;">
+                          <col style="width:8%;">
+                          <col style="width:10%;">
+                          <col style="width:8%;">
+                          <col style="width:8%;">
+                          <col style="width:8%;">
+                          <col style="width:8%;">
+                          <col style="width:12%;">
+                          <col style="width:12%;">
                         </colgroup>
                         <thead>
                             <tr>
-                                <th scope="col">순번</th>
-                                <th scope="col">지역명</th>
-                                <th scope="col">지역번호</th>
-                                <th scope="col">IP-PBX-화재</th>
-                                <th scope="col">IP-PBX-응급</th>
-                                <th scope="col">시작우편번호</th>
-                                <th scope="col">종료우편번호</th>
-                                <th scope="col">등록일시</th>
-                                <th scope="col">수정일시</th>
-                                
+                              <th scope="col">선택</th>
+                              <th scope="col">순번</th>
+                              <th scope="col">지역명</th>
+                              <th scope="col">지역번호</th>
+                              <th scope="col">IP-PBX-화재</th>
+                              <th scope="col">IP-PBX-응급</th>
+                              <th scope="col">시작우편번호</th>
+                              <th scope="col">종료우편번호</th>
+                              <th scope="col">등록일시</th>
+                              <th scope="col">수정일시</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody">
                         <table>
                             <colgroup>
+                            <col style="width:4%;">
                             <col style="width:6%;">
                             <col style="width:8%;">
                             <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:10%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
                             <col style="width:12%;">
                             <col style="width:12%;">
                             </colgroup>
                             <tbody >
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                                    <!-- <td><input type="radio" name="ippbxDetect" :id="`radio1_${index}`" v-model="ippbxDetect" :value="index"></td> -->
+                                    <td>
+                                        <div class="chk_area radio">
+                                            <input type="radio" name="saveChangeData" :id="`radio1_${index}`" v-model="saveChangeData" :value="index" >
+                                            <label :for="`radio1_${index}`" class="chk"><i class="ico_chk"></i></label>
+                                        </div>
+                                    </td>
                                     <td>{{index+1}}</td>
                                     <td>{{item.numberAreaString}}</td>
                                     <td>{{item.numberArea}}</td>
-                                    <td>{{changeRecipientPhoneno(item.numberFire)}}</td>
-                                    <td>{{changeRecipientPhoneno(item.numberEmg)}}</td>
-                                    <td>{{item.firstZip}}</td>
-                                    <td>{{item.lastZip}}</td>
+                                    <td>
+                                      <div class="input_area" style="margin-left:10px; margin-right:10px;">
+                                        <input type="text" name="" id="" v-model="item.numberFire" @change="changeRecipientPhoneno(item.numberFire)" >
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="input_area" style="margin-left:10px; margin-right:10px;">
+                                        <input type="text" name="" id="" v-model="item.numberEmg">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="input_area" style="margin-left:10px; margin-right:10px;">
+                                        <input type="text" name="" id="" v-model="item.firstZip">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="input_area" style="margin-left:10px; margin-right:10px;">
+                                        <input type="text" name="" id="" v-model="item.lastZip">
+                                      </div>
+                                    </td>
                                     <td>{{item.regDtime}}</td>
                                     <td>{{item.updDtime}}</td>
                                 </tr>                                
@@ -195,6 +221,7 @@ export default {
         cBirthday:'', cAddr: '', NCount: 0,
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
         errorpopup1: false, errorpopup2: false,
+        saveChangeData: null,
       }
     },
     created() {
@@ -329,6 +356,9 @@ export default {
         return ''
       }
     },
+    // changeNumber2: function(event) {
+    //   this.$emit('input', event.target.value);
+    // },
     onChangeSido(event){
       console.log("====onChangeSido($event) execution")
       this.getSggData()
@@ -358,7 +388,50 @@ export default {
         this.getRecipientData();
       }
     },
-    },
+    saveIPPBX(){
+      if(this.saveChangeData===null||this.saveChangeData===undefined){
+        alert("변경하시고자 하는 값을 선택해 주세요"); 
+        return;
+      }
+      let tmpSaveData = this.recipientItems[this.saveChangeData]
+      let tmpObjectData = {
+        areaNumberId: this.recipientItems[this.saveChangeData].areaNumberId , 
+        firstZip: this.recipientItems[this.saveChangeData].firstZip ,
+        lastZip: this.recipientItems[this.saveChangeData].lastZip ,
+        numberArea: this.recipientItems[this.saveChangeData].numberArea ,
+        numberAreaString: this.recipientItems[this.saveChangeData].numberAreaString ,
+        numberEmg: this.recipientItems[this.saveChangeData].numberEmg ,
+        numberFire: this.recipientItems[this.saveChangeData].numberFire ,
+        regDtime: this.recipientItems[this.saveChangeData].regDtime ,
+        updDtime: this.recipientItems[this.saveChangeData].updDtime ,
+      }
+
+      const url = this.$store.state.serverApi+`/admin/ippbx/update.do?areaNumberId=${this.recipientItems[this.saveChangeData].areaNumberId}
+      &firstZip=${this.recipientItems[this.saveChangeData].firstZip}
+      &lastZip=${this.recipientItems[this.saveChangeData].lastZip}
+      &numberFire=${this.recipientItems[this.saveChangeData].numberFire}
+      &numberEmg=${this.recipientItems[this.saveChangeData].numberEmg}`
+
+        axios.post(url,tmpObjectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            let resData = res.data.data
+            console.log(resData)
+            if(resData){
+                alert("저장이 완료되었습니다.")
+            }
+            // this.getCSensorsData = res.data.data
+            // console.log("sensors ")
+            // console.log(this.getCSensorsData)
+            
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+
+    }
+  },
 }
 </script>
 <style>
