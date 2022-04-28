@@ -68,6 +68,7 @@ export default {
             relationPhoneData: null,
             popCheck: false,
             lending : 0,
+            msg : ''
         }
     },
     created(){
@@ -76,8 +77,11 @@ export default {
     methods:{
         sendParent(){
             this.popCheck=true
+            this.msg = '말벗'
+            this.$emit("openPopMsg",this.msg) 
             this.$emit("sendData1",this.relationPhoneData)
-            this.$emit("openPop",this.popCheck) 
+            this.$emit("openPop",this.popCheck)
+            
         },
         sendMenu3Lending(){
             console.log("lending")

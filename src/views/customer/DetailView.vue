@@ -85,6 +85,7 @@
                                    v-if="this.menutoggle===3" 
                                    @sendData1="getFromMenuData" 
                                    @openPop="openModal"
+                                   @openPopMsg="openModalMsg"
                                    @sendMenu3Lending="menu3Lending"></menu3>  
                             <menu2 :recipientId="this.recipientId" v-if="this.menutoggle===2"></menu2>  
                             <menu4 :recipientId="this.recipientId" v-if="this.menutoggle===4"></menu4>    
@@ -120,7 +121,7 @@
     <div id="" class="popupLayer" v-if="popCheck">
       <div class="popup_wrap">
           <div class="title_wrap">
-              <div class="title">응급관리요원 추가</div>
+              <div class="title">{{this.msg}} 추가</div>
               <button type="button" class="btn_close" @click="closeModal">닫기</button>
           </div>
           <div class="popup_cnt">
@@ -319,7 +320,7 @@ export default {
     return {
       pending:true,
       d_phone: '', d_sex: '', d_endcycle: '', d_part: '', d_status: '', d_zipCode: '', d_address: '', personinfo: '',
-      recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,popCheck:false,insertData:null,
+      recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,popCheck:false,insertData:null,msg: null,
       managerName: null,managerPhone: null,managerRelationNm: null,managerRelationCd:null,menu3Refresh:1,
       relationArr : [{value:'RL001', text: '남편'},{value:'RL002', text: '와이프'},{value:'RL003', text: '아들'},{value:'RL004', text: '딸'},{value:'RL005', text: '사위'},{value:'RL006', text: '며느리'},{value:'RL007', text: '손자'},{value:'RL008', text: '손녀'},{value:'RL009' , text:'기타'},]
     }
@@ -346,19 +347,11 @@ export default {
     menu4,
   },
   methods: {
-    getFromMenuData(data) {
-      console.log(data);
-    },
-    openModal(data) {
-      this.popCheck = data
-    },
-    menu3Lending(data) {
-      console.log("stop", data)
-      this.menu3Refresh = data
-    },
-    closeModal() {
-      this.popCheck = false
-    },
+    getFromMenuData(data) {console.log(data);},
+    openModal(data) {this.popCheck = data},
+    openModalMsg(data) {this.msg = data},
+    menu3Lending(data) {this.menu3Refresh = data},
+    closeModal() {this.popCheck = false},
     async getRecipientInfo() {
       //this.$store.mutation.logout
       //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");

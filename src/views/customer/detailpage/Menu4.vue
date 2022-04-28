@@ -77,12 +77,13 @@ export default {
       async getRelationPhoneData(){
           console.log("menu4")
       //여기
-      const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers`
+      const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers?typeCd=TPE006`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
-          this.relationPhoneData  = res.data.data.filter(pd =>{
-              return pd.typeCd === "TPE006"
-          })
+          this.relationPhoneData  = res.data.data
+        //   .filter(pd =>{
+        //       return pd.typeCd === "TPE006"
+        //   })
           console.log(this.relationPhoneData)
         }).catch(error => {
             console.log("fail to load")
