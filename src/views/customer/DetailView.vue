@@ -129,8 +129,8 @@
           <div class="popup_cnt">
             <div class="input_wrap">
                 <div class="input_area">
-                    <p class="input_tit">이름</p>
-                    <input type="text" v-model="managerName">
+                  <p class="input_tit">이름</p>
+                  <input type="text" v-model="managerName">
                 </div>
                 <!-- <div class="input_area">
                     <p class="input_tit">생년월일</p>
@@ -144,10 +144,9 @@
                     <p class="input_tit">관계</p>
                     <select name="managerRelationCd" id="managerRelationCd" v-model="managerRelationCd" > <!--v-model="managerRelationNm"-->
                       <option v-for="(items, index ) in relationArr" v-bind:value="items.value" v-bind:key="index"> 
-                                    {{ items.text }}
+                          {{ items.text }}
                       </option>
                     </select> 
-                    
                 </div>
             </div>
             <!-- <div class="input_wrap type-02">
@@ -203,7 +202,6 @@
         <CCard class="mx-6 mb-0" >
           <CCardBody class="p-6">
             <CForm>
-
               <CRow>
                 <CCol md="3">
                 </CCol>
