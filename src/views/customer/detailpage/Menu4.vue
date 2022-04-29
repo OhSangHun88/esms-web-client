@@ -41,7 +41,7 @@
                                 <tr v-for="(item,index) in relationPhoneData" v-bind:key="index">
                                     <td>
                                         <div class="chk_area">
-                                            <input type="radio" name="chk2" id="chk2_1" checked>
+                                            <input type="radio" name="chk2" id="chk2_1">
                                             <label for="chk2_1" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td>
