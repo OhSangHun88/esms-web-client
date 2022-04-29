@@ -184,7 +184,7 @@ export default {
             }
         },
         modifyRelationPhoneData(){
-            if(confirm("정말로 수정하시겠습니까? ")===true){
+            
                 let selectData = this.relationPhoneData[this.selectIndex]
                 let selectRegSn = selectData.regSn
                 const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${selectRegSn}/update`
@@ -193,6 +193,7 @@ export default {
                 .then(res => {
                 console.log(res.data.data)
                 
+                alert("성공적으로 수정되었습니다")
                 this.sendMenu3Lending()
                 
                 }).catch(error => {
@@ -200,10 +201,7 @@ export default {
                     this.errorMessage = error.message;
                     console.error("There was an error!", error);
                 });
-                alert("성공적으로 수정되었습니다")
-            }else{
-                alert("취소되었습니다")
-            }
+            
         },
 
 
