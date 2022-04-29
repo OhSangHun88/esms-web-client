@@ -5,7 +5,7 @@
                 <div class="list_top">
                     <div class="btn_area">
                         <button type="button" class="btn form2" @click="sendParent">추가</button>
-                        <!-- <button type="button" class="btn form2">수정</button>-->
+                        <button type="button" class="btn form2" @click="modifyRelationPhoneData">수정</button>
                         <button type="button" class="btn form3" @click="deleteRelationPhoneData">삭제</button> 
                     </div>
                 </div>
@@ -47,9 +47,22 @@
                                         </div>
                                     </td>
                                     <td>{{index+1}}</td>
-                                    <td>{{item.relationNm}}</td>
-                                    <td>{{item.relationCdNm}}</td>
-                                    <td>{{changeRecipientPhoneno(item.relationPhone)}}</td>
+                                    <td v-if="selectIndex === index">
+                                        <div class="input_area">
+                                            <input type="text" name="relationNm" :id="`relationNm_${index}`" v-model="item.relationNm" >
+                                        </div>
+                                    </td>
+                                    <td v-else>{{item.relationNm}}</td>
+                                    <td v-if="selectIndex === index">
+                                        <div class="input_area">
+                                            <input type="text" name="relationCdNm" :id="`relationCdNm_${index}`" v-model="item.relationCdNm" >
+                                        </div>
+                                    </td>
+                                    <td v-else>{{item.relationCdNm}}</td>
+                                    <td v-if="selectIndex === index">
+                                        <input type="text" name="relationPhone" :id="`relationPhone_${index}`" v-model="item.relationPhone" >
+                                    </td>
+                                    <td v-else>{{changeRecipientPhoneno(item.relationPhone)}}</td>
                                     
                                 </tr>
                             </tbody>
@@ -145,8 +158,9 @@ export default {
                 });
             }
         },
+        //말벗 삭제
         deleteRelationPhoneData(){
-            if(confirm("삭제하시겠습니까?")===true){
+            if(confirm("정말로 삭제하시겠습니까? ")===true){
                 let selectData = this.relationPhoneData[this.selectIndex]
                 let selectRegSn = selectData.regSn
                 
@@ -164,14 +178,35 @@ export default {
                     this.errorMessage = error.message;
                     console.error("There was an error!", error);
                 });
-                //alert("삭제되었습니다")
+                alert("성공적으로 삭제되었습니다")
             }else{
-                return;
+                alert("취소되었습니다")
             }
-            
-            
-            
         },
+        modifyRelationPhoneData(){
+            if(confirm("정말로 수정하시겠습니까? ")===true){
+                let selectData = this.relationPhoneData[this.selectIndex]
+                let selectRegSn = selectData.regSn
+                const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${selectRegSn}/update`
+                
+                axios.post(url,selectData, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+                .then(res => {
+                console.log(res.data.data)
+                
+                this.sendMenu3Lending()
+                
+                }).catch(error => {
+                    console.log("fail to load")
+                    this.errorMessage = error.message;
+                    console.error("There was an error!", error);
+                });
+                alert("성공적으로 수정되었습니다")
+            }else{
+                alert("취소되었습니다")
+            }
+        },
+
+
     }
 }
 </script>
