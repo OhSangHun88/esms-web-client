@@ -17,14 +17,15 @@
                             <!-- <col style="width:31.5%;">
                             <col style="width:31.5%;">
                             <col style="width:31.5%;"> -->
+                            <col style="width:auto;">
                             <col style="width:10%;">
-                            <col style="width:28%;">
-                            <col style="width:28%;">
+                            <col style="width:25%;">
+                            <col style="width:25%;">
                             <col style="width:33%;">
                         </colgroup>
                         <thead>
                             <tr>
-                                <!-- <th scope="col"></th> -->
+                                <th scope="col"></th>
                                 <th scope="col">순번</th>
                                 <th scope="col">이름</th>
                                 <th scope="col">관계</th>
@@ -39,19 +40,20 @@
                                 <col style="width:31.5%;">
                                 <col style="width:31.5%;">
                                 <col style="width:31.5%;"> -->
+                                <col style="width:auto;">
                                 <col style="width:10%;">
-                                <col style="width:28%;">
-                                <col style="width:28%;">
+                                <col style="width:25%;">
+                                <col style="width:25%;">
                                 <col style="width:33%;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in relationPhoneData" v-bind:key="index">
-                                    <!-- <td>
+                                    <td>
                                         <div class="chk_area">
-                                            <input type="checkbox" name="chk" id="chk1_1" checked>
+                                            <input type="radio" name="chk" id="chk1_1" checked>
                                             <label for="chk1_1" class="chk"><i class="ico_chk"></i></label>
                                         </div>
-                                    </td> -->
+                                    </td>
                                     <td>{{index+1}}</td>
                                     <td>{{item.relationNm}}</td>
                                     <td>

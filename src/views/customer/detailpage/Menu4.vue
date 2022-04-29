@@ -12,14 +12,15 @@
                 <div class="list">
                     <table>
                         <colgroup>
+                            <col style="width:auto;">
                             <col style="width:10%;">
-                            <col style="width:28%;">
-                            <col style="width:28%;">
+                            <col style="width:25%;">
+                            <col style="width:25%;">
                             <col style="width:33%;">
                         </colgroup>
                         <thead>
                             <tr>
-                                <!-- <th scope="col">관리기관</th> -->
+                                <th scope="col"></th>
                                 <th scope="col">순번</th>
                                 <th scope="col">이름</th>
                                 <th scope="col">관계</th>
@@ -30,19 +31,20 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
+                                <col style="width:auto;">
                                 <col style="width:10%;">
-                                <col style="width:28%;">
-                                <col style="width:28%;">
+                                <col style="width:25%;">
+                                <col style="width:25%;">
                                 <col style="width:33%;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in relationPhoneData" v-bind:key="index">
-                                    <!-- <td>
+                                    <td>
                                         <div class="chk_area">
-                                            <input type="checkbox" name="chk2" id="chk2_1" checked>
+                                            <input type="radio" name="chk2" id="chk2_1" checked>
                                             <label for="chk2_1" class="chk"><i class="ico_chk"></i></label>
                                         </div>
-                                    </td> -->
+                                    </td>
                                     <td>{{index+1}}</td>
                                     <td>{{item.relationNm}}</td>
                                     <td>생활관리사</td>
