@@ -6,7 +6,7 @@
         <div class="user_name">
           <button type="button" class="btn form2" @click="logOut"> 로그아웃</button>
           <i class="pf_img" style="background-image: url(../assets/images/img_profile.png)"></i>
-          <a href="#" class="name"><em>admin</em> 님</a>
+          <a href="#" class="name"><em>{{this.userId}}</em> 님</a>
         </div>
       </div>
     </div>
@@ -61,13 +61,20 @@ export default {
     msg: String
   },
   data: () => ({
-    
+    userId: null
 
   }),
+  created(){
+    this.getUserId();
+  },
   methods:{
+    getUserId(){
+      this.userId = sessionStorage.getItem("userId");
+    },
     logOut(){
       alert("로그아웃 되었습니다")
       sessionStorage.setItem("token", null);
+      sessionStorage.setItem("userId", null);
       console.log(sessionStorage.getItem("token"));
       this.$router.push({ name: 'Home' });
     }
