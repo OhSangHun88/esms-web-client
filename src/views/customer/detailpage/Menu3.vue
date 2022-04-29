@@ -5,21 +5,22 @@
                 <div class="list_top">
                     <div class="btn_area">
                         <button type="button" class="btn form2" @click="sendParent">추가</button>
-                        <!-- <button type="button" class="btn form2">수정</button>
-                        <button type="button" class="btn form3">삭제</button> -->
+                        <!-- <button type="button" class="btn form2">수정</button>-->
+                        <button type="button" class="btn form3" @click="deleteRelationPhoneData">삭제</button> 
                     </div>
                 </div>
                 <div class="list">
                     <table>
                         <colgroup>
+                            <col style="width:auto;">
                             <col style="width:10%;">
-                            <col style="width:28%;">
-                            <col style="width:28%;">
+                            <col style="width:25%;">
+                            <col style="width:25%;">
                             <col style="width:33%;">
                         </colgroup>
                         <thead>
                             <tr>
-                                <!-- <th scope="col">관리기관</th> -->
+                                <th scope="col"></th>
                                 <th scope="col">순번</th>
                                 <th scope="col">이름</th>
                                 <th scope="col">관계</th>
@@ -30,15 +31,21 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <!-- <col style="width:auto;"> -->
+                                <col style="width:auto;">
                                 <col style="width:10%;">
-                                <col style="width:28%;">
-                                <col style="width:28%;">
+                                <col style="width:25%;">
+                                <col style="width:25%;">
                                 <col style="width:33%;">
                             </colgroup>
                             <tbody>
+                                
                                 <tr v-for="(item,index) in relationPhoneData" v-bind:key="index">
-                                    <!-- <td>경기도 용인시 사회복지관 2관</td> -->
+                                    <td>
+                                        <div class="chk_area">
+                                            <input type="radio" name="chk" :id="`chk1_${index}`" v-model="selectIndex" :value="index">
+                                            <label :for="`chk1_${index}`" class="chk"><i class="ico_chk"></i></label>
+                                        </div>
+                                    </td>
                                     <td>{{index+1}}</td>
                                     <td>{{item.relationNm}}</td>
                                     <td>{{item.relationCdNm}}</td>
@@ -68,13 +75,15 @@ export default {
             relationPhoneData: null,
             popCheck: false,
             lending : 0,
-            msg : ''
+            msg : '',
+            selectIndex: null,
         }
     },
     created(){
         this.getRelationPhoneData();
     },
     methods:{
+        //부모 컴포넌트에 데이터 전송
         sendParent(){
             this.popCheck=true
             this.msg = '말벗'
@@ -83,6 +92,7 @@ export default {
             this.$emit("openPop",this.popCheck)
             
         },
+        //동작후 갱신 메소드
         sendMenu3Lending(){
             console.log("lending")
             const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers?typeCd=TPE008`
@@ -103,6 +113,7 @@ export default {
             
              
         },
+        //전화번호 양식화
         changeRecipientPhoneno(phone){
             if(phone){
                 let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
@@ -112,6 +123,7 @@ export default {
             }
 
         },
+        //초기 호출 메소드
         async getRelationPhoneData(){
             console.log("menu3")
         //여기
@@ -132,9 +144,34 @@ export default {
                     console.error("There was an error!", error);
                 });
             }
-            
-
         },
-  }
+        deleteRelationPhoneData(){
+            if(confirm("삭제하시겠습니까?")===true){
+                let selectData = this.relationPhoneData[this.selectIndex]
+                let selectRegSn = selectData.regSn
+                
+                console.log(selectRegSn)
+                const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${selectRegSn}/delete`
+                console.log(url)
+                axios.delete(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+                .then(res => {
+                console.log(res.data.data)
+                
+                this.sendMenu3Lending()
+                
+                }).catch(error => {
+                    console.log("fail to load")
+                    this.errorMessage = error.message;
+                    console.error("There was an error!", error);
+                });
+                //alert("삭제되었습니다")
+            }else{
+                return;
+            }
+            
+            
+            
+        },
+    }
 }
 </script>
