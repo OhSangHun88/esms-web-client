@@ -305,7 +305,7 @@ export default {
     PwchartImage6: null,
     PwGwData: [ 19, 5 ],
     PwEmData: [14, 5, 8],
-    PwFiData: [14, 5, 8],
+    PwFiData:[14, 5, 8],
     PwDoData: [14, 5, 8],
     PwAcData: [14, 5, 8],
     PwLiData: [14, 5, 8],
@@ -1084,16 +1084,6 @@ export default {
         borderColor: 'rgba(255, 255, 255, 1)',
         hoverBorderColor: 'rgba(255, 255, 255, 1)',
         borderWidth: 1,
-        borderRadius: 10,
-      },
-      {
-        label: '연결',
-        data: this.PwGwData,
-        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)"],
-        borderColor: 'rgba(255, 255, 255, 1)',
-        hoverBorderColor: 'rgba(255, 255, 255, 1)',
-        borderWidth: 1,
-        borderRadius: 10,
       }]
       }
       let data2 = {
