@@ -238,16 +238,16 @@ export default {
       axios.post(url, data)
       .then(function (res) {
         console.log("==== res: ", res);
-        if(res.status==200) {
+        
+        if(res.data.token ==null) {
+          alert('등록된 사용자가 아니거나 비밀번호가 맞지 않습니다.');
+        }else {
           console.log("==== res.data.token: ", res.data.token);
           sessionStorage.setItem("token", res.data.token);
           sessionStorage.setItem("userId", res.data.userId);
           console.log(sessionStorage.getItem("token"));
           console.log(sessionStorage.getItem("userId"));
           router.push({ path: '../dashboard/allView' });
-        }
-        else {
-          alert('등록된 사용자가 아니거나 비밀번호가 맞지 않습니다.');
         }
       })
       .catch(function (err) {
