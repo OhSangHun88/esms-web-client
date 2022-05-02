@@ -4,8 +4,8 @@
       <h1 class="logo">아이오비</h1>
       <p class="login_title"><em>응급안전안심서비스</em>에 오신것을 환영합니다.</p>
       <div class="input_area">
-        <input type="text" v-model="userId" placeholder="아이디를 입력해주세요." class="input_id">
-        <input type="password" v-model="password" placeholder="비밀번호를 입력해주세요." class="input_pw">
+        <input type="text" v-model="userId" placeholder="아이디를 입력해주세요." class="input_id" @keypress.enter='login'>
+        <input type="password" v-model="password" placeholder="비밀번호를 입력해주세요." class="input_pw" @keypress.enter='login'>
       </div>
       <div class="btn_area">
         <button type="button" class="lgBtn" v-on:click="login">로그인</button>
@@ -241,7 +241,9 @@ export default {
         if(res.status==200) {
           console.log("==== res.data.token: ", res.data.token);
           sessionStorage.setItem("token", res.data.token);
+          sessionStorage.setItem("userId", res.data.userId);
           console.log(sessionStorage.getItem("token"));
+          console.log(sessionStorage.getItem("userId"));
           router.push({ path: '../dashboard/allView' });
         }
         else {

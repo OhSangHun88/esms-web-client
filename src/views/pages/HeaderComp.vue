@@ -61,13 +61,20 @@ export default {
     msg: String
   },
   data: () => ({
-    
+    userId: null
 
   }),
+  created(){
+    this.getUserId();
+  },
   methods:{
+    getUserId(){
+      this.userId = sessionStorage.getItem("userId");
+    },
     logOut(){
       alert("로그아웃 되었습니다")
       sessionStorage.setItem("token", null);
+      sessionStorage.setItem("userId", null);
       console.log(sessionStorage.getItem("token"));
       this.$router.push({ name: 'Home' });
     }

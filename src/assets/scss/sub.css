@@ -124,6 +124,8 @@
 .info_wrap_1 .tabcontent .list table tbody tr{border-bottom-width: 0;}
 .info_wrap_1 .tabcontent .list .tbody table tbody tr td{height: auto;padding: 10px 0 0;}
 .info_wrap_1 .tabcontent .list .tbody table tbody tr td input[type="text"]{width: 200px;height: 30px;font-size: 14px;}
+.info_wrap_1 .tabcontent .list .tbody table tbody tr td .input_area{padding: 0 10px 0 0;}
+.info_wrap_1 .tabcontent .list .tbody table tbody tr td .input_area input[type="text"]{width: 100%;}
 .info_wrap_1 .tabcontent .list .tbody table tbody tr td select{width: 200px;height: 30px;font-size: 14px;}
 .info_wrap_1 .tabcontent .list .tbody table tbody tr:nth-of-type(even) td{background-color: unset;}
 .info_wrap_1 .tabcontent .list .tbody table tbody tr:hover td{background-color: #4B556A;}
@@ -167,6 +169,9 @@ ul.info_list li .txt p{font-size: 12px;color: rgba(255, 255, 255, 0.8);padding: 
 .list .tbody.htype-04 tr td{height: 40px;}
 .list .thead.htype-01 tr th{height: 40px;}
 .list .thead.htype-01 tr th{height: 40px;}
+.list .tbody.htype-05 tr td{height: 40px;}
+.list .tbody.htype-02 tr td{height: 40px;}
+.list .tbody.htype-01 tr td{height: 40px;}
 /*.list .tbody.htype-04 tr:nth-of-type(even){background-color:#4B556A;}*/
 .list .tbody.htype-05{max-height: 440px;}
 .list table{width:100%; overflow: hidden;}
@@ -255,7 +260,7 @@ table.asstatus tbody tr td.comple{color: #EE9D01;font-size: 18px;}
 
 /*=====팝업=====*/
 .popupLayer{position: fixed;top: 0;left: 0;background-color: rgba(0,0,0,0.5);display: flex;justify-content: center;align-items: center;width: 100%;height: 100vh;flex-direction: column;z-index: 11;}
-.popupLayer .popup_wrap{max-width: 1000px;width: 1000px;overflow:hidden;background-color: #2A363E;}
+.popupLayer .popup_wrap{max-width: 1000px;width: 800px;overflow:hidden;background-color: #2A363E;}
 .popupLayer .popup_wrap.type-02{width: 500px;}
 .popupLayer .title_wrap{display : flex;justify-content: space-between;align-items: center;height: 60px;padding : 0 50px;background-color: #263037;}
 .popupLayer .title_wrap .title{display: inline-block;font-size: 18px;line-height: 26px;font-weight: 500;color: #fff;}
@@ -273,7 +278,7 @@ table.asstatus tbody tr td.comple{color: #EE9D01;font-size: 18px;}
 .popupLayer .popup_cnt .input_wrap .input_area .tit_area .file_txt{display: inline-block;vertical-align: middle;font-size: 14px;color: #ADB0BB;margin: 0 0 10px 35px;}
 .popupLayer .popup_cnt .input_wrap .input_area .tit_area .file_txt i.ico_file{display: inline-block;vertical-align: top;background-repeat: no-repeat;background-position: center;width: 12px;height: 15px;background-image: url(../../assets/images/ico_file.png);margin: 4px 4px 0 6px;}
 .popupLayer .popup_cnt .input_wrap .input_area .tit_area .file_txt em{display: inline-block;vertical-align: top;}
-.popupLayer .popup_cnt .input_wrap.type-02 .input_area{width: calc(66.66% - 30px);}
+.popupLayer .popup_cnt .input_wrap.type-02 .input_area{width: calc(99.99% - 30px);}/*calc(66.66% - 30px)*/
 .popupLayer .popup_cnt .input_wrap.type-02 .input_area.size-s{width: calc(33.33% - 30px);}
 .popupLayer .popup_cnt .input_wrap.type-02 .btn_area{display: inline-block;width: calc(33.33% - 30px);margin: 0 0 0 30px;}
 .popupLayer .popup_cnt .input_wrap.type-02 .toggle_btn{overflow: hidden;border-radius: 8px;width: 100px;display: inline-block;vertical-align: middle;}
