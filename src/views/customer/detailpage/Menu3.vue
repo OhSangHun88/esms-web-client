@@ -101,7 +101,7 @@ export default {
             this.popCheck=true
             this.msg = '말벗'
             this.$emit("openPopMsg",this.msg) 
-            this.$emit("sendData1",this.relationPhoneData)
+            this.$emit("sendData3",this.relationPhoneData)
             this.$emit("openPop",this.popCheck)
             
         },
@@ -149,7 +149,7 @@ export default {
                 //   = res.data.data.filter(pd =>{
                 //       return pd.typeCd === "TPE008"
                 //   })
-                this.sendMenu3Lending()
+                //this.sendMenu3Lending()
                 console.log(this.relationPhoneData)
                 }).catch(error => {
                     console.log("fail to load")
@@ -185,22 +185,22 @@ export default {
         },
         modifyRelationPhoneData(){
             
-                let selectData = this.relationPhoneData[this.selectIndex]
-                let selectRegSn = selectData.regSn
-                const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${selectRegSn}/update`
-                
-                axios.post(url,selectData, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-                .then(res => {
-                console.log(res.data.data)
-                
-                alert("성공적으로 수정되었습니다")
-                this.sendMenu3Lending()
-                
-                }).catch(error => {
-                    console.log("fail to load")
-                    this.errorMessage = error.message;
-                    console.error("There was an error!", error);
-                });
+            let selectData = this.relationPhoneData[this.selectIndex]
+            let selectRegSn = selectData.regSn
+            const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${selectRegSn}/update`
+            
+            axios.post(url,selectData, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+            console.log(res.data.data)
+            
+            alert("성공적으로 수정되었습니다")
+            this.sendMenu3Lending()
+            
+            }).catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
             
         },
 
