@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <div class="popbtn_area">
-                        <button type="button" class="btn form2" @click="detailOrg = true">수정</button>
+                        <button type="button" class="btn form2" @click="changeOrg = true, detailOrg = false">수정</button>
                         <button type="button" class="btn form3" @click="deleteOrg = true">삭제</button>
                     </div>
                 </div>
@@ -110,21 +110,15 @@
                         <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">시/도</p>
-                                <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
-                                  <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
-                                </select>
+                                <input type="text" value="" v-model="selectDetailsido">
                             </div>
                             <div class="input_area">
-                                <p class="input_tit">시/군/구</p>
-                                <select v-model="selectedSggItems" @change="onChangeOrg($event)">
-                                  <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
-                                </select>
+                              <p class="input_tit">시/군/구</p>
+                              <input type="text" value="" v-model="selectDetailSgg">
                             </div>
                             <div class="input_area">
-                                <p class="input_tit">관리기관</p>
-                                <select v-model="selectedOrgItems">
-                                  <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
-                                </select>
+                              <p class="input_tit">관리기관</p>
+                              <input type="text" value="" v-model="selectDetailOrg">
                             </div>
                             <hr/>
                             <div class="input_area">
@@ -146,8 +140,8 @@
                         </div>
                     </div>
                     <div class="popbtn_area">
-                        <button type="button" class="btn" @click="changeOrg = false">취소</button>
-                        <button type="button" class="btn form2" @click="changeOrg = false">수정</button>
+                        <button type="button" class="btn" @click="changeOrg = false, detailOrg = true">취소</button>
+                        <button type="button" class="btn form2" @click="changeOrgSuccess()">수정</button>
                     </div>
                 </div>
             </div>
@@ -161,8 +155,8 @@
                   <p class="alert_txt">선택하신 관리기관을 삭제하시겠습니까?</p>
                 </div>
                 <div class="popbtn_area type-02">
-                  <button type="button" class="btn form2" @click="deleteOrg = false">취소</button>
-                  <button type="button" class="btn form3" @click="deleteOrg = false, detailOrg = false">확인</button>
+                  <button type="button" class="btn form2" @click="deleteOrgFail()">취소</button>
+                  <button type="button" class="btn form3" @click="deleteOrgSuccess()">확인</button>
                 </div>
               </div>
             </div>
@@ -265,7 +259,7 @@
                             <col style="width:10%;">
                             </colgroup>
                             <tbody >
-                                <tr v-for="(item,index) in TorgItems" v-bind:key="index" :ref="`target_${index}`">
+                                <tr v-for="(item,index) in TorgItems" v-bind:key="index" :ref="`target_${index}`" @click="detailOrgpopup(index)">
                                   <td>{{index+1}}</td>
                                   <td>{{item.orgId}}</td>
                                   <td>{{item.sidoName}}</td>
@@ -483,23 +477,22 @@ export default {
       this.selectDetailOrg = this.detailArr.orgNm
       this.selectedAddr = this.detailArr.addr
       this.selectedAddrDetail = this.detailArr.addrDetail
-
       this.detailOrg = true
       
     },
-    changeData(){
-      if(this.saveChangeData === null || this.saveChangeData === undefined){
-        alert("관리기관을 선택하여 주세요")
-      }else{
-      this.changeOrg = true
-      }
+    changeOrgSuccess(){
+      alert("성공적으로 변경되었습니다")
+      this.changeOrg = false
+      this.detailOrg = true
     },
-    deleteData(){
-      if(this.saveChangeData === null || this.saveChangeData === undefined){
-        alert("관리기관을 선택하여 주세요")
-      }else{
-      this.deleteOrg = true
-      }
+    deleteOrgFail(){
+      alert("취소되었습니다")
+      this.deleteOrg = false
+    },
+    deleteOrgSuccess(){
+      alert("성공적으로 삭제되었습니다")
+      this.deleteOrg = false
+      this.detailOrg = false
     },
     uploadData(){
       let addrCd = ''
@@ -517,6 +510,8 @@ export default {
         addrDetail:this.selectedAddrDetail,
         orgCd:this.selectedOrgItems
       }
+      alert("성공적으로 등록되었습니다")
+      this.writeOrg = false
     }
     }
 }

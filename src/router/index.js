@@ -65,6 +65,7 @@ const CEmPerson = () => import('@/views/customer/detailpage/EmPerson')
 
 //Emevent
 const EmeventAllView = () => import('@/views/emevent/AllView')
+const EmeventAllView2 = () => import('@/views/emevent/AllView2')
 const EmeventOutingEvent = () => import('@/views/emevent/OutingEvent')
 const EmeventActivityDetection = () => import('@/views/emevent/ActivityDetection')
 const EmeventEquipmentFailure = () => import('@/views/emevent/EquipmentFailure')
@@ -244,6 +245,11 @@ function configRoutes () {
               path: 'allView',
               name: 'AllView',
               component: EmeventAllView
+            },
+            {
+              path: 'allView2',
+              name: 'AllView2',
+              component: EmeventAllView2
             },
             {
               path: 'outingEvent',

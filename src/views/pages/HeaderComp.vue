@@ -5,7 +5,7 @@
       <div class="util_wrap">
         <div class="user_name">
           <button type="button" class="btn form2" @click="logOut"> 로그아웃</button>
-          <i class="pf_img" style="background-image: url(../assets/images/img_profile.png)"></i>
+          <i class="pf_img" style="background-image: url(../../assets/images/img_profile.png)"></i>
           <a href="#" class="name"><em>admin</em> 님</a>
         </div>
       </div>
@@ -47,7 +47,7 @@
         </li>
       </ul>
       <div class="emerg_area">
-        <button type="button" class="btn on"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
+        <button type="button" class="btn on"><i></i><router-link to ="/emevent/allView2">응급상황 수신</router-link></button> <!--응급상황일때 on 클래스 추가-->
       </div>
     </nav>
   </header>

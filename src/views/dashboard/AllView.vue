@@ -305,7 +305,7 @@ export default {
     PwchartImage6: null,
     PwGwData: [ 19, 5 ],
     PwEmData: [14, 5, 8],
-    PwFiData:[14, 5, 8],
+    PwFiData: [14, 5, 8],
     PwDoData: [14, 5, 8],
     PwAcData: [14, 5, 8],
     PwLiData: [14, 5, 8],
@@ -1084,6 +1084,16 @@ export default {
         borderColor: 'rgba(255, 255, 255, 1)',
         hoverBorderColor: 'rgba(255, 255, 255, 1)',
         borderWidth: 1,
+        borderRadius: 10,
+      },
+      {
+        label: '연결',
+        data: this.PwGwData,
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)"],
+        borderColor: 'rgba(255, 255, 255, 1)',
+        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        borderWidth: 1,
+        borderRadius: 10,
       }]
       }
       let data2 = {
@@ -1157,7 +1167,7 @@ export default {
         plugins: { 
         legend: { 
           display: false, 
-          color: "rgba(255, 255, 255, 1)", //labelscolor,fontcolor,color 데이터를 arr
+          color: "rgba(255, 255, 255, 1)", 
           position: "bottom", 
           labels: { boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: "circle", font: { size: 14 }, color:"rgba(255, 255, 255, 1)"}, 
           fullSize: false, 
@@ -1229,6 +1239,7 @@ export default {
       this.PwchartImage5.update();
       this.PwchartImage6.update();
     },
+
     async remakePwData(){
       this.PwchartImage1.destroy();
       this.PwchartImage2.destroy();
