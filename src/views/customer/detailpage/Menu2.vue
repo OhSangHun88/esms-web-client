@@ -50,20 +50,25 @@
                                 <tr v-for="(item,index) in relationPhoneData" v-bind:key="index">
                                     <td>
                                         <div class="chk_area">
-                                            <input type="radio" name="chk" id="chk1_1">
-                                            <label for="chk1_1" class="chk"><i class="ico_chk"></i></label>
+                                            <input type="radio" name="chk" :id="`chk1_${index}`" v-model="selectIndex" :value="index">
+                                            <label :for="`chk1_${index}`" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td>
                                     <td>{{index+1}}</td>
-                                    <td>{{item.relationNm}}</td>
+                                    <td v-if="selectIndex === index">
+                                        <div class="input_area">
+                                            <input type="text" name="relationNm" :id="`relationNm_${index}`" v-model="item.relationNm" >
+                                        </div>
+                                    </td>
+                                    <td v-else>{{item.relationNm}}</td>
                                     <td>
                                         <!-- <input type="text" name="" id="" :value="item.relationCdNm"> -->
                                         응급요원
                                     </td>
-                                    <td>
-                                        <!-- <input type="text" name="" id="" :value="changeRecipientPhoneno(item.relationPhone)"> -->
-                                        {{changeRecipientPhoneno(item.relationPhone)}}
+                                    <td v-if="selectIndex === index">
+                                        <input type="text" name="relationPhone" :id="`relationPhone_${index}`" v-model="item.relationPhone" >
                                     </td>
+                                    <td v-else>{{changeRecipientPhoneno(item.relationPhone)}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -84,7 +89,8 @@ export default {
     },
     data () {
         return {
-            relationPhoneData: null
+            relationPhoneData: null,
+            selectIndex: null
         }
     },
     created(){
