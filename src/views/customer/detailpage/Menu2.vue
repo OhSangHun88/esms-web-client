@@ -4,10 +4,9 @@
             <div class="tabcnt01">
                 <div class="list_top">
                     <div class="btn_area">
-                        <!--<button type="button" class="btn form2">추가</button>
-                        <button type="button" class="btn form2">저장</button>
-                        <button type="button" class="btn form2">수정</button>
-                        <button type="button" class="btn form3">삭제</button>-->
+                        <button v-if="this.relationPhoneData.length<1" type="button" class="btn form2" @click="sendParent">추가</button>
+                        <button type="button" class="btn form2" @click="modifyRelationPhoneData">수정</button>
+                        <button type="button" class="btn form3" @click="deleteRelationPhoneData">삭제</button> 
                     </div>
                 </div>
                 <div class="list">
@@ -63,7 +62,7 @@
                                     <td v-else>{{item.relationNm}}</td>
                                     <td>
                                         <!-- <input type="text" name="" id="" :value="item.relationCdNm"> -->
-                                        응급요원
+                                        응급관리요원
                                     </td>
                                     <td v-if="selectIndex === index">
                                         <input type="text" name="relationPhone" :id="`relationPhone_${index}`" v-model="item.relationPhone" >
@@ -90,7 +89,10 @@ export default {
     data () {
         return {
             relationPhoneData: null,
-            selectIndex: null
+            popCheck: false,
+            lending : 0,
+            msg : '',
+            selectIndex: null,
         }
     },
     created(){
@@ -98,7 +100,7 @@ export default {
     },
     methods:{
       async getRelationPhoneData(){
-          console.log("menu1")
+          console.log("menu2")
       //여기
       const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers?typeCd=TPE007`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -115,15 +117,90 @@ export default {
         });
 
     },
+    //부모 컴포넌트에 데이터 전송
+    sendParent(){
+        this.popCheck=true
+        this.msg = '응급관리요원'
+        this.$emit("openPopMsg",this.msg) 
+        this.$emit("sendData2",this.relationPhoneData)
+        this.$emit("openPop",this.popCheck)
+        
+    },
+    //동작후 갱신 메소드
+    sendMenu2Lending(){
+        console.log("lending")
+        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers?typeCd=TPE007`
+            axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+            this.relationPhoneData = res.data.data
+            //   = res.data.data.filter(pd =>{
+            //       return pd.typeCd === "TPE008"
+            //   })
+            
+            console.log(this.relationPhoneData)
+            this.$emit("lending3",this.lending)
+            }).catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+        
+            
+    },
+    modifyRelationPhoneData(){
+        let selectData = this.relationPhoneData[this.selectIndex]
+        let selectRegSn = selectData.regSn
+        console.log(selectData)
+        console.log(selectRegSn)
+        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${selectRegSn}/update`
+        axios.post(url,selectData, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        .then(res => {
+        console.log(res.data.data)
+        alert("성공적으로 수정되었습니다")
+        this.sendMenu2Lending()
+        }).catch(error => {
+            console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+        });
+        
+    },
+    deleteRelationPhoneData(){
+        if(confirm("정말로 삭제하시겠습니까? ")===true){
+            let selectData = this.relationPhoneData[this.selectIndex]
+            let selectRegSn = selectData.regSn
+            
+            console.log(selectRegSn)
+            const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${selectRegSn}/delete`
+            console.log(url)
+            axios.delete(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+            console.log(res.data.data)
+            
+            this.sendMenu2Lending()
+            
+            }).catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+            alert("성공적으로 삭제되었습니다")
+        }else{
+            alert("취소되었습니다")
+        }
+    },
+
+
     changeRecipientPhoneno(phone){
-            if(phone){
-                let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
-                return changeNumber
-            }else{
-                return ''
-            }
+        if(phone){
+            let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+            return changeNumber
+        }else{
+            return ''
+        }
 
     },
+
   }
 }
 </script>

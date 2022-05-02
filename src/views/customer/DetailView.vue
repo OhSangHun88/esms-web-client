@@ -80,15 +80,31 @@
                             <!-- :recipientId="this.recipientId" -->
                             <menu1 :recipientId="this.recipientId" v-if="this.menutoggle===1"></menu1>
                             <menu3 ref="menu3"
+                                   v-if="this.menutoggle===3" 
                                    :recipientId="this.recipientId" 
                                    :menu3Refresh="this.menu3Refresh"
-                                   v-if="this.menutoggle===3" 
-                                   @sendData1="getFromMenuData" 
-                                   @openPop="openModal"
+                                   @sendData3="getFromMenuData" 
+                                   @openPop="openModal3"
                                    @openPopMsg="openModalMsg"
                                    @sendMenu3Lending="menu3Lending"></menu3>  
-                            <menu2 :recipientId="this.recipientId" v-if="this.menutoggle===2"></menu2>  
-                            <menu4 :recipientId="this.recipientId" v-if="this.menutoggle===4"></menu4>
+                            <menu2 ref="menu2"
+                                   :recipientId="this.recipientId" 
+                                   v-if="this.menutoggle===2"
+                                   :menu2Refresh="this.menu2Refresh"
+                                   @sendData2="getFromMenuData" 
+                                   @openPop="openModal2"
+                                   @openPopMsg="openModalMsg"
+                                   @sendMenu2Lending="menu2Lending"
+                                    ></menu2>  
+                            <menu4 ref="menu4"
+                                   :recipientId="this.recipientId" 
+                                   v-if="this.menutoggle===4"
+                                   :menu4Refresh="this.menu4Refresh"
+                                   @sendData4="getFromMenuData" 
+                                   @openPop="openModal4"
+                                   @openPopMsg="openModalMsg"
+                                   @sendMenu4Lending="menu4Lending"
+                                   ></menu4>
 
                                 
                           </div>
@@ -120,7 +136,7 @@
           </div>
       </div>
     </div>
-    <div id="" class="popupLayer" v-if="popCheck">
+    <div id="" class="popupLayer" v-if="popCheck3">
       <div class="popup_wrap">
           <div class="title_wrap">
               <div class="title">{{this.msg}} 추가</div>
@@ -194,6 +210,54 @@
           <div class="popbtn_area">
               <button type="button" class="btn" @click="closeModal">취소</button>
               <button type="button" class="btn form2" @click="insertManager()">추가</button>
+          </div>
+      </div>
+    </div>
+    <div id="" class="popupLayer" v-if="popCheck2">
+      <div class="popup_wrap">
+          <div class="title_wrap">
+              <div class="title">{{this.msg}} 추가</div>
+              <button type="button" class="btn_close" @click="closeModal">닫기</button>
+          </div>
+          <div class="popup_cnt">
+            <div class="input_wrap">
+                <div class="input_area">
+                  <p class="input_tit">이름</p>
+                  <input type="text" v-model="managerName">
+                </div>
+                <div class="input_area">
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text" v-model="managerPhone">
+                </div>
+            </div>
+          </div>
+          <div class="popbtn_area">
+              <button type="button" class="btn" @click="closeModal">취소</button>
+              <button type="button" class="btn form2" @click="insertEmergencyManager()">추가</button>
+          </div>
+      </div>
+    </div>
+    <div id="" class="popupLayer" v-if="popCheck4">
+      <div class="popup_wrap">
+          <div class="title_wrap">
+              <div class="title">{{this.msg}} 추가</div>
+              <button type="button" class="btn_close" @click="closeModal">닫기</button>
+          </div>
+          <div class="popup_cnt">
+            <div class="input_wrap">
+                <div class="input_area">
+                  <p class="input_tit">이름</p>
+                  <input type="text" v-model="managerName">
+                </div>
+                <div class="input_area">
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text" v-model="managerPhone">
+                </div>
+            </div>
+          </div>
+          <div class="popbtn_area">
+              <button type="button" class="btn" @click="closeModal">취소</button>
+              <button type="button" class="btn form2" @click="insertCareManager()">추가</button>
           </div>
       </div>
     </div>
@@ -320,8 +384,8 @@ export default {
     return {
       pending:true,
       d_phone: '', d_sex: '', d_endcycle: '', d_part: '', d_status: '', d_zipCode: '', d_address: '', personinfo: '',
-      recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,popCheck:false,insertData:null,msg: null,
-      managerName: null,managerPhone: null,managerRelationNm: null,managerRelationCd:null,menu3Refresh:1,
+      recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,popCheck3:false,popCheck2:null,popCheck4:null,insertData:null,msg: null,
+      managerName: null,managerPhone: null,managerRelationNm: null,managerRelationCd:null,menu3Refresh:1,menu2Refresh:1,menu4Refresh:1,
       relationArr : [{value:'RL001', text: '남편'},{value:'RL002', text: '와이프'},{value:'RL003', text: '아들'},{value:'RL004', text: '딸'},{value:'RL005', text: '사위'},{value:'RL006', text: '며느리'},{value:'RL007', text: '손자'},{value:'RL008', text: '손녀'},{value:'RL009' , text:'기타'},]
     }
   },
@@ -348,10 +412,14 @@ export default {
   },
   methods: {
     getFromMenuData(data) {console.log(data);},
-    openModal(data) {this.popCheck = data},
+    openModal4(data) {console.log("modal4open");this.popCheck4 = data},
+    openModal3(data) {this.popCheck3 = data},
+    openModal2(data) {this.popCheck2 = data},
     openModalMsg(data) {this.msg = data},
+    menu4Lending(data) {this.menu4Refresh = data},
     menu3Lending(data) {this.menu3Refresh = data},
-    closeModal() {this.popCheck = false},
+    menu2Lending(data) {this.menu2Refresh = data},
+    closeModal() {this.popCheck3 = false;this.popCheck2 = false;this.popCheck4 = false;},
     async getRecipientInfo() {
       //this.$store.mutation.logout
       //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");
@@ -376,7 +444,6 @@ export default {
           case 3 : this.taptoggle=3 ;break;
           case 4 : this.taptoggle=4 ;break;
           case 5 : this.taptoggle=5 ;break;
-
       }
     },
     menu(value){
@@ -385,13 +452,11 @@ export default {
           case 2 : this.menutoggle=2 ;break;
           case 3 : this.menutoggle=3 ;break;
           case 4 : this.menutoggle=4 ;break;
-
       }
     },
     
     makeAge(birthDay){
       let tmp1 = this.$moment(birthDay).format('YYYY')
-      
       let tmp2 = this.$moment()
       return tmp2.diff(tmp1, 'years');
     },
@@ -453,13 +518,12 @@ export default {
         relationCdNm: this.managerRelationNm,
         typeCd: "TPE008"
       }
-
       console.log(data)
       axios.post(uri,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.insertData = res.data.data
             this.$refs.menu3.sendMenu3Lending();
-            this.popCheck = false
+            this.popCheck3 = false
             console.log("insertData is ");
             console.log(this.insertData)
             
@@ -472,7 +536,66 @@ export default {
           });
           
     },
+    insertEmergencyManager(){
+      // /recipients/{recipientId}/phoneNumbers
+      let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
 
+      let data = {
+        recipientId: this.recipientId,
+        relationNm: this.managerName,
+        relationPhone: this.managerPhone,
+        relationCd: this.managerRelationCd, 
+        relationCdNm: this.managerRelationNm,
+        typeCd: "TPE007"
+      }
+      console.log(data)
+      axios.post(uri,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.insertData = res.data.data
+            this.$refs.menu2.sendMenu2Lending();
+            this.popCheck3 = false
+            console.log("insertData is ");
+            console.log(this.insertData)
+            
+
+            alert("등록성공")
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+          
+    },
+    insertCareManager(){
+      // /recipients/{recipientId}/phoneNumbers
+      let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
+
+      let data = {
+        recipientId: this.recipientId,
+        relationNm: this.managerName,
+        relationPhone: this.managerPhone,
+        relationCd: this.managerRelationCd, 
+        relationCdNm: this.managerRelationNm,
+        typeCd: "TPE006"
+      }
+      console.log(data)
+      axios.post(uri,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.insertData = res.data.data
+            this.$refs.menu4.sendMenu4Lending();
+            this.popCheck4 = false
+            console.log("insertData is ");
+            console.log(this.insertData)
+            
+
+            alert("등록성공")
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+          
+    },
   },
   created() {
     this.pending = false;
