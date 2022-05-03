@@ -6,7 +6,7 @@
         <div class="user_name">
           <button type="button" class="btn form2" @click="logOut"> 로그아웃</button>
           <i class="pf_img" style="background-image: url(../../assets/images/img_profile.png)"></i>
-          <a href="#" class="name"><em>admin</em> 님</a>
+          <a href="#" class="name"><em>{{this.userId}}</em> 님</a>
         </div>
       </div>
     </div>
@@ -105,12 +105,9 @@ export default {
          this.errorMessage = error.message;
          console.error("There was an error!", error);
        });
-       setTimeout(this.checkCount, 30000)
+       setTimeout(this.checkCount, 60000)
     },
     clickEmergency(){
-      this.oldEmevent = this.newEmevent
-      this.eventtoggle = 0
-      console.log(this.eventtoggle)
       this.$router.push({
         path : `/emevent/allView2`
       })
@@ -163,7 +160,7 @@ export default {
 #gnb > ul > li.drop > .sub_menu li:hover a::after{content: '';width: 12px;height: 4px;background-color: #11B787;border-radius: 2px;position: absolute;right: -20px;top: 50%;margin-top: -2px;}
 #gnb > ul > li.drop > .sub_menu li.on a{font-weight: 500;}
 #gnb > ul > li.drop > .sub_menu li.on a::after{content: '';width: 12px;height: 4px;background-color: #11B787;border-radius: 2px;position: absolute;right: -20px;top: 50%;margin-top: -2px;}
-#gnb .emerg_area .btn{display: inline-block;padding: 0 20px;height: 40px;line-height: 40px;font-size: 16px;color: #fff;border-radius: 50px;background-color: #3C4858;}
+#gnb .emerg_area .btn{display: inline-block;padding: 0 20px;height: 40px;line-height: 40px;font-size: 16px;color: #fff;border-radius: 50px;background-color: #11B787;}
 #gnb .emerg_area .btn.on{background-color: #F61919;}
 #gnb .emerg_area .btn i{display: inline-block;vertical-align: top;width: 19px;height: 23px;background-image: url(../../assets/images/ico_emerg.png);;background-repeat: no-repeat;background-position: center;margin: 9px 10px 0 0;}
 #header .header_top .user_name .btn.form2{display: inline-block;width: auto;height: 40px;line-height: 40px;font-size: 14px;font-weight: 300;padding: 0 20px;background-color: #11B787;border-radius: 30px;color: #fff;box-shadow: 0px 6px 12px #0000000F;margin: 0 10px 0 0;}

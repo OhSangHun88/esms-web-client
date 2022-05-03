@@ -198,7 +198,7 @@
               <p style="float: left; width: 6%; fontSize: 18px; height: 10px; margin-bottom: 20px;">전원연결</p>
                <img src = "@/assets/images/dashboard_gw.png" style="float:left; width: 10%;"/>
               <p style="float: left; width: 6%; fontSize: 18px; height: 10px; margin-left: 70px; margin-bottom: 20px;">통신상태</p>
-               <img src = "@/assets/images/dashboard_power.png" style="float:left; width: 15%;"/>
+               <img src = "@/assets/images/dashboard_power2.png" style="float:left; width: 15%;"/>
             </div>
             <div>
               <p style="float: left; width: 270px; margin-left: 40px">게이트웨이</p>
@@ -902,7 +902,7 @@ export default {
         type: 'bar',
         labels: [ 'GW', '응급', '화재', '출입문', '활동', '생활'],
         datasets: [{
-        label: '충만',
+        label: '양호',
         maxBarThickness: 12,  
         data: this.BtFullData,
         backgroundColor: [
@@ -1088,7 +1088,7 @@ export default {
       }
       let data2 = {
         type: 'doughnut',
-        labels: ['수신', '미수신', '양호'],
+        labels: ['정상', '미수신', '비정상'],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
@@ -1101,7 +1101,7 @@ export default {
       }
       let data3 = {
         type: 'doughnut',
-        labels: ['수신', '미수신', '양호'],
+        labels: ['정상', '미수신', '비정상'],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
@@ -1114,7 +1114,7 @@ export default {
       }
       let data4 = {
         type: 'doughnut',
-        labels: ['수신', '미수신', '양호'],
+        labels: ['정상', '미수신', '비정상'],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
@@ -1127,7 +1127,7 @@ export default {
       }
       let data5 = {
         type: 'doughnut',
-        labels: ['수신', '미수신', '양호'],
+        labels: ['정상', '미수신', '비정상'],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
@@ -1140,7 +1140,7 @@ export default {
       }
       let data6 = {
         type: 'doughnut',
-        labels: ['수신', '미수신', '양호'],
+        labels: ['정상', '미수신', '비정상'],
         labelsColor: "rgba(255, 255, 255, 1)",
         datasets: [{
         labels: [],
