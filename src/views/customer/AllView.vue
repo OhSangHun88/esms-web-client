@@ -60,7 +60,7 @@
             </table>
         </div>
         <div class="btn_area">
-            <button type="button" class="btn" @click="getFilteredRecipientData()">조회</button>
+            <button type="button" class="btn" @click="getRecipientData()">조회</button>
         </div>
       </div>
     <div class="one_box box_style">
@@ -548,7 +548,7 @@ export default {
     
     let tmpData = this.recipientItems
     
-    if( this.filterName || this.selectedOrgItems){
+    if( this.filterName || this.selectedOrgItems ){
       
       this.recipientItems = tmpData.filter(ri=>{
       return ri.orgId.match(regExp1)&&ri.recipientNm.match(regExp2)
@@ -558,19 +558,28 @@ export default {
   },
   getRecipientData() {
     let uri = '';
-    if(this.orgCode == '' && this.partCode == '' && this.statusCode == '' && this.modelName == '') {
+    let addrCd = ''
+    if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
+    if(this.selectedOrgItems == '' && this.filterName == ''&& this.selectedSidoItems == ''&& this.selectedSggItems == '') {
       uri = this.$store.state.serverApi + "/admin/recipients?pageIndex=1&recordCountPerPage=100";
     } else {
       uri = this.$store.state.serverApi + "/admin/recipients?pageIndex=1&recordCountPerPage=100";
-      if(this.orgCode != '') uri += "&orgId=" + this.orgCode;
-      if(this.partCode != '') uri += "&typeCd=" + this.partCode;
-      if(this.statusCode != '') uri += "&stateCd=" + this.statusCode;
-      if(this.modelName != '') uri += "&recipientNm=" + this.modelName;
+      uri += "&addrCd="+addrCd;
+      if(this.selectedOrgItems != '') uri += "&orgId=" + this.selectedOrgItems;
+      if(this.filterName != '') uri += "&recipientNm=" + this.filterName;
+      console.log("uri")
+      console.log(uri)
 
-      var fIdx = uri.indexOf("&", 0);
-      var uriArray = uri.split('');
-      uriArray.splice(fIdx, 1);
-      uri = uriArray.join('');
+      // var fIdx = uri.indexOf("&", 0);
+      // var uriArray = uri.split('');
+      // uriArray.splice(fIdx, 1);
+      // uri = uriArray.join('');
     }
     console.log(uri)
 
@@ -578,6 +587,7 @@ export default {
         .then(response => {
           this.recipientItems = response.data.data
           this.recipientOrginItems = response.data.data
+          console.log("this.recipientItems")
           console.log(this.recipientItems)
           // this.recipientItems = [];
           // for(let i=0; i<response.data.data.length; i++) {
