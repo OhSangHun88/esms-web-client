@@ -6,7 +6,7 @@
         <div class="user_name">
           <button type="button" class="btn form2" @click="logOut"> 로그아웃</button>
           <i class="pf_img" style="background-image: url(../../assets/images/img_profile.png)"></i>
-          <a href="#" class="name"><em>admin</em> 님</a>
+          <a href="#" class="name"><em>{{this.userId}}</em> 님</a>
         </div>
       </div>
     </div>
