@@ -158,7 +158,7 @@
                                 <col style="width:20%;">
                             </colgroup>
                             <tbody>
-                                <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index,this.beforeToggle)">
+                                <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index,0)">
                                     <td>{{index+1}}</td>
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
