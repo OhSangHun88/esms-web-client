@@ -70,7 +70,6 @@ export default {
   }),
   created(){
     this.checkCount();
-    //this.startCheck();
     this.getUserId();
   },
   methods:{
@@ -84,10 +83,10 @@ export default {
       console.log(sessionStorage.getItem("token"));
       this.$router.push({ name: 'Home' });
     },
-    startCheck(){
-      //setInterval(this.checkCount, 60000)
+    stopCheck(){
     },
     checkCount(){
+      
       console.log("count")
       console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
       console.log("this eventtoggle ==> "+this.eventtoggle)
@@ -105,7 +104,7 @@ export default {
          this.errorMessage = error.message;
          console.error("There was an error!", error);
        });
-       setTimeout(this.checkCount, 60000)
+       //setTimeout(this.checkCount, 60000)
     },
     clickEmergency(){
       this.$router.push({
