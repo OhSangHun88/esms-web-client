@@ -107,7 +107,8 @@
                                 <th scope="col">대상자명</th>
                                 <th scope="col">나이</th>
                                 <th scope="col">주소</th>
-                                <th scope="col">대상자 전화번호</th>
+                                <th scope="col" v-if="(equipList !== 'tablet')">대상자 전화번호</th>
+                                <th scope="col" v-if="(equipList === 'tablet')">테블릿 전화번호</th>
                                 <th scope="col">응급요원명</th>
                                 <th scope="col">응급요원 전화번호</th>
                                 <th scope="col">장비구분</th>
@@ -194,21 +195,21 @@
                     </div>
                 </div>
                 <div class="pagination mt0">
-					<a href="#" class="front">첫 페이지</a>
-					<a href="#" class="prev">이전 페이지</a>
-					<a href="#" class="on">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">6</a>
-					<a href="#">7</a>
-					<a href="#">8</a>
-					<a href="#">9</a>
-					<a href="#">10</a>
-					<a href="#" class="next">다음 페이지</a>
-					<a href="#" class="back">마지막 페이지</a>
-				</div>
+					        <a href="#" class="front">첫 페이지</a>
+					        <a href="#" class="prev">이전 페이지</a>
+					        <a href="#" class="on">1</a>
+					        <a href="#">2</a>
+					        <a href="#">3</a>
+					        <a href="#">4</a>
+					        <a href="#">5</a>
+					        <a href="#">6</a>
+					        <a href="#">7</a>
+					        <a href="#">8</a>
+					        <a href="#">9</a>
+					        <a href="#">10</a>
+					        <a href="#" class="next">다음 페이지</a>
+					        <a href="#" class="back">마지막 페이지</a>
+				        </div>
             </div>
       </div>
     </div>
@@ -239,6 +240,7 @@ export default {
         sensorItems:[], StatedItems: [],
         errorpopup1: false, errorpopup2: false,
         changeLookup: false,
+        firstPage: 1, lastPage: 10,
       }
     },
     created() {
@@ -412,21 +414,21 @@ export default {
       }
       if(this.equipList == 'gateway' ){
         uri = this.$store.state.serverApi 
-        +"/admin/equipment/gateway-searchlist?&orgId="+this.selectedOrgItems
+        +"/admin/equipment/gateway-searchlist?orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
         +"&addrCd="+addrCode
         +"&macAddr="+this.selectedMacAddress
         +"&stateCd="+this.selectedStatedItems
       }else if(this.equipList == 'tablet'){
         uri = this.$store.state.serverApi 
-        +"/admin/equipment/tablet-searchlist?&orgId="+this.selectedOrgItems
+        +"/admin/equipment/tablet-searchlist?orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
         +"&addrCd="+addrCode
         +"&macAddr="+this.selectedMacAddress
         +"&stateCd="+this.selectedStatedItems
       }else{
         uri = this.$store.state.serverApi 
-        +"/admin/equipment/sensor-searchlist?&orgId="+this.selectedOrgItems
+        +"/admin/equipment/sensor-searchlist?orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
         +"&addrCd="+addrCode
         +"&macAddr="+this.selectedMacAddress
@@ -529,7 +531,7 @@ export default {
       this.getcheckTypeData(value);
       this.changelu();
     },
-    },
+  },
 }
 </script>
 <style>

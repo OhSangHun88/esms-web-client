@@ -5,8 +5,8 @@
       <div class="util_wrap">
         <div class="user_name">
           <button type="button" class="btn form2" @click="logOut"> 로그아웃</button>
-          <i class="pf_img" style="background-image: url(../assets/images/img_profile.png)"></i>
-          <a href="#" class="name"><em>{{this.userId}}</em> 님</a>
+          <i class="pf_img" style="background-image: url(../../assets/images/img_profile.png)"></i>
+          <a href="#" class="name"><em>admin</em> 님</a>
         </div>
       </div>
     </div>
@@ -47,13 +47,15 @@
         </li>
       </ul>
       <div class="emerg_area">
-        <button type="button" class="btn on"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
+        <button type="button" :class="eventtoggle===0 ? 'btn': 'btn on' " @click="clickEmergency()"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
       </div>
     </nav>
   </header>
 </template>
 
 <script>
+import axios from "axios";
+import moment from "moment";
 let router;
 export default {
   name: 'HeaderComp',
@@ -61,10 +63,14 @@ export default {
     msg: String
   },
   data: () => ({
-    userId: null
-
+    userId: null,
+    oldEmevent : 0,
+    newEmevent : 0,
+    eventtoggle:0,
   }),
   created(){
+    this.checkCount();
+    //this.startCheck();
     this.getUserId();
   },
   methods:{
@@ -77,7 +83,38 @@ export default {
       sessionStorage.setItem("userId", null);
       console.log(sessionStorage.getItem("token"));
       this.$router.push({ name: 'Home' });
-    }
+    },
+    startCheck(){
+      //setInterval(this.checkCount, 60000)
+    },
+    checkCount(){
+      console.log("count")
+      console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
+      console.log("this eventtoggle ==> "+this.eventtoggle)
+      let uri = this.$store.state.serverApi+"/admin/emergencys/checkcnt";
+      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+       .then(response => {
+        this.newEmevent = response.data.totalCount
+        if(this.oldEmevent === this.newEmevent){
+          this.eventtoggle = 0  
+        }else{
+          this.eventtoggle = 1
+        }
+       })
+       .catch(error => {
+         this.errorMessage = error.message;
+         console.error("There was an error!", error);
+       });
+       setTimeout(this.checkCount, 30000)
+    },
+    clickEmergency(){
+      this.oldEmevent = this.newEmevent
+      this.eventtoggle = 0
+      console.log(this.eventtoggle)
+      this.$router.push({
+        path : `/emevent/allView2`
+      })
+    },
   },
 }
 </script>

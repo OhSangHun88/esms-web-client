@@ -1157,7 +1157,7 @@ export default {
         plugins: { 
         legend: { 
           display: false, 
-          color: "rgba(255, 255, 255, 1)", //labelscolor,fontcolor,color 데이터를 arr
+          color: "rgba(255, 255, 255, 1)", 
           position: "bottom", 
           labels: { boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: "circle", font: { size: 14 }, color:"rgba(255, 255, 255, 1)"}, 
           fullSize: false, 
@@ -1229,6 +1229,7 @@ export default {
       this.PwchartImage5.update();
       this.PwchartImage6.update();
     },
+
     async remakePwData(){
       this.PwchartImage1.destroy();
       this.PwchartImage2.destroy();
