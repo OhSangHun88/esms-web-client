@@ -158,7 +158,7 @@
                                 <col style="width:20%;">
                             </colgroup>
                             <tbody>
-                                <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index)">
+                                <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index,this.beforeToggle)">
                                     <td>{{index+1}}</td>
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
@@ -206,7 +206,7 @@
                                 <col style="width:16%;">
                             </colgroup>
                             <tbody>
-                                <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index)">
+                                <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" >
                                     <td>{{index+1}}</td>
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{item.previousVersion}}</td>
@@ -229,7 +229,7 @@
                         </div>
                         <div class="toggle_btn">
                             <button type="button" class="btn on">최신정보</button>
-                            <button type="button" class="btn">직전정보</button>
+                            <button type="button" class="btn" >직전정보</button>
                         </div>
                     </div>
                 </div>
@@ -286,7 +286,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tablist" v-else>
+            <div class="tablist" v-if="connectTap===3">
                 <div class="list_top">
                     <div class="title_area">
                         <p class="tit">장비상태 정보</p>
@@ -294,8 +294,8 @@
                             <input type="text" name="" id="" :value="connectTap===3?'tablet':connectTap===2?'gateway':'sensors'">
                         </div>
                         <div class="toggle_btn">
-                            <button type="button" class="btn on">최신정보</button>
-                            <button type="button" class="btn">직전정보</button>
+                            <button type="button" :class="beforeToggle===0? 'btn on': 'btn'">최신정보</button>
+                            <button type="button" :class="beforeToggle===1? 'btn on': 'btn'" >직전정보</button>
                         </div>
                     </div>
                 </div>
@@ -344,8 +344,58 @@
                                     <td>{{this.getCTabletsData.updDtime}}</td>
                                 </tr>
                             </tbody>
-                            
-                            <tbody v-if="connectTap===1">
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tablist" v-if="connectTap===1">
+                <div class="list_top">
+                    <div class="title_area">
+                        <p class="tit">장비상태 정보</p>
+                        <div class="select_area">
+                            <input type="text" name="" id="" :value="connectTap===3?'tablet':connectTap===2?'gateway':'sensors'">
+                        </div>
+                        <div class="toggle_btn">
+                            <button type="button" :class="beforeToggle===0? 'btn on': 'btn'" @click="getNowToggle">최신정보</button>
+                            <button type="button" :class="beforeToggle===1? 'btn on': 'btn'" @click="getBeforeVersionSensors" >직전정보</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="list">
+                    <table>
+                        <colgroup>
+                            <col style="width:14%;">
+                            <col style="width:14%;">
+                            <col style="width:14%;">
+                            <col style="width:14%;">
+                            <col style="width:14%;">
+                            <col style="width:14%;">
+                            <col style="width:auto;">
+                        </colgroup>
+                        <thead class="thead htype-01">
+                            <tr>
+                                <th scope="col">통신상태</th>
+                                <th scope="col">점검대상여부</th>
+                                <th scope="col">배터리</th>
+                                <th scope="col">Keep-Alive</th>
+                                <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
+                                <th scope="col">상태측정 일시</th>
+                                <th scope="col">서버 등록 일시</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="tbody ">
+                        <table>
+                            <colgroup>
+                                <col style="width:14%;">
+                                <col style="width:14%;">
+                                <col style="width:14%;">
+                                <col style="width:14%;">
+                                <col style="width:14%;">
+                                <col style="width:14%;">
+                                <col style="width:auto;">
+                            </colgroup>
+                            <tbody v-if="connectTap===1 && beforeToggle===0">
                                 <tr>
                                     <td>{{!this.getBSensorsData.sensorStateNm? '': this.getBSensorsData.sensorStateNm}}</td>
                                     <td>{{this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
@@ -356,10 +406,21 @@
                                     <td>{{this.getBSensorsData.updDtime}}</td>
                                 </tr>
                             </tbody>
+                            <tbody v-else>
+                                <tr>
+                                    <td>{{!this.beforeVersionSensorsData.sensorStateNm? '': this.beforeVersionSensorsData.sensorStateNm}}</td>
+                                    <td>{{this.beforeVersionSensorsData.checkYnCd ===null|| this.beforeVersionSensorsData.checkYnCd ===undefined ? '' : this.beforeVersionSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
+                                    <td>{{this.beforeVersionSensorsData.batteryValue}}</td>
+                                    <td>{{this.beforeVersionSensorsData.keepAliveRcvYn===1?'정상':this.beforeVersionSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{changeRssi(this.beforeVersionSensorsData.rssi)}}</td>
+                                    <td>{{this.beforeVersionSensorsData.stateMeasureDtime}}</td>
+                                    <td>{{this.beforeVersionSensorsData.updDtime}}</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
-            </div>           
+            </div>
         </div>
     </div>
 </template>
@@ -384,6 +445,8 @@ import axios from "axios";
       sensorsTap: 1,
       tmpIdx: null,
       pending : false,
+      beforeToggle: 0,
+
 
      }
    },
@@ -392,12 +455,9 @@ import axios from "axios";
     this.getCSensers();
     this.getCGateway();
     this.getCTablets();
-    console.log("getTmpData")
-    this.tmpIdx = this.getCSensorsData[0].sensorId;
-    console.log(this.getCSensorsData[0].sensorId);
     //this.getBeforeVersionSensors(this.tmpIdx);
-    this.getBeforeVersionTablets();
-    this.getBeforeVersionGateway();
+    //this.getBeforeVersionTablets();
+    //this.getBeforeVersionGateway();
   },
   methods: {
       async getCSensers(){
@@ -408,7 +468,8 @@ import axios from "axios";
             console.log("sensors ")
             console.log(this.getCSensorsData)
             this.getBSensorsData = this.getCSensorsData[0]
-            
+            console.log("sensors ")
+            console.log(this.getCSensorsData)
           })
           .catch(error => {
               console.log("fail to load")
@@ -419,11 +480,18 @@ import axios from "axios";
           this.pending=true;
           console.log("pending true")
     },
-    getBSensers(input){
+    getBSensers(input,time){
+        if(!input) input =0;
+        if(!time) time =0;
+        if(time===0){
+            this.getBSensorsData = this.getCSensorsData[input]
+        }else{
+            this.getBSensorsData = this.beforeVersionSensorsData[input]
+        }
         
-        this.getBSensorsData = this.getCSensorsData[input]
         console.log(this.getBSensorsData)
     },
+    
     async getCGateway(){
         const url  = this.$store.state.serverApi + `/admin/gateways/recipient/${this.recipientId}`
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -452,10 +520,17 @@ import axios from "axios";
             console.error("There was an error!", error);
           });
     },
-    //이전버전 호출
-    async getBeforeVersionSensors(input){
-        
-      const url  = this.$store.state.serverApi + `/admin/recipients/sensors/statehistory?sensorId=${input}`
+    //현재버전 센서 호출
+    getNowToggle(){
+        this.beforeToggle= 0
+    },
+    //이전버전 센서 호출
+    async getBeforeVersionSensors(){
+        console.log("aa")
+        this.beforeToggle =1
+        this.tmpIdx = this.getCSensorsData[0];
+        console.log(this.getBSensorsData.sensorId)
+      const url  = this.$store.state.serverApi + `/admin/recipients/sensors/statehistory?sensorId=${this.getBSensorsData.sensorId}`
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.beforeVersionSensorsData = res.data.data
@@ -469,6 +544,7 @@ import axios from "axios";
         });
     },
     async getBeforeVersionTablets(){
+        this.tmpIdx = this.getCSensorsData[0].sensorId;
         const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets/states`
             await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
@@ -483,6 +559,7 @@ import axios from "axios";
             });
     },
     async getBeforeVersionGateway(){
+        this.tmpIdx = this.getCSensorsData[0].sensorId;
         const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/gateways/states`
             await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
