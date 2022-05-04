@@ -561,6 +561,7 @@ export default {
     let addrCd = ''
     if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
+        console.log(addrCd)
       }else if(this.selectedSggItems != ''){
         addrCd = this.sggCd.substring(0,5)
       }else{
