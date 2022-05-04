@@ -75,8 +75,12 @@
                         </div>
                     </div>
                     <div class="btn_area">
+                        <button type="button" class="btn">cmdA4전송</button>
+                        <button type="button" class="btn">상태점검</button>
+                        <button type="button" class="btn">리셋</button>
                         <button type="button" class="btn">업그레이드</button>
                     </div>
+                    
                 </div>
                 <div class="list">
                     <table>

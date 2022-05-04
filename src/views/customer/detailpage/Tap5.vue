@@ -135,15 +135,17 @@
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">{{item.sensorDetectCycle}}</td>
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
-                                        <div class="input_area">
+                                        <div class="input_area" v-if="sensorsDetect===index">
                                             <input type="text" name="" v-model="item.gwSendCycle">분
                                         </div>
+                                        <div v-else>{{item.gwSendCycle}}</div>
                                     </td>
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
-                                        <div class="input_area">
+                                        <div class="input_area" v-if="sensorsDetect===index">
                                             <input type="text" name=""  v-model="item.svrSendCycle">분
                                         </div>
+                                        <div v-else>{{item.svrSendCycle}}</div>
                                     </td>
                                     <td v-else>실시간</td>
                                 </tr>
@@ -201,17 +203,19 @@
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td >
-                                        <div class="input_area">
+                                        <div class="input_area" v-if="sensorsState === index">
                                             <input type="text" :name="`stateGwSendCycle_${index}`" :id="`stateGwSendCycle_${index}`" v-model="item.stateGwSendCycle"
                                             >분
                                             <!-- oninput="this.value = this.value.replace(/[^1-4.]/g, '').replace(/(\..*)\./g, '$1');" -->
                                         </div>
+                                        <div v-else>{{item.stateGwSendCycle}}</div>
                                     </td>
                                     <td >
-                                        <div class="input_area">
+                                        <div class="input_area" v-if="sensorsState === index">
                                             <input type="text" :name="`stateSvrSendCycle_${index}`" :id="`stateSvrSendCycle_${index}`" v-model="item.stateSvrSendCycle"
                                              >분
                                         </div>
+                                        <div v-else>{{item.stateSvrSendCycle}}</div>
                                     </td>
                                     
                                 </tr>
