@@ -303,12 +303,18 @@ export default {
     PwchartImage4: null,
     PwchartImage5: null,
     PwchartImage6: null,
-    PwGwData: [ 19, 5 ],
-    PwEmData: [14, 5, 8],
-    PwFiData:[14, 5, 8],
-    PwDoData: [14, 5, 8],
-    PwAcData: [14, 5, 8],
-    PwLiData: [14, 5, 8],
+
+    
+    PwGwData: [ 7, 5 ],
+    maxPwGwData:'',
+    finalPwGwData: [],
+    finalPwGwData1: [],
+    PwGwData2: [7, 10],
+    PwEmData: [14, 8],
+    PwFiData:[14, 8],
+    PwDoData: [14, 8],
+    PwAcData: [14, 8],
+    PwLiData: [14, 8],
     PwChartItems:[],
     newPwGwArr:[],
     newPwEmArr:[],
@@ -654,18 +660,21 @@ export default {
         data: this.EvFireData,
         maxBarThickness: 10,    
         backgroundColor: ["rgba(19, 126, 255, 0.8)"],
+        borderRadius: 30
         },
         {
         label: '응급',
         data: this.EvEmData,
         maxBarThickness: 10,  
         backgroundColor: ['rgba(17, 183, 135, 1)'],
+        borderRadius: 30
       },
       {
         label:'119',
         data: this.EvSafeData,
         maxBarThickness: 10,  
         backgroundColor: ["rgba(255, 60, 166, 0.8)"],
+        borderRadius: 30
       },
       ]}
       let options1={
@@ -905,6 +914,7 @@ export default {
         label: '양호',
         maxBarThickness: 12,  
         data: this.BtFullData,
+        borderRadius: 30,
         backgroundColor: [
           "rgba(19, 126, 255, 0.8)",
           ],
@@ -912,6 +922,7 @@ export default {
         label: '부족',
         maxBarThickness: 12,
         data: this.BtLackData,
+        borderRadius: 30,
         backgroundColor: [
           'rgba(17, 183, 135, 1)',
           ],
@@ -919,6 +930,7 @@ export default {
         label: '교체',
         maxBarThickness: 12,
         data: this.BtChangeData,
+        borderRadius: 30,
         backgroundColor: [
           "rgba(255, 60, 166, 0.8)",
           ],
@@ -1073,82 +1085,207 @@ export default {
     },
     //--------------------------전원연결 차트--------------------------
     createPwData(){
+      this.maxPwGwData = this.PwGwData[0]+this.PwGwData[1]
+      this.finalPwGwData = [this.PwGwData[0], this.maxPwGwData]
+      this.finalPwGwData1 = [this.PwGwData[1], this.maxPwGwData]
       let data1 = {
         type: 'doughnut',
-        labels: ['연결', '차단'],
+        labels: [],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
-        data: this.PwGwData,
-        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)"],
+        data: this.finalPwGwData,
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(75, 85, 106, 0.2)"],
         borderColor: 'rgba(255, 255, 255, 1)',
         hoverBorderColor: 'rgba(255, 255, 255, 1)',
-        borderWidth: 1,
+        borderWidth: 0,
+        cutout: '65%', 
+        borderRadius: 30
+      },
+      {
+        label: '차단',
+        data: this.finalPwGwData1,
+        backgroundColor: [ "rgba(173, 176, 187, 0.8)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: 'rgba(255, 255, 255, 1)',
+        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        borderWidth: 0,
+        borderRadius: 30,
+        cutout: '60%', 
       }]
       }
       let data2 = {
         type: 'doughnut',
-        labels: ['정상', '미수신', '비정상'],
+        labels: [],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
         data: this.PwEmData,
-        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)", "rgba(255, 60, 166, 0.8)"],
-        borderColor: 'rgba(255, 255, 255, 1)',
-        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
         borderWidth: 1,
+        cutout: '60%', 
+        borderRadius: 30
+      },
+      {
+        label: '연결',
+        data: this.PwEmData,
+        backgroundColor: [ "rgba(173, 176, 187, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
+        borderWidth: 1,
+        cutout: '53.5%', 
+        borderRadius: 30
+      },
+      {
+        label: '연결',
+        data: this.PwEmData,
+        backgroundColor: [ "rgba(255, 60, 166, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
+        borderWidth: 1,
+        cutout: '50%', 
+        borderRadius: 30
       }]
       }
       let data3 = {
         type: 'doughnut',
-        labels: ['정상', '미수신', '비정상'],
+        labels: [],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
         data: this.PwFiData,
-        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)", "rgba(255, 60, 166, 0.8)"],
-        borderColor: 'rgba(255, 255, 255, 1)',
-        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
         borderWidth: 1,
+        cutout: '60%', 
+        borderRadius: 30
+      },
+      {
+        label: '연결',
+        data: this.PwFiData,
+        backgroundColor: [ "rgba(173, 176, 187, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
+        borderWidth: 1,
+        cutout: '53.5%', 
+        borderRadius: 30
+      },
+      {
+        label: '연결',
+        data: this.PwFiData,
+        backgroundColor: [ "rgba(255, 60, 166, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
+        borderWidth: 1,
+        cutout: '50%', 
+        borderRadius: 30
       }]
       }
       let data4 = {
         type: 'doughnut',
-        labels: ['정상', '미수신', '비정상'],
+        labels: [],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
         data: this.PwDoData,
-        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)", "rgba(255, 60, 166, 0.8)"],
-        borderColor: 'rgba(255, 255, 255, 1)',
-        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
         borderWidth: 1,
+        cutout: '60%', 
+        borderRadius: 30
+      },
+      {
+        label: '연결',
+        data: this.PwDoData,
+        backgroundColor: [ "rgba(173, 176, 187, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
+        borderWidth: 1,
+        cutout: '53.5%', 
+        borderRadius: 30
+      },
+      {
+        label: '연결',
+        data: this.PwDoData,
+        backgroundColor: [ "rgba(255, 60, 166, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
+        borderWidth: 1,
+        cutout: '50%', 
+        borderRadius: 30
       }]
       }
       let data5 = {
         type: 'doughnut',
-        labels: ['정상', '미수신', '비정상'],
+        labels: [],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
         data: this.PwAcData,
-        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)", "rgba(255, 60, 166, 0.8)"],
-        borderColor: 'rgba(255, 255, 255, 1)',
-        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
         borderWidth: 1,
+        cutout: '60%', 
+        borderRadius: 30
+      },
+      {
+        label: '연결',
+        data: this.PwAcData,
+        backgroundColor: [ "rgba(173, 176, 187, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
+        borderWidth: 1,
+        cutout: '53.5%', 
+        borderRadius: 30
+      },
+      {
+        label: '연결',
+        data: this.PwAcData,
+        backgroundColor: [ "rgba(255, 60, 166, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
+        borderWidth: 1,
+        cutout: '50%', 
+        borderRadius: 30
       }]
       }
       let data6 = {
         type: 'doughnut',
-        labels: ['정상', '미수신', '비정상'],
+        labels: [],
         labelsColor: "rgba(255, 255, 255, 1)",
         datasets: [{
-        labels: [],
+        label: '연결',
         data: this.PwLiData,
-        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(173, 176, 187, 0.8)", "rgba(255, 60, 166, 0.8)"],
-        borderColor: 'rgba(255, 255, 255, 1)',
-        hoverBorderColor: 'rgba(255, 255, 255, 1)',
+        backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
         borderWidth: 1,
+        cutout: '60%', 
+        borderRadius: 30
+      },
+      {
+        label: '연결',
+        data: this.PwLiData,
+        backgroundColor: [ "rgba(173, 176, 187, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
+        borderWidth: 1,
+        cutout: '53.5%', 
+        borderRadius: 30
+      },
+      {
+        label: '연결',
+        data: this.PwLiData,
+        backgroundColor: [ "rgba(255, 60, 166, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
+        borderColor: "rgba(75, 85, 106, 0.2)",
+        hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
+        borderWidth: 1,
+        cutout: '50%', 
+        borderRadius: 30
       }]
       }
       let options = {
@@ -1179,7 +1316,8 @@ export default {
         } 
         }, 
         animation: { 
-          duration: 5 
+          
+          // duration: 10
         } 
       }
       this.PwchartData1 = data1

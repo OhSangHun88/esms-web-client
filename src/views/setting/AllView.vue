@@ -49,9 +49,9 @@
                                 </td>
                                 <td>
                                   <div class="btn_area" >
-                                    <button type="button" style="width:40%"  @click="[eList(1), changelu()]" :class="equipList === 'gateway'? 'btn on' :'btn'">게이트웨이</button>
-                                    <button type="button" style="width:28%"  @click="[eList(2), changelu()]" :class="equipList === 'tablet'? 'btn on' :'btn'">테블릿</button>
-                                    <button type="button" style="width:32%"  @click="[eList(3), changelu()]" :class="equipList === 'sensor'? 'btn on' :'btn'">센서</button>
+                                    <button type="button" style="width:40%"  @click="[eList(1)]" :class="equipList === 'gateway'? 'btn on' :'btn'">게이트웨이</button>
+                                    <button type="button" style="width:28%"  @click="[eList(2)]" :class="equipList === 'tablet'? 'btn on' :'btn'">테블릿</button>
+                                    <button type="button" style="width:32%"  @click="[eList(3)]" :class="equipList === 'sensor'? 'btn on' :'btn'">센서</button>
                                   </div>
                                 </td>
                                 <td v-if="equipList === 'sensor'">
@@ -94,7 +94,7 @@
                             <col style="width:4%;">
                             <col style="width:8%;">
                             <col style="width:5%;">
-                            <col style="width:5%;" v-if="equipList === 'sensor' && this.changeLookup == true">
+                            <col style="width:5%;" v-if="equipList === 'sensor'">
                             <col style="width:8%;">
                             <col style="width:8%;">
                             <col style="width:5%;">
@@ -132,7 +132,7 @@
                                 <col style="width:4%;"> <!--응급관리요원-->
                                 <col style="width:8%;"> <!--응급관리요원 전화번호-->
                                 <col style="width:5%;"> <!--장비구분-->
-                                <col style="width:5%;" v-if="equipList === 'sensor' && this.changeLookup == true"> <!--센서타입-->
+                                <col style="width:5%;" v-if="equipList === 'sensor'"> <!--센서타입-->
                                 <col style="width:8%;"> <!---시리얼번호-->
                                 <col style="width:8%;"> <!---MAC Address-->
                                 <col style="width:5%;"> <!--상태구분-->
@@ -239,7 +239,7 @@ export default {
         equipList: 'sensor',
         sensorItems:[], StatedItems: [],
         errorpopup1: false, errorpopup2: false,
-        changeLookup: false,
+        changeLookup: true,
         firstPage: 1, lastPage: 10,
       }
     },
@@ -369,21 +369,21 @@ export default {
       }else{
         addrCode = '';
       }
-      if(this.equipList == 'gateway' ){
+      if(this.equipList == 'gateway' && this.changeLookup === true){
         uri = this.$store.state.serverApi 
         +"/admin/equipment/gateway-searchlist?&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
         +"&addrCd="+addrCode
         +"&macAddr="+this.selectedMacAddress
         +"&stateCd="+this.selectedStatedItems
-      }else if(this.equipList == 'tablet'){
+      }else if(this.equipList == 'tablet' && this.changeLookup === true){
         uri = this.$store.state.serverApi 
         +"/admin/equipment/tablet-searchlist?&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
         +"&addrCd="+addrCode
         +"&macAddr="+this.selectedMacAddress
         +"&stateCd="+this.selectedStatedItems
-      }else{
+      }else if(this.equipList == 'sensor' && this.changeLookup === true){
         uri = this.$store.state.serverApi 
         +"/admin/equipment/sensor-searchlist?&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
@@ -477,9 +477,7 @@ export default {
       this.changeLookup = true;
       this.getRecipientData();
     },
-    changelu(){
-      this.changeLookup = false
-    },
+    
     getsensorData() {
     axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=SENSOR.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
@@ -529,7 +527,6 @@ export default {
           case 3 : this.equipList="sensor"; break;
       }
       this.getcheckTypeData(value);
-      this.changelu();
     },
   },
 }
