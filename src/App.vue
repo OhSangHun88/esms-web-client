@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="loginCheck != null">
+    <div v-if="loginCheck != 'null'">
       <HeaderComp ></HeaderComp>
     </div>
     <router-view></router-view>
@@ -22,7 +22,8 @@ export default {
       //let loginVal = sessionStorage.getItem("userId")
       console.log("mainState is ")
       console.log(this.$store.state.userId)
-       if( this.$store.state.userId == null || this.$store.state.userId == undefined ){
+      this.$store.state.userId = sessionStorage.getItem("userId")
+       if( this.$store.state.userId == null || this.$store.state.userId == undefined || this.$store.state.userId == ''){
          this.$router.push({ name: 'Home' });
        }
       //   console.log("aa")
