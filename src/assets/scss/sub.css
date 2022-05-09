@@ -194,7 +194,7 @@ ul.info_list li .txt p{font-size: 12px;color: rgba(255, 255, 255, 0.8);padding: 
 .container .list_top .toggle_btn .btn{display: inline-block;width: 50%;height: 30px;background-color: #384358;color: #fff;font-weight: 300; border-radius: 0;font-size: 14px;padding: 0;}
 .container .list_top .toggle_btn .btn.on{background-color: #11B787;color: #fff;}
 .container .list_top .btn_area{float: right;}
-.container .list_top .btn_area .btn{width: 100px;height: 30px;line-height: 30px;background-color: #fff;color: #11B787;font-size: 14px;padding: 0;}
+.container .list_top .btn_area .btn{width: 100px;height: 30px;line-height: 30px;background-color: #fff;color: #11B787;font-size: 14px;padding: 0; margin: 5px;}
 .container .list_top .title_area .select_area{display: inline-block;width: 120px;margin: 0 0 0 20px;}
 .container .list_top .title_area .select_area select{height: 30px;font-size: 14px;font-weight: 500;}
 
