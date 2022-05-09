@@ -264,7 +264,7 @@ export default {
         console.log("test")
         console.log(this.$store.state.serverApi )
         //this.$store.commit('set', ['userId',this.getUserId] )
-        this.$store.state.userId= sessionStorage.getItem("userId")
+        this.$store.state.userId = sessionStorage.getItem("userId")
         console.log(this.$store.state.userId)
         console.log("End")
         router.push({ path: '../dashboard/allView' });
