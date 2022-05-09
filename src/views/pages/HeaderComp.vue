@@ -94,7 +94,7 @@ export default {
     stopCheck(){
     },
     async checkCount(){
-      
+
       console.log("count")
       console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
       console.log("this eventtoggle ==> "+this.eventtoggle)
