@@ -69,29 +69,35 @@ export default {
     eventtoggle:0,
   }),
   created(){
-    this.checkCount();
     this.getUserId();
+    this.checkCount();
+    
   },
   methods:{
     getUserId(){
       this.userId = sessionStorage.getItem("userId");
+      console.log("this.userId")
+      console.log(this.userId)
+      console.log("this.$store.state.data")
+      console.log(this.$store.state.userId)
     },
     logOut(){
       alert("로그아웃 되었습니다")
       sessionStorage.setItem("token", null);
       sessionStorage.setItem("userId", null);
+      this.userId = null
       console.log(sessionStorage.getItem("token"));
       this.$router.push({ name: 'Home' });
     },
     stopCheck(){
     },
-    checkCount(){
+    async checkCount(){
       
       console.log("count")
       console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
       console.log("this eventtoggle ==> "+this.eventtoggle)
       let uri = this.$store.state.serverApi+"/admin/emergencys/checkcnt";
-      axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
        .then(response => {
         this.newEmevent = response.data.totalCount
         if(this.oldEmevent === this.newEmevent){
@@ -111,6 +117,14 @@ export default {
         path : `/emevent/allView2`
       })
     },
+  },
+  computed: {
+    loginCheck(){
+      console.log("this.$store.state.data")
+      this.userId = sessionStorage.getItem("userId")
+      console.log(this.$store.state.data)
+      return this.userId
+    }
   },
 }
 </script>
