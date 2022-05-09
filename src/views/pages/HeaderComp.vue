@@ -1,5 +1,5 @@
 <template>
-  <header id="header">
+  <header id="header" v-if="this.$store.state.userId">
     <div class="header_top">
       <h1><a href="http://www.ib-care.com//#/dashboard/allView"><img alt="Vue logo" src="../../assets/images/logo_ib.png">IB-Care System</a></h1>
       <div class="util_wrap">
@@ -86,7 +86,9 @@ export default {
       sessionStorage.setItem("token", null);
       sessionStorage.setItem("userId", null);
       this.userId = null
+      this.$store.state.userId = null
       console.log(sessionStorage.getItem("token"));
+
       this.$router.push({ name: 'Home' });
     },
     stopCheck(){
