@@ -8,6 +8,8 @@ const state = {
   //serverApi:'http://localhost:8080',
   serverApi:'http://210.122.45.62:8080',
   moduleName:'/admin',
+  userId:null,
+
 }
 
 const mutations = {
@@ -22,9 +24,7 @@ const mutations = {
   set (state, [variable, value]) {
     state[variable] = value
   },
-  logout(state){
-    console.log(state)
-  }
+  
   
 }
 
