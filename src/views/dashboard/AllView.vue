@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-      <!-- <HeaderComp></HeaderComp> -->
+      <!--<HeaderComp></HeaderComp>-->
       <div class="container type-02">
         <div id="" class="popupLayer" v-if="errorpopup1 == true">
                 <div class="popup_wrap type-02">
@@ -208,22 +208,40 @@
               <p style="float: left; width: 196px;">활동감지센서</p>
               <p style="float: left; width: 100px;">생활안심센서</p>
             </div>
-            <div style="float: left; width: 160px; ">
+            <div style="float: left; width: 160px; position: relative;">
+              <div style="font-size:30px; font-weight: bold; width: 100%; height: 40px; position: absolute; top: 55%; left: 0; margin-top: -20px; line-height:19px; text-align: center; font">
+                {{this.finalPwGwData1[0]}}%
+              </div>
               <canvas height="100px" width="100px" ref="doughnutChart1"/>
             </div>
-            <div style="float: left; width: 160px; margin-left: 8.7%;">
+            <div style="float: left; width: 160px; margin-left: 8.7%; position: relative;">
+              <div style="font-size:30px; font-weight: bold; width: 100%; height: 40px; position: absolute; top: 55%; left: 0; margin-top: -20px; line-height:19px; text-align: center; font">
+                {{this.finalPwEmData1[0]}}%
+              </div>
               <canvas height="100px" width="100px" ref="doughnutChart2"/>
             </div>
-            <div style="float: left; width: 160px; margin-left: 3.7%;">
+            <div style="float: left; width: 160px; margin-left: 3.7%; position: relative;">
+              <div style="font-size:30px; font-weight: bold; width: 100%; height: 40px; position: absolute; top: 55%; left: 0; margin-top: -20px; line-height:19px; text-align: center; font">
+                {{this.finalPwFiData1[0]}}%
+              </div>
               <canvas height="100px" width="100px" ref="doughnutChart3"/>
             </div>
-            <div style="float: left; width: 160px; margin-left: 3.8%;">
+            <div style="float: left; width: 160px; margin-left: 3.8%; position: relative;">
+              <div style="font-size:30px; font-weight: bold; width: 100%; height: 40px; position: absolute; top: 55%; left: 0; margin-top: -20px; line-height:19px; text-align: center; font">
+                {{this.finalPwDoData1[0]}}%
+              </div>
               <canvas height="100px" width="100px" ref="doughnutChart4"/>
             </div>
-            <div style="float: left; width: 160px; margin-left: 3.9%;">
+            <div style="float: left; width: 160px; margin-left: 3.9%; position: relative;">
+              <div style="font-size:30px; font-weight: bold; width: 100%; height: 40px; position: absolute; top: 55%; left: 0; margin-top: -20px; line-height:19px; text-align: center; font">
+                {{this.finalPwAcData1[0]}}%
+              </div>
               <canvas height="100px" width="100px" ref="doughnutChart5"/>
             </div>
-            <div style="float: left; width: 160px; margin-left: 3%;">
+            <div style="float: left; width: 160px; margin-left: 3%; position: relative;">
+              <div style="font-size:30px; font-weight: bold; width: 100%; height: 40px; position: absolute; top: 55%; left: 0; margin-top: -20px; line-height:19px; text-align: center; font">
+                {{this.finalPwLiData1[0]}}%
+              </div>
               <canvas height="100px" width="100px" ref="doughnutChart6"/>
             </div>
           </div>
@@ -246,7 +264,6 @@ import moment from "moment";
 // 차트
 import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables)
-
 
 export default {
   name: 'DashBoard',
@@ -305,16 +322,50 @@ export default {
     PwchartImage6: null,
 
     
-    PwGwData: [ 7, 5 ],
-    maxPwGwData:'',
-    finalPwGwData: [],
+    PwGwData: [7, 5],
+    percentPwGwData:'',
     finalPwGwData1: [],
-    PwGwData2: [7, 10],
-    PwEmData: [14, 8],
-    PwFiData:[14, 8],
-    PwDoData: [14, 8],
-    PwAcData: [14, 8],
-    PwLiData: [14, 8],
+    finalPwGwData2: [],
+    PwEmData: [22, 2, 3],
+    percentPwEmData:'',
+    sumPwEmData1:'',
+    sumPwEmData2:'',
+    sumPwEmData3:'',
+    finalPwEmData1:[],
+    finalPwEmData2:[],
+    finalPwEmData3:[],
+    PwFiData:[22, 2, 3],
+    percentPwFiData:'',
+    sumPwFiData1:'',
+    sumPwFiData2:'',
+    sumPwFiData3:'',
+    finalPwFiData1:[],
+    finalPwFiData2:[],
+    finalPwFiData3:[],
+    PwDoData: [22, 2, 3],
+    percentPwDoData:'',
+    sumPwDoData1:'',
+    sumPwDoData2:'',
+    sumPwDoData3:'',
+    finalPwDoData1:[],
+    finalPwDoData2:[],
+    finalPwDoData3:[],
+    PwAcData: [22, 17, 8],
+    percentPwAcData:'',
+    sumPwAcData1:'',
+    sumPwAcData2:'',
+    sumPwAcData3:'',
+    finalPwAcData1:[],
+    finalPwAcData2:[],
+    finalPwAcData3:[],
+    PwLiData: [22, 17, 8],
+    percentPwLiData:'',
+    sumPwLiData1:'',
+    sumPwLiData2:'',
+    sumPwLiData3:'',
+    finalPwLiData1:[],
+    finalPwLiData2:[],
+    finalPwLiData3:[],
     PwChartItems:[],
     newPwGwArr:[],
     newPwEmArr:[],
@@ -1085,16 +1136,16 @@ export default {
     },
     //--------------------------전원연결 차트--------------------------
     createPwData(){
-      this.maxPwGwData = this.PwGwData[0]+this.PwGwData[1]
-      this.finalPwGwData = [this.PwGwData[0], this.maxPwGwData]
-      this.finalPwGwData1 = [this.PwGwData[1], this.maxPwGwData]
+      this.percentPwGwData = this.PwGwData[0]+this.PwGwData[1]
+      this.finalPwGwData1 = [Math.round((this.PwGwData[0]/this.percentPwGwData)*100), Math.round((this.PwGwData[1]/this.percentPwGwData)*100)]
+      this.finalPwGwData2 = [Math.round((this.PwGwData[1]/this.percentPwGwData)*100), Math.round((this.PwGwData[0]/this.percentPwGwData)*100)]
       let data1 = {
         type: 'doughnut',
         labels: [],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
-        data: this.finalPwGwData,
+        data: this.finalPwGwData1,
         backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(75, 85, 106, 0.2)"],
         borderColor: 'rgba(255, 255, 255, 1)',
         hoverBorderColor: 'rgba(255, 255, 255, 1)',
@@ -1104,7 +1155,7 @@ export default {
       },
       {
         label: '차단',
-        data: this.finalPwGwData1,
+        data: this.finalPwGwData2,
         backgroundColor: [ "rgba(173, 176, 187, 0.8)", "rgba(75, 85, 106, 0.2)"],
         borderColor: 'rgba(255, 255, 255, 1)',
         hoverBorderColor: 'rgba(255, 255, 255, 1)',
@@ -1113,13 +1164,20 @@ export default {
         cutout: '60%', 
       }]
       }
+      this.percentPwEmData = this.PwEmData[0]+this.PwEmData[1]+this.PwEmData[2]
+      this.sumPwEmData1 = this.PwEmData[0] + this.PwEmData[1]
+      this.sumPwEmData2 = this.PwEmData[1] + this.PwEmData[2]
+      this.sumPwEmData3 = this.PwEmData[0] + this.PwEmData[2]
+      this.finalPwEmData1 = [Math.round((this.PwEmData[0]/this.percentPwEmData)*100), Math.round((this.sumPwEmData2/this.percentPwEmData)*100)]
+      this.finalPwEmData2 = [Math.round((this.PwEmData[1]/this.percentPwEmData)*100), Math.round((this.sumPwEmData3/this.percentPwEmData)*100)]
+      this.finalPwEmData3 = [Math.round((this.PwEmData[2]/this.percentPwEmData)*100), Math.round((this.sumPwEmData1/this.percentPwEmData)*100)]
       let data2 = {
         type: 'doughnut',
         labels: [],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
-        data: this.PwEmData,
+        data: this.finalPwEmData1,
         backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1129,7 +1187,7 @@ export default {
       },
       {
         label: '연결',
-        data: this.PwEmData,
+        data: this.finalPwEmData2,
         backgroundColor: [ "rgba(173, 176, 187, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1139,7 +1197,7 @@ export default {
       },
       {
         label: '연결',
-        data: this.PwEmData,
+        data: this.finalPwEmData3,
         backgroundColor: [ "rgba(255, 60, 166, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1148,13 +1206,20 @@ export default {
         borderRadius: 30
       }]
       }
+      this.percentPwFiData = this.PwFiData[0] + this.PwFiData[1] + this.PwFiData[2]
+      this.sumPwFiData1 = this.PwFiData[0] + this.PwFiData[1]
+      this.sumPwFiData2 = this.PwFiData[1] + this.PwFiData[2]
+      this.sumPwFiData3 = this.PwFiData[0] + this.PwFiData[2]
+      this.finalPwFiData1 = [Math.round((this.PwFiData[0]/this.percentPwFiData)*100), Math.round((this.sumPwFiData2/this.percentPwFiData)*100)]
+      this.finalPwFiData2 = [Math.round((this.PwFiData[1]/this.percentPwFiData)*100), Math.round((this.sumPwFiData3/this.percentPwFiData)*100)]
+      this.finalPwFiData3 = [Math.round((this.PwFiData[2]/this.percentPwFiData)*100), Math.round((this.sumPwFiData1/this.percentPwFiData)*100)]
       let data3 = {
         type: 'doughnut',
         labels: [],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
-        data: this.PwFiData,
+        data: this.finalPwFiData1,
         backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1164,7 +1229,7 @@ export default {
       },
       {
         label: '연결',
-        data: this.PwFiData,
+        data: this.finalPwFiData2,
         backgroundColor: [ "rgba(173, 176, 187, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1174,7 +1239,7 @@ export default {
       },
       {
         label: '연결',
-        data: this.PwFiData,
+        data: this.finalPwFiData3,
         backgroundColor: [ "rgba(255, 60, 166, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1183,13 +1248,20 @@ export default {
         borderRadius: 30
       }]
       }
+      this.percentPwDoData = this.PwDoData[0] + this.PwDoData[1] + this.PwDoData[2]
+      this.sumPwDoData1 = this.PwDoData[0] + this.PwDoData[1]
+      this.sumPwDoData2 = this.PwDoData[1] + this.PwDoData[2]
+      this.sumPwDoData3 = this.PwDoData[0] + this.PwDoData[2]
+      this.finalPwDoData1 = [Math.round((this.PwDoData[0]/this.percentPwDoData)*100), Math.round((this.sumPwDoData2/this.percentPwDoData)*100)]
+      this.finalPwDoData2 = [Math.round((this.PwDoData[1]/this.percentPwDoData)*100), Math.round((this.sumPwDoData3/this.percentPwDoData)*100)]
+      this.finalPwDoData3 = [Math.round((this.PwDoData[2]/this.percentPwDoData)*100), Math.round((this.sumPwDoData1/this.percentPwDoData)*100)]
       let data4 = {
         type: 'doughnut',
         labels: [],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
-        data: this.PwDoData,
+        data: this.finalPwDoData1,
         backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1199,7 +1271,7 @@ export default {
       },
       {
         label: '연결',
-        data: this.PwDoData,
+        data: this.finalPwDoData2,
         backgroundColor: [ "rgba(173, 176, 187, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1209,7 +1281,7 @@ export default {
       },
       {
         label: '연결',
-        data: this.PwDoData,
+        data: this.finalPwDoData3,
         backgroundColor: [ "rgba(255, 60, 166, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1218,13 +1290,20 @@ export default {
         borderRadius: 30
       }]
       }
+      this.percentPwAcData = this.PwAcData[0] + this.PwAcData[1] + this.PwAcData[2]
+      this.sumPwAcData1 = this.PwAcData[0] + this.PwAcData[1]
+      this.sumPwAcData2 = this.PwAcData[1] + this.PwAcData[2]
+      this.sumPwAcData3 = this.PwAcData[0] + this.PwAcData[2]
+      this.finalPwAcData1 = [Math.round((this.PwAcData[0]/this.percentPwAcData)*100), Math.round((this.sumPwAcData2/this.percentPwAcData)*100)]
+      this.finalPwAcData2 = [Math.round((this.PwAcData[1]/this.percentPwAcData)*100), Math.round((this.sumPwAcData3/this.percentPwAcData)*100)]
+      this.finalPwAcData3 = [Math.round((this.PwAcData[2]/this.percentPwAcData)*100), Math.round((this.sumPwAcData1/this.percentPwAcData)*100)]
       let data5 = {
         type: 'doughnut',
         labels: [],
         labelsColor: 'white',
         datasets: [{
         label: '연결',
-        data: this.PwAcData,
+        data: this.finalPwAcData1,
         backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1234,7 +1313,7 @@ export default {
       },
       {
         label: '연결',
-        data: this.PwAcData,
+        data: this.finalPwAcData2,
         backgroundColor: [ "rgba(173, 176, 187, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1244,7 +1323,7 @@ export default {
       },
       {
         label: '연결',
-        data: this.PwAcData,
+        data: this.finalPwAcData3,
         backgroundColor: [ "rgba(255, 60, 166, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1253,13 +1332,20 @@ export default {
         borderRadius: 30
       }]
       }
+      this.percentPwLiData = this.PwLiData[0] + this.PwLiData[1] + this.PwLiData[2]
+      this.sumPwLiData1 = this.PwLiData[0] + this.PwLiData[1]
+      this.sumPwLiData2 = this.PwLiData[1] + this.PwLiData[2]
+      this.sumPwLiData3 = this.PwLiData[0] + this.PwLiData[2]
+      this.finalPwLiData1 = [Math.round((this.PwLiData[0]/this.percentPwLiData)*100), Math.round((this.sumPwLiData2/this.percentPwLiData)*100)]
+      this.finalPwLiData2 = [Math.round((this.PwLiData[1]/this.percentPwLiData)*100), Math.round((this.sumPwLiData3/this.percentPwLiData)*100)]
+      this.finalPwLiData3 = [Math.round((this.PwLiData[2]/this.percentPwLiData)*100), Math.round((this.sumPwLiData1/this.percentPwLiData)*100)]
       let data6 = {
         type: 'doughnut',
         labels: [],
         labelsColor: "rgba(255, 255, 255, 1)",
         datasets: [{
         label: '연결',
-        data: this.PwLiData,
+        data: this.finalPwLiData1,
         backgroundColor: [ "rgba(19, 126, 255, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1269,7 +1355,7 @@ export default {
       },
       {
         label: '연결',
-        data: this.PwLiData,
+        data: this.finalPwLiData2,
         backgroundColor: [ "rgba(173, 176, 187, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1279,7 +1365,7 @@ export default {
       },
       {
         label: '연결',
-        data: this.PwLiData,
+        data: this.finalPwLiData3,
         backgroundColor: [ "rgba(255, 60, 166, 0.8)", "rgba(75, 85, 106, 0.2)", "rgba(75, 85, 106, 0.2)"],
         borderColor: "rgba(75, 85, 106, 0.2)",
         hoverBorderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1289,7 +1375,6 @@ export default {
       }]
       }
       let options = {
-        
         responsive: false,
         plugins: { 
         legend: { 
@@ -1328,6 +1413,7 @@ export default {
       this.PwchartData6 = data6
       this.PwchartOptions = options
       this.PwchartRedraw();
+      console.log(data2)
     },
     PwchartRedraw(){
       this.PwchartImage1 = new Chart(this.$refs.doughnutChart1, {
@@ -1518,20 +1604,13 @@ export default {
             statName: null,
             statCnt: 0,
           })}
-          this.newPwEmArr=[],
-          this.newPwFiArr=[],
-          this.newPwDoArr=[],
-          this.newPwAcArr=[],
-          this.newPwLiArr=[],
 
           this.newPwGwArr = makeArr1
-          this.newPwEmArr[2] = makeArr2
-          this.newPwFiArr[2] = makeArr3
-          this.newPwDoArr[2] = makeArr4
-          this.newPwAcArr[2] = makeArr5
-          this.newPwLiArr[2] = makeArr6
-
-
+          this.newPwEmArr[0].statCnt = makeArr2[0]
+          this.newPwFiArr[0].statCnt = makeArr3[0]
+          this.newPwDoArr[0].statCnt = makeArr4[0]
+          this.newPwAcArr[0].statCnt = makeArr5[0]
+          this.newPwLiArr[0].statCnt = makeArr6[0]
 
       this.PwGwData = this.newPwGwArr
       this.PwEmData = this.newPwEmArr
@@ -1539,12 +1618,65 @@ export default {
       this.PwDoData = this.newPwDoArr
       this.PwAcData = this.newPwAcArr
       this.PwLiData = this.newPwAcArr
+      console.log(this.PwGwData)
+
+      this.percentPwGwData = this.PwGwData[0]+this.PwGwData[1]
+      this.finalPwGwData1 = [Math.round((this.PwGwData[0]/this.percentPwGwData)*100), Math.round((this.PwGwData[1]/this.percentPwGwData)*100)]
+      this.finalPwGwData2 = [Math.round((this.PwGwData[1]/this.percentPwGwData)*100), Math.round((this.PwGwData[0]/this.percentPwGwData)*100)]
+      this.percentPwEmData = this.PwEmData[0].statCnt+this.PwEmData[1].statCnt+this.PwEmData[2].statCnt
+      this.sumPwEmData1 = this.PwEmData[0].statCnt + this.PwEmData[1].statCnt
+      this.sumPwEmData2 = this.PwEmData[1].statCnt + this.PwEmData[2].statCnt
+      this.sumPwEmData3 = this.PwEmData[0].statCnt + this.PwEmData[2].statCnt
+      this.finalPwEmData1 = [Math.round((this.PwEmData[0].statCnt/this.percentPwEmData)*100), Math.round((this.sumPwEmData2/this.percentPwEmData)*100)]
+      this.finalPwEmData2 = [Math.round((this.PwEmData[1].statCnt/this.percentPwEmData)*100), Math.round((this.sumPwEmData3/this.percentPwEmData)*100)]
+      this.finalPwEmData3 = [Math.round((this.PwEmData[2].statCnt/this.percentPwEmData)*100), Math.round((this.sumPwEmData1/this.percentPwEmData)*100)]
+      this.percentPwFiData = this.PwFiData[0].statCnt+this.PwFiData[1].statCnt+this.PwFiData[2].statCnt
+      this.sumPwFiData1 = this.PwFiData[0].statCnt + this.PwFiData[1].statCnt
+      this.sumPwFiData2 = this.PwFiData[1].statCnt + this.PwFiData[2].statCnt
+      this.sumPwFiData3 = this.PwFiData[0].statCnt + this.PwFiData[2].statCnt
+      this.finalPwFiData1 = [Math.round((this.PwFiData[0].statCnt/this.percentPwFiData)*100), Math.round((this.sumPwFiData2/this.percentPwFiData)*100)]
+      this.finalPwFiData2 = [Math.round((this.PwFiData[1].statCnt/this.percentPwFiData)*100), Math.round((this.sumPwFiData3/this.percentPwFiData)*100)]
+      this.finalPwFiData3 = [Math.round((this.PwFiData[2].statCnt/this.percentPwFiData)*100), Math.round((this.sumPwFiData1/this.percentPwFiData)*100)]
+      this.percentPwDoData = this.PwDoData[0].statCnt+this.PwDoData[1].statCnt+this.PwDoData[2].statCnt
+      this.sumPwDoData1 = this.PwDoData[0].statCnt + this.PwDoData[1].statCnt
+      this.sumPwDoData2 = this.PwDoData[1].statCnt + this.PwDoData[2].statCnt
+      this.sumPwDoData3 = this.PwDoData[0].statCnt + this.PwDoData[2].statCnt
+      this.finalPwDoData1 = [Math.round((this.PwDoData[0].statCnt/this.percentPwDoData)*100), Math.round((this.sumPwDoData2/this.percentPwDoData)*100)]
+      this.finalPwDoData2 = [Math.round((this.PwDoData[1].statCnt/this.percentPwDoData)*100), Math.round((this.sumPwDoData3/this.percentPwDoData)*100)]
+      this.finalPwDoData3 = [Math.round((this.PwDoData[2].statCnt/this.percentPwDoData)*100), Math.round((this.sumPwDoData1/this.percentPwDoData)*100)]
+      this.percentPwAcData = this.PwAcData[0].statCnt+this.PwAcData[1].statCnt+this.PwAcData[2].statCnt
+      this.sumPwAcData1 = this.PwAcData[0].statCnt + this.PwAcData[1].statCnt
+      this.sumPwAcData2 = this.PwAcData[1].statCnt + this.PwAcData[2].statCnt
+      this.sumPwAcData3 = this.PwAcData[0].statCnt + this.PwAcData[2].statCnt
+      this.finalPwAcData1 = [Math.round((this.PwAcData[0].statCnt/this.percentPwAcData)*100), Math.round((this.sumPwAcData2/this.percentPwAcData)*100)]
+      this.finalPwAcData2 = [Math.round((this.PwAcData[1].statCnt/this.percentPwAcData)*100), Math.round((this.sumPwAcData3/this.percentPwAcData)*100)]
+      this.finalPwAcData3 = [Math.round((this.PwAcData[2].statCnt/this.percentPwAcData)*100), Math.round((this.sumPwAcData1/this.percentPwAcData)*100)]
+      this.percentPwLiData = this.PwLiData[0].statCnt+this.PwLiData[1].statCnt+this.PwLiData[2].statCnt
+      this.sumPwLiData1 = this.PwLiData[0].statCnt + this.PwLiData[1].statCnt
+      this.sumPwLiData2 = this.PwLiData[1].statCnt + this.PwLiData[2].statCnt
+      this.sumPwLiData3 = this.PwLiData[0].statCnt + this.PwLiData[2].statCnt
+      this.finalPwLiData1 = [Math.round((this.PwLiData[0].statCnt/this.percentPwLiData)*100), Math.round((this.sumPwLiData2/this.percentPwLiData)*100)]
+      this.finalPwLiData2 = [Math.round((this.PwLiData[1].statCnt/this.percentPwLiData)*100), Math.round((this.sumPwLiData3/this.percentPwLiData)*100)]
+      this.finalPwLiData3 = [Math.round((this.PwLiData[2].statCnt/this.percentPwLiData)*100), Math.round((this.sumPwLiData1/this.percentPwLiData)*100)]
+
+
       this.PwchartData1.datasets[0].data = this.PwGwData
-      this.PwchartData2.datasets[0].data = this.PwEmData
-      this.PwchartData3.datasets[0].data = this.PwFiData
-      this.PwchartData4.datasets[0].data = this.PwDoData
-      this.PwchartData5.datasets[0].data = this.PwAcData
-      this.PwchartData6.datasets[0].data = this.PwLiData
+      this.PwchartData1.datasets[1].data = 0
+      this.PwchartData2.datasets[0].data = this.finalPwEmData1
+      this.PwchartData2.datasets[1].data = 0
+      this.PwchartData2.datasets[2].data = 0
+      this.PwchartData3.datasets[0].data = this.finalPwFiData1
+      this.PwchartData3.datasets[1].data = 0
+      this.PwchartData3.datasets[2].data = 0
+      this.PwchartData4.datasets[0].data = this.finalPwDoData1
+      this.PwchartData4.datasets[1].data = 0
+      this.PwchartData4.datasets[2].data = 0
+      this.PwchartData5.datasets[0].data = this.finalPwAcData1
+      this.PwchartData5.datasets[1].data = 0
+      this.PwchartData5.datasets[2].data = 0
+      this.PwchartData6.datasets[0].data = this.finalPwLiData1
+      this.PwchartData6.datasets[1].data = 0
+      this.PwchartData6.datasets[2].data = 0
       this.PwchartRedraw();
     },
     //--------------------------A/S 현황--------------------------

@@ -1,6 +1,6 @@
 <template>
   <div class="wrap">
-    <HeaderComp></HeaderComp>
+    <!--<HeaderComp></HeaderComp>-->
     <div v-if="!this.pending" style="text-align: center;">
       <img src="../../assets/images/loading.png"  />
     </div>
