@@ -120,7 +120,7 @@ export default {
        if(sessionStorage.getItem("token") != 'null' && this.$store.state.userId != 'null'){
          console.log(sessionStorage.getItem("token"))
          console.log(this.$store.state.userId)
-         this.timerId=setTimeout(this.checkCount, 10000)
+         this.timerId=setTimeout(this.checkCount, 5000)
        }else{
          clearTimeout(this.timerId);
        }
