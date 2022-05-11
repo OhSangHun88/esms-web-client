@@ -1087,6 +1087,7 @@ export default {
               statCnt: 0,
             })
           }
+          console.log(this.BtChartItems)
           if(this.BtChartItems != ''){
           for(let i=0; i<7; i++){
             if(this.BtChartItems[i].statName==="충만"){
@@ -1122,7 +1123,7 @@ export default {
             for(let i=0; i<6; i++){
               this.newBtFullArr.push(tmpArr1.statCnt)
               this.newBtLackArr.push(tmpArr2.statCnt)
-              this.newBtChartArr.push(tmpArr3.statCnt)
+              this.newBtChangeArr.push(tmpArr3.statCnt)
             }
           }
       
@@ -1658,6 +1659,13 @@ export default {
       this.finalPwLiData1 = [Math.round((this.PwLiData[0].statCnt/this.percentPwLiData)*100), Math.round((this.sumPwLiData2/this.percentPwLiData)*100)]
       this.finalPwLiData2 = [Math.round((this.PwLiData[1].statCnt/this.percentPwLiData)*100), Math.round((this.sumPwLiData3/this.percentPwLiData)*100)]
       this.finalPwLiData3 = [Math.round((this.PwLiData[2].statCnt/this.percentPwLiData)*100), Math.round((this.sumPwLiData1/this.percentPwLiData)*100)]
+
+      this.finalPwGwData1 = NaN? NaN : [0, 0]
+      this.finalPwEmData1 = NaN? NaN : [0, 0]
+      this.finalPwFiData1 = NaN? NaN : [0, 0]
+      this.finalPwDoData1 = NaN? NaN : [0, 0]
+      this.finalPwAcData1 = NaN? NaN : [0, 0]
+      this.finalPwLiData1 = NaN? NaN : [0, 0]
 
 
       this.PwchartData1.datasets[0].data = this.PwGwData
