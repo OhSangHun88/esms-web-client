@@ -96,26 +96,52 @@ export default {
         
       //여기
         const url  =  this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/lastmeasures`
+        let lastMeasures
+        this.reportMeasureData = { TPE005: 0,TPE011: 0,TPE006: 0,TPE008: 0,TPE007: 0,TPE012: 0 } 
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
-            let lastMeasures = res.data.data
+            lastMeasures = res.data.data
             console.log("lastMeasures")    
             console.log(lastMeasures)
             //this.reportMeasureData => 선언 처리 수정
-            this.reportMeasureData = !lastMeasures ? { TPE005: 0,TPE011: 0,TPE006: 0,TPE008: 0,TPE007: 0,TPE012: 0 }: 
-            {
-                TPE005: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE005"}).measureValue.split(',').slice(-1)[0],//심박
-                TPE011: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE011"}).measureValue.split(',').slice(-1)[0],//호흡
-                TPE006: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE006"}).measureValue.split(',').slice(-1)[0],//온도
-                TPE008: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE008"}).measureValue.split(',').slice(-1)[0],//조도
-                TPE007: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE007"}).measureValue.split(',').slice(-1)[0],//습도
-                TPE012: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm.sensorTypeCd === "TPE012"}).measureValue.split(',').slice(-1)[0],//활동량
+            if(!lastMeasures){
+              this.reportMeasureData = { TPE005: 0,TPE011: 0,TPE006: 0,TPE008: 0,TPE007: 0,TPE012: 0 } 
+            }else{
+                for(let i = 0 ; i<6 ; i++){
+                   if( !lastMeasures[i]){
+                        continue;
+                    }else if(lastMeasures[i].sensorTypeCd ==="TPE006"){
+                        this.reportMeasureData.TPE006 = lastMeasures[i].measureValue
+                    }else if(lastMeasures[i].sensorTypeCd ==="TPE007"){
+                        this.reportMeasureData.TPE007 = lastMeasures[i].measureValue
+                    }else if(lastMeasures[i].sensorTypeCd ==="TPE008"){
+                        this.reportMeasureData.TPE008 = lastMeasures[i].measureValue
+                    }else if(lastMeasures[i].sensorTypeCd ==="TPE005"){
+                        this.reportMeasureData.TPE005 = lastMeasures[i].measureValue
+                    }else if(lastMeasures[i].sensorTypeCd ==="TPE011"){
+                        this.reportMeasureData.TPE011 = lastMeasures[i].measureValue
+                    }else if(lastMeasures[i].sensorTypeCd ==="TPE012"){
+                        this.reportMeasureData.TPE012 = lastMeasures[i].measureValue
+                    }
+                }
+                /*this.reportMeasureData = {
+                    TPE005: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm? lm.sensorTypeCd === "TPE005" : 0}).measureValue,//.split(',').slice(-1)[0],//심박
+                    TPE011: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm? lm.sensorTypeCd === "TPE011" : 0}).measureValue,//.split(',').slice(-1)[0],//호흡
+                    TPE006: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm? lm.sensorTypeCd === "TPE006" : 0}).measureValue,//.split(',').slice(-1)[0],//온도
+                    TPE008: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm? lm.sensorTypeCd === "TPE008" : 0}).measureValue,//.split(',').slice(-1)[0],//조도
+                    TPE007: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm? lm.sensorTypeCd === "TPE007" : 0}).measureValue,//.split(',').slice(-1)[0],//습도
+                    TPE012: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm? lm.sensorTypeCd === "TPE012" : 0}).measureValue,//.split(',').slice(-1)[0],//활동량
+                }*/
             }
+            console.log(this.reportMeasureData)
         }).catch(error => {
             console.log("fail to load")
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
+        console.log("last")
+        console.log(lastMeasures)
+        
         //setInterval(this.getMeasuresData, 300000)
     },
   }
