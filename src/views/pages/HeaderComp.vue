@@ -67,8 +67,10 @@ export default {
     oldEmevent : 0,
     newEmevent : 0,
     eventtoggle:0,
+    timerId:''
   }),
   created(){
+
     this.getUserId();
     this.checkCount();
     
@@ -88,14 +90,16 @@ export default {
       this.userId = null
       this.$store.state.userId = null
       console.log(sessionStorage.getItem("token"));
+      clearTimeout(this.timerId);
 
       this.$router.push({ name: 'Home' });
     },
     stopCheck(){
+      clearTimeout(this.timerId);
+      console.log("---------------")
     },
     async checkCount(){
 
-      console.log("count")
       console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
       console.log("this eventtoggle ==> "+this.eventtoggle)
       let uri = this.$store.state.serverApi+"/admin/emergencys/checkcnt";
@@ -112,7 +116,14 @@ export default {
          this.errorMessage = error.message;
          console.error("There was an error!", error);
        });
-       setTimeout(this.checkCount, 60000)
+       console.log("aa")
+       if(sessionStorage.getItem("token") != 'null' && this.$store.state.userId != 'null'){
+         console.log(sessionStorage.getItem("token"))
+         console.log(this.$store.state.userId)
+         this.timerId=setTimeout(this.checkCount, 10000)
+       }else{
+         clearTimeout(this.timerId);
+       }
     },
     clickEmergency(){
       this.$router.push({

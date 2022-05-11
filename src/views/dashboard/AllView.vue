@@ -1087,38 +1087,39 @@ export default {
               statCnt: 0,
             })
           }
+          console.log("this.BtChartItems")
           console.log(this.BtChartItems)
           if(this.BtChartItems != ''){
-          for(let i=0; i<7; i++){
-            if(this.BtChartItems[i].statName==="충만"){
-              let tmpidx = tmpArr1.findIndex(idx=>{
-                return idx.sensorTypeCd == this.BtChartItems[i].sensorTypeCd
-              })
-              tmpArr1[tmpidx].statName = this.BtChartItems[i].statName
-              tmpArr1[tmpidx].statCnt = this.BtChartItems[i].statCnt
+            for(let i=0; i<7; i++){
+              if(!this.BtChartItems[i]){
+                break;
+              }else if(this.BtChartItems[i].statName==="충만"){
+                let tmpidx = tmpArr1.findIndex(idx=>{
+                  return idx.sensorTypeCd == this.BtChartItems[i].sensorTypeCd
+                })
+                tmpArr1[tmpidx].statName = this.BtChartItems[i].statName
+                tmpArr1[tmpidx].statCnt = this.BtChartItems[i].statCnt
+              }else if(this.BtChartItems[i].statName==="부족"){
+                let tmpidx = tmpArr2.findIndex(idx=>{
+                  return idx.sensorTypeCd == this.BtChartItems[i].sensorTypeCd
+                })
+                tmpArr2[tmpidx].statName = this.BtChartItems[i].statName
+                tmpArr2[tmpidx].statCnt = this.BtChartItems[i].statCnt
+              }else if(this.BtChartItems[i].statName==="교체"){
+                let tmpidx = tmpArr3.findIndex(idx=>{
+                  return idx.sensorTypeCd == this.BtChartItems[i].sensorTypeCd
+                })
+                tmpArr3[tmpidx].statName = this.BtChartItems[i].statName
+                tmpArr3[tmpidx].statCnt = this.BtChartItems[i].statCnt
+              }
             }
-            if(this.BtChartItems[i].statName==="부족"){
-              let tmpidx = tmpArr2.findIndex(idx=>{
-                return idx.sensorTypeCd == this.BtChartItems[i].sensorTypeCd
-              })
-              tmpArr2[tmpidx].statName = this.BtChartItems[i].statName
-              tmpArr2[tmpidx].statCnt = this.BtChartItems[i].statCnt
-            }
-            if(this.BtChartItems[i].statName==="교체"){
-              let tmpidx = tmpArr3.findIndex(idx=>{
-                return idx.sensorTypeCd == this.BtChartItems[i].sensorTypeCd
-              })
-              tmpArr3[tmpidx].statName = this.BtChartItems[i].statName
-              tmpArr3[tmpidx].statCnt = this.BtChartItems[i].statCnt
-            }
-          }
           }
           if(this.BtChartItems != ''){
-          for(let i=0; i<6; i++){
-            this.newBtFullArr.push(tmpArr1[i].statCnt)
-            this.newBtLackArr.push(tmpArr2[i].statCnt)
-            this.newBtChangeArr.push(tmpArr3[i].statCnt)
-          }
+            for(let i=0; i<6; i++){
+              this.newBtFullArr.push(tmpArr1[i].statCnt)
+              this.newBtLackArr.push(tmpArr2[i].statCnt)
+              this.newBtChangeArr.push(tmpArr3[i].statCnt)
+            }
           }else{
             for(let i=0; i<6; i++){
               this.newBtFullArr.push(tmpArr1.statCnt)
