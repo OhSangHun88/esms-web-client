@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-        <HeaderComp></HeaderComp>
+        <!--<HeaderComp></HeaderComp>-->
         <!-- <HeaderComp2></HeaderComp2> -->
         <div class="container type-02">
             <div class="box_wrap">

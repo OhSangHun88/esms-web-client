@@ -112,7 +112,7 @@ export default {
          this.errorMessage = error.message;
          console.error("There was an error!", error);
        });
-       //setTimeout(this.checkCount, 60000)
+       setTimeout(this.checkCount, 60000)
     },
     clickEmergency(){
       this.$router.push({

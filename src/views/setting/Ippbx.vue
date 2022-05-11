@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-        <HeaderComp></HeaderComp>
+        <!--<HeaderComp></HeaderComp>-->
         <div class="container type-02">
           <div id="" class="popupLayer" v-if="errorpopup1 == true">
                 <div class="popup_wrap type-02">
