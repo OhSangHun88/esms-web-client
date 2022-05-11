@@ -108,13 +108,20 @@ export default {
               this.reportMeasureData = { TPE005: 0,TPE011: 0,TPE006: 0,TPE008: 0,TPE007: 0,TPE012: 0 } 
             }else{
                 for(let i = 0 ; i<6 ; i++){
-                   switch (i){
-                        case 0 : lastMeasures[0]? this.reportMeasureData.TPE006 = lastMeasures[0].measureValue : this.reportMeasureData.TPE006 =0 ; break;
-                        case 1 : lastMeasures[1]? this.reportMeasureData.TPE007 = lastMeasures[1].measureValue : this.reportMeasureData.TPE007 =0 ; break;
-                        case 2 : lastMeasures[2]? this.reportMeasureData.TPE008 = lastMeasures[2].measureValue : this.reportMeasureData.TPE008 =0 ; break;
-                        case 3 : lastMeasures[3]? this.reportMeasureData.TPE005 = lastMeasures[3].measureValue : this.reportMeasureData.TPE005 =0 ; break;
-                        case 4 : lastMeasures[4]? this.reportMeasureData.TPE011 = lastMeasures[4].measureValue : this.reportMeasureData.TPE011 =0 ; break;
-                        case 5 : lastMeasures[5]? this.reportMeasureData.TPE012 = lastMeasures[5].measureValue : this.reportMeasureData.TPE012 =0 ; break;
+                   if( !lastMeasures[i]){
+                        continue;
+                    }else if(lastMeasures[i].sensorTypeCd ==="TPE006"){
+                        this.reportMeasureData.TPE006 = lastMeasures[i].measureValue
+                    }else if(lastMeasures[i].sensorTypeCd ==="TPE007"){
+                        this.reportMeasureData.TPE007 = lastMeasures[i].measureValue
+                    }else if(lastMeasures[i].sensorTypeCd ==="TPE008"){
+                        this.reportMeasureData.TPE008 = lastMeasures[i].measureValue
+                    }else if(lastMeasures[i].sensorTypeCd ==="TPE005"){
+                        this.reportMeasureData.TPE005 = lastMeasures[i].measureValue
+                    }else if(lastMeasures[i].sensorTypeCd ==="TPE011"){
+                        this.reportMeasureData.TPE011 = lastMeasures[i].measureValue
+                    }else if(lastMeasures[i].sensorTypeCd ==="TPE012"){
+                        this.reportMeasureData.TPE012 = lastMeasures[i].measureValue
                     }
                 }
                 /*this.reportMeasureData = {
