@@ -109,11 +109,11 @@ export default {
             }else{
                 for(let i = 0 ; i<6 ; i++){
                    switch (i){
-                        case 0 : lastMeasures[0]? this.reportMeasureData.TPE005 = lastMeasures[0].measureValue : this.reportMeasureData.TPE005 =0 ; break;
-                        case 1 : lastMeasures[1]? this.reportMeasureData.TPE011 = lastMeasures[1].measureValue : this.reportMeasureData.TPE011 =0 ; break;
-                        case 2 : lastMeasures[2]? this.reportMeasureData.TPE006 = lastMeasures[2].measureValue : this.reportMeasureData.TPE006 =0 ; break;
-                        case 3 : lastMeasures[3]? this.reportMeasureData.TPE008 = lastMeasures[3].measureValue : this.reportMeasureData.TPE008 =0 ; break;
-                        case 4 : lastMeasures[4]? this.reportMeasureData.TPE007 = lastMeasures[4].measureValue : this.reportMeasureData.TPE007 =0 ; break;
+                        case 0 : lastMeasures[0]? this.reportMeasureData.TPE006 = lastMeasures[0].measureValue : this.reportMeasureData.TPE006 =0 ; break;
+                        case 1 : lastMeasures[1]? this.reportMeasureData.TPE007 = lastMeasures[1].measureValue : this.reportMeasureData.TPE007 =0 ; break;
+                        case 2 : lastMeasures[2]? this.reportMeasureData.TPE008 = lastMeasures[2].measureValue : this.reportMeasureData.TPE008 =0 ; break;
+                        case 3 : lastMeasures[3]? this.reportMeasureData.TPE005 = lastMeasures[3].measureValue : this.reportMeasureData.TPE005 =0 ; break;
+                        case 4 : lastMeasures[4]? this.reportMeasureData.TPE011 = lastMeasures[4].measureValue : this.reportMeasureData.TPE011 =0 ; break;
                         case 5 : lastMeasures[5]? this.reportMeasureData.TPE012 = lastMeasures[5].measureValue : this.reportMeasureData.TPE012 =0 ; break;
                     }
                 }
