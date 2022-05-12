@@ -179,6 +179,9 @@ export default {
       getUserId: '',
     }
   },
+  created(){
+    this.loginCheck()
+  },
   mounted: function () {
     console.log(this);
     router = this.$router;
@@ -217,7 +220,7 @@ export default {
             this.timerCountPass--;
             if(this.timerCountPass == 0) {
               this.timerCountPass = '인증번호 받기';
-              this.secPass = '';
+              this.secPass = '';  
               this.passReceive = false;
             }
           }, 1000);
@@ -249,7 +252,18 @@ export default {
           console.log("==== res.data.token: ", res.data.token);
           sessionStorage.setItem("token", res.data.token);
           sessionStorage.setItem("userId", res.data.userId);
-           
+          // const now = new Date()
+          // const tokenItem = {
+          //   value: res.data.token,
+          //   expiry: now.getTime() + 432000,
+          // }
+          // const idItem = {
+          //   value: res.data.userId,
+          //   expiry: now.getTime() + 432000,
+          // }
+          // localStorage.setItem("token", JSON.stringify(tokenItem));
+          // localStorage.setItem("userId", JSON.stringify(idItem)); 
+
           console.log(sessionStorage.getItem("token"));
           console.log(sessionStorage.getItem("userId"));
           
@@ -343,6 +357,11 @@ export default {
       this.passReceive = false;
       this.findIdPass = false;
     },
+    loginCheck(){
+      if(sessionStorage.getItem("userId") != null && sessionStorage.getItem("userId") != undefined && sessionStorage.getItem("userId") != ''){
+        this.$router.push({ path: '../dashboard/allView' });
+        }
+    }
 
   }
 }
