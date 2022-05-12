@@ -441,7 +441,6 @@ export default {
           });
           
           this.sggItems = [...tmpResult2,...tmpResult]
-          console.log(this.sggItems )
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -864,7 +863,7 @@ export default {
       }else{
         addrCd = ''
       }
-      this.e_date = moment(this.s_date).add(6,'days').format('YYYYMMDD')
+      this.e_date = moment(this.s_date).add(6,'days').format('YYYY-MM-DD')
       let urlEventStatus = this.$store.state.serverApi + "/admin/organizations/stat/alarm?addrCd="+addrCd+"&orgId="+this.selectedOrgItems+"&startDate="+this.s_date+"&endDate="+this.e_date
       await axios.get(urlEventStatus, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
@@ -877,7 +876,6 @@ export default {
                 occurDate: response.data.data[i].occurDate,
               });
             } 
-            console.log(urlEventStatus)
             this.EvChartItems=EvtempArr;
           })
           .catch(error => {
@@ -1087,8 +1085,6 @@ export default {
               statCnt: 0,
             })
           }
-          console.log("this.BtChartItems")
-          console.log(this.BtChartItems)
           if(this.BtChartItems != ''){
             for(let i=0; i<7; i++){
               if(!this.BtChartItems[i]){
@@ -1415,7 +1411,6 @@ export default {
       this.PwchartData6 = data6
       this.PwchartOptions = options
       this.PwchartRedraw();
-      console.log(data2)
     },
     PwchartRedraw(){
       this.PwchartImage1 = new Chart(this.$refs.doughnutChart1, {
@@ -1471,7 +1466,7 @@ export default {
       }else{
         addrCd = ''
       }
-      this.e_date =  moment(this.s_date).add(6,'days').format('YYYYMMDD')
+      this.e_date =  moment(this.s_date).add(6,'days').format('YYYY-MM-DD')
       let urlPower = this.$store.state.serverApi + "/admin/organizations/stat/rssi?addrCd="+addrCd+"&orgId="+this.selectedOrgItems+"&startDate="+this.s_date+"&endDate="+this.e_date
       await axios.get(urlPower, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
@@ -1505,42 +1500,45 @@ export default {
           this.newPwLiArr = []
 
           for(let i=0; i<this.PwChartItems.length; i++){
-            if(this.PwChartItems[i].sensorTypeCd==="TPE000"){
+            if(!this.PwChartItems[i]){
+                break;
+              }
+            else if(this.PwChartItems[i].sensorTypeCd==="TPE000"){
               tmpArr1.push({
                 sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
                 statCnt: this.PwChartItems[i].statCnt,
                 statName: this.PwChartItems[i].statName,
               })
             }
-            if(this.PwChartItems[i].sensorTypeCd==="TPE001"){
+            else if(this.PwChartItems[i].sensorTypeCd==="TPE001"){
               tmpArr2.push({
                 sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
                 statCnt: this.PwChartItems[i].statCnt,
                 statName: this.PwChartItems[i].statName,
               })
             }
-            if(this.PwChartItems[i].sensorTypeCd==="TPE002"){
+            else if(this.PwChartItems[i].sensorTypeCd==="TPE002"){
               tmpArr3.push({
                 sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
                 statCnt: this.PwChartItems[i].statCnt,
                 statName: this.PwChartItems[i].statName,
               })
             }
-            if(this.PwChartItems[i].sensorTypeCd==="TPE003"){
+            else if(this.PwChartItems[i].sensorTypeCd==="TPE003"){
               tmpArr4.push({
                 sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
                 statCnt: this.PwChartItems[i].statCnt,
                 statName: this.PwChartItems[i].statName,
               })
             }
-            if(this.PwChartItems[i].sensorTypeCd==="TPE004"){
+            else if(this.PwChartItems[i].sensorTypeCd==="TPE004"){
               tmpArr5.push({
                 sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
                 statCnt: this.PwChartItems[i].statCnt,
                 statName: this.PwChartItems[i].statName,
               })
             }
-            if(this.PwChartItems[i].sensorTypeCd==="TPE005"){
+            else if(this.PwChartItems[i].sensorTypeCd==="TPE005"){
               tmpArr6.push({
                 sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
                 statCnt: this.PwChartItems[i].statCnt,
@@ -1548,6 +1546,7 @@ export default {
               })
             }
           }
+          console.log(tmpArr1)
           let makeArr1=[]
           let makeArr2=[]
           let makeArr3=[]
@@ -1555,7 +1554,6 @@ export default {
           let makeArr5=[]
           let makeArr6=[]
           //배열 전체 순환
-          
           tmpArr1.forEach(item=>{
             makeArr1.push(item.statCnt)
           })
@@ -1574,12 +1572,16 @@ export default {
           tmpArr6.forEach(item=>{
             makeArr6.push(item.statCnt)
           })
-          for(let i=0; i<2; i++){
           this.newPwGwArr.push({
             sensorTypeCd: "TPE000",
             statName: null,
             statCnt: 0,
-          })}
+          })
+          this.newPwGwArr.push({
+            sensorTypeCd: "TPE000",
+            statName: null,
+            statCnt: 0,
+          })
           for(let i=0; i<3; i++){
           this.newPwEmArr.push({
             sensorTypeCd: "TPE001",
@@ -1606,13 +1608,15 @@ export default {
             statName: null,
             statCnt: 0,
           })}
-
-          this.newPwGwArr = makeArr1
-          this.newPwEmArr[0].statCnt = makeArr2[0]
-          this.newPwFiArr[0].statCnt = makeArr3[0]
-          this.newPwDoArr[0].statCnt = makeArr4[0]
-          this.newPwAcArr[0].statCnt = makeArr5[0]
-          this.newPwLiArr[0].statCnt = makeArr6[0]
+          this.newPwGwArr[0].statCnt = makeArr1[0]? makeArr1[0] : 0
+          this.newPwGwArr[1].statCnt = makeArr1[1]? makeArr1[1] : 0
+          for(let i=0; i<3; i++){
+            this.newPwEmArr[i].statCnt = makeArr2[i]? makeArr2[i] : 0
+            this.newPwFiArr[i].statCnt = makeArr3[i]? makeArr3[i] : 0
+            this.newPwDoArr[i].statCnt = makeArr4[i]? makeArr4[i] : 0
+            this.newPwAcArr[i].statCnt = makeArr5[i]? makeArr5[i] : 0
+            this.newPwLiArr[i].statCnt = makeArr6[i]? makeArr6[i] : 0
+          }
 
       this.PwGwData = this.newPwGwArr
       this.PwEmData = this.newPwEmArr
@@ -1620,11 +1624,17 @@ export default {
       this.PwDoData = this.newPwDoArr
       this.PwAcData = this.newPwAcArr
       this.PwLiData = this.newPwAcArr
-      console.log(this.PwGwData)
+      console.log(this.newPwEmArr)
 
-      this.percentPwGwData = this.PwGwData[0]+this.PwGwData[1]
-      this.finalPwGwData1 = [Math.round((this.PwGwData[0]/this.percentPwGwData)*100), Math.round((this.PwGwData[1]/this.percentPwGwData)*100)]
-      this.finalPwGwData2 = [Math.round((this.PwGwData[1]/this.percentPwGwData)*100), Math.round((this.PwGwData[0]/this.percentPwGwData)*100)]
+      this.percentPwGwData = this.PwGwData[0].statCnt+this.PwGwData[1].statCnt
+      this.finalPwGwData1 = [Math.round((this.PwGwData[0].statCnt/this.percentPwGwData)*100), Math.round((this.PwGwData[1].statCnt/this.percentPwGwData)*100)]
+      this.finalPwGwData2 = [Math.round((this.PwGwData[1].statCnt/this.percentPwGwData)*100), Math.round((this.PwGwData[0].statCnt/this.percentPwGwData)*100)]
+      this.finalPwGwData1[0] = this.finalPwGwData1[0]? this.finalPwGwData1[0] : 0
+      this.finalPwGwData1[1] = this.finalPwGwData1[1]? this.finalPwGwData1[1] : 0
+      this.finalPwGwData2[0] = this.finalPwGwData2[0]? this.finalPwGwData2[0] : 0
+      this.finalPwGwData2[1] = this.finalPwGwData2[1]? this.finalPwGwData2[1] : 0
+
+      
       this.percentPwEmData = this.PwEmData[0].statCnt+this.PwEmData[1].statCnt+this.PwEmData[2].statCnt
       this.sumPwEmData1 = this.PwEmData[0].statCnt + this.PwEmData[1].statCnt
       this.sumPwEmData2 = this.PwEmData[1].statCnt + this.PwEmData[2].statCnt
@@ -1632,6 +1642,13 @@ export default {
       this.finalPwEmData1 = [Math.round((this.PwEmData[0].statCnt/this.percentPwEmData)*100), Math.round((this.sumPwEmData2/this.percentPwEmData)*100)]
       this.finalPwEmData2 = [Math.round((this.PwEmData[1].statCnt/this.percentPwEmData)*100), Math.round((this.sumPwEmData3/this.percentPwEmData)*100)]
       this.finalPwEmData3 = [Math.round((this.PwEmData[2].statCnt/this.percentPwEmData)*100), Math.round((this.sumPwEmData1/this.percentPwEmData)*100)]
+      this.finalPwEmData1[0] = this.finalPwEmData1[0]? this.finalPwEmData1[0] : 0
+      this.finalPwEmData1[1] = this.finalPwEmData1[1]? this.finalPwEmData1[1] : 0
+      this.finalPwEmData2[0] = this.finalPwEmData2[0]? this.finalPwEmData2[0] : 0
+      this.finalPwEmData2[1] = this.finalPwEmData2[1]? this.finalPwEmData2[1] : 0
+      this.finalPwEmData3[0] = this.finalPwEmData3[0]? this.finalPwEmData3[0] : 0
+      this.finalPwEmData3[1] = this.finalPwEmData3[1]? this.finalPwEmData3[1] : 0
+
       this.percentPwFiData = this.PwFiData[0].statCnt+this.PwFiData[1].statCnt+this.PwFiData[2].statCnt
       this.sumPwFiData1 = this.PwFiData[0].statCnt + this.PwFiData[1].statCnt
       this.sumPwFiData2 = this.PwFiData[1].statCnt + this.PwFiData[2].statCnt
@@ -1639,6 +1656,9 @@ export default {
       this.finalPwFiData1 = [Math.round((this.PwFiData[0].statCnt/this.percentPwFiData)*100), Math.round((this.sumPwFiData2/this.percentPwFiData)*100)]
       this.finalPwFiData2 = [Math.round((this.PwFiData[1].statCnt/this.percentPwFiData)*100), Math.round((this.sumPwFiData3/this.percentPwFiData)*100)]
       this.finalPwFiData3 = [Math.round((this.PwFiData[2].statCnt/this.percentPwFiData)*100), Math.round((this.sumPwFiData1/this.percentPwFiData)*100)]
+      this.finalPwFiData1[0] = this.finalPwFiData1[0]? this.finalPwFiData1[0] : 0
+      this.finalPwFiData1[1] = this.finalPwFiData1[1]? this.finalPwFiData1[1] : 0
+
       this.percentPwDoData = this.PwDoData[0].statCnt+this.PwDoData[1].statCnt+this.PwDoData[2].statCnt
       this.sumPwDoData1 = this.PwDoData[0].statCnt + this.PwDoData[1].statCnt
       this.sumPwDoData2 = this.PwDoData[1].statCnt + this.PwDoData[2].statCnt
@@ -1646,6 +1666,9 @@ export default {
       this.finalPwDoData1 = [Math.round((this.PwDoData[0].statCnt/this.percentPwDoData)*100), Math.round((this.sumPwDoData2/this.percentPwDoData)*100)]
       this.finalPwDoData2 = [Math.round((this.PwDoData[1].statCnt/this.percentPwDoData)*100), Math.round((this.sumPwDoData3/this.percentPwDoData)*100)]
       this.finalPwDoData3 = [Math.round((this.PwDoData[2].statCnt/this.percentPwDoData)*100), Math.round((this.sumPwDoData1/this.percentPwDoData)*100)]
+      this.finalPwDoData1[0] = this.finalPwDoData1[0]? this.finalPwDoData1[0] : 0
+      this.finalPwDoData1[1] = this.finalPwDoData1[1]? this.finalPwDoData1[1] : 0
+
       this.percentPwAcData = this.PwAcData[0].statCnt+this.PwAcData[1].statCnt+this.PwAcData[2].statCnt
       this.sumPwAcData1 = this.PwAcData[0].statCnt + this.PwAcData[1].statCnt
       this.sumPwAcData2 = this.PwAcData[1].statCnt + this.PwAcData[2].statCnt
@@ -1653,6 +1676,9 @@ export default {
       this.finalPwAcData1 = [Math.round((this.PwAcData[0].statCnt/this.percentPwAcData)*100), Math.round((this.sumPwAcData2/this.percentPwAcData)*100)]
       this.finalPwAcData2 = [Math.round((this.PwAcData[1].statCnt/this.percentPwAcData)*100), Math.round((this.sumPwAcData3/this.percentPwAcData)*100)]
       this.finalPwAcData3 = [Math.round((this.PwAcData[2].statCnt/this.percentPwAcData)*100), Math.round((this.sumPwAcData1/this.percentPwAcData)*100)]
+      this.finalPwAcData1[0] = this.finalPwAcData1[0]? this.finalPwAcData1[0] : 0
+      this.finalPwAcData1[1] = this.finalPwAcData1[1]? this.finalPwAcData1[1] : 0
+
       this.percentPwLiData = this.PwLiData[0].statCnt+this.PwLiData[1].statCnt+this.PwLiData[2].statCnt
       this.sumPwLiData1 = this.PwLiData[0].statCnt + this.PwLiData[1].statCnt
       this.sumPwLiData2 = this.PwLiData[1].statCnt + this.PwLiData[2].statCnt
@@ -1660,20 +1686,15 @@ export default {
       this.finalPwLiData1 = [Math.round((this.PwLiData[0].statCnt/this.percentPwLiData)*100), Math.round((this.sumPwLiData2/this.percentPwLiData)*100)]
       this.finalPwLiData2 = [Math.round((this.PwLiData[1].statCnt/this.percentPwLiData)*100), Math.round((this.sumPwLiData3/this.percentPwLiData)*100)]
       this.finalPwLiData3 = [Math.round((this.PwLiData[2].statCnt/this.percentPwLiData)*100), Math.round((this.sumPwLiData1/this.percentPwLiData)*100)]
-
-      this.finalPwGwData1 = NaN? NaN : [0, 0]
-      this.finalPwEmData1 = NaN? NaN : [0, 0]
-      this.finalPwFiData1 = NaN? NaN : [0, 0]
-      this.finalPwDoData1 = NaN? NaN : [0, 0]
-      this.finalPwAcData1 = NaN? NaN : [0, 0]
-      this.finalPwLiData1 = NaN? NaN : [0, 0]
+      this.finalPwLiData1[0] = this.finalPwLiData1[0]? this.finalPwLiData1[0] : 0
+      this.finalPwLiData1[1] = this.finalPwLiData1[1]? this.finalPwLiData1[1] : 0
 
 
-      this.PwchartData1.datasets[0].data = this.PwGwData
-      this.PwchartData1.datasets[1].data = 0
+      this.PwchartData1.datasets[0].data = this.finalPwGwData1
+      this.PwchartData1.datasets[1].data = this.finalPwGwData2
       this.PwchartData2.datasets[0].data = this.finalPwEmData1
-      this.PwchartData2.datasets[1].data = 0
-      this.PwchartData2.datasets[2].data = 0
+      this.PwchartData2.datasets[1].data = this.finalPwEmData2
+      this.PwchartData2.datasets[2].data = this.finalPwEmData3
       this.PwchartData3.datasets[0].data = this.finalPwFiData1
       this.PwchartData3.datasets[1].data = 0
       this.PwchartData3.datasets[2].data = 0

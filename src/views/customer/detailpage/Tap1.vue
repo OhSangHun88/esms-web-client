@@ -205,7 +205,6 @@ import moment from "moment";
           case 12 : this.labelText="상태"; this.codeText=" "; break; //도어감지기 전체
           case 13 : this.labelText="상태"; this.codeText=" "; this.locCode="LOC007"; break; //현관
           case 14 : this.labelText="상태"; this.codeText=" "; this.locCode="LOC008"; break;  //뒷문
-          
       }
         
         //TPE011
@@ -365,7 +364,6 @@ import moment from "moment";
                             measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
                             regDtime : tmpData.regDtime,
                         })
-                    
                     }
                 }
                 console.log(this.sensorsTmp1Data)

@@ -108,7 +108,7 @@ export default {
               this.reportMeasureData = { TPE005: 0,TPE011: 0,TPE006: 0,TPE008: 0,TPE007: 0,TPE012: 0 } 
             }else{
                 for(let i = 0 ; i<6 ; i++){
-                   if( !lastMeasures[i]){
+                    if(!lastMeasures[i]){
                         continue;
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE006"){
                         this.reportMeasureData.TPE006 = lastMeasures[i].measureValue

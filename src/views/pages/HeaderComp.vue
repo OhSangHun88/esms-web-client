@@ -70,10 +70,8 @@ export default {
     timerId:''
   }),
   created(){
-
     this.getUserId();
     this.checkCount();
-    
   },
   methods:{
     getUserId(){
@@ -94,14 +92,7 @@ export default {
 
       this.$router.push({ name: 'Home' });
     },
-    stopCheck(){
-      clearTimeout(this.timerId);
-      console.log("---------------")
-    },
     async checkCount(){
-
-      console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
-      console.log("this eventtoggle ==> "+this.eventtoggle)
       let uri = this.$store.state.serverApi+"/admin/emergencys/checkcnt";
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
        .then(response => {
@@ -116,11 +107,9 @@ export default {
          this.errorMessage = error.message;
          console.error("There was an error!", error);
        });
-       console.log("aa")
        if(sessionStorage.getItem("token") != 'null' && this.$store.state.userId != 'null'){
-         console.log(sessionStorage.getItem("token"))
-         console.log(this.$store.state.userId)
-         this.timerId=setTimeout(this.checkCount, 5000)
+         console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
+         //this.timerId=setTimeout(this.checkCount, 5000)
        }else{
          clearTimeout(this.timerId);
        }
