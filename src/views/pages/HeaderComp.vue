@@ -87,9 +87,12 @@ export default {
       alert("로그아웃 되었습니다")
       sessionStorage.setItem("token", null);
       sessionStorage.setItem("userId", null);
+      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('userId')
       this.userId = null
       this.$store.state.userId = null
       console.log(sessionStorage.getItem("token"));
+      
       clearTimeout(this.timerId);
 
       this.$router.push({ name: 'Home' });
