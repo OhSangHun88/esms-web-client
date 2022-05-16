@@ -276,6 +276,7 @@
                         <button type="button" class="btn form2" >저장</button>
                     </div>
                 </div>
+              </div>
             </div>
         </div>
     </div>
@@ -307,36 +308,34 @@ export default {
       }
     },
     created() {
-    this.getSidoData();
-    this.getSggData();
-    this.getOrgmData();
-    this.getRecipientData();
-    this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
-    this.e_date=moment().format('YYYY-MM-DD');
-    this.cBirthday=moment().format('YYYY-MM-DD');
-    this.getAsRequestList();
+      this.getSidoData();
+      this.getSggData();
+      this.getOrgmData();
+      this.getRecipientData();
+      this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
+      this.e_date=moment().format('YYYY-MM-DD');
+      this.cBirthday=moment().format('YYYY-MM-DD');
+      this.getAsRequestList();
     },
     
     methods:{
     // 시/도 목록
     getSidoData() {
     axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            
-            this.sidoItems=[];
-            this.sidoItems.push({label: '전체', value: ''});
-
-            for(let i=0; i<response.data.data.length; i++) {
-              this.sidoItems.push({
-                label: response.data.data[i].sido,
-                value: response.data.data[i].sidoCd
-              });
-            }  
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
+      .then(response => {
+        this.sidoItems=[];
+        this.sidoItems.push({label: '전체', value: ''});
+        for(let i=0; i<response.data.data.length; i++) {
+          this.sidoItems.push({
+            label: response.data.data[i].sido,
+            value: response.data.data[i].sidoCd
           });
+        }  
+      })
+      .catch(error => {
+        this.errorMessage = error.message;
+        console.error("There was an error!", error);
+      });
 
     },
 
