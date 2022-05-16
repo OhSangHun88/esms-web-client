@@ -12,19 +12,19 @@
                         <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">시/도</p>
-                                <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
+                                <select v-model="selectedUpdateSidoItems" @change="onChangeSgg($event)">
                                   <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                                 </select>
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">시/군/구</p>
-                                <select v-model="selectedSggItems" @change="onChangeOrg($event)">
+                                <select v-model="selectedUpdateSggItems" @change="onChangeOrg($event)">
                                   <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                                 </select>
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">관리기관</p>
-                                <select v-model="selectedOrgItems">
+                                <select v-model="selectedUpdateOrgItems">
                                   <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                 </select>
                             </div>
@@ -332,6 +332,7 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[], userItems:[], employStateItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedUserNm: '',
+        selectedUpdateSidoItems:'', selectedUpdateSggItems:'', selectedUpdateOrgItems:'',
         selectedUserId:'',selectedphoneNumber:'',selectedmobileNumber:'',selectedEmail:'',selectedemployStateNm:'',
         selectDetailsido:'',selectDetailSgg:'',selectDetailOrg:'',
         writeCus: false, changeCus: false, deleteCus: false, detailCus: false,
@@ -483,6 +484,9 @@ export default {
       this.getOrgmData()
     },
     createData(){
+      this.selectedUpdateSidoItems = ''
+      this.selectedUpdateSggItems = ''
+      this.selectedUpdateOrgItems = ''
       this.writeCus = true
     },
     detailCuspopup(index){

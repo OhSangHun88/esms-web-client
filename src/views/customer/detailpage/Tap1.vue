@@ -170,7 +170,6 @@ import moment from "moment";
     },
 
     async getSensorsData(input,input2,input3,input4){
-
         
 
         let code = input ? input : input2 ? input2 : input3 ? input3 :  input4 

@@ -1658,6 +1658,10 @@ export default {
       this.finalPwFiData3 = [Math.round((this.PwFiData[2].statCnt/this.percentPwFiData)*100), Math.round((this.sumPwFiData1/this.percentPwFiData)*100)]
       this.finalPwFiData1[0] = this.finalPwFiData1[0]? this.finalPwFiData1[0] : 0
       this.finalPwFiData1[1] = this.finalPwFiData1[1]? this.finalPwFiData1[1] : 0
+      this.finalPwFiData2[0] = this.finalPwFiData2[0]? this.finalPwFiData2[0] : 0
+      this.finalPwFiData2[1] = this.finalPwFiData2[1]? this.finalPwFiData2[1] : 0
+      this.finalPwFiData3[0] = this.finalPwFiData3[0]? this.finalPwFiData3[0] : 0
+      this.finalPwFiData3[1] = this.finalPwFiData3[1]? this.finalPwFiData3[1] : 0
 
       this.percentPwDoData = this.PwDoData[0].statCnt+this.PwDoData[1].statCnt+this.PwDoData[2].statCnt
       this.sumPwDoData1 = this.PwDoData[0].statCnt + this.PwDoData[1].statCnt
@@ -1668,6 +1672,10 @@ export default {
       this.finalPwDoData3 = [Math.round((this.PwDoData[2].statCnt/this.percentPwDoData)*100), Math.round((this.sumPwDoData1/this.percentPwDoData)*100)]
       this.finalPwDoData1[0] = this.finalPwDoData1[0]? this.finalPwDoData1[0] : 0
       this.finalPwDoData1[1] = this.finalPwDoData1[1]? this.finalPwDoData1[1] : 0
+      this.finalPwDoData2[0] = this.finalPwDoData2[0]? this.finalPwDoData2[0] : 0
+      this.finalPwDoData2[1] = this.finalPwDoData2[1]? this.finalPwDoData2[1] : 0
+      this.finalPwDoData3[0] = this.finalPwDoData3[0]? this.finalPwDoData3[0] : 0
+      this.finalPwDoData3[1] = this.finalPwDoData3[1]? this.finalPwDoData3[1] : 0
 
       this.percentPwAcData = this.PwAcData[0].statCnt+this.PwAcData[1].statCnt+this.PwAcData[2].statCnt
       this.sumPwAcData1 = this.PwAcData[0].statCnt + this.PwAcData[1].statCnt
@@ -1678,6 +1686,10 @@ export default {
       this.finalPwAcData3 = [Math.round((this.PwAcData[2].statCnt/this.percentPwAcData)*100), Math.round((this.sumPwAcData1/this.percentPwAcData)*100)]
       this.finalPwAcData1[0] = this.finalPwAcData1[0]? this.finalPwAcData1[0] : 0
       this.finalPwAcData1[1] = this.finalPwAcData1[1]? this.finalPwAcData1[1] : 0
+      this.finalPwAcData2[0] = this.finalPwAcData2[0]? this.finalPwAcData2[0] : 0
+      this.finalPwAcData2[1] = this.finalPwAcData2[1]? this.finalPwAcData2[1] : 0
+      this.finalPwAcData3[0] = this.finalPwAcData3[0]? this.finalPwAcData3[0] : 0
+      this.finalPwAcData3[1] = this.finalPwAcData3[1]? this.finalPwAcData3[1] : 0
 
       this.percentPwLiData = this.PwLiData[0].statCnt+this.PwLiData[1].statCnt+this.PwLiData[2].statCnt
       this.sumPwLiData1 = this.PwLiData[0].statCnt + this.PwLiData[1].statCnt
@@ -1688,6 +1700,10 @@ export default {
       this.finalPwLiData3 = [Math.round((this.PwLiData[2].statCnt/this.percentPwLiData)*100), Math.round((this.sumPwLiData1/this.percentPwLiData)*100)]
       this.finalPwLiData1[0] = this.finalPwLiData1[0]? this.finalPwLiData1[0] : 0
       this.finalPwLiData1[1] = this.finalPwLiData1[1]? this.finalPwLiData1[1] : 0
+      this.finalPwLiData2[0] = this.finalPwLiData2[0]? this.finalPwLiData2[0] : 0
+      this.finalPwLiData2[1] = this.finalPwLiData2[1]? this.finalPwLiData2[1] : 0
+      this.finalPwLiData3[0] = this.finalPwLiData3[0]? this.finalPwLiData3[0] : 0
+      this.finalPwLiData3[1] = this.finalPwLiData3[1]? this.finalPwLiData3[1] : 0
 
 
       this.PwchartData1.datasets[0].data = this.finalPwGwData1

@@ -12,19 +12,19 @@
                         <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">시/도</p>
-                                <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
+                                <select v-model="selectedUpdateSidoItems" @change="onChangeSgg($event)">
                                   <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                                 </select>
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">시/군/구</p>
-                                <select v-model="selectedSggItems" @change="onChangeOrg($event)">
+                                <select v-model="selectedUpdateSggItems" @change="onChangeOrg($event)">
                                   <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                                 </select>
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">관리기관</p>
-                                <select v-model="selectedOrgItems">
+                                <select v-model="selectedUpdateOrgItems">
                                   <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                 </select>
                             </div>
@@ -316,6 +316,7 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedOrgNm:'', selectedPhoneNumber:'',
+        selectedUpdateSidoItems:'', selectedUpdateSggItems:'', selectedUpdateOrgItems:'',
         selectDetailsido:'',selectDetailSgg:'',selectDetailOrg:'',
         selectedAddr: '', selectedAddrDetail: '',
         writeOrg: false, changeOrg: false, deleteOrg: false, detailOrg: false,
@@ -457,6 +458,9 @@ export default {
         this.getTorgData();
     },
     createData(){
+      this.selectedUpdateSidoItems = ''
+      this.selectedUpdateSggItems = ''
+      this.selectedUpdateOrgItems = ''
       this.selectedPhoneNumber = ''
       this.selectedSidoItems = ''
       this.writeOrg = true
@@ -497,7 +501,7 @@ export default {
     uploadData(){
       let addrCd = ''
       let sgg = this.sggCd.substring(0,5)
-      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+      if(this.selectedUpdateSidoItems != '' && this.selectedUpdateSggItems == ''){
         sgg = this.sidoCd.substring(0,2)
       }else if(this.selectedSggItems != ''){
         sgg = this.sggCd.substring(0,5)
@@ -506,9 +510,9 @@ export default {
       }
       let tmpUploadData = {
         addr:this.selectedAddr,
-        addrCd:this.selectedSggItems,
+        addrCd:this.selectedUpdateSggItems,
         addrDetail:this.selectedAddrDetail,
-        orgCd:this.selectedOrgItems
+        orgCd:this.selectedUpdateOrgItems
       }
       alert("성공적으로 등록되었습니다")
       this.writeOrg = false
