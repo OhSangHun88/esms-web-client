@@ -151,7 +151,7 @@
                             <col style="width:10%;">
                             </colgroup>
                             <tbody >
-                              <tr v-for="(item,index) in asRequestData" v-bind:key="index">
+                              <tr v-for="(item,index) in asRequestData" v-bind:key="index" @click="openModal">
                                   <td><a href="#" >{{item.asId}}</a></td>
                                   <td><a href="#" >{{item.recipientName}}</a></td>
                                   <td>{{changeRecipientPhoneno(item.recipientPhone)}}</td>
@@ -303,7 +303,7 @@ export default {
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount: 0,
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
-        errorpopup1: false, errorpopup2: false, asRequestData: null,
+        errorpopup1: false, errorpopup2: false, asRequestData: null,popCheck:false,
       }
     },
     created() {
@@ -522,6 +522,8 @@ export default {
                 console.error("There was an error!", error);
             });
       },
+      closeModal() {this.popCheck = false;},
+    openModal() {this.popCheck = true;},
 
 
   },

@@ -24,36 +24,36 @@
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
-                                <th scope="col">순번</th>
-                                <th scope="col">통화구분</th>
-                                <th scope="col">전화번호</th>
-                                <th scope="col">통화시작일시</th>
-                                <th scope="col">통화종료일시</th>
-                                <th scope="col">통화시간</th>
+                              <th scope="col">순번</th>
+                              <th scope="col">통화구분</th>
+                              <th scope="col">전화번호</th>
+                              <th scope="col">통화시작일시</th>
+                              <th scope="col">통화종료일시</th>
+                              <th scope="col">통화시간</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody htype-01">
-                        <table>
-                            <colgroup>
-                                <col style="width:10%;">
-                                <col style="width:10%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                            </colgroup>
-                            <tbody class="">
-                                <tr v-for="(item,index) in call_historys" v-bind:key="index">
-                                    <td>{{index+1}}</td>
-                                    <td>{{item.callTypeNm}}</td>
-                                    <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
-                                    <td>{{item.startTime}}</td>
-                                    <td>{{item.endTime}}</td>
-                                    <td>{{item.callDuration}} 초</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                      <table>
+                        <colgroup>
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:20%;">
+                            <col style="width:20%;">
+                            <col style="width:20%;">
+                            <col style="width:20%;">
+                        </colgroup>
+                        <tbody class="">
+                            <tr v-for="(item,index) in call_historys" v-bind:key="index">
+                                <td>{{index+1}}</td>
+                                <td>{{item.callTypeNm}}</td>
+                                <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
+                                <td>{{item.startTime}}</td>
+                                <td>{{item.endTime}}</td>
+                                <td>{{item.callDuration}} 초</td>
+                            </tr>
+                        </tbody>
+                      </table>
                     </div>
                     <div class="pagination mt0">
                         <a href="#" class="front">첫 페이지</a>
