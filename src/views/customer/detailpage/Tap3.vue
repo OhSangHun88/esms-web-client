@@ -24,36 +24,52 @@
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
-                                <th scope="col">순번</th>
-                                <th scope="col">통화구분</th>
-                                <th scope="col">전화번호</th>
-                                <th scope="col">통화시작일시</th>
-                                <th scope="col">통화종료일시</th>
-                                <th scope="col">통화시간</th>
+                              <th scope="col">순번</th>
+                              <th scope="col">통화구분</th>
+                              <th scope="col">전화번호</th>
+                              <th scope="col">통화시작일시</th>
+                              <th scope="col">통화종료일시</th>
+                              <th scope="col">통화시간</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="tbody htype-01">
-                        <table>
-                            <colgroup>
-                                <col style="width:10%;">
-                                <col style="width:10%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                            </colgroup>
-                            <tbody class="">
-                                <tr v-for="(item,index) in call_historys" v-bind:key="index">
-                                    <td>{{index+1}}</td>
-                                    <td>{{item.callTypeNm}}</td>
-                                    <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
-                                    <td>{{item.startTime}}</td>
-                                    <td>{{item.endTime}}</td>
-                                    <td>{{item.callDuration}} 초</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                      <table>
+                        <colgroup>
+                          <col style="width:10%;">
+                          <col style="width:10%;">
+                          <col style="width:20%;">
+                          <col style="width:20%;">
+                          <col style="width:20%;">
+                          <col style="width:20%;">
+                        </colgroup>
+                        <tbody class="">
+                          <tr v-for="(item,index) in call_historys" v-bind:key="index">
+                            <td>{{index+1}}</td>
+                            <td>{{item.callTypeNm}}</td>
+                            <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
+                            <td>{{item.startTime}}</td>
+                            <td>{{item.endTime}}</td>
+                            <td>{{item.callDuration}} 초</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="pagination mt0">
+                        <a href="#" class="front">첫 페이지</a>
+                        <a href="#" class="prev">이전 페이지</a>
+                        <a href="#" class="on">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#">5</a>
+                        <a href="#">6</a>
+                        <a href="#">7</a>
+                        <a href="#">8</a>
+                        <a href="#">9</a>
+                        <a href="#">10</a>
+                        <a href="#" class="next">다음 페이지</a>
+                        <a href="#" class="back">마지막 페이지</a>
                     </div>
                 </div>
             </div>
@@ -77,15 +93,12 @@ import moment from "moment";
    },
   methods: {
     async getCall_historysData(){
-
-
         const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/call-historys?pageIndex=1&recordCountPerPage=100&callStartDate=${this.callStartDate}&callEndDate=${this.callEndDate}`
-        
         console.log("call_historys is ")
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.call_historys = res.data.data
-            console.log("aa ")
+            console.log("aa")
             console.log(this.call_historys)
           })
           .catch(error => {

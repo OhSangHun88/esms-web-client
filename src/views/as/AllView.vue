@@ -151,7 +151,7 @@
                             <col style="width:10%;">
                             </colgroup>
                             <tbody >
-                              <tr v-for="(item,index) in asRequestData" v-bind:key="index">
+                              <tr v-for="(item,index) in asRequestData" v-bind:key="index" @click="openModal">
                                   <td><a href="#" >{{item.asId}}</a></td>
                                   <td><a href="#" >{{item.recipientName}}</a></td>
                                   <td>{{changeRecipientPhoneno(item.recipientPhone)}}</td>
@@ -172,22 +172,111 @@
                         </table>
                     </div>
                 </div>
-        <div class="pagination mt0">
-					<a href="#" class="front">첫 페이지</a>
-					<a href="#" class="prev">이전 페이지</a>
-					<a href="#" class="on">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">6</a>
-					<a href="#">7</a>
-					<a href="#">8</a>
-					<a href="#">9</a>
-					<a href="#">10</a>
-					<a href="#" class="next">다음 페이지</a>
-					<a href="#" class="back">마지막 페이지</a>
-				</div>
+              <div class="pagination mt0">
+                <a href="#" class="front">첫 페이지</a>
+                <a href="#" class="prev">이전 페이지</a>
+                <a href="#" class="on">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#">6</a>
+                <a href="#">7</a>
+                <a href="#">8</a>
+                <a href="#">9</a>
+                <a href="#">10</a>
+                <a href="#" class="next">다음 페이지</a>
+                <a href="#" class="back">마지막 페이지</a>
+              </div>
+              <div id="" class="popupLayer" v-if="popCheck">
+                  <div class="popup_wrap">
+                    <div class="title_wrap">
+                        <div class="title">A/S요청관리</div>
+                        <button type="button" class="btn_close" @click="closeModal">닫기</button>
+                    </div>
+                    <div class="popup_cnt">
+                      <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">대상자명</p>
+                            <input type="text" >
+                          </div>
+                          <div class="input_area">
+                              <p class="input_tit">대상자 전화번호</p>
+                              <input type="text" >
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">대상자Id</p>
+                            <input type="text" >
+                          </div>
+                      </div>
+                      <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">대상자통합ID</p>
+                            <input type="text" >
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">요청자ID</p>
+                            <input type="text" >
+                          </div>
+                          <div class="input_area">
+                              <p class="input_tit">요청자명</p>
+                              <input type="text" >
+                          </div>
+                      </div>
+                      <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">요청자전화번호</p>
+                            <input type="text" >
+                          </div>
+                          <div class="input_area">
+                              <p class="input_tit">장비구분</p>
+                              <input type="text" >
+                          </div>
+                          <div class="input_area">
+                              <p class="input_tit">맥주소</p>
+                              <input type="text" >
+                          </div>
+                      </div>
+                      <div class="input_wrap">
+                        <div class="input_area">
+                            <p class="input_tit">맥주소</p>
+                            <input type="text" >
+                          </div>
+                          <div class="input_area">
+                              <p class="input_tit">시리얼번호</p>
+                              <input type="text" >
+                          </div>
+                          <div class="input_area">
+                              <p class="input_tit">as타입</p>
+                              <input type="text" >
+                          </div>    
+                      </div>
+                      <div class="input_wrap">
+                        <div class="input_area">
+                            <p class="input_tit">요청내용</p>
+                            <input type="text" >
+                          </div>
+                          <div class="input_area">
+                              <p class="input_tit">요청일시</p>
+                              <input type="text" >
+                          </div>
+                          <div class="input_area">
+                              <p class="input_tit">as상태</p>
+                              <select name="state" id="state">
+                                <option value="">요청</option>
+                                <option value="">접수</option>
+                                <option value="">완료</option>
+                                <option value="">취소</option>
+                              </select>
+                          </div>    
+                      </div>    
+                    </div>
+                    <div class="popbtn_area">
+                        <button type="button" class="btn" @click="closeModal">취소</button>
+                        <button type="button" class="btn form2" >저장</button>
+                    </div>
+                </div>
+              </div>
             </div>
         </div>
     </div>
@@ -215,40 +304,38 @@ export default {
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount: 0,
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
-        errorpopup1: false, errorpopup2: false, asRequestData: null,
+        errorpopup1: false, errorpopup2: false, asRequestData: null,popCheck: false
       }
     },
     created() {
-    this.getSidoData();
-    this.getSggData();
-    this.getOrgmData();
-    this.getRecipientData();
-    this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
-    this.e_date=moment().format('YYYY-MM-DD');
-    this.cBirthday=moment().format('YYYY-MM-DD');
-    this.getAsRequestList();
+      this.getSidoData();
+      this.getSggData();
+      this.getOrgmData();
+      this.getRecipientData();
+      this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
+      this.e_date=moment().format('YYYY-MM-DD');
+      this.cBirthday=moment().format('YYYY-MM-DD');
+      this.getAsRequestList();
     },
     
     methods:{
     // 시/도 목록
     getSidoData() {
     axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
-          .then(response => {
-            
-            this.sidoItems=[];
-            this.sidoItems.push({label: '전체', value: ''});
-
-            for(let i=0; i<response.data.data.length; i++) {
-              this.sidoItems.push({
-                label: response.data.data[i].sido,
-                value: response.data.data[i].sidoCd
-              });
-            }  
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
+      .then(response => {
+        this.sidoItems=[];
+        this.sidoItems.push({label: '전체', value: ''});
+        for(let i=0; i<response.data.data.length; i++) {
+          this.sidoItems.push({
+            label: response.data.data[i].sido,
+            value: response.data.data[i].sidoCd
           });
+        }  
+      })
+      .catch(error => {
+        this.errorMessage = error.message;
+        console.error("There was an error!", error);
+      });
 
     },
 
@@ -434,6 +521,8 @@ export default {
                 console.error("There was an error!", error);
             });
       },
+      closeModal() {this.popCheck = false;},
+      openModal() {this.popCheck = true;},
 
 
   },
