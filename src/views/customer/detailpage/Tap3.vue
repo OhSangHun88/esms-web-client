@@ -36,22 +36,22 @@
                     <div class="tbody htype-01">
                       <table>
                         <colgroup>
-                            <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
+                          <col style="width:10%;">
+                          <col style="width:10%;">
+                          <col style="width:20%;">
+                          <col style="width:20%;">
+                          <col style="width:20%;">
+                          <col style="width:20%;">
                         </colgroup>
                         <tbody class="">
-                            <tr v-for="(item,index) in call_historys" v-bind:key="index">
-                                <td>{{index+1}}</td>
-                                <td>{{item.callTypeNm}}</td>
-                                <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
-                                <td>{{item.startTime}}</td>
-                                <td>{{item.endTime}}</td>
-                                <td>{{item.callDuration}} 초</td>
-                            </tr>
+                          <tr v-for="(item,index) in call_historys" v-bind:key="index">
+                            <td>{{index+1}}</td>
+                            <td>{{item.callTypeNm}}</td>
+                            <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
+                            <td>{{item.startTime}}</td>
+                            <td>{{item.endTime}}</td>
+                            <td>{{item.callDuration}} 초</td>
+                          </tr>
                         </tbody>
                       </table>
                     </div>
@@ -93,15 +93,12 @@ import moment from "moment";
    },
   methods: {
     async getCall_historysData(){
-
-
         const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/call-historys?pageIndex=1&recordCountPerPage=100&callStartDate=${this.callStartDate}&callEndDate=${this.callEndDate}`
-        
         console.log("call_historys is ")
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.call_historys = res.data.data
-            console.log("aa ")
+            console.log("aa")
             console.log(this.call_historys)
           })
           .catch(error => {

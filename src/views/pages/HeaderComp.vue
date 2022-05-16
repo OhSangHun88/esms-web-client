@@ -6,42 +6,43 @@
         <div class="user_name">
           <button type="button" class="btn form2" @click="logOut"> 로그아웃</button>
           <i class="pf_img" style="background-image: url(../../assets/images/img_profile.png)"></i>
+          
           <a href="#" class="name"><em>{{loginCheck}}</em> 님</a>
         </div>
       </div>
     </div>
     <nav id="gnb">
       <ul>
-        <li><a href="#"><router-link to="/dashboard/allView" ><i class="ico-1"></i>모니터링</router-link></a></li>
-        <li><a href="#"><router-link to="/customer/allView" ><i class="ico-2"></i>대상자 관리</router-link></a></li>
-        <li class="drop"> <!-- gnb li에 마우스 오버시 드랍메뉴 on -->
+        <li :class="getPath==='/dashboard'? 'on':''"><a href="#" ><router-link to="/dashboard/allView" ><i class="ico-1"></i>모니터링</router-link></a></li>
+        <li :class="getPath==='/customer'? 'on':''"><a href="#"><router-link to="/customer/allView" ><i class="ico-2"></i>대상자 관리</router-link></a></li>
+        <li :class="getPath==='/emevent'? 'drop on':'drop'"> <!-- gnb li에 마우스 오버시 드랍메뉴 on -->
           <a href="#"><router-link to="/emevent/allView" ><i class="ico-3"></i>이벤트 리포트</router-link></a>
           <ul class="sub_menu">
-            <li><a href="#"><router-link to ="/emevent/allView">응급알람</router-link></a></li>
-            <li><a href="#"><router-link to ="/emevent/outingEvent">외출이벤트</router-link></a></li>
-            <li><a href="#"><router-link to ="/emevent/activityDetection">활동 미감지</router-link></a></li>
-            <li><a href="#"><router-link to ="/emevent/equipmentFailure">장비 점검 대상</router-link></a></li>
+            <li :class="getDetailPath==='/emevent/allView'? 'on':''"><a href="#"><router-link to ="/emevent/allView">응급알람</router-link></a></li>
+            <li :class="getDetailPath==='/emevent/outingEvent'? 'on':''"><a href="#"><router-link to ="/emevent/outingEvent">외출이벤트</router-link></a></li>
+            <li :class="getDetailPath==='/emevent/activityDetection'? 'on':''"><a href="#"><router-link to ="/emevent/activityDetection">활동 미감지</router-link></a></li>
+            <li :class="getDetailPath==='/emevent/equipmentFailure'? 'on':''"><a href="#"><router-link to ="/emevent/equipmentFailure">장비 점검 대상</router-link></a></li>
           </ul>
         </li>
-        <li class="drop">
+        <li :class="getPath==='/setting'? 'drop on':'drop'">
           <a href="#"><router-link to="/setting/allView" ><i class="ico-4"></i>시스템관리</router-link></a>
           <ul class="sub_menu">
-            <li><a href="#"><router-link to ="/setting/org">기관관리</router-link></a></li>
-            <li><a href="#"><router-link to ="/setting/customer">사용자관리</router-link></a></li>
-            <li><a href="#"><router-link to ="/setting/allView">장비관리</router-link></a></li>
-            <li><a href="#"><router-link to ="/setting/ippbx">IP-PBX 관리</router-link></a></li>
-            <li><a href="#"><router-link to ="/setting/firmware">펌웨어 관리</router-link></a></li>
-            <li><a href="#"><router-link to ="/setting/notice">공지사항</router-link></a></li>
-            <li><a href="#"><router-link to ="/setting/manageLog">로그관리</router-link></a></li>
+            <li :class="getDetailPath==='/setting/org'? 'on':''"><a href="#"><router-link to ="/setting/org">기관관리</router-link></a></li>
+            <li :class="getDetailPath==='/setting/customer'? 'on':''"><a href="#"><router-link to ="/setting/customer">사용자관리</router-link></a></li>
+            <li :class="getDetailPath==='/setting/allView'? 'on':''"><a href="#"><router-link to ="/setting/allView">장비관리</router-link></a></li>
+            <li :class="getDetailPath==='/setting/ippbx'? 'on':''"><a href="#"><router-link to ="/setting/ippbx">IP-PBX 관리</router-link></a></li>
+            <li :class="getDetailPath==='/setting/firmware'? 'on':''"><a href="#"><router-link to ="/setting/firmware">펌웨어 관리</router-link></a></li>
+            <li :class="getDetailPath==='/setting/notice'? 'on':''"><a href="#"><router-link to ="/setting/notice">공지사항</router-link></a></li>
+            <li :class="getDetailPath==='/setting/manageLog'? 'on':''"><a href="#"><router-link to ="/setting/manageLog">로그관리</router-link></a></li>
           </ul>
         </li>
-        <li class="drop">
+        <li :class="getPath==='/as'? 'drop on':'drop'">
           <a href="#"><router-link to="/as/allView" ><i class="ico-5"></i>A/S관리</router-link></a>
           <ul class="sub_menu">
-            <li><a href="#"><router-link to ="/as/Request">A/S 요청</router-link></a></li>
-            <li><a href="#"><router-link to ="/as/Confirm">A/S 접수</router-link></a></li>
-            <li><a href="#"><router-link to ="/as/Complete">A/S 완료</router-link></a></li>
-            <li><a href="#"><router-link to ="/as/Cancel">A/S 취소</router-link></a></li>
+            <li :class="getDetailPath==='/as/Request'? 'on':''"><a href="#"><router-link to ="/as/Request">A/S 요청</router-link></a></li>
+            <li :class="getDetailPath==='/as/Confirm'? 'on':''"><a href="#"><router-link to ="/as/Confirm">A/S 접수</router-link></a></li>
+            <li :class="getDetailPath==='/as/Complete'? 'on':''"><a href="#"><router-link to ="/as/Complete">A/S 완료</router-link></a></li>
+            <li :class="getDetailPath==='/as/Cancel'? 'on':''"><a href="#"><router-link to ="/as/Cancel">A/S 취소</router-link></a></li>
           </ul>
         </li>
       </ul>
@@ -136,7 +137,26 @@ export default {
       this.userId = sessionStorage.getItem("userId")
       console.log(this.$store.state.data)
       return this.userId
+    },
+    getPath(){
+      let tmpPath = this.$route.path
+      let tmpResult = tmpPath.split("/")
+      console.log(tmpResult)
+      let result = "/" + tmpResult[1] 
+      console.log("path is")
+      console.log(result)
+      return result
+    },
+    getDetailPath(){
+      let tmpPath = this.$route.path
+      let tmpResult = tmpPath.split("/")
+      console.log(tmpResult)
+      let result = "/" + tmpResult[1] + "/" + tmpResult[2]
+      console.log("path is")
+      console.log(result)
+      return result
     }
+
   },
 }
 </script>
