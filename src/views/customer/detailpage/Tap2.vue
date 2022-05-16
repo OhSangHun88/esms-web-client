@@ -65,6 +65,22 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="pagination mt0">
+                        <a href="#" class="front">첫 페이지</a>
+                        <a href="#" class="prev">이전 페이지</a>
+                        <a href="#" class="on">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#">5</a>
+                        <a href="#">6</a>
+                        <a href="#">7</a>
+                        <a href="#">8</a>
+                        <a href="#">9</a>
+                        <a href="#">10</a>
+                        <a href="#" class="next">다음 페이지</a>
+                        <a href="#" class="back">마지막 페이지</a>
+                    </div>
                 </div>
             </div>
         </div>
