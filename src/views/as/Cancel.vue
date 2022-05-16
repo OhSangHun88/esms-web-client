@@ -276,6 +276,7 @@
                         <button type="button" class="btn form2" >저장</button>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
     </div>
