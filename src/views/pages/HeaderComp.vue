@@ -33,7 +33,6 @@
             <li><a href="#"><router-link to ="/setting/firmware">펌웨어 관리</router-link></a></li>
             <li><a href="#"><router-link to ="/setting/notice">공지사항</router-link></a></li>
             <li><a href="#"><router-link to ="/setting/manageLog">로그관리</router-link></a></li>
-            
           </ul>
         </li>
         <li class="drop">
@@ -70,10 +69,8 @@ export default {
     timerId:''
   }),
   created(){
-
     this.getUserId();
     this.checkCount();
-    
   },
   methods:{
     getUserId(){
@@ -102,7 +99,6 @@ export default {
       console.log("---------------")
     },
     async checkCount(){
-
       console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
       console.log("this eventtoggle ==> "+this.eventtoggle)
       let uri = this.$store.state.serverApi+"/admin/emergencys/checkcnt";
@@ -110,7 +106,7 @@ export default {
        .then(response => {
         this.newEmevent = response.data.totalCount
         if(this.oldEmevent === this.newEmevent){
-          this.eventtoggle = 0  
+          this.eventtoggle = 0
         }else{
           this.eventtoggle = 1
         }
