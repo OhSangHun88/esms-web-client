@@ -120,9 +120,11 @@ export default {
        }
     },
     clickEmergency(){
-      this.$router.push({
+      if(this.$route.path !==`/emevent/allView2`){
+        this.$router.push({
         path : `/emevent/allView2`
       })
+      } 
     },
   },
   computed: {
