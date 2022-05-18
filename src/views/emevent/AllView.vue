@@ -121,7 +121,7 @@
         <div class="result_txt">
           <p>조회결과 : <strong class="num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
           <div class="btn_area">
-            <button type="button" class="btn" @click="checkSaveState()">취소</button>
+            <button type="button" class="btn" @click="checkSaveState()">알람취소</button>
           </div>
         </div>
         <div class="list result">
