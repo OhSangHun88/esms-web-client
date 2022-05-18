@@ -255,7 +255,6 @@ export default {
             return cd.value2 === this.sidoCd
           });
           this.sggItems = [...tmpResult2,...tmpResult]
-          console.log(this.sggItems )
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -315,9 +314,7 @@ export default {
       +"&recipientNm="+this.selectedRecipientNm
       +"&occurStartDate="+occurStartDate
       +"&occurEndDate="+occurEndDate;
-      console.log("this uri = "+uri)
       //}
-      console.log(uri)
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.recipientItems = response.data.data
@@ -337,7 +334,6 @@ export default {
       }
     },
     onChangeSido(event){
-      console.log("====onChangeSido($event) execution")
       this.getSggData()
       this.orgSido = event.target.value;
     },

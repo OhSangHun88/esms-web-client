@@ -296,10 +296,8 @@ export default {
           } 
           let tmpResult = tempArr.filter(cd=>{
             return cd.value2 === this.sidoCd
-          });
-          
+          });      
           this.sggItems = [...tmpResult2,...tmpResult]
-          console.log(this.sggItems )
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -358,7 +356,6 @@ export default {
           .then(response => {
             this.noticItems = response.data.data
             this.NCount =this.noticItems.length
-            console.log(uri)
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -366,7 +363,6 @@ export default {
           });
     },
       onChangeSido(event){
-      console.log("====onChangeSido($event) execution")
       this.getSggData()
       this.orgSido = event.target.value;
     },

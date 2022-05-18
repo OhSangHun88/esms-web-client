@@ -470,7 +470,6 @@ export default {
           });
           
           this.sggItems = [...tmpResult2,...tmpResult]
-          console.log(this.sggItems )
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -522,7 +521,6 @@ export default {
           });
       },
       onChangeSido(event){
-      console.log("====onChangeSido($event) execution")
       this.getSggData()
       this.orgSido = event.target.value;
     },
@@ -538,7 +536,6 @@ export default {
               value: response.data.data[i].cmmnCd,
             });
           } 
-          console.log(this.employStateItems)
         })          
         .catch(error => {
           this.errorMessage = error.message;
@@ -546,7 +543,6 @@ export default {
         });
       },
       onChangeSido(event){
-      console.log("====onChangeSido($event) execution")
       this.getSggData()
       this.orgSido = event.target.value;
     },
@@ -587,7 +583,6 @@ export default {
       this.selectedmobileNumber = this.detailArr.mobileNumber
       this.selectedEmail = this.detailArr.email
       this.selectedemployStateNm = this.detailArr.employStateNm
-      console.log(this.detailArr)
       this.detailCus = true
     },
     uploadData(){

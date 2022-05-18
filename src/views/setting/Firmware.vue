@@ -261,7 +261,6 @@ export default {
           });
           
           this.sggItems = [...tmpResult2,...tmpResult]
-          console.log(this.sggItems )
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -323,7 +322,6 @@ export default {
           .then(response => {
             this.recipientItems = response.data.data
             this.NCount = this.recipientItems.length
-            console.log(uri)
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -339,7 +337,6 @@ export default {
       }
     },
     onChangeSido(event){
-      console.log("====onChangeSido($event) execution")
       this.getSggData()
       this.orgSido = event.target.value;
     },

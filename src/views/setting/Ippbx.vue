@@ -273,7 +273,6 @@ export default {
           });
           
           this.sggItems = [...tmpResult2,...tmpResult]
-          console.log(this.sggItems )
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -330,7 +329,6 @@ export default {
           .then(response => {
             this.recipientItems = response.data.data
             this.NCount = this.recipientItems.length
-            console.log(uri)
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -349,7 +347,6 @@ export default {
     //   this.$emit('input', event.target.value);
     // },
     onChangeSido(event){
-      console.log("====onChangeSido($event) execution")
       this.getSggData()
       this.orgSido = event.target.value;
     },
@@ -404,17 +401,13 @@ export default {
         axios.post(url,tmpObjectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
-            console.log(resData)
             if(resData){
                 alert("저장이 완료되었습니다.")
             }
             // this.getCSensorsData = res.data.data
-            // console.log("sensors ")
-            // console.log(this.getCSensorsData)
-            
           })
           .catch(error => {
-              console.log("fail to load")
+            console.log("fail to load")
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
