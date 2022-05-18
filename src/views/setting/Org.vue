@@ -379,7 +379,6 @@ export default {
             return cd.value2 === this.sidoCd
           });
           this.sggItems = [...tmpResult2,...tmpResult]
-          console.log(this.sggItems )
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -432,7 +431,6 @@ export default {
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.TorgItems = response.data.data
-            console.log("URI ==> "+uri)
           })          
           .catch(error => {
             this.errorMessage = error.message;
@@ -440,7 +438,6 @@ export default {
           });
       },
       onChangeSido(event){
-      console.log("====onChangeSido($event) execution")
       this.getSggData()
       this.orgSido = event.target.value;
     },
@@ -467,7 +464,6 @@ export default {
     }, 
     detailOrgpopup(index){
       this.detailArr = this.TorgItems[index]
-      console.log(this.detailArr)
       this.selectedPhoneNumber = ''
       this.selectDetailsido = ''
       this.selectDetailSgg = ''

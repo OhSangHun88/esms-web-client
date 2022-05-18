@@ -30,6 +30,21 @@
           </div>
         </div>
       </div>
+      <div id="" class="popupLayer" v-if="errorpopup3 == true">
+              <div class="popup_wrap type-02">
+                <div class="title_wrap">
+                  <div class="title">경고</div>
+                  <button type="button" class="btn_close" @click="errorpopup3 = false">닫기</button>
+                </div>
+                <div class="popup_cnt">
+                  <p class="alert_txt">선택하신 응급상태를 바꾸시겠습니까?</p>
+                </div>
+                <div class="popbtn_area type-02">
+                  <button type="button" class="btn form2" @click="errorpopup3 = false">취소</button>
+                  <button type="button" class="btn form3" @click="saveState()">확인</button>
+                </div>
+              </div>
+            </div>
       <div class="list_title_wrap">
         <span>이벤트 리포트</span>
         <i class="ico_nav"></i>
@@ -105,25 +120,30 @@
       <div class="one_box box_style">
         <div class="result_txt">
           <p>조회결과 : <strong class="num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
+          <div class="btn_area">
+            <button type="button" class="btn" @click="checkSaveState()">취소</button>
+          </div>
         </div>
         <div class="list result">
           <table>
             <colgroup>
               <col style="width:3%;">
+              <col style="width:3%;">
               <col style="width:5%;">
               <col style="width:5%;">
               <col style="width:3%;">
-              <col style="width:20%;">
+              <col style="width:18%;">
               <col style="width:7%;">
+              <col style="width:5%;">
               <col style="width:7%;">
-              <col style="width:7%;">
-              <col style="width:7%;">
-              <col style="width:3%;">
+              <col style="width:5%;">
+              <col style="width:5%;">
               <col style="width:8%;">
               <col style="width:8%;">
             </colgroup>
             <thead>
               <tr>
+                <th scope="col">선택</th>
                 <th scope="col">순번</th>
                 <th scope="col">관리기관</th>
                 <th scope="col">대상자명</th>
@@ -143,20 +163,27 @@
             <table>
               <colgroup>
                 <col style="width:3%;">
+                <col style="width:3%;">
                 <col style="width:5%;">
                 <col style="width:5%;">
                 <col style="width:3%;">
-                <col style="width:20%;">
+                <col style="width:18%;">
                 <col style="width:7%;">
+                <col style="width:5%;">
                 <col style="width:7%;">
-                <col style="width:7%;">
-                <col style="width:7%;">
-                <col style="width:3%;">
+                <col style="width:5%;">
+                <col style="width:5%;">
                 <col style="width:8%;">
                 <col style="width:8%;">
               </colgroup>
               <tbody >
                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
+                  <td>
+                    <div class="chk_area radio">
+                      <input type="radio" name="saveChangeData" :id="`radio_${index}`" v-model="saveChangeData" :value="index">
+                      <label :for="`radio_${index}`" class="chk"><i class="ico_chk"></i></label>
+                    </div>
+                  </td>
                   <td>{{index+1}}</td>
                   <td>{{item.orgNm}}</td>
                   <td>{{item.recipientNm}}</td>
@@ -219,11 +246,12 @@ export default {
   data() {
     return{
       orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-      sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], number:[], stateItems:[], recipientItems:[],
+      sidoItems:[], sggItems:[], orgmItems:[], typeItems:[], number:[], stateItems:[], changeStateItems:[], recipientItems:[],
       orgSido:'', orgSgg:'', orgCode:'',
       selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm:'', selectedTypeItems:'', selectedStateItems:'',
       cBirthday:'', cAddr: '', NCount : 0,
-      errorpopup1: false, errorpopup2: false,
+      errorpopup1: false, errorpopup2: false, errorpopup3: false,
+      saveChangeData: null,
     }
   },
   created() {
@@ -234,8 +262,8 @@ export default {
     this.getOrgmData();
     this.getTypeData();
     this.getStateData();
-    this.getRecipientData();
     this.cBirthday=moment().format('YYYY-MM-DD');
+    this.getRecipientData();
   },
   methods:{
   // 시/도 목록
@@ -343,9 +371,14 @@ export default {
       axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=ALARM.STATECD", {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           this.stateItems=[];
+          this.changeStateItems=[];
           this.stateItems.push({label: '전체', value: ''});
           for(let i=0; i<response.data.data.length; i++) {
             this.stateItems.push({
+              label: response.data.data[i].cmmnCdNm,
+              value: response.data.data[i].cmmnCd
+            });
+            this.changeStateItems.push({
               label: response.data.data[i].cmmnCdNm,
               value: response.data.data[i].cmmnCd
             });
@@ -383,7 +416,6 @@ export default {
         .then(response => {
           this.recipientItems = response.data.data
           this.NCount =this.recipientItems.length
-          console.log(uri)
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -421,6 +453,33 @@ export default {
       }*/else{
         this.getRecipientData();
       }
+    },
+    checkSaveState(){
+      if(this.saveChangeData===null||this.saveChangeData===undefined){
+        alert("변경하시고자 하는 값을 선택해 주세요"); 
+        return;
+      }else{
+        this.errorpopup3 = true
+      }
+    },
+    saveState(){
+      let url = this.$store.state.serverApi+`/admin/emergencys/${this.recipientItems[this.saveChangeData].emergSignalId}/cancel`
+      console.log(this.recipientItems[this.saveChangeData].emergSignalId)
+      axios.patch(url, this.recipientItems[this.saveChangeData].emergSignalId, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            let resData = res.data.data
+            console.log(resData)
+            if(resData){
+              alert("저장이 완료되었습니다.")
+              this.errorpopup3 = false
+              this.getRecipientData()
+            }
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
     },
   },
 }

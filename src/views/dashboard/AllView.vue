@@ -1501,8 +1501,8 @@ export default {
 
           for(let i=0; i<this.PwChartItems.length; i++){
             if(!this.PwChartItems[i]){
-                break;
-              }
+              break;
+            }
             else if(this.PwChartItems[i].sensorTypeCd==="TPE000"){
               tmpArr1.push({
                 sensorTypeCd: this.PwChartItems[i].sensorTypeCd,
@@ -1546,7 +1546,6 @@ export default {
               })
             }
           }
-          console.log(tmpArr1)
           let makeArr1=[]
           let makeArr2=[]
           let makeArr3=[]
@@ -1624,7 +1623,6 @@ export default {
       this.PwDoData = this.newPwDoArr
       this.PwAcData = this.newPwAcArr
       this.PwLiData = this.newPwAcArr
-      console.log(this.newPwEmArr)
 
       this.percentPwGwData = this.PwGwData[0].statCnt+this.PwGwData[1].statCnt
       this.finalPwGwData1 = [Math.round((this.PwGwData[0].statCnt/this.percentPwGwData)*100), Math.round((this.PwGwData[1].statCnt/this.percentPwGwData)*100)]

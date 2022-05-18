@@ -429,7 +429,6 @@ export default {
       }
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
-            console.log(this.recipientItems)
             this.recipientItems = response.data.data
             this.NCount =this.recipientItems.length
           })

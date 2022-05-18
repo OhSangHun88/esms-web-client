@@ -114,7 +114,7 @@ export default {
        });
        if(sessionStorage.getItem("token") != 'null' && this.$store.state.userId != 'null'){
          console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
-         this.timerId=setTimeout(this.checkCount, 5000)
+         //this.timerId=setTimeout(this.checkCount, 5000)
        }else{
          clearTimeout(this.timerId);
        }
