@@ -178,12 +178,13 @@
               </colgroup>
               <tbody >
                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
-                  <td>
+                  <td v-if="item.signalStateCd === 'STE001'">
                     <div class="chk_area radio">
                       <input type="radio" name="saveChangeData" :id="`radio_${index}`" v-model="saveChangeData" :value="index">
                       <label :for="`radio_${index}`" class="chk"><i class="ico_chk"></i></label>
                     </div>
                   </td>
+                  <td v-else></td>
                   <td>{{index+1}}</td>
                   <td>{{item.orgNm}}</td>
                   <td>{{item.recipientNm}}</td>
