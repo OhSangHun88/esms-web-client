@@ -18,16 +18,16 @@
             </div>
             <div id="" class="popupLayer" v-if="errorpopup2 == true">
                 <div class="popup_wrap type-02">
-                    <div class="title_wrap">
-                        <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
-                   </div>
-                    <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
-                    </div>
+                  <div class="title_wrap">
+                      <div class="title">경고</div>
+                      <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
+                  </div>
+                  <div class="popup_cnt">
+                    <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
+                  </div>
+                  <div class="popbtn_area type-02">
+                    <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
+                  </div>
                 </div>
             </div>
             <div class="list_title_wrap">
@@ -69,16 +69,16 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" value="" v-model="selectedRecipientNm">
+                                  <input type="text" value="" v-model="selectedRecipientNm">
                                 </td>
                                 <td>
-                                    <div class="date_warp">
-                                        <div class="customerBts" style="justify-content: flex-start;">
-                                            <input type="date" v-model="s_date"/>
-                                            <span class="tilde">~</span>
-                                            <input type="date" v-model="e_date" :max="this.$moment().format('YYYY-MM-DD')"/>
-                                        </div>
+                                  <div class="date_warp">
+                                    <div class="customerBts" style="justify-content: flex-start;">
+                                      <input type="date" v-model="s_date"/>
+                                      <span class="tilde">~</span>
+                                      <input type="date" v-model="e_date" :max="this.$moment().format('YYYY-MM-DD')"/>
                                     </div>
+                                  </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -206,7 +206,7 @@
                             <input type="text" >
                         </div>
                         <div class="input_area">
-                          <p class="input_tit">대상자Id</p>
+                          <p class="input_tit">대상자ID</p>
                           <input type="text" >
                         </div>
                     </div>
@@ -525,8 +525,6 @@ export default {
       },
       closeModal() {this.popCheck = false;},
       openModal() {this.popCheck = true;},
-
-
   },
 }
 </script>

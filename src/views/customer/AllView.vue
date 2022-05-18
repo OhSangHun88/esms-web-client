@@ -10,6 +10,97 @@
             <CButton color="primary" @click="addCustomer = true" class="mr-1">고객추가</CButton>
           </div> -->
     <div v-else  class="container">
+      <div id="" class="popupLayer" v-if="modalOpen" >
+        <div class="popup_wrap">
+            <div class="title_wrap">
+                <div class="title">대상자 등록</div>
+                <button type="button" class="btn_close" @click="closeModal">닫기</button>
+            </div>
+            <div class="popup_cnt">
+                <div class="input_wrap">
+                  <div class="input_area">
+                    <p class="input_tit">이메일</p>
+                    <div class="add_btn_input">
+                      <input type="text" value="">
+                      <button type="button" class="input_btn">중복 확인</button>
+                    </div>
+                  </div>
+                  <div class="input_area half">
+                    <p class="input_tit">생년월일</p>
+                    <input type="text" value="">
+                  </div>
+                  <div class="btn_area half">
+                      <p class="input_tit">성별</p>
+                      <div class="toggle_btn">
+                          <button type="button" class="btn on">남</button>
+                          <button type="button" class="btn">여</button>
+                      </div>
+                  </div>
+                </div>
+                <div class="input_wrap">
+                  <div class="input_area">
+                    <p class="input_tit">우편번호</p>
+                    <div class="add_btn_input">
+                      <input type="text" value="">
+                      <button type="button" class="input_btn">검색</button>
+                    </div>
+                  </div>
+                  <div class="input_area">
+                    <p class="input_tit">주소</p>
+                    <input type="text" value="" v-model="selectedAddr">
+                  </div>
+                </div>
+                <div class="input_wrap type-02">
+                    <div class="input_area" >
+                        <p class="input_tit">상세주소</p>
+                        <input type="text" value="" v-model="selectedAddrDetail">
+                    </div>
+                </div>
+                <div class="input_wrap">
+                  <div class="input_area">
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text" value="">
+                  </div>
+                  <div class="input_area">
+                    <p class="input_tit">유선연락처</p>
+                    <input type="text" value="">
+                  </div>
+                </div>
+                <div class="input_wrap">
+                    <div class="input_area">
+                        <p class="input_tit">사용자 구분</p>
+                        <select>
+                          <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="input_area">
+                        <p class="input_tit">광역</p>
+                        <select>
+                          <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input_wrap">
+                    <div class="input_area">
+                        <p class="input_tit">시/군/구</p>
+                        <select v-model="selectedUpdateSggItems" @change="onChangeOrg($event)">
+                          <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                        </select>
+                    </div>
+                    <div class="input_area">
+                        <p class="input_tit">수행기관</p>
+                        <select>
+                          <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="popbtn_area">
+                <button type="button" class="btn" @click="closeModal">취 소</button>
+                <button type="button" class="btn form2" @click="uploadData()">회원가입 승인 요청</button>
+            </div>
+        </div>
+      </div>
       <div class="list_title_wrap">
         <span>대상자 관리</span>
         <i class="ico_nav"></i>
@@ -66,6 +157,9 @@
     <div class="one_box box_style">
         <div class="result_txt">
             <p>조회결과 : {{ recipientItems ? recipientItems.length : 0}}건</p>
+            <div class="btn_area">
+              <button type="button" style="margin-right:10px" class="btn" @click="createData()">등록</button>
+            </div>
         </div>
         <div class="list result">
             <table>
@@ -384,7 +478,7 @@ export default {
       orgCode: '', partCode: '', statusCode: '', sexCode: '', cycleCode: '',selectedSidoItems: '', selectedSggItems: '', selectedOrgItems: '',
       modelOrg: '', modelPart: '', modelStatus: '', modelName: '',
       orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-      sidoItems:[], sggItems:[],  actItems:[], recipientItems:[],recipientOrginItems:[], orgSido:'', orgSgg:'', filterName:'',
+      sidoItems:[], sggItems:[],  actItems:[], recipientItems:[],recipientOrginItems:[], orgSido:'', orgSgg:'', filterName:'', modalOpen:false,
       recipientFields: [
         { key: 'orgNm', label: '기관관리', _classes: 'text-center' },
         { key: 'typeNm', label: '구분', _classes: 'text-center' },
@@ -519,7 +613,7 @@ export default {
     onChangeOrg(event) {
       this.sggCd = event.target.value
       this.getOrgmData()
-    },
+    },    
     onChangeSido(event){
       this.getSggData()
       this.orgSido = event.target.value;
@@ -621,6 +715,14 @@ export default {
       return ''
     }
     
+  },
+  createData(){
+    this.modalOpen = true;
+
+  },
+  closeModal(){
+    this.modalOpen = false;
+
   },
 
 

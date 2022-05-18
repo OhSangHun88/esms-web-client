@@ -478,7 +478,6 @@ import axios from "axios";
             alert('60,120,180,240 중 값을 입력해 주세요')
             this.getCSensorsData[this.sensorsState].stateSvrSendCycle = 60
             return false;
-
         }
 
 

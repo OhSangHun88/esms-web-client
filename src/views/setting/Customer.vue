@@ -2,13 +2,78 @@
     <div class="wrap">
         <!--<HeaderComp></HeaderComp>-->
         <div class="container type-02">
-          <div id="" class="popupLayer" v-if="writeCus === true">
+            <div id="" class="popupLayer" v-if="writeCus === true">
                 <div class="popup_wrap">
                     <div class="title_wrap">
                         <div class="title">사용자 등록</div>
                         <button type="button" class="btn_close" @click="writeCus = false">닫기</button>
                     </div>
                     <div class="popup_cnt">
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">이름</p>
+                            <input type="text" value="">
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">생년월일</p>
+                            <input type="text" value="">
+                          </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">휴대폰번호</p>
+                            <input type="text" value="">
+                          </div>
+                          <div class="btn_area">
+                              <p class="input_tit">성별</p>
+                              <div class="toggle_btn">
+                                  <button type="button" class="btn on">남</button>
+                                  <button type="button" class="btn">여</button>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">이메일</p>
+                            <input type="text" value="">
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">사용자ID</p>
+                            <div class="add_btn_input">
+                              <input type="text" value="">
+                              <button type="button" class="input_btn">ID 중복 체크</button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">Password</p>
+                            <input type="password" value="">
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">Password 확인</p>
+                            <input type="password" value="">
+                          </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">우편번호</p>
+                            <div class="add_btn_input">
+                              <input type="text" value="">
+                              <button type="button" class="input_btn">검색</button>
+                            </div>
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">주소</p>
+                            <input type="text" value="" v-model="selectedAddr">
+                          </div>
+                        </div>
+                        <div class="input_wrap type-02">
+                            <div class="input_area" >
+                                <p class="input_tit">상세주소</p>
+                                <input type="text" value="" v-model="selectedAddrDetail">
+                            </div>
+                        </div>
                         <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">시/도</p>
@@ -22,36 +87,47 @@
                                   <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">관리기관</p>
                                 <select v-model="selectedUpdateOrgItems">
                                   <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                 </select>
                             </div>
-                            <hr/>
                             <div class="input_area">
-                                <p class="input_tit">사용자 ID</p>
+                                <p class="input_tit">관리지역</p>
+                                <input type="text" value="">
+                            </div>
+                        </div>
+                        <div class="input_wrap col3">
+                            <div class="input_area">
+                                <p class="input_tit">사용자 구분</p>
+                                <select>
+                                  <option value="">사용자 구분</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">부서명</p>
                                 <input type="text" value="">
                             </div>
                             <div class="input_area">
-                                <p class="input_tit">사용자명</p>
+                                <p class="input_tit">사무실 전화번호</p>
                                 <input type="text" value="">
+                            </div>
+                        </div>
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">등록자 ID</p>
+                                <select>
+                                  <option value=""></option>
+                                </select>
                             </div>
                             <div class="input_area">
-                                <p class="input_tit">전화번호</p>
-                                <input type="text" value="">
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">핸드폰번호</p>
-                                <input type="text" value="">
-                            </div>
-                            <div class="input_area" >
-                                <p class="input_tit">이메일주소</p>
-                                <input type="text" value="">
-                            </div>
-                            <div class="input_area" >
-                                <p class="input_tit">현재상태</p>
-                                <input type="text" value="">
+                                <p class="input_tit">등록자 일시</p>
+                                <div class="date_warp">
+                                    <input type="date">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -113,7 +189,8 @@
                         <button type="button" class="btn form3" @click="deleteCus = true">삭제</button>
                     </div>
                 </div>
-            </div><div id="" class="popupLayer" v-if="changeCus === true">
+            </div>
+            <div id="" class="popupLayer" v-if="changeCus === true">
                 <div class="popup_wrap">
                     <div class="title_wrap">
                         <div class="title">사용자 정보 수정</div>
@@ -235,8 +312,8 @@
                 <div class="result_txt">
                     <p>사용자 정보</p>
                     <div class="btn_area">
-                    <button type="button" style="margin-right:10px" class="btn" @click="createData()">등록</button>
-                  </div>
+                      <button type="button" style="margin-right:10px" class="btn" @click="createData()">등록</button>
+                    </div>
                 </div>
                 <div class="list result">
                     <table>

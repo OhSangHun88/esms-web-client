@@ -22,36 +22,70 @@
                                   <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">관리기관</p>
                                 <select v-model="selectedUpdateOrgItems">
                                   <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                 </select>
                             </div>
-                            <hr/>
                             <div class="input_area">
-                                <p class="input_tit">대표전화번호</p>
+                                <p class="input_tit">대표 전화번호</p>
                                 <input type="text" value="" v-model="selectedPhoneNumber">
                             </div>
                         </div>
-                        <div>
-                        <div class="input_wrap type-02">
-                            <div class="input_area" >
-                                <p class="input_tit">주소</p>
-                                <input type="text" value="" v-model="selectedAddr">
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">관리기관 구분</p>
+                                <select>
+                                  <option value="">관리기관 구분</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">상위기관</p>
+                                <select>
+                                  <option value="">상위기관</option>
+                                </select>
                             </div>
                         </div>
                         <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">우편번호</p>
+                            <div class="add_btn_input">
+                              <input type="text" value="">
+                              <button type="button" class="input_btn">검색</button>
+                            </div>
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">주소</p>
+                            <input type="text" value="" v-model="selectedAddr">
+                          </div>
+                        </div>
+                        <div class="input_wrap type-02">
                             <div class="input_area" >
-                                <p class="input_tit">세부주소</p>
+                                <p class="input_tit">상세주소</p>
                                 <input type="text" value="" v-model="selectedAddrDetail">
                             </div>
-                        </div>
+                        </div>                 
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">등록자 ID</p>
+                                <select>
+                                  <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">등록자 일시</p>
+                                <div class="date_warp">
+                                    <input type="date">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="popbtn_area">
-                        <button type="button" class="btn" @click="writeOrg = false">취소</button>
-                        <button type="button" class="btn form2" @click="uploadData()">등록</button>
+                        <button type="button" class="btn" @click="writeOrg = false">취 소</button>
+                        <button type="button" class="btn form2" @click="uploadData()">등 록</button>
                     </div>
                 </div>
             </div>

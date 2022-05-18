@@ -73,6 +73,7 @@
                               <li :class="menutoggle===3?'active':''"><a href="#" @click="menu(3)">말벗</a></li>
                               <li :class="menutoggle===2?'active':''"><a href="#" @click="menu(2)">응급요원</a></li>
                               <li :class="menutoggle===4?'active':''"><a href="#" @click="menu(4)">생활관리사</a></li>
+                              <li :class="menutoggle===5?'active':''"><a href="#" @click="menu(5)">응급</a></li>
                           </ul>
                           <div class="tabcontent">
                             <!-- :recipientId="this.recipientId" -->
@@ -103,6 +104,15 @@
                                    @openPopMsg="openModalMsg"
                                    @sendMenu4Lending="menu4Lending"
                                    ></menu4>
+                            <menu5 ref="menu5"
+                                   :recipientId="this.recipientId" 
+                                   v-if="this.menutoggle===5"
+                                   :menu5Refresh="this.menu5Refresh"
+                                   @sendData5="getFromMenuData" 
+                                   @openPop="openModal5"
+                                   @openPopMsg="openModalMsg"
+                                   @sendMenu5Lending="menu5Lending"
+                                   ></menu5>
 
                                 
                           </div>
@@ -141,7 +151,7 @@
               <button type="button" class="btn_close" @click="closeModal">닫기</button>
           </div>
           <div class="popup_cnt">
-            <div class="input_wrap">
+            <div class="input_wrap col3">
                 <div class="input_area">
                   <p class="input_tit">이름</p>
                   <input type="text" v-model="managerName">
@@ -213,7 +223,7 @@
     </div>
     <div id="" class="popupLayer" v-if="popCheck2">
       <div class="popup_wrap">
-          <div class="title_wrap">
+          <div class="title_wrap col3">
               <div class="title">{{this.msg}} 추가</div>
               <button type="button" class="btn_close" @click="closeModal">닫기</button>
           </div>
@@ -242,7 +252,7 @@
               <button type="button" class="btn_close" @click="closeModal">닫기</button>
           </div>
           <div class="popup_cnt">
-            <div class="input_wrap">
+            <div class="input_wrap col3">
                 <div class="input_area">
                   <p class="input_tit">이름</p>
                   <input type="text" v-model="managerName">
@@ -256,6 +266,38 @@
           <div class="popbtn_area">
               <button type="button" class="btn" @click="closeModal">취소</button>
               <button type="button" class="btn form2" @click="insertCareManager()">추가</button>
+          </div>
+      </div>
+    </div>
+    <div id="" class="popupLayer" v-if="popCheck5">
+      <div class="popup_wrap">
+          <div class="title_wrap">
+              <div class="title">{{this.msg}} 추가</div>
+              <button type="button" class="btn_close" @click="closeModal">닫기</button>
+          </div>
+          <div class="popup_cnt">
+            <div class="input_wrap col3">
+                <div class="input_area">
+                  <p class="input_tit">이름</p>
+                  <input type="text" v-model="managerName">
+                </div>
+                <div class="input_area">
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text" v-model="managerPhone">
+                </div>
+                <div class="input_area">
+                  <p class="input_tit">구분</p>
+                  <select name="emerManagerRelationCd" id="emerManagerRelationCd" v-model="emerManagerRelationCd" > <!--v-model="managerRelationNm"-->
+                    <option v-for="(items, index ) in emerRelationArr" v-bind:value="items.value" v-bind:key="index"> 
+                    {{ items.text }}
+                    </option>
+                  </select>
+                </div>        
+            </div>
+          </div>
+          <div class="popbtn_area">
+              <button type="button" class="btn" @click="closeModal">취소</button>
+              <button type="button" class="btn form2" @click="insertEmergency()">추가</button>
           </div>
       </div>
     </div>
@@ -375,16 +417,17 @@ import menu1 from "./detailpage/Menu1.vue";
 import menu2 from "./detailpage/Menu2.vue";
 import menu3 from "./detailpage/Menu3.vue";
 import menu4 from "./detailpage/Menu4.vue";
-
+import menu5 from "./detailpage/Menu5.vue";
 export default {
   name: "DetailView",
   data () {
     return {
       pending:true,
       d_phone: '', d_sex: '', d_endcycle: '', d_part: '', d_status: '', d_zipCode: '', d_address: '', personinfo: '',
-      recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,popCheck3:false,popCheck2:null,popCheck4:null,insertData:null,msg: null,
-      managerName: null,managerPhone: null,managerRelationNm: null,managerRelationCd:null,menu3Refresh:1,menu2Refresh:1,menu4Refresh:1,
-      relationArr : [{value:'RL001', text: '남편'},{value:'RL002', text: '와이프'},{value:'RL003', text: '아들'},{value:'RL004', text: '딸'},{value:'RL005', text: '사위'},{value:'RL006', text: '며느리'},{value:'RL007', text: '손자'},{value:'RL008', text: '손녀'},{value:'RL009' , text:'기타'},]
+      recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,popCheck3:false,popCheck2:null,popCheck4:null,popCheck5:null,insertData:null,msg: null,
+      managerName: null,managerPhone: null,managerRelationNm: null,managerRelationCd:null,emerManagerRelationCd:null, menu3Refresh:1,menu2Refresh:1,menu4Refresh:1,menu5Refresh:1,
+      relationArr : [{value:'RL001', text: '남편'},{value:'RL002', text: '와이프'},{value:'RL003', text: '아들'},{value:'RL004', text: '딸'},{value:'RL005', text: '사위'},{value:'RL006', text: '며느리'},{value:'RL007', text: '손자'},{value:'RL008', text: '손녀'},{value:'RL009' , text:'기타'},],
+      emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE003', text: '중앙모니터링센터'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}]
     }
   },
   components: {
@@ -407,17 +450,20 @@ export default {
     menu2,
     menu3,
     menu4,
+    menu5,
   },
   methods: {
     getFromMenuData(data) {console.log(data);},
+    openModal5(data) {console.log("modal5open");this.popCheck5 = data},
     openModal4(data) {console.log("modal4open");this.popCheck4 = data},
     openModal3(data) {this.popCheck3 = data},
     openModal2(data) {this.popCheck2 = data},
     openModalMsg(data) {this.msg = data},
+    menu5Lending(data) {this.menu5Refresh = data},
     menu4Lending(data) {this.menu4Refresh = data},
     menu3Lending(data) {this.menu3Refresh = data},
     menu2Lending(data) {this.menu2Refresh = data},
-    closeModal() {this.popCheck3 = false;this.popCheck2 = false;this.popCheck4 = false;},
+    closeModal() {this.popCheck3 = false;this.popCheck2 = false;this.popCheck4 = false;this.popCheck5 = false;},
     async getRecipientInfo() {
       //this.$store.mutation.logout
       //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");
@@ -450,6 +496,7 @@ export default {
           case 2 : this.menutoggle=2 ;break;
           case 3 : this.menutoggle=3 ;break;
           case 4 : this.menutoggle=4 ;break;
+          case 5 : this.menutoggle=5 ;break;
       }
     },
     
@@ -582,6 +629,36 @@ export default {
             this.insertData = res.data.data
             this.$refs.menu4.sendMenu4Lending();
             this.popCheck4 = false
+            console.log("insertData is ");
+            console.log(this.insertData)
+            
+
+            alert("등록성공")
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+          
+    },
+    insertEmergency(){
+      // /recipients/{recipientId}/phoneNumbers
+      let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
+
+      let data = {
+        recipientId: this.recipientId,
+        relationNm: this.managerName,
+        relationPhone: this.managerPhone,
+        relationCd: this.managerRelationCd, 
+        relationCdNm: this.managerRelationNm,
+        typeCd: this.emerManagerRelationCd
+      }
+      console.log(data)
+      axios.post(uri,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.insertData = res.data.data
+            this.$refs.menu5.sendMenu5Lending();
+            this.popCheck5 = false
             console.log("insertData is ");
             console.log(this.insertData)
             
