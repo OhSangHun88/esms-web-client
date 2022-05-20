@@ -105,7 +105,7 @@
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
                                 <th scope="col">감지 주기(초)</th>
-                                <th scope="col">G/W 전송주기(분)</th>
+                                <th scope="col">G/W 전송주기(초)</th>
                                 <th scope="col">서버 전송주기(분)</th>               
                             </tr>
                         </thead>
@@ -136,7 +136,7 @@
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="input_area" v-if="sensorsDetect===index">
-                                            <input type="text" name="" v-model="item.gwSendCycle">분
+                                            <input type="text" name="" v-model="item.gwSendCycle">초
                                         </div>
                                         <div v-else>{{item.gwSendCycle}}</div>
                                     </td>

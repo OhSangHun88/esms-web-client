@@ -6,7 +6,7 @@
                     <div class="btn_area">
                         <button v-if="this.relationPhoneData.length<6" type="button" class="btn form2" @click="sendParent">추가</button>
                         <button type="button" class="btn form2" @click="modifyRelationPhoneData">수정</button>
-                        <button type="button" class="btn form3" @click="deleteRelationPhoneData">삭제</button> 
+                        <!-- <button type="button" class="btn form3" @click="deleteRelationPhoneData">삭제</button>  -->
                     </div>
                 </div>
                 <div class="list">
@@ -14,17 +14,15 @@
                         <colgroup>
                             <col style="width:auto;">
                             <col style="width:10%;">
-                            <col style="width:25%;">
-                            <col style="width:25%;">
-                            <col style="width:33%;">
+                            <col style="width:40%;">
+                            <col style="width:40%;">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th scope="col"></th>
                                 <th scope="col">순번</th>
-                                <th scope="col">이름</th>
-                                <th scope="col">관계</th>
-                                <th scope="col">핸드폰번호</th>
+                                <th scope="col">구분</th>
+                                <th scope="col">전화번호</th>
                             </tr>
                         </thead>
                     </table>
@@ -33,9 +31,8 @@
                             <colgroup>
                                 <col style="width:auto;">
                                 <col style="width:10%;">
-                                <col style="width:25%;">
-                                <col style="width:25%;">
-                                <col style="width:33%;">
+                                <col style="width:40%;">
+                                <col style="width:40%;">
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in relationPhoneData" v-bind:key="index">
@@ -46,13 +43,7 @@
                                         </div>
                                     </td>
                                     <td>{{index+1}}</td>
-                                    <td v-if="selectIndex === index">
-                                        <div class="input_area">
-                                            <input type="text" name="relationNm" :id="`relationNm_${index}`" v-model="item.relationNm" >
-                                        </div>
-                                    </td>
-                                    <td v-else>{{item.relationNm}}</td>
-                                    <td>{{item.relationCdNm}}</td>
+                                    <td >{{emerCodeLabel(item.typeCd)}}</td>
                                     <td v-if="selectIndex === index">
                                         <input type="text" name="relationPhone" :id="`relationPhone_${index}`" v-model="item.relationPhone" >
                                     </td>
@@ -89,7 +80,7 @@ export default {
     },
     methods:{
       async getRelationPhoneData(){
-          console.log("menu4")
+          console.log("menu5")
       //여기
       const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers?typeCd=TPE001`
       const url2  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers?typeCd=TPE002`
@@ -254,6 +245,18 @@ export default {
         }
 
     },
+    emerCodeLabel(value){
+    let result
+      switch (value){
+          case "TPE001" : result="119번호" ;break;
+          case "TPE002" : result="센터번호" ;break;
+          case "TPE003" : result="중앙모니터링센터" ;break;
+          case "TPE004" : result="IP-PBX화재" ;break;
+          case "TPE005" : result="IP-PBX응급" ;break;
+      }
+      return result
+    },
+
   }
 }
 </script>
