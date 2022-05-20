@@ -309,16 +309,4 @@ table.asstatus tbody tr td.comple{color: #EE9D01;font-size: 18px; font-weight: b
 .popupLayer .popup_wrap .popbtn_area .input_area .btn.file{display: inline-block;width: 120px;height: 50px;line-height: 50px;font-size: 16px;font-weight: 500;color: #fff;background-color: #ADB0BB;text-align: center;margin: 0 0 0 20px;padding: 0;border-radius: 10px;}
 .popupLayer .popup_wrap .popbtn_area.type-02{padding: 30px 0 62px;}
 
-.popupLayer .popup_wrap .popbtn_wrap{padding: 0 50px;}
-.popupLayer .popup_wrap .popbtn_wrap::after{content: '';display: block;clear: both;}
-.popupLayer .popup_wrap .popbtn_wrap .popbtn_area.left{float: left;}
-.popupLayer .popup_wrap .popbtn_wrap .popbtn_area.right{float: right;}
-.popupLayer .popup_wrap .popbtn_area{text-align: center;padding: 50px 0 54px;}
-.popupLayer .popup_wrap .popbtn_area .btn{display: inline-block;width: auto;height: 50px;line-height: 50px;font-size: 16px;font-weight: 500;color: #fff;background-color: #ADB0BB;text-align: center;margin: 0 0 0 20px;padding: 0 40px;border-radius: 10px;}
-.popupLayer .popup_wrap .popbtn_area .btn:first-child{margin: 0;}
-.popupLayer .popup_wrap .popbtn_area .btn.form2{background-color: #11B787;}
-.popupLayer .popup_wrap .popbtn_area .btn.form3{background-color: #ff0000;}
-.popupLayer .popup_wrap .popbtn_area .input_area.file{display: inline-block;vertical-align: top;}
-.popupLayer .popup_wrap .popbtn_area .input_area input{width: 1px;height: 1px;position: absolute;opacity: 0;}
-.popupLayer .popup_wrap .popbtn_area .input_area .btn.file{display: inline-block;width: 120px;height: 50px;line-height: 50px;font-size: 16px;font-weight: 500;color: #fff;background-color: #ADB0BB;text-align: center;margin: 0 0 0 20px;padding: 0;border-radius: 10px;}
-.popupLayer .popup_wrap .popbtn_area.type-02{padding: 30px 0 62px;}
+
