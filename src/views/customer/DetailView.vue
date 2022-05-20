@@ -282,22 +282,22 @@
                   <input type="text" v-model="managerName">
                 </div> -->
                 <div class="input_area">
-                    <p class="input_tit">전화번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3">
-                </div>
-                <div class="input_area">
                   <p class="input_tit">구분</p>
                   <select name="emerManagerRelationCd" id="emerManagerRelationCd" v-model="emerManagerRelationCd" > <!--v-model="managerRelationNm"-->
                     <option v-for="(items, index ) in emerRelationArr" v-bind:value="items.value" v-bind:key="index"> 
                     {{ items.text }}
                     </option>
                   </select>
-                </div>        
+                </div> 
+                <div class="input_area">
+                    <p class="input_tit">전화번호</p>
+                    <input type="text" v-model="managerPhone" minlength="3">
+                </div>
             </div>
           </div>
           <div class="popbtn_area">
-              <button type="button" class="btn" @click="closeModal">취소</button>
-              <button type="button" class="btn form2" @click="insertEmergency()">추가</button>
+            <button type="button" class="btn form2" @click="insertEmergency()">추가</button>
+            <button type="button" class="btn" @click="closeModal">취소</button>  
           </div>
       </div>
     </div>
