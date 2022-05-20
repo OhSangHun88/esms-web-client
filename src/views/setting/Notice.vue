@@ -99,7 +99,7 @@
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
-                            <th scope="row">작성자</th>
+                            <th scope="row">제목</th>
                             <th scope="row">등록일자</th>
                         </thead>
                         <tbody>
@@ -120,7 +120,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input v-model="selectedRegId" type="text" value="">
+                                    <input v-model="selectedTitle" type="text" value="">
                                 </td>
                                 <td>
                                     <div class="date_warp">
@@ -235,7 +235,7 @@ export default {
       return{
         sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
         sidoItems:[], sggItems:[], orgmItems:[], orgmItems2:'', noticItems:[], 
-        orgSido:'', orgSgg:'', orgCode:'',selectedOrgItems:'', selectedSidoItems:'', selectedSggItems:'', selectedRegId: '', selectedTitle: '', selectedDetail: '',
+        orgSido:'', orgSgg:'', orgCode:'',selectedOrgItems:'', selectedSidoItems:'', selectedSggItems:'', selectedTitle: '', selectedTitle: '', selectedDetail: '',
         selectedUpdateSidoItems:'', selectedUpdateSggItems:'', selectedUpdateOrgItems:'', selectedUpdateTitle:'', selectedUpdateDetails:'',
         NCount: 0,
         errorpopup1: false, errorpopup2: false, writeNotice: false,
@@ -354,6 +354,7 @@ export default {
       }
       let uri = this.$store.state.serverApi 
       +"/admin/notices?pageIndex=1&recordCountPerPage=100"
+      +"&title="+this.selectedTitle
       +"&startDate="+this.s_date
       +"&endDate="+this.e_date
 

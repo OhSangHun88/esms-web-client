@@ -399,9 +399,9 @@ export default {
     data(){
       return{
         sido:'', sidoCd:'', sgg:'', sggCd:'',
-        sidoName:'',sggName:'', orgNm:'', typeNm:'', upperOrgNm:'', orgId:'',
+        sidoName:'',sggName:'', orgNm:'', typeNm:'', upperOrgNm:'', orgId:'', orgmItems2:[],
         sidoItems:[], sggItems:[], orgmItems:[], upperOrgItems:[], orgTypeItems:[], noticItems:[], TorgItems:[],
-        orgSido:'', orgSgg:'', orgCode:'',
+        orgSido:'', orgSgg:'', orgCode:'', 
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedOrgNm:'', selectedPhoneNumber:'',
 
         selectedUpdateSidoItems:'', selectedUpdateSggItems:'', selectedUpdateOrgItems:'',
@@ -539,20 +539,22 @@ export default {
               value2: response.data.data[i].typeCd
             });
           } 
-          console.log(tmpArr)
           for(let i =0; i<tmpArr.length; i++){
             this.orgId = tmpArr[i].value
           }
-          let num = this.orgId.substring(3,10)
-          let string = this.orgId.substring(0,3)
-          console.log(this.orgId)
-          console.log(num)
-          console.log(string)
-          num = Number(num)+1
-          num = toString(num)
-          console.log(num)
-          this.orgId = string+num
-          console.log(this.orgId)
+          let num = 0
+          while(true){
+            let found = this.orgId.indexOf("0", num);
+            if(found === -1){
+              break;
+            }
+            num = found+1;
+          }
+          let string = this.orgId.substring(0,num)
+          let changenum = this.orgId.substring(num)
+          num = Number(changenum)+1
+          num = String(num)
+          this.orgId = string + num
           
           tmpResult1=tmpArr.filter(cd=>{
             return cd.value2 === 'TPE001'
@@ -584,7 +586,6 @@ export default {
         let tmpResult = tmpArr
         // this.orgTypeItems = [...tmpResult2,...tmpResult]
         this.orgTypeItems=tmpArr;
-        console.log("this ===> "+tmpArr)
       })
       .catch(error => {
         this.errorMessage = error.message;
@@ -694,7 +695,7 @@ export default {
       this.deleteOrg = false
       this.detailOrg = false
     },
-    uploadData(){
+    async uploadData(){
       this.$store.state.userId = sessionStorage.getItem("userId")
       console.log(this.$store.state.userId)
       let addrCd = ''
@@ -720,11 +721,42 @@ export default {
       })
       console.log(this.orgNm)
 
+      let uri =this.$store.state.serverApi + "/admin/organizations/all";
+      await axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          this.orgmItems2=[];
+          for(let i=0; i<response.data.data.length; i++) {
+            this.orgmItems2.push({
+              label: response.data.data[i].orgNm,
+              value: response.data.data[i].orgId,
+              value2: response.data.data[i].typeCd,
+              value3: response.data.data[i].typeNm
+            });
+          }
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+
+        console.log(this.orgmItems2)
+      if(this.selectedUpdateSidoItems === '' || this.selectedUpdateSggItems === '' || this.selectedUpdateOrgItems === ''){
+        this.orgNm = this.orgmItems2.filter(cd=>{
+          return cd.value === 'ORG0000001'
+        })
+        this.selectedUpdateOrgItems === null
+      }else{
+        this.orgNm = this.orgmItems2.filter(cd=>{
+          return cd.value === this.selectedUpdateOrgItems
+        })
+      }
+      console.log(this.orgNm)
+
       let data = {
         sidoName:this.sidoName[0].label,
         addrCd:this.selectedUpdateSggItems,
         sggName:this.sggName[0].label,
-        // orgId:this.orgId+1,
+        orgId:this.orgId,
         orgNm:this.orgNm[0].label,
         phoneNumber:this.selectedUpdatePhoneNumber,
         typeCd:this.selectedUpdateTypeCd,
@@ -736,25 +768,22 @@ export default {
       }
       console.log(data)
 
-      // let url = this.$store.state.serverApi+`/admin/organizations`
-      // console.log(url)
-      // axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-      //     .then(res => {
-      //       let resData = res.data.data
-      //       console.log(resData)
-      //       if(resData){
-      //         alert("성공적으로 등록되었습니다")
-      //         this.writeOrg = false
-      //         this.getTorgData()
-      //       }
-      //     })
-      //     .catch(error => {
-      //         console.log("fail to load")
-      //       this.errorMessage = error.message;
-      //       console.error("There was an error!", error);
-      //     });
-      // alert("성공적으로 등록되었습니다")
-      // this.writeOrg = false
+       let url = this.$store.state.serverApi+`/admin/organizations`
+       axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+           .then(res => {
+             let resData = res.data.data
+             console.log(resData)
+             if(resData){
+               alert("성공적으로 등록되었습니다")
+               this.writeOrg = false
+               this.getTorgData()
+             }
+           })
+           .catch(error => {
+               console.log("fail to load")
+             this.errorMessage = error.message;
+             console.error("There was an error!", error);
+           });
     }
     }
 }
