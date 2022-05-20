@@ -267,7 +267,7 @@ export default {
           console.log(sessionStorage.getItem("token"));
           console.log(sessionStorage.getItem("userId"));
           
-          
+          console.log("thisthis========")
         }
         
       })

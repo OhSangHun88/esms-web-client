@@ -541,9 +541,19 @@ export default {
           } 
           console.log(tmpArr)
           for(let i =0; i<tmpArr.length; i++){
-            this.orgId = tmpArr[i].value 
+            this.orgId = tmpArr[i].value
           }
+          let num = this.orgId.substring(3,10)
+          let string = this.orgId.substring(0,3)
           console.log(this.orgId)
+          console.log(num)
+          console.log(string)
+          num = Number(num)+1
+          num = toString(num)
+          console.log(num)
+          this.orgId = string+num
+          console.log(this.orgId)
+          
           tmpResult1=tmpArr.filter(cd=>{
             return cd.value2 === 'TPE001'
           })
@@ -714,7 +724,7 @@ export default {
         sidoName:this.sidoName[0].label,
         addrCd:this.selectedUpdateSggItems,
         sggName:this.sggName[0].label,
-        orgId:this.orgId+1,
+        // orgId:this.orgId+1,
         orgNm:this.orgNm[0].label,
         phoneNumber:this.selectedUpdatePhoneNumber,
         typeCd:this.selectedUpdateTypeCd,

@@ -405,6 +405,8 @@ export default {
         alert("내용을 입력하여 주세요");
         return;
       }
+      this.$store.state.userId = sessionStorage.getItem("userId")
+
       let uri =this.$store.state.serverApi + "/admin/organizations/all";
       await axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
@@ -433,29 +435,20 @@ export default {
         })
       }
       console.log(this.orgdata)
-      
+      console.log(this.$store.state.userId)
 
       let objectData = {
-        noticeId: this.noticeId+1,
         orgId: this.orgdata[0].value,
         orgNm: this.orgdata[0].label,
-        exOrgId: this.selectedUpdateOrgItems,
+        title: this.selectedUpdateTitle,
         typeCd: this.orgdata[0].value2,
         typeNm: this.orgdata[0].value3,
-        title: this.selectedUpdateTitle,
-        detials: this.selectedUpdateDetails,
+        details: this.selectedUpdateDetails,
+        regId: this.$store.state.userId
       }
       console.log(objectData)
-
-      uri = this.$store.state.serverApi+`/admin/notices?noticeId=${this.noticeId+1}
-      &orgId=${this.orgdata[0].value}
-      &orgNm=${this.orgdata[0].label}
-      &exOrgId=${this.selectedUpdateOrgItems}
-      &typeCd=${this.orgdata[0].value2}
-      &typeNm=${this.orgdata[0].value3}
-      &title=${this.selectedUpdateTitle}
-      &detials=${this.selectedUpdateDetails}`
-
+      
+      uri =this.$store.state.serverApi + "/admin/notices";
       console.log(uri)
       axios.post(uri,objectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
@@ -463,6 +456,8 @@ export default {
           if(resData){
               alert("저장이 완료되었습니다.")
               console.log(resData)
+              this.writeNotice = false
+              this.getnoticeData()
           }
           // this.getCSensorsData = res.data.data
         })
