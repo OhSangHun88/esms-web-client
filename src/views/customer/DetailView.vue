@@ -73,7 +73,7 @@
                               <li :class="menutoggle===3?'active':''"><a href="#" @click="menu(3)">말벗</a></li>
                               <li :class="menutoggle===2?'active':''"><a href="#" @click="menu(2)">응급요원</a></li>
                               <li :class="menutoggle===4?'active':''"><a href="#" @click="menu(4)">생활관리사</a></li>
-                              <li :class="menutoggle===5?'active':''"><a href="#" @click="menu(5)">응급</a></li>
+                              <li :class="menutoggle===5?'active':''"><a href="#" @click="menu(5)">응급번호</a></li>
                           </ul>
                           <div class="tabcontent">
                             <!-- :recipientId="this.recipientId" -->
@@ -162,7 +162,7 @@
                 </div> -->
                 <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone">
+                    <input type="text" v-model="managerPhone" minlength="3">
                 </div>
                 <div class="input_area">
                     <p class="input_tit">관계</p>
@@ -235,7 +235,7 @@
                 </div>
                 <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone">
+                    <input type="text" v-model="managerPhone" minlength="3">
                 </div>
             </div>
           </div>
@@ -259,7 +259,7 @@
                 </div>
                 <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone">
+                    <input type="text" v-model="managerPhone" minlength="3">
                 </div>
             </div>
           </div>
@@ -277,13 +277,13 @@
           </div>
           <div class="popup_cnt">
             <div class="input_wrap col3">
-                <div class="input_area">
+                <!-- <div class="input_area">
                   <p class="input_tit">이름</p>
                   <input type="text" v-model="managerName">
-                </div>
+                </div> -->
                 <div class="input_area">
-                    <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone">
+                    <p class="input_tit">전화번호</p>
+                    <input type="text" v-model="managerPhone" minlength="3">
                 </div>
                 <div class="input_area">
                   <p class="input_tit">구분</p>
@@ -427,7 +427,8 @@ export default {
       recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,popCheck3:false,popCheck2:null,popCheck4:null,popCheck5:null,insertData:null,msg: null,
       managerName: null,managerPhone: null,managerRelationNm: null,managerRelationCd:null,emerManagerRelationCd:null, menu3Refresh:1,menu2Refresh:1,menu4Refresh:1,menu5Refresh:1,
       relationArr : [{value:'RL001', text: '남편'},{value:'RL002', text: '와이프'},{value:'RL003', text: '아들'},{value:'RL004', text: '딸'},{value:'RL005', text: '사위'},{value:'RL006', text: '며느리'},{value:'RL007', text: '손자'},{value:'RL008', text: '손녀'},{value:'RL009' , text:'기타'},],
-      emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE003', text: '중앙모니터링센터'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}]
+      emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE003', text: '중앙모니터링센터'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}],
+      menu5Data: null,
     }
   },
   components: {
@@ -453,7 +454,7 @@ export default {
     menu5,
   },
   methods: {
-    getFromMenuData(data) {console.log(data);},
+    getFromMenuData(data) {console.log(data); if(this.menutoggle===5){this.menu5Data = data; console.log("get this.menu5Data"); console.log(this.menu5Data)} } ,
     openModal5(data) {console.log("modal5open");this.popCheck5 = data},
     openModal4(data) {console.log("modal4open");this.popCheck4 = data},
     openModal3(data) {this.popCheck3 = data},
@@ -463,7 +464,7 @@ export default {
     menu4Lending(data) {this.menu4Refresh = data},
     menu3Lending(data) {this.menu3Refresh = data},
     menu2Lending(data) {this.menu2Refresh = data},
-    closeModal() {this.popCheck3 = false;this.popCheck2 = false;this.popCheck4 = false;this.popCheck5 = false;},
+    closeModal() {this.managerPhone = null; this.managerName = null; this.popCheck3 = false;this.popCheck2 = false;this.popCheck4 = false;this.popCheck5 = false;},
     async getRecipientInfo() {
       //this.$store.mutation.logout
       //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");
@@ -554,6 +555,7 @@ export default {
       this.managerRelationNm = this.relationArr.filter(cd=>{
        return cd.value === this.managerRelationCd
       })[0].text
+      if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
       console.log(this.managerRelationNm)
       let data = {
         recipientId: this.recipientId,
@@ -573,7 +575,7 @@ export default {
             console.log(this.insertData)
             
             alert("등록성공")
-            
+            this.managerPhone = null; this.managerName = null;
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -584,7 +586,7 @@ export default {
     insertEmergencyManager(){
       // /recipients/{recipientId}/phoneNumbers
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
-
+      if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
       let data = {
         recipientId: this.recipientId,
         relationNm: this.managerName,
@@ -594,6 +596,7 @@ export default {
         typeCd: "TPE007"
       }
       console.log(data)
+
       axios.post(uri,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.insertData = res.data.data
@@ -602,8 +605,8 @@ export default {
             console.log("insertData is ");
             console.log(this.insertData)
             
-
             alert("등록성공")
+            this.managerPhone = null; this.managerName = null;
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -614,7 +617,7 @@ export default {
     insertCareManager(){
       // /recipients/{recipientId}/phoneNumbers
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
-
+      if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
       let data = {
         recipientId: this.recipientId,
         relationNm: this.managerName,
@@ -632,8 +635,8 @@ export default {
             console.log("insertData is ");
             console.log(this.insertData)
             
-
             alert("등록성공")
+            this.managerPhone = null; this.managerName = null;
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -643,18 +646,27 @@ export default {
     },
     insertEmergency(){
       // /recipients/{recipientId}/phoneNumbers
+      //this.menu5Data
+      console.log("this.menu5Data")
+      console.log(this.menu5Data)
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
-
+      if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
       let data = {
         recipientId: this.recipientId,
-        relationNm: this.managerName,
+        relationNm: this.emerCodeLabel(this.emerManagerRelationCd),
         relationPhone: this.managerPhone,
         relationCd: this.managerRelationCd, 
         relationCdNm: this.managerRelationNm,
         typeCd: this.emerManagerRelationCd
       }
       console.log(data)
-      axios.post(uri,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      let chkData = []
+      chkData = this.menu5Data.filter(cd=>{
+          return cd.typeCd == this.emerManagerRelationCd
+        })
+      console.log(chkData)
+      if(chkData.length === 0 ){
+        axios.post(uri,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.insertData = res.data.data
             this.$refs.menu5.sendMenu5Lending();
@@ -662,15 +674,31 @@ export default {
             console.log("insertData is ");
             console.log(this.insertData)
             
-
             alert("등록성공")
+            this.managerPhone = null; this.managerName = null;
           })
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
+      }else{
+        alert("이미 등록된 전화번호 타입입니다.")
+      }
+      
+      
           
     },
+    emerCodeLabel(value){
+    let result
+      switch (value){
+          case "TPE001" : result="119번호" ; break;
+          case "TPE002" : result="센터번호" ;break;
+          case "TPE003" : result="중앙모니터링센터" ;break;
+          case "TPE004" : result="IP-PBX화재" ;break;
+          case "TPE005" : result="IP-PBX응급" ;break;
+      }
+      return result
+    }
   },
   created() {
     this.pending = false;
