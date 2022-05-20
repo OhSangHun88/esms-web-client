@@ -715,6 +715,11 @@ export default {
     })
     document.head.appendChild(script);
     
+  },
+  watch:{
+    managerPhone:function(){
+      return this.managerPhone = this.managerPhone.replace(/[^0-9]/g, '');
+    }
   }
 
 }
