@@ -75,10 +75,10 @@
                         </div>
                     </div>
                     <div class="btn_area">
-                        <button type="button" class="btn">cmdA4전송</button>
-                        <button type="button" class="btn">상태점검</button>
-                        <button type="button" class="btn">리셋</button>
-                        <button type="button" class="btn">업그레이드</button>
+                        <button type="button" class="btn form2">cmdA4전송</button>
+                        <button type="button" class="btn form2">역점검요청</button>
+                        <button type="button" class="btn form2">문열림멘트-ON</button>
+                        <button type="button" class="btn form2">자동착신-OFF</button>
                     </div>
                     
                 </div>
