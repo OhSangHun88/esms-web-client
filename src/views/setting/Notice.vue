@@ -33,26 +33,26 @@
             <div id="" class="popupLayer" v-if="writeNotice == true">
                 <div class="popup_wrap">
                     <div class="title_wrap">
-                        <div class="title">공지사항</div>
+                        <div class="title">공지사항 작성</div>
                         <button type="button" class="btn_close" @click="writeNotice = false">닫기</button>
                     </div>
                     <div class="popup_cnt">
                         <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">시/도</p>
-                                <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
+                                <select v-model="selectedUpdateSidoItems" @change="onChangeSgg($event)">
                                   <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                                 </select>
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">시/군/구</p>
-                                <select v-model="selectedSggItems" @change="onChangeOrg($event)">
+                                <select v-model="selectedUpdateSggItems" @change="onChangeOrg($event)">
                                   <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                                 </select>
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">관리기관</p>
-                                <select v-model="selectedOrgItems">
+                                <select v-model="selectedUpdateOrgItems">
                                   <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                 </select>
                             </div>
@@ -60,7 +60,7 @@
                         <div class="input_wrap type-03">
                             <div class="input_area">
                               <p class="input_tit">제목</p>
-                              <input type="text" v-model="selectedTitle">
+                              <input type="text" v-model="selectedUpdateTitle">
                             </div>
                         </div>
                         <div class="input_wrap type-03">
@@ -68,7 +68,7 @@
                                 <div class="tit_area">
                                     <p class="input_tit">공지내용</p>
                                 </div>
-                                <textarea name="" id="" v-model="selectedDetail">1.공지내용</textarea>
+                                <textarea name="" id="" v-model="selectedUpdateDetails">1.공지내용</textarea>
                             </div>
                         </div>
                     </div>
@@ -234,10 +234,12 @@ export default {
     data(){
       return{
         sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-        sidoItems:[], sggItems:[], orgmItems:[], noticItems:[],
+        sidoItems:[], sggItems:[], orgmItems:[], orgmItems2:'', noticItems:[], 
         orgSido:'', orgSgg:'', orgCode:'',selectedOrgItems:'', selectedSidoItems:'', selectedSggItems:'', selectedRegId: '', selectedTitle: '', selectedDetail: '',
+        selectedUpdateSidoItems:'', selectedUpdateSggItems:'', selectedUpdateOrgItems:'', selectedUpdateTitle:'', selectedUpdateDetails:'',
         NCount: 0,
         errorpopup1: false, errorpopup2: false, writeNotice: false,
+        noticeId:'', orgdata:'', orgNm:'',
       }
     },
     created(){
@@ -327,11 +329,13 @@ export default {
             tmpArr.push({
               label: response.data.data[i].orgNm,
               value: response.data.data[i].orgId,
+              value2: response.data.data[i].typeCd,
             });
-          } 
+          }
           let tmpResult = tmpArr
           this.orgmItems = [...tmpResult2,...tmpResult]
-        this.orgmItems=tmpArr;
+          this.orgmItems = tmpArr;
+          console.log(this.orgmItems)
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -339,6 +343,7 @@ export default {
         });
     },
       getnoticeData(){
+        console.log(this.orgmItems)
       let addrCd = ''
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
@@ -356,6 +361,9 @@ export default {
           .then(response => {
             this.noticItems = response.data.data
             this.NCount =this.noticItems.length
+            for(let i=0; i<this.noticItems.length; i++){
+              this.noticeId = this.noticItems[i].noticeId
+            }
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -389,28 +397,82 @@ export default {
         this.getnoticeData();
       }
     },
-    UploadData(){
-      if(this.selectedSidoItems === ''){
-        alert("시/도를 입력하여 주세요");
-        return;
-      }else if(this.selectedSggItems === ''){
-        alert("시/군/구를 입력하여 주세요");
-        return;
-      }else if(this.selectedOrgItems === ''){
-        alert("관리기관을 입력하여 주세요");
-        return;
-      }else if(this.selectedTitle === ''){
+    async UploadData(){
+      if(this.selectedUpdateTitle === ''){
         alert("제목을 입력하여 주세요");
         return;
-      }else if(this.selectedDetail === ''){
+      }else if(this.selectedUpdateDetails === ''){
         alert("내용을 입력하여 주세요");
         return;
       }
-      let objectData = {
-        orgId: this.selectedOrgItems,
-        title: this.selectedTitle,
-        details: this.selectedDetail
+      let uri =this.$store.state.serverApi + "/admin/organizations/all";
+      await axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          this.orgmItems2=[];
+          for(let i=0; i<response.data.data.length; i++) {
+            this.orgmItems2.push({
+              label: response.data.data[i].orgNm,
+              value: response.data.data[i].orgId,
+              value2: response.data.data[i].typeCd,
+              value3: response.data.data[i].typeNm
+            });
+          }
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+      if(this.selectedUpdateSidoItems==='' && this.selectedUpdateSggItems==='' && this.selectedUpdateOrgItems===''){
+        this.orgdata = this.orgmItems2.filter(cd=>{
+          return cd.value === 'ORG0000001'
+        })
+        this.selectedUpdateOrgItems === null
+      }else{
+        this.orgdata = this.orgmItems2.filter(cd=>{
+          return cd.value === this.selectedUpdateOrgItems
+        })
       }
+      console.log(this.orgdata)
+      
+
+      let objectData = {
+        noticeId: this.noticeId+1,
+        orgId: this.orgdata[0].value,
+        orgNm: this.orgdata[0].label,
+        exOrgId: this.selectedUpdateOrgItems,
+        typeCd: this.orgdata[0].value2,
+        typeNm: this.orgdata[0].value3,
+        title: this.selectedUpdateTitle,
+        detials: this.selectedUpdateDetails,
+      }
+      console.log(objectData)
+
+      uri = this.$store.state.serverApi+`/admin/notices?noticeId=${this.noticeId+1}
+      &orgId=${this.orgdata[0].value}
+      &orgNm=${this.orgdata[0].label}
+      &exOrgId=${this.selectedUpdateOrgItems}
+      &typeCd=${this.orgdata[0].value2}
+      &typeNm=${this.orgdata[0].value3}
+      &title=${this.selectedUpdateTitle}
+      &detials=${this.selectedUpdateDetails}`
+
+      console.log(uri)
+      axios.post(uri,objectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        .then(res => {
+          let resData = res.data.data
+          if(resData){
+              alert("저장이 완료되었습니다.")
+              console.log(resData)
+          }
+          // this.getCSensorsData = res.data.data
+        })
+        .catch(error => {
+          console.log("fail to load")
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+
+    
       // const uri = this.$store.state.serverApi+'/admin/notices?orgId='+objectData.orgId
       // +"&title="+objectData.title
       // +"&details="+objectData.details

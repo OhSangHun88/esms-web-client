@@ -12,17 +12,17 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">이름</p>
-                            <input type="text" value="">
+                            <input type="text" value="" v-model="selectedUpdateUserNm">
                           </div>
                           <div class="input_area">
                             <p class="input_tit">생년월일</p>
-                            <input type="text" value="">
+                            <input type="text" value="" v-model="selectedUpdateBirthday">
                           </div>
                         </div>
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">휴대폰번호</p>
-                            <input type="text" value="">
+                            <input type="text" value="" v-model="selectedUpdateMobileNumber">
                           </div>
                           <div class="btn_area">
                               <p class="input_tit">성별</p>
@@ -35,12 +35,12 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">이메일</p>
-                            <input type="text" value="">
+                            <input type="text" value="" v-model="selectedUpdateEmail">
                           </div>
                           <div class="input_area">
                             <p class="input_tit">사용자ID</p>
                             <div class="add_btn_input">
-                              <input type="text" value="">
+                              <input type="text" value="" v-model="selectedUpdateUserId">
                               <button type="button" class="input_btn">ID 중복 체크</button>
                             </div>
                           </div>
@@ -48,7 +48,7 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">Password</p>
-                            <input type="password" value="">
+                            <input type="password" value="" v-model="selectedUpdatePassword">
                           </div>
                           <div class="input_area">
                             <p class="input_tit">Password 확인</p>
@@ -59,19 +59,19 @@
                           <div class="input_area">
                             <p class="input_tit">우편번호</p>
                             <div class="add_btn_input">
-                              <input type="text" value="">
+                              <input type="text" value="" v-model="selectedUpdateAddrNumber">
                               <button type="button" class="input_btn">검색</button>
                             </div>
                           </div>
                           <div class="input_area">
                             <p class="input_tit">주소</p>
-                            <input type="text" value="" v-model="selectedAddr">
+                            <input type="text" value="" v-model="selectedUpdateAddr">
                           </div>
                         </div>
                         <div class="input_wrap type-02">
                             <div class="input_area" >
                                 <p class="input_tit">상세주소</p>
-                                <input type="text" value="" v-model="selectedAddrDetail">
+                                <input type="text" value="" v-model="selectedUpdateDetailAddr">
                             </div>
                         </div>
                         <div class="input_wrap">
@@ -97,13 +97,13 @@
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">관리지역</p>
-                                <input type="text" value="">
+                                <input type="text" value="" v-model="selectedUpdateDetailOrg">
                             </div>
                         </div>
                         <div class="input_wrap col3">
                             <div class="input_area">
                                 <p class="input_tit">사용자 구분</p>
-                                <select>
+                                <select v-model="selectedUpdateUserType">
                                   <option value="">사용자 구분</option>
                                 </select>
                             </div>
@@ -409,7 +409,15 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[], userItems:[], employStateItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedUserNm: '',
-        selectedUpdateSidoItems:'', selectedUpdateSggItems:'', selectedUpdateOrgItems:'',
+        
+        //사용자 등록
+        selectedUpdateUserNm:'', selectedUpdateBirthday:'', selectedUpdateMobileNumber:'', selectedUpdateSex:'',
+        selectedUpdateEmail:'', selectedUpdateUserId:'', selectedUpdatePassword:'', selectedUpdateAddrNumber:'',
+        selectedUpdateAddr:'', selectedUpdateDetailAddr:'', selectedUpdateSidoItems:'', selectedUpdateSggItems:'', 
+        selectedUpdateOrgItems:'', selectedUpdateDetailOrg:'', selectedUpdateUserType:'', selectedUpdateDeptNm:'',
+        selectedUpdatePhoneNumber:'', selectedUpdateRegDUserNm:'', selectedUpdateRegDtime:'',
+        
+
         selectedUserId:'',selectedphoneNumber:'',selectedmobileNumber:'',selectedEmail:'',selectedemployStateNm:'',
         selectDetailsido:'',selectDetailSgg:'',selectDetailOrg:'',
         writeCus: false, changeCus: false, deleteCus: false, detailCus: false,
