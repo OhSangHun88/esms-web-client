@@ -239,19 +239,31 @@ export default {
     async login () {
       let url = this.$store.state.serverApi + this.$store.state.moduleName + '/auths/login';
       let data = { userId : this.userId, password : this.password };
+      let userInfo 
      await axios.post(url, data)
       .then(function (res) {
         console.log("==== res: ", res);
+       userInfo =  res.data
         
-        if(res.data.token ==null) {
+        
+      })
+      .catch(function (err) {
+        console.log(err.message);
+        alert(err.message);
+      });
+        if(userInfo.token ==null) {
           alert('등록된 사용자가 아니거나 비밀번호가 맞지 않습니다.');
           return false;
         }else {
-          console.log(res.data.userId)
+          console.log(userInfo.userId)
           //this.getUserId = res.data.userId
-          console.log("==== res.data.token: ", res.data.token);
-          sessionStorage.setItem("token", res.data.token);
-          sessionStorage.setItem("userId", res.data.userId);
+          console.log("==== res.data.token: ", userInfo.token);
+          sessionStorage.setItem("token", userInfo.token);
+          sessionStorage.setItem("userId", userInfo.userId);
+          console.log(sessionStorage.getItem("token"));
+          console.log(sessionStorage.getItem("userId"));
+          this.$store.state.userId = sessionStorage.getItem("userId")
+          router.push({ path: '../dashboard/allView' });  
           // const now = new Date()
           // const tokenItem = {
           //   value: res.data.token,
@@ -264,24 +276,11 @@ export default {
           // localStorage.setItem("token", JSON.stringify(tokenItem));
           // localStorage.setItem("userId", JSON.stringify(idItem)); 
 
-          console.log(sessionStorage.getItem("token"));
-          console.log(sessionStorage.getItem("userId"));
           
           console.log("thisthis========")
         }
-        
-      })
-      .catch(function (err) {
-        console.log(err.message);
-        alert(err.message);
-      });
-        console.log("test")
-        console.log(this.$store.state.serverApi )
         //this.$store.commit('set', ['userId',this.getUserId] )
-        this.$store.state.userId = sessionStorage.getItem("userId")
-        console.log(this.$store.state.userId)
-        console.log("End")
-        router.push({ path: '../dashboard/allView' });
+        
     },
 
 /*    
