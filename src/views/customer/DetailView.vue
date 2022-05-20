@@ -270,18 +270,18 @@
       </div>
     </div>
     <div id="" class="popupLayer" v-if="popCheck5">
-      <div class="popup_wrap">
+      <div class="popup_wrap" style="width:580px">
           <div class="title_wrap">
               <div class="title">{{this.msg}} 추가</div>
               <button type="button" class="btn_close" @click="closeModal">닫기</button>
           </div>
-          <div class="popup_cnt">
+          <div class="popup_cnt" align="center">
             <div class="input_wrap col3">
                 <!-- <div class="input_area">
                   <p class="input_tit">이름</p>
                   <input type="text" v-model="managerName">
                 </div> -->
-                <div class="input_area">
+                <div class="input_area" style="width:200px">
                   <p class="input_tit">구분</p>
                   <select name="emerManagerRelationCd" id="emerManagerRelationCd" v-model="emerManagerRelationCd" > <!--v-model="managerRelationNm"-->
                     <option v-for="(items, index ) in emerRelationArr" v-bind:value="items.value" v-bind:key="index"> 
@@ -289,7 +289,7 @@
                     </option>
                   </select>
                 </div> 
-                <div class="input_area">
+                <div class="input_area" style="width:200px">
                     <p class="input_tit">전화번호</p>
                     <input type="text" v-model="managerPhone" minlength="3">
                 </div>
