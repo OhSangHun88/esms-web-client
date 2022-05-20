@@ -189,7 +189,7 @@ export default {
     },
     sendParent(){
         this.popCheck=true
-        this.msg = '응급/센터'
+        this.msg = '응급번호'
         this.$emit("openPopMsg",this.msg) 
         this.$emit("sendData5",this.relationPhoneData)
         this.$emit("openPop",this.popCheck)
