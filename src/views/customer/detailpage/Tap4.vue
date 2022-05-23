@@ -109,10 +109,10 @@
                             </colgroup>
                             <tbody>
                                 <tr >
-                                    <td>{{this.getCGatewayData.serialNo}}</td>
-                                    <td>{{this.getCGatewayData.macAddr}}</td>
-                                    <td>{{this.getCGatewayData.firmwareVersion}}</td>
-                                    <td>{{this.getCGatewayData.hardwareVersion}}</td>
+                                    <td>{{!this.getCGatewayData?'':this.getCGatewayData.serialNo}}</td>
+                                    <td>{{!this.getCGatewayData?'':this.getCGatewayData.macAddr}}</td>
+                                    <td>{{!this.getCGatewayData?'':this.getCGatewayData.firmwareVersion}}</td>
+                                    <td>{{!this.getCGatewayData?'':this.getCGatewayData.hardwareVersion}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -164,11 +164,11 @@
                             <tbody>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index,0)">
                                     <td>{{index+1}}</td>
-                                    <td>{{item.sensorTypeNm}}</td>
-                                    <td>{{locationCode(item.sensorLocCd)}}</td>
-                                    <td>{{item.sensorVersion}}</td>
-                                    <td>{{item.serialNo}}</td>
-                                    <td>{{item.macAddr}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.sensorTypeNm}}</td>
+                                    <td>{{!this.getCSensorsData? '' :locationCode(item.sensorLocCd)}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.sensorVersion}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.serialNo}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.macAddr}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -211,13 +211,13 @@
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" >
-                                    <td>{{index+1}}</td>
-                                    <td>{{item.sensorTypeNm}}</td>
-                                    <td>{{item.previousVersion}}</td>
-                                    <td>{{item.sensorVersion}}</td>
-                                    <td>{{item.incomeNm}}</td>
-                                    <td>{{item.incomeDtime}}</td>
-                                    <td>{{item.regDtime}}</td>
+                                    <td>{{!this.getCSensorsData? '' :index+1}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.sensorTypeNm}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.previousVersion}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.sensorVersion}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.incomeNm}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.incomeDtime}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.regDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -276,14 +276,14 @@
                             </colgroup>
                             <tbody v-if="connectTap===2">
                                 <tr>
-                                    <td>{{!this.getCGatewayData.gwStateNm? '': this.getCGatewayData.gwStateNm}}</td>
-                                    <td>{{this.getCGatewayData.powerLinkYn===undefined||this.getCGatewayData.powerLinkYn===null ? '' : this.getCGatewayData.powerLinkYn===1?'연결':'차단'}}</td>
-                                    <td>{{this.getCGatewayData.checkYnCd===null||this.getCGatewayData.checkYnCd===undefined||this.getCGatewayData.checkYnCd===''? '': this.getCGatewayData.checkYnCd===0? '정상':'점검대상'}}</td>
-                                    <td>{{this.getCGatewayData.batteryValue}}</td>
-                                    <td>{{this.getCGatewayData.keepAliveRcvYn===1?'정상':this.getCGatewayData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
-                                    <td>{{changeRssi(this.getCGatewayData.rssi)}}</td>
-                                    <td>{{this.getCGatewayData.stateMeasureDtime}}</td>
-                                    <td>{{this.getCGatewayData.updDtime}}</td>
+                                    <td>{{!this.getCGatewayData? '':!this.getCGatewayData.gwStateNm? '': this.getCGatewayData.gwStateNm}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData.powerLinkYn===undefined||this.getCGatewayData.powerLinkYn===null ? '' : this.getCGatewayData.powerLinkYn===1?'연결':'차단'}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData.checkYnCd===null||this.getCGatewayData.checkYnCd===undefined||this.getCGatewayData.checkYnCd===''? '': this.getCGatewayData.checkYnCd===0? '정상':'점검대상'}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData.batteryValue}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData.keepAliveRcvYn===1?'정상':this.getCGatewayData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.getCGatewayData? '':changeRssi(this.getCGatewayData.rssi)}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData.stateMeasureDtime}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData.updDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -339,13 +339,13 @@
                             </colgroup>
                             <tbody v-if="connectTap===3">
                                 <tr>
-                                    <td>{{!this.getCTabletsData.gwLinkYnNm? '': this.getCTabletsData.gwLinkYnNm}}</td>
-                                    <td>{{this.getCTabletsData.checkYnCd===null||this.getCTabletsData.checkYnCd===undefined||this.getCTabletsData.checkYnCd===''? '': this.getCTabletsData.checkYnCd===0? '정상':'점검대상'}}</td>
-                                    <td>{{this.getCTabletsData.batteryValue}}</td>
-                                    <td>{{this.getCTabletsData.keepAliveRcvYn===1?'정상':this.getCTabletsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
-                                    <td>{{this.getCTabletsData.tabletStateNm}}</td>
-                                    <td>{{this.getCTabletsData.stateMeasureDtime}}</td>
-                                    <td>{{this.getCTabletsData.updDtime}}</td>
+                                    <td>{{!this.getCTabletsData? '': this.getCTabletsData.gwLinkYnNm}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData.checkYnCd===null||this.getCTabletsData.checkYnCd===undefined||this.getCTabletsData.checkYnCd===''? '': this.getCTabletsData.checkYnCd===0? '정상':'점검대상'}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData.batteryValue}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData.keepAliveRcvYn===1?'정상':this.getCTabletsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData.tabletStateNm}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData.stateMeasureDtime}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData.updDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -474,7 +474,9 @@ import axios from "axios";
             this.getBSensorsData = this.getCSensorsData[0]
             console.log("sensors ")
             console.log(this.getCSensorsData)
-            if(this.getCSensorsData.length===0){alert("연결장비가 존재하지 않습니다")}
+
+            if(this.getCSensorsData.length===0){alert("연결된 센서가 존재하지 않습니다")}
+
           })
           .catch(error => {
               console.log("fail to load")
@@ -504,6 +506,7 @@ import axios from "axios";
             this.getCGatewayData = res.data.data
             console.log("getCGatewayData ")
             console.log(this.getCGatewayData)
+            if(this.getCGatewayData.length===0){alert("연결된 게이트웨이가 존재하지 않습니다")}
           })
           .catch(error => {
               console.log("fail to load")
@@ -518,6 +521,7 @@ import axios from "axios";
             this.getCTabletsData = res.data.data
             console.log("태블릿")
             console.log(this.getCTabletsData)
+            if(this.getCTabletsData.length===0){alert("연결된 태블릿이 존재하지 않습니다")}
           })
           .catch(error => {
               console.log("fail to load")
@@ -580,9 +584,9 @@ import axios from "axios";
     },  
     dataTogle(value){
         switch (value){
-          case 1 : this.connectTap=1 ;break;
-          case 2 : this.connectTap=2 ;break;
-          case 3 : this.connectTap=3 ;break;
+          case 1 : this.connectTap=1;if(this.getCSensorsData.length===0){alert("연결된 센서가 존재하지 않습니다")};break;
+          case 2 : this.connectTap=2;if(!this.getCGatewayData){alert("연결된 게이트웨이가 존재하지 않습니다")};break;
+          case 3 : this.connectTap=3;if(!this.getCTabletsData){alert("연결된 태블릿이 존재하지 않습니다")};break;
 
       }
     },
