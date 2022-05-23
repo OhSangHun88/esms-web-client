@@ -109,10 +109,10 @@
                             </colgroup>
                             <tbody>
                                 <tr >
-                                    <td>{{this.getCGatewayData.serialNo}}</td>
-                                    <td>{{this.getCGatewayData.macAddr}}</td>
-                                    <td>{{this.getCGatewayData.firmwareVersion}}</td>
-                                    <td>{{this.getCGatewayData.hardwareVersion}}</td>
+                                    <td>{{!this.getCGatewayData?'':this.getCGatewayData.serialNo}}</td>
+                                    <td>{{!this.getCGatewayData?'':this.getCGatewayData.macAddr}}</td>
+                                    <td>{{!this.getCGatewayData?'':this.getCGatewayData.firmwareVersion}}</td>
+                                    <td>{{!this.getCGatewayData?'':this.getCGatewayData.hardwareVersion}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -164,11 +164,11 @@
                             <tbody>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index,0)">
                                     <td>{{index+1}}</td>
-                                    <td>{{item.sensorTypeNm}}</td>
-                                    <td>{{locationCode(item.sensorLocCd)}}</td>
-                                    <td>{{item.sensorVersion}}</td>
-                                    <td>{{item.serialNo}}</td>
-                                    <td>{{item.macAddr}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.sensorTypeNm}}</td>
+                                    <td>{{!this.getCSensorsData? '' :locationCode(item.sensorLocCd)}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.sensorVersion}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.serialNo}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.macAddr}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -211,13 +211,13 @@
                             </colgroup>
                             <tbody>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" >
-                                    <td>{{index+1}}</td>
-                                    <td>{{item.sensorTypeNm}}</td>
-                                    <td>{{item.previousVersion}}</td>
-                                    <td>{{item.sensorVersion}}</td>
-                                    <td>{{item.incomeNm}}</td>
-                                    <td>{{item.incomeDtime}}</td>
-                                    <td>{{item.regDtime}}</td>
+                                    <td>{{!this.getCSensorsData? '' :index+1}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.sensorTypeNm}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.previousVersion}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.sensorVersion}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.incomeNm}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.incomeDtime}}</td>
+                                    <td>{{!this.getCSensorsData? '' :item.regDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -582,9 +582,9 @@ import axios from "axios";
     },  
     dataTogle(value){
         switch (value){
-          case 1 : this.connectTap=1 ;break;
-          case 2 : this.connectTap=2 ;break;
-          case 3 : this.connectTap=3 ;break;
+          case 1 : this.connectTap=1;if(this.getCSensorsData.length===0){alert("연결된 센서가 존재하지 않습니다")};break;
+          case 2 : this.connectTap=2;if(!this.getCGatewayData){alert("연결된 게이트웨이가 존재하지 않습니다")};break;
+          case 3 : this.connectTap=3;if(!this.getCTabletsData){alert("연결된 태블릿이 존재하지 않습니다")};break;
 
       }
     },
