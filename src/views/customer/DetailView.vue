@@ -427,7 +427,8 @@ export default {
       recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,popCheck3:false,popCheck2:null,popCheck4:null,popCheck5:null,insertData:null,msg: null,
       managerName: null,managerPhone: null,managerRelationNm: null,managerRelationCd:null,emerManagerRelationCd:"TPE001", menu3Refresh:1,menu2Refresh:1,menu4Refresh:1,menu5Refresh:1,
       relationArr : [{value:'RL001', text: '남편'},{value:'RL002', text: '와이프'},{value:'RL003', text: '아들'},{value:'RL004', text: '딸'},{value:'RL005', text: '사위'},{value:'RL006', text: '며느리'},{value:'RL007', text: '손자'},{value:'RL008', text: '손녀'},{value:'RL009' , text:'기타'},],
-      emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE003', text: '중앙모니터링센터'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}],
+      //emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE003', text: '중앙모니터링센터'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}],
+      emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}],
       menu5Data: null,
     }
   },
