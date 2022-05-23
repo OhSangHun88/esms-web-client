@@ -474,7 +474,7 @@ import axios from "axios";
             this.getBSensorsData = this.getCSensorsData[0]
             console.log("sensors ")
             console.log(this.getCSensorsData)
-            if(this.getCSensorsData.length===0){alert("센서 정보가 존재하지 않습니다.")}
+            if(this.getCSensorsData.length===0){alert("연결장비가 존재하지 않습니다")}
           })
           .catch(error => {
               console.log("fail to load")
