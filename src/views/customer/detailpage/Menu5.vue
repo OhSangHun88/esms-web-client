@@ -129,7 +129,8 @@ export default {
           console.error("There was an error!", error);
         });
 
-        this.relationPhoneData = [...arr1,...arr2,...arr3,...arr4,...arr5]
+        //this.relationPhoneData = [...arr1,...arr2,...arr3,...arr4,...arr5]
+        this.relationPhoneData = [...arr1,...arr2,...arr4,...arr5]
         console.log(this.relationPhoneData)
         
     },
@@ -183,7 +184,8 @@ export default {
           console.error("There was an error!", error);
         });
 
-        this.relationPhoneData = [...arr1,...arr2,...arr3,...arr4,...arr5]
+        //this.relationPhoneData = [...arr1,...arr2,...arr3,...arr4,...arr5]
+        this.relationPhoneData = [...arr1,...arr2,...arr4,...arr5]
         console.log(this.relationPhoneData)
         this.$emit("lending5",this.lending)
     },
