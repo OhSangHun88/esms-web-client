@@ -401,13 +401,13 @@
                             </colgroup>
                             <tbody v-if="connectTap===1 && beforeToggle===0">
                                 <tr>
-                                    <td>{{!this.getBSensorsData.sensorStateNm? '': this.getBSensorsData.sensorStateNm}}</td>
-                                    <td>{{this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
-                                    <td>{{this.getBSensorsData.batteryValue}}</td>
-                                    <td>{{this.getBSensorsData.keepAliveRcvYn===1?'정상':this.getBSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
-                                    <td>{{changeRssi(this.getBSensorsData.rssi)}}</td>
-                                    <td>{{this.getBSensorsData.stateMeasureDtime}}</td>
-                                    <td>{{this.getBSensorsData.updDtime}}</td>
+                                    <td>{{!this.getBSensorsData? '': this.getBSensorsData.sensorStateNm}}</td>
+                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
+                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.batteryValue}}</td>
+                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.keepAliveRcvYn===1?'정상':this.getBSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.getBSensorsData? '':changeRssi(this.getBSensorsData.rssi)}}</td>
+                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.stateMeasureDtime}}</td>
+                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.updDtime}}</td>
                                 </tr>
                             </tbody>
                             <tbody v-else>
