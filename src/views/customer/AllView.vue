@@ -9,6 +9,7 @@
           <div class="abtn">
             <CButton color="primary" @click="addCustomer = true" class="mr-1">고객추가</CButton>
           </div> -->
+          <!--여기-->
     <div v-else  class="container">
       <div id="" class="popupLayer" v-if="modalOpen" >
         <div class="popup_wrap">
@@ -41,8 +42,8 @@
                   <div class="input_area">
                     <p class="input_tit">우편번호</p>
                     <div class="add_btn_input">
-                      <input type="text" value="">
-                      <button type="button" class="input_btn">검색</button>
+                      <input type="text" value="" v-model="zipCode">
+                      <button type="button" class="input_btn" @click="search">검색</button>
                     </div>
                   </div>
                   <div class="input_area">
@@ -494,7 +495,8 @@ export default {
         { key: 'detail', label: '', _classes: 'text-center' },
         { key: 'delete', label: '', _classes: 'text-center' },    
       ],
-      addCustomer: false, fileUpload: false,
+      addCustomer: false, fileUpload: false,selectedUpdateSggItems:null,
+      zipCode: null,selectedAddr: null, selectedAddrDetail: null
 
     }
   },
@@ -716,6 +718,16 @@ export default {
     }
     
   },
+  makeAge(birthDay){
+    let tmp1 = this.$moment(birthDay).format('YYYY')
+    let tmp2 = this.$moment()
+    return tmp2.diff(tmp1, 'years');
+  },
+  goToDetailView(recipientId) {
+    this.$router.push({
+              path : `/customer/DetailView/${recipientId}`
+    })
+  },
   createData(){
     this.modalOpen = true;
 
@@ -724,7 +736,67 @@ export default {
     this.modalOpen = false;
 
   },
+  search(){ 
+    //여기
+    //@click을 사용할 때 함수는 이렇게 작성해야 한다.
+    new window.daum.Postcode({
+    oncomplete: (data) => { //function이 아니라 => 로 바꿔야한다.
+        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
+        // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+        var roadAddr = data.roadAddress; // 도로명 주소 변수
+        var extraRoadAddr = ''; // 참고 항목 변수
+
+        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+            extraRoadAddr += data.bname;
+        }
+        // 건물명이 있고, 공동주택일 경우 추가한다.
+        if(data.buildingName !== '' && data.apartment === 'Y'){
+            extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+        }
+        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+        if(extraRoadAddr !== ''){
+            extraRoadAddr = ' (' + extraRoadAddr + ')';
+        }
+
+        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+        
+        this.zipCode = data.zonecode; //
+        this.selectedAddr = data.roadAddress;
+//        this.selectedAddr = data.jibunAddress;
+        
+        // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+        if(roadAddr !== ''){
+            this.selectedAddrDetail = extraRoadAddr;
+        } else {
+            this.selectedAddrDetail = '';
+        }
+
+        // var guideTextBox = document.getElementById("guide");
+        // // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+        // if(data.autoRoadAddress) {
+        //     var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+        //     guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+        //     guideTextBox.style.display = 'block';
+
+        // } else if(data.autoJibunAddress) {
+        //     var expJibunAddr = data.autoJibunAddress;
+        //     guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+        //     guideTextBox.style.display = 'block';
+        // } else {
+        //     guideTextBox.innerHTML = '';
+        //     guideTextBox.style.display = 'none';
+        // }
+
+    
+    }
+    }).open();
+    
+    
+    },
 
     // getPartData() {
     //   axios.get(this.$store.state.serverApi + "/codes?cmmnCdGroup=RECIPIENT.TYPECD", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -815,16 +887,8 @@ export default {
     //   this.modelPart="전체";
     //   this.modelStatus="전체";
     // },
-    makeAge(birthDay){
-      let tmp1 = this.$moment(birthDay).format('YYYY')
-      let tmp2 = this.$moment()
-      return tmp2.diff(tmp1, 'years');
-    },
-    goToDetailView(recipientId) {
-      this.$router.push({
-                path : `/customer/DetailView/${recipientId}`
-        })
-    }
+    
+
 
     // openUploadPopup() {
     //   this.fileUpload=true;
@@ -919,6 +983,14 @@ export default {
     // customCancel() {
     //   this.addCustomer=false;
     // },
+    
+  },
+  mounted(){
+    
+    const script = document.createElement("script");
+    script.src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    
+    document.head.appendChild(script);
     
   },
   
