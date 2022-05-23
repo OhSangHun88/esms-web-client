@@ -43,13 +43,14 @@
                             <col style="width:20%;">
                             <col style="width:20%">
                             <col style="width:15%;">
-                            <col style="width:auto;">
+                            <col style="width:15%;">
                         </colgroup>
                         <thead>
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
                             <th scope="row">대상자명</th>
+                            <th scope="row">펌웨어버전</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -72,13 +73,7 @@
                                     <input type="text" value="" v-model="selectedRecipientNm">
                                 </td>
                                 <td>
-                                    <div class="date_warp">
-                                        <div class="customerBts" style="justify-content: flex-start;">
-                                            <input type="date" v-model="s_date"/>
-                                            <span class="tilde">~</span>
-                                            <input type="date" v-model="e_date" :max="this.$moment().format('YYYY-MM-DD')"/>
-                                        </div>
-                                    </div>
+                                    <input type="text" value="" v-model="firmwareVersion">
                                 </td>
                             </tr>
                         </tbody>
@@ -105,6 +100,7 @@
                             <col style="width:11%;">
                             <col style="width:11%;">
                             <col style="width:11%;">
+                            <col style="width:11%;">
                         </colgroup>
                         <thead>
                             <tr>
@@ -117,7 +113,9 @@
                                 <th scope="col">시리얼번호</th>
                                 <th scope="col">MAC Address</th>
                                 <th scope="col">현재적용버전</th>
+                                 <th scope="col">상태</th>
                                 <th scope="col">업데이트일시</th>
+                               
                             </tr>
                         </thead>
                     </table>
@@ -131,6 +129,7 @@
                                 <col style="width:6%;">
                                 <col style="width:auto;">
                                 <col style="width:10%;">
+                                <col style="width:11%;">
                                 <col style="width:11%;">
                                 <col style="width:11%;">
                                 <col style="width:11%;">
