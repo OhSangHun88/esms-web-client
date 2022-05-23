@@ -770,9 +770,7 @@ export default {
         
         // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
         if(roadAddr !== ''){
-            this.selectedAddrDetail = extraRoadAddr;
-        } else {
-            this.selectedAddrDetail = '';
+            this.selectedAddr += extraRoadAddr;
         }
 
         // var guideTextBox = document.getElementById("guide");
