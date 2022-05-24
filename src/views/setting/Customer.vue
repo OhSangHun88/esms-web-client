@@ -11,56 +11,59 @@
                     <div class="popup_cnt">
                         <div class="input_wrap">
                           <div class="input_area">
-                            <p class="input_tit">이름</p>
-                            <input type="text" value="" v-model="selectedUpdateUserNm">
+                            <p class="input_tit">사용자ID</p>
+                            <div class="add_btn_input">
+                              <input type="text"  v-model="selectedUpdateUserId" />
+                              <button type="button" class="input_btn" @click="checkId()">ID 중복 체크</button>
+                            </div>
                           </div>
                           <div class="input_area">
-                            <p class="input_tit">생년월일</p>
-                            <input type="text" value="" v-model="selectedUpdateBirthday">
+                            <p class="input_tit">Password</p>
+                            <input type="text"  v-model="selectedUpdatePassword" />
                           </div>
                         </div>
                         <div class="input_wrap">
                           <div class="input_area">
-                            <p class="input_tit">휴대폰번호</p>
-                            <input type="text" value="" v-model="selectedUpdateMobileNumber">
+                            <p class="input_tit">Password 확인</p>
+                            <input type="text" value="">
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">이름</p>
+                            <input type="text" value="" v-model="selectedUpdateUserNm">
+                          </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">생년월일</p>
+                            <input type="text" value="" v-model="selectedUpdateBirthday">
                           </div>
                           <div class="btn_area">
                               <p class="input_tit">성별</p>
                               <div class="toggle_btn">
-                                  <button type="button" class="btn on">남</button>
-                                  <button type="button" class="btn">여</button>
+                                  <button type="button" @click="sextoggle(1)" :class="bodysex===1? 'btn on' : 'btn'">남</button>
+                                  <button type="button" @click="sextoggle(2)" :class="bodysex===2? 'btn on' : 'btn'">여</button>
                               </div>
                           </div>
                         </div>
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">이메일</p>
-                            <input type="text" value="" v-model="selectedUpdateEmail">
-                          </div>
-                          <div class="input_area">
-                            <p class="input_tit">사용자ID</p>
                             <div class="add_btn_input">
-                              <input type="text" value="" v-model="selectedUpdateUserId">
-                              <button type="button" class="input_btn">ID 중복 체크</button>
+                            <input type="text" value="" v-model="selectedUpdateEmail">
+                            <button type="button" class="input_btn" @click="checkEmail()">중복 체크</button>
                             </div>
                           </div>
-                        </div>
-                        <div class="input_wrap">
                           <div class="input_area">
-                            <p class="input_tit">Password</p>
-                            <input type="password" value="" v-model="selectedUpdatePassword">
-                          </div>
-                          <div class="input_area">
-                            <p class="input_tit">Password 확인</p>
-                            <input type="password" value="">
+                            <p class="input_tit">휴대폰번호</p>
+                            <input type="text" value="" v-model="selectedUpdateMobileNumber">
                           </div>
                         </div>
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">우편번호</p>
                             <div class="add_btn_input">
-                              <input type="text" value="" v-model="selectedUpdateAddrNumber">
-                              <button type="button" class="input_btn">검색</button>
+                              <input type="text" value="" v-model="selectedUpdateZipcode">
+                              <button type="button" class="input_btn" @click="search">검색</button>
                             </div>
                           </div>
                           <div class="input_area">
@@ -97,26 +100,38 @@
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">관리지역</p>
-                                <input type="text" value="" v-model="selectedUpdateDetailOrg">
+                                <select v-model="selectedUpdateChargeRegion">
+                                  <option v-for="(charge, index) in chargeRegionItems" :value="charge.value" v-bind:key="index">{{charge.label}}</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="input_wrap col3">
+                        <!-- <div class="input_wrap col3"> -->
+                          <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">사용자 구분</p>
                                 <select v-model="selectedUpdateUserType">
-                                  <option value="">사용자 구분</option>
+                                  <option v-for="(userType, index) in userTypeItems" :value="userType.value" v-bind:key="index">{{userType.label}}</option>
                                 </select>
                             </div>
                             <div class="input_area">
+                                <p class="input_tit">재직 상태</p>
+                                <select v-model="selectedUpdateEmployStateCd">
+                                  <option v-for="(employ, index) in employStateItems" :value="employ.value" v-bind:key="index">{{employ.label}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- <div class="input_wrap col3"> -->
+                          <div class="input_wrap">
+                            <div class="input_area">
                                 <p class="input_tit">부서명</p>
-                                <input type="text" value="">
+                                <input type="text" value="" v-model="selectedUpdateDeptNm">
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">사무실 전화번호</p>
-                                <input type="text" value="">
+                                <input type="text" value="" v-model="selectedUpdatePhoneNumber">
                             </div>
                         </div>
-                        <div class="input_wrap">
+                        <!-- <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">등록자 ID</p>
                                 <select>
@@ -129,7 +144,7 @@
                                     <input type="date">
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="popbtn_area">
                         <button type="button" class="btn" @click="writeCus = false">취소</button>
@@ -137,6 +152,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div id="" class="popupLayer" v-if="detailCus === true">
                 <div class="popup_wrap">
                     <div class="title_wrap">
@@ -145,51 +162,140 @@
                     </div>
                     <div class="popup_cnt">
                         <div class="input_wrap">
-                            <div class="input_area">
-                              <p class="input_tit">시/도</p>
-                              <input type="text" value="" v-model="selectDetailsido">
+                          <div class="input_area">
+                            <p class="input_tit">사용자ID</p>
+                            <div class="add_btn_input">
+                              <input type="text" value="" v-model="selectedDetailUserId">
+                              <!-- <button type="button" class="input_btn" @click="checkId()">ID 중복 체크</button> -->
                             </div>
-                            <div class="input_area">
-                              <p class="input_tit">시/군/구</p>
-                              <input type="text" value="" v-model="selectDetailSgg">
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">이름</p>
+                            <input type="text" value="" v-model="selectedDetailUserNm">
+                          </div>
+                          <!-- <div class="input_area">
+                            <p class="input_tit">Password</p>
+                            <input type="password" value="" v-model="selectedUpdatePassword">
+                          </div> -->
+                        </div>
+                        <div class="input_wrap">
+                          <!-- <div class="input_area">
+                            <p class="input_tit">Password 확인</p>
+                            <input type="password" value="">
+                          </div> -->
+                          
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">생년월일</p>
+                            <input type="text" value="" v-model="selectedDetailBirthday">
+                          </div>
+                          <div class="btn_area">
+                              <p class="input_tit">성별</p>
+                              <div class="toggle_btn">
+                                  <button type="button"  :class="DetailBodysex===1? 'btn on' : 'btn'">남</button>
+                                  <button type="button"  :class="DetailBodysex===2? 'btn on' : 'btn'">여</button>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">이메일</p>
+                            <input type="text" value="" v-model="selectedDetailEmail">
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">휴대폰번호</p>
+                            <input type="text" value="" v-model="selectedDetailMobileNumber">
+                          </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">우편번호</p>
+                            <div class="add_btn_input">
+                              <input type="text" value="" v-model="selectedDetailAddrNumber">
+                              <!-- <button type="button" class="input_btn">검색</button> -->
                             </div>
-                            <div class="input_area">
-                              <p class="input_tit">관리기관</p>
-                              <input type="text" value="" v-model="selectDetailOrg">
-                            </div>
-                            <hr/>
-                            <div class="input_area">
-                                <p class="input_tit">사용자 ID</p>
-                                <input type="text" value="" v-model="selectedUserId">
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">사용자명</p>
-                                <input type="text" value="" v-model="selectedUserNm">
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">전화번호</p>
-                                <input type="text" value="" v-model="selectedphoneNumber">
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">핸드폰번호</p>
-                                <input type="text" value="" v-model="selectedmobileNumber">
-                            </div>
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">주소</p>
+                            <input type="text" value="" v-model="selectedDetailAddr">
+                          </div>
+                        </div>
+                        <div class="input_wrap type-02">
                             <div class="input_area" >
-                                <p class="input_tit">이메일주소</p>
-                                <input type="text" value="" v-model="selectedEmail">
+                                <p class="input_tit">상세주소</p>
+                                <input type="text" value="" v-model="selectedDetailDetailAddr">
                             </div>
-                            <div class="input_area" >
-                                <p class="input_tit">현재상태</p>
-                                <input type="text" value="" v-model="selectedemployStateNm">
+                        </div>
+                        <!-- <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">시/도</p>
+                                <input type="text" value="" v-model="selectedDetailSidoItems">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">시/군/구</p>
+                                <input type="text" value="" v-model="selectedDetailSggItems">
+                            </div>
+                        </div> -->
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">관리기관</p>
+                                <input type="text" value="" v-model="selectedDetailOrgItems">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">관리지역</p>
+                                <input type="text" value="" v-model="selectedDetailChargeRegion">
+                            </div>
+                        </div>
+                        <!-- <div class="input_wrap col3"> -->
+                          <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">사용자 구분</p>
+                                <input type="text" value="" v-model="selectedDetailUserType">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">재직 상태</p>
+                                <input type="text" value="" v-model="selectedDetailEmployStateCd">
+                            </div>
+                        </div>
+                        <!-- <div class="input_wrap col3"> -->
+                          <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">부서명</p>
+                                <input type="text" value="" v-model="selectedDetailDeptNm">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">사무실 전화번호</p>
+                                <input type="text" value="" v-model="selectedDetailPhoneNumber">
+                            </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                              <p class="input_tit">사용자 상태</p>
+                              <input type="text" value="" v-model="selectedDetailUseYn">
+                          </div>
+                        </div>
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">등록자 ID</p>
+                                <input type="text" value="" v-model="selectedDetailRegDUserNm">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">등록자 일시</p>
+                                <div class="date_warp">
+                                    <input type="date" v-model="selectedDetailRegDtime">
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="popbtn_area">
-                        <button type="button" class="btn form2" @click="detailCus = false, changeCus = true">수정</button>
+                        <button type="button" class="btn form2" @click="detailCus = false, changeFormat()">수정</button>
                         <button type="button" class="btn form3" @click="deleteCus = true">삭제</button>
                     </div>
                 </div>
             </div>
+
+
             <div id="" class="popupLayer" v-if="changeCus === true">
                 <div class="popup_wrap">
                     <div class="title_wrap">
@@ -198,46 +304,149 @@
                     </div>
                     <div class="popup_cnt">
                         <div class="input_wrap">
-                            <div class="input_area">
-                              <p class="input_tit">시/도</p>
-                              <input type="text" value="" v-model="selectDetailsido">
+                          <div class="input_area">
+                            <p class="input_tit">사용자ID</p>
+                            <div class="add_btn_input">
+                              <input type="text" value="" v-model="selectedChangeUserId">
+                              <button type="button" class="input_btn" @click="checkId2()">ID 중복 체크</button>
                             </div>
-                            <div class="input_area">
-                              <p class="input_tit">시/군/구</p>
-                              <input type="text" value="" v-model="selectDetailSgg">
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">Password</p>
+                            <input type="password" value="" v-model="selectedChangePassword">
+                          </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">Password 확인</p>
+                            <input type="password" value="">
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">이름</p>
+                            <input type="text" value="" v-model="selectedChangeUserNm">
+                          </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">생년월일</p>
+                            <input type="text" value="" v-model="selectedChangeBirthday">
+                          </div>
+                          <div class="btn_area">
+                              <p class="input_tit">성별</p>
+                              <div class="toggle_btn">
+                                  <button type="button" @click="sextoggle(1)" :class="bodysex===1? 'btn on' : 'btn'">남</button>
+                                  <button type="button" @click="sextoggle(2)" :class="bodysex===2? 'btn on' : 'btn'">여</button>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">이메일</p>
+                            <div class="add_btn_input">
+                            <input type="text" value="" v-model="selectedChangeEmail">
+                            <button type="button" class="input_btn" @click="checkEmail2()">중복 체크</button>
                             </div>
-                            <div class="input_area">
-                              <p class="input_tit">관리기관</p>
-                              <input type="text" value="" v-model="selectDetailOrg">
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">휴대폰번호</p>
+                            <input type="text" value="" v-model="selectedChangeMobileNumber">
+                          </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">우편번호</p>
+                            <div class="add_btn_input">
+                              <input type="text" value="" v-model="selectedChangeZipcode">
+                              <button type="button" class="input_btn" @click="search">검색</button>
                             </div>
-                            <hr/>
-                            <div class="input_area">
-                                <p class="input_tit">사용자 ID</p>
-                                <input type="text" value="" v-model="selectedUserId">
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">사용자명</p>
-                                <input type="text" value="" v-model="selectedUserNm">
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">전화번호</p>
-                                <input type="text" value="" v-model="selectedphoneNumber">
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">핸드폰번호</p>
-                                <input type="text" value="" v-model="selectedmobileNumber">
-                            </div>
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">주소</p>
+                            <input type="text" value="" v-model="selectedChangeAddr">
+                          </div>
+                        </div>
+                        <div class="input_wrap type-02">
                             <div class="input_area" >
-                                <p class="input_tit">이메일주소</p>
-                                <input type="text" value="" v-model="selectedEmail">
+                                <p class="input_tit">상세주소</p>
+                                <input type="text" value="" v-model="selectedChangeDetailAddr">
                             </div>
-                            <div class="input_area" >
-                                <p class="input_tit">현재상태</p>
-                                <select v-model="selectedemployStateNm">
-                                  <option v-for="(state, index) in employStateItems" :value="state.value" v-bind:key="index">{{state.label}}</option>
+                        </div>
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">시/도</p>
+                                <select v-model="selectedChangeSidoItems" @change="onChangeSgg($event)">
+                                  <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">시/군/구</p>
+                                <select v-model="selectedChangeSggItems" @change="onChangeOrg($event)">
+                                  <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                                 </select>
                             </div>
                         </div>
+                        <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">관리기관</p>
+                                <select v-model="selectedChangeOrgItems">
+                                  <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">관리지역</p>
+                                <select v-model="selectedChangeChargeRegion">
+                                  <option v-for="(charge, index) in chargeRegionItems" :value="charge.value" v-bind:key="index">{{charge.label}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- <div class="input_wrap col3"> -->
+                          <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">사용자 구분</p>
+                                <select v-model="selectedChangeUserType">
+                                  <option v-for="(userType, index) in userTypeItems" :value="userType.value" v-bind:key="index">{{userType.label}}</option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">재직 상태</p>
+                                <select v-model="selectedChangeEmployStateCd">
+                                  <option v-for="(employ, index) in employStateItems" :value="employ.value" v-bind:key="index">{{employ.label}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- <div class="input_wrap col3"> -->
+                          <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">부서명</p>
+                                <input type="text" value="" v-model="selectedChangeDeptNm">
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">사무실 전화번호</p>
+                                <input type="text" value="" v-model="selectedChangePhoneNumber">
+                            </div>
+                        </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                              <p class="input_tit">사용자 상태</p>
+                              <select v-model="selectedChangeUseYn">
+                              <option v-for="(useyn, index) in useYnItems" :value="useyn.value" v-bind:key="index">{{useyn.label}}</option>
+                            </select>
+                          </div>
+                        </div>
+                        <!-- <div class="input_wrap">
+                            <div class="input_area">
+                                <p class="input_tit">등록자 ID</p>
+                                <select>
+                                  <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="input_area">
+                                <p class="input_tit">등록자 일시</p>
+                                <div class="date_warp">
+                                    <input type="date">
+                                </div>
+                            </div>
+                        </div> -->
                     </div>
                     <div class="popbtn_area">
                         <button type="button" class="btn" @click="changeCus = false, detailCus = true">취소</button>
@@ -245,6 +454,10 @@
                     </div>
                 </div>
             </div>
+
+            
+
+            
             <div id="" class="popupLayer" v-if="deleteCus == true">
               <div class="popup_wrap type-02">
                 <div class="title_wrap">
@@ -358,8 +571,8 @@
                                   <td>{{index+1}}</td>
                                   <td>{{item.userId}}</td>
                                   <td>{{item.userNm}}</td>
-                                  <td>{{item.phoneNumber}}</td>
-                                  <td>{{item.mobileNumber}}</td>
+                                  <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
+                                  <td>{{changeRecipientPhoneno(item.mobileNumber)}}</td>
                                   <td>{{item.email}}</td>
                                   <td>{{item.employStateNm}}</td>
                                   <td>{{item.regDtime}}</td>
@@ -406,22 +619,41 @@ export default {
     data(){
       return{
         sido:'', sidoCd:'', sgg:'', sggCd:'',
-        sidoItems:[], sggItems:[], orgmItems:[], noticItems:[], TorgItems:[], userItems:[], employStateItems:[],
+        sidoItems:[], sggItems:[], orgmItems:[], chargeRegionItems:[], noticItems:[], TorgItems:[], userItems:[], employStateItems:[], userTypeItems:[],
+        useYnItems:[{value:'', label:'전체'},{value: 0, label:'미사용'},{value:1, label:'사용'}],
         orgSido:'', orgSgg:'', orgCode:'',
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedUserNm: '',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedUserNm: '', userId:'', userId2:'', useremail:'', useremail2:'', 
+        checkUserItems:[], checkUserItems2:[],checkEmailItems:[] ,checkEmailItems2:[], checkUserId:'ok', checkUserId2:'ok', checkemaildata:'ok', checkemaildata2:'ok',
+        bodysex:1,
         
         //사용자 등록
         selectedUpdateUserNm:'', selectedUpdateBirthday:'', selectedUpdateMobileNumber:'', selectedUpdateSex:'',
-        selectedUpdateEmail:'', selectedUpdateUserId:'', selectedUpdatePassword:'', selectedUpdateAddrNumber:'',
+        selectedUpdateEmail:'', selectedUpdateUserId:'', selectedUpdatePassword:'', selectedUpdateZipcode:'',
         selectedUpdateAddr:'', selectedUpdateDetailAddr:'', selectedUpdateSidoItems:'', selectedUpdateSggItems:'', 
-        selectedUpdateOrgItems:'', selectedUpdateDetailOrg:'', selectedUpdateUserType:'', selectedUpdateDeptNm:'',
-        selectedUpdatePhoneNumber:'', selectedUpdateRegDUserNm:'', selectedUpdateRegDtime:'',
+        selectedUpdateOrgItems:'', selectedUpdateChargeRegion:'', selectedUpdateUserType:'', selectedUpdateDeptNm:'',
+        selectedUpdatePhoneNumber:'', selectedUpdateRegDUserNm:'', selectedUpdateRegDtime:'', selectedUpdateEmployStateCd:'',
+        selectedUpdateUseYn:1,
+
+        
+        selectedDetailUserNm:'', selectedDetailBirthday:'', selectedDetailMobileNumber:'', selectedDetailSex:'',
+        selectedDetailEmail:'', selectedDetailUserId:'', selectedDetailPassword:'', selectedDetailAddrNumber:'',
+        selectedDetailAddr:'', selectedDetailDetailAddr:'', selectedDetailSidoItems:'', selectedDetailSggItems:'', 
+        selectedDetailOrgItems:'', selectedDetailChargeRegion:'', selectedDetailUserType:'', selectedDetailDeptNm:'',
+        selectedDetailPhoneNumber:'', selectedDetailRegDUserNm:'', selectedDetailRegDtime:'', selectedDetailEmployStateCd:'',
+        selectedDetailUseYn:1, DetailBodysex:1, DetailChargeRegion:[], DetailChargeRegion2:[], DetailTypeCd:[],
+
+        selectedChangeUserNm:'', selectedChangeBirthday:'', selectedChangeMobileNumber:'', selectedChangeSex:'',
+        selectedChangeEmail:'', selectedChangeUserId:'', selectedChangePassword:'', selectedChangeZipcode:'',
+        selectedChangeAddr:'', selectedChangeDetailAddr:'', selectedChangeSidoItems:'', selectedChangeSggItems:'', 
+        selectedChangeOrgItems:'', selectedChangeChargeRegion:'', selectedChangeUserType:'', selectedChangeDeptNm:'',
+        selectedChangePhoneNumber:'', selectedChangeRegDUserNm:'', selectedChangeRegDtime:'', selectedChangeEmployStateCd:'',
+        selectedChangeUseYn:1,
         
 
-        selectedUserId:'',selectedphoneNumber:'',selectedmobileNumber:'',selectedEmail:'',selectedemployStateNm:'',
+        selectedUserId:'',selectedphoneNumber:'',selectedmobileNumber:'',selectedEmail:'',selectedemployStateNm:'', selectedEmployStateCd:'',
         selectDetailsido:'',selectDetailSgg:'',selectDetailOrg:'',
         writeCus: false, changeCus: false, deleteCus: false, detailCus: false,
-        saveChangeData: null,
+        saveChangeData: null,selectUserData: null,
         detailArr:[],
       }
     },
@@ -431,6 +663,7 @@ export default {
       this.getOrgmData();
       this.getUserData();
       this.getEmployState();
+      this.userTypeData();
     },
     methods:{
     getSidoData() {
@@ -458,8 +691,11 @@ export default {
         url += "?sidoCd="+this.sidoCd;
       }else{
         this.selectedSggItems = ''
+        this.selectedUpdateChargeRegion = ''
         this.sggItems=[];
+        this.chargeRegionItems=[];
         this.sggItems.push({label: '전체', value: ''});
+        this.chargeRegionItems.push({label:'전체', value:''});
         return ; 
       }
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
@@ -478,6 +714,7 @@ export default {
           });
           
           this.sggItems = [...tmpResult2,...tmpResult]
+          this.chargeRegionItems = [...tmpResult2,...tmpResult]
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -565,56 +802,464 @@ export default {
       this.getOrgmData()
     },
     createData(){
+      this.selectedUpdateUserNm = ''
+      this.selectedUpdateBirthday = ''
+      this.selectedUpdateMobileNumber = ''
+      this.selectedUpdateSex = ''
+      this.selectedUpdateEmail = ''
+      this.selectedUpdateUserId = ''
+      this.selectedUpdatePassword = ''
+      this.selectedUpdateZipcode = ''
+      this.selectedUpdateAddr = ''
+      this.selectedUpdateDetailAddr = ''
       this.selectedUpdateSidoItems = ''
       this.selectedUpdateSggItems = ''
       this.selectedUpdateOrgItems = ''
+      this.selectedUpdateDetailOrg = ''
+      this.selectedUpdateUserType = ''
+      this.selectedUpdateDeptNm = ''
+      this.selectedUpdatePhoneNumber = ''
+      this.selectedUpdateRegDUserNm = ''
+      this.selectedUpdateRegDtime = ''
+      this.selectedUpdateEmployStateCd = ''
       this.writeCus = true
     },
-    detailCuspopup(index){
+    async detailCuspopup(index){
       this.detailArr=this.userItems[index]
-      this.selectDetailsido = ''
-      this.selectDetailSgg = ''
-      this.selectDetailOrg = ''
-      this.selectedUserNm = ''
-      this.selectedUserId=''
-      this.selectedphoneNumber=''
-      this.selectedmobileNumber=''
-      this.selectedEmail=''
-      this.selectedemployStateNm=''
+      this.selectUserData = this.userItems[index]
+      console.log(this.detailArr)
+      let url =this.$store.state.serverApi + "/admin/address/sgg";
+      await axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          for(let i=0; i<response.data.data.length; i++) {
+            this.DetailChargeRegion2.push({
+              label: response.data.data[i].sgg,
+              value: response.data.data[i].sggCd,
+            });
+          } 
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+      let detailorg = this.detailArr.chargeRegion
+      console.log(detailorg)
+      this.DetailChargeRegion = this.DetailChargeRegion2.filter(cd=>{
+        return cd.value === detailorg
+      })
+      let detailtyppe = this.detailArr.userTypeCd
+      this.DetailTypeCd = this.userTypeItems.filter(cd=>{
+        return cd.value === detailtyppe
+      })
+      console.log(this.DetailChargeRegion[0].label)
+      this.selectedDetailSidoItems = this.detailArr.sido
+      this.selectedDetailSggItems = this.detailArr.sgg
+      this.selectedDetailOrgItems = this.detailArr.orgNm
+      this.selectedDetailUserNm = this.detailArr.userNm
+      this.selectedDetailUserId = this.detailArr.userId
+      this.selectedDetailPhoneNumber = this.detailArr.phoneNumber
+      this.selectedDetailMobileNumber = this.detailArr.mobileNumber
+      this.selectedDetailEmail = this.detailArr.email
+      this.selectedDetailEmployStateCd = this.detailArr.employStateNm
+      this.selectedDetailBirthday = this.detailArr.birthday
+      this.selectedDetailSex = this.detailArr.sex
+      if(this.selectedDetailSex === 'M'){
+        this.DetailBodysex = 1
+      }else if(this.selectedDetailSex === 'W'){
+        this.DetailBodysex = 2
+      }
+      this.selectedDetailAddrNumber = this.detailArr.zipCode
+      this.selectedDetailAddr = this.detailArr.addr
+      this.selectedDetailDetailAddr = this.detailArr.addrDetail
+      this.selectedDetailChargeRegion = this.DetailChargeRegion[0].label
+      this.selectedDetailUserType = this.DetailTypeCd[0].label
+      this.selectedDetailDeptNm = this.detailArr.deptNm
+      this.selectedDetailRegDUserNm = this.detailArr.regId
+      this.selectedDetailRegDtime = this.detailArr.regDtime.substring(0,10)
+      this.selectedDetailUseYn=this.chnageUseYn(this.detailArr.useYn)
 
-      this.selectDetailsido = this.detailArr.sido
-      this.selectDetailSgg = this.detailArr.sgg
-      this.selectDetailOrg = this.detailArr.orgNm
-      this.selectedUserNm = this.detailArr.userNm
-      this.selectedUserId = this.detailArr.userId
-      this.selectedphoneNumber = this.detailArr.phoneNumber
-      this.selectedmobileNumber = this.detailArr.mobileNumber
-      this.selectedEmail = this.detailArr.email
-      this.selectedemployStateNm = this.detailArr.employStateNm
       this.detailCus = true
     },
+    async checkId(){
+      let url = this.$store.state.serverApi+`/admin/users`
+      await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.checkUserItems = res.data.data
+            console.log(this.checkUserItems)
+          })
+          .catch(error => {
+            console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+
+          this.userId = this.checkUserItems.filter(cd=>{
+            return cd.userId === this.selectedUpdateUserId
+          })
+          console.log(this.userId2)
+          if(this.userId[0]){
+            alert("이미 등록된 아이디 입니다.")
+            return this.checkUserId = 'None'
+          }else{
+            alert("사용 가능한 아이디 입니다.")
+            return this.checkUserId = 'ok'
+          }
+
+          
+    },
+    async checkId2(){
+      let url = this.$store.state.serverApi+`/admin/users`
+      await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.checkUserItems2 = res.data.data
+            console.log(this.checkUserItems2)
+          })
+          .catch(error => {
+            console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+          this.userId2 = this.checkUserItems2.filter(cd=>{
+            return cd.userId === this.selectedChangeUserId
+          })
+          if(this.userId2[0]){
+            alert("이미 등록된 아이디 입니다.")
+            return this.checkUserId2 = 'None'
+          }else{
+            alert("사용 가능한 아이디 입니다.")
+            return this.checkUserId2 = 'ok'
+          }
+    },
+    async checkEmail(){
+      let url = this.$store.state.serverApi+`/admin/users`
+      await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.checkEmailItems = res.data.data
+            console.log(this.checkEmailItems)
+          })
+          .catch(error => {
+            console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+          this.useremail = this.checkEmailItems.filter(cd=>{
+            return cd.email === this.selectedChangeEmail
+          })
+          if(this.useremail[0]){
+            alert("이미 등록된 이메일 입니다.")
+            return this.checkemaildata = 'None'
+          }else{
+            alert("사용 가능한 이메일 입니다.")
+            return this.checkemaildata = 'ok'
+          }
+    },
+    async checkEmail2(){
+      let url = this.$store.state.serverApi+`/admin/users`
+      await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.checkEmailItems2 = res.data.data
+            console.log(this.checkEmailItems2)
+          })
+          .catch(error => {
+            console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+          this.useremail2 = this.checkEmailItems2.filter(cd=>{
+            return cd.email === this.selectedChangeEmail
+          })
+          if(this.useremail2[0]){
+            alert("이미 등록된 이메일 입니다.")
+            return this.checkemaildata2 = 'None'
+          }else{
+            alert("사용 가능한 이메일 입니다.")
+            return this.checkemaildata2 = 'ok'
+          }
+    },
     uploadData(){
-      alert("성공적으로 등록되었습니다")
-      this.writeCus = false
+      this.$store.state.userId = sessionStorage.getItem("userId")
+      if(this.checkUserId === 'None'){
+        alert("아이디를 다시 확인하여 주세요")
+        return false
+      }
+      if(this.checkemaildata === 'None'){
+        alert("아이디를 다시 확인하여 주세요")
+        return false
+      }
+      this.$store.state.userId = sessionStorage.getItem("userId")
+      if(this.bodysex === 1){
+        this.selectedUpdateSex = 'M'
+      }else{
+        this.selectedUpdateSex = 'W'
+      }
+      let data = {
+        addr:this.selectedUpdateAddr,
+        addrCd:this.selectedUpdateSggItems,
+        addrDetail:this.selectedUpdateDetailAddr,
+        birthday:this.selectedUpdateBirthday,
+        chargeRegion:this.selectedUpdateChargeRegion,
+        email:this.selectedUpdateEmail,
+        employStateCd:this.selectedUpdateEmployStateCd,
+        mobileNumber:this.selectedUpdateMobileNumber,
+        orgId:this.selectedUpdateOrgItems,
+        password:this.selectedUpdatePassword,
+        phoneNumber:this.selectedUpdatePhoneNumber,
+        sex:this.selectedUpdateSex,
+        useYn:this.selectedUpdateUseYn,
+        userId:this.selectedUpdateUserId,
+        userNm:this.selectedUpdateUserNm,
+        userTypeCd:this.selectedUpdateUserType,
+        zipCode:this.selectedUpdateZipcode,
+        regId:this.$store.state.userId,
+        deptNm:this.selectedUpdateDeptNm,
+      }
+      console.log(data)
+
+        let url = this.$store.state.serverApi+`/admin/users`
+        axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+              let resData = res.data.data
+              console.log(resData)
+              if(resData){
+                alert("성공적으로 등록되었습니다")
+                this.writeCus = false
+                this.getUserData()
+              }
+            })
+            .catch(error => {
+                console.log("fail to load")
+              this.errorMessage = error.message;
+              console.error("There was an error!", error);
+            });
+    },
+    changeFormat(){
+      console.log(this.selectUserData)
+      this.selectedChangeUserId = this.selectUserData.userId
+      this.selectedChangeUserNm = this.selectUserData.userNm
+      this.selectedChangePassword = ''
+      this.selectedChangeBirthday = this.selectUserData.birthday
+      this.selectedChangeSex = this.selectUserData.sex
+      if(this.selectedChangeSex === 'M'){
+        this.bodysex = 1
+      }else{
+        this.bodysex =2
+      }
+      this.selectedChangeEmail = this.selectUserData.email
+      this.selectedChangeMobileNumber = this.selectUserData.mobileNumber
+      this.selectedChangeZipcode = this.selectUserData.zipCode
+      this.selectedChangeAddr = this.selectUserData.addr
+      this.selectedChangeDetailAddr = this.selectUserData.addrDetail
+      this.selectedChangeSidoItems = ''
+      this.selectedChangeSggItems = ''
+      this.selectedChangeOrgItems = ''
+      this.selectedChangeChargeRegion = ''
+      this.selectedChangeUserType = this.selectUserData.userTypeCd
+      this.selectedChangeEmployStateCd = this.selectUserData.employStateCd
+      this.selectedChangeDeptNm = this.selectUserData.deptNm
+      this.selectedChangePhoneNumber = this.selectUserData.phoneNumber
+      this.selectedChangeUseYn = this.selectUserData.useYn
+      this.changeCus = true
     },
     changeCusSuccess(){
+      this.$store.state.userId = sessionStorage.getItem("userId")
+      if(this.checkUserId2 === 'None'){
+        alert("아이디를 다시 확인하여 주세요")
+        return false
+      }
+      if(this.checkemaildata2 === 'None'){
+        alert("이메일을 다시 확인하여 주세요")
+        return false
+      }
+      if(this.bodysex === 1){
+        this.selectedChangeSex = 'M'
+      }else{
+        this.selectedChangeSex = 'W'
+      }
+      let data = {
+        addr:this.selectedChangeAddr,
+        addrCd:this.selectedChangeSggItems,
+        addrDetail:this.selectedChangeDetailAddr,
+        birthday:this.selectedChangeBirthday,
+        chargeRegion:this.selectedChangeChargeRegion,
+        email:this.selectedChangeEmail,
+        employStateCd:this.selectedChangeEmployStateCd,
+        mobileNumber:this.selectedChangeMobileNumber,
+        orgId:this.selectedChangeOrgItems,
+        password:this.selectedChangePassword,
+        phoneNumber:this.selectedChangePhoneNumber,
+        sex:this.selectedChangeSex,
+        useYn:this.selectedChangeUseYn,
+        userId:this.selectedChangeUserId,
+        userNm:this.selectedChangeUserNm,
+        userTypeCd:this.selectedChangeUserType,
+        zipCode:this.selectedChangeZipcode,
+        regId:this.$store.state.userId,
+        deptNm:this.selectedChangeDeptNm,
+      }
+      console.log(data)
+
+        let url = this.$store.state.serverApi+`/admin/users/${this.selectedChangeUserId}`
+        axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+              let resData = res.data.data
+              console.log(resData)
+              if(resData){
+                alert("성공적으로 등록되었습니다")
+                this.writeCus = false
+                this.getUserData()
+              }
+            })
+            .catch(error => {
+                console.log("fail to load")
+              this.errorMessage = error.message;
+              console.error("There was an error!", error);
+            });
       alert("성공적으로 변경되었습니다")
       this.changeCus = false
       this.detailCus = true
     },
-    deleteCusSuccess(){
-      alert("성공적으로 삭제되었습니다")
-      this.deleteCus = false
-      this.detailCus = false
+    async deleteCusSuccess(){
+      console.log(this.selectedDetailUserId)
+      let url = this.$store.state.serverApi+`/admin/users/${this.selectedDetailUserId}`
+      await axios.delete(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+           .then(res => {
+              alert("성공적으로 삭제되었습니다")
+              this.deleteCus = false
+              this.detailCus = false
+              this.getUserData()
+           })
+           .catch(error => {
+               console.log("fail to load")
+             this.errorMessage = error.message;
+             console.error("There was an error!", error);
+           });
+      
     },
     deleteCusFail(){
       alert("취소되었습니다")
       this.deleteCus = false
     },
+    changeRecipientPhoneno(phone){
+        if(phone){
+            let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+            return changeNumber
+        }else{
+            return ''
+        }
+    },
     manageInquiry() {
         this.getUserData();
     },
+    sextoggle(value){
+      switch(value){
+        case 1 : this.bodysex=1; break;
+        case 2 : this.bodysex=2; break;
+      }
+    },
+    userTypeData(){
+      let url =this.$store.state.serverApi + "/admin/codes?cmmnCdGroup=USER.TYPECD";
+      axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          const tmpArr = [{label: '전체', value: ''}];
+          let tmpResult1 = [{label: '전체', value: ''}];
+          let tmpResult2 = [{label: '전체', value: ''}];
+          this.userTypeItems=[];
+          for(let i=0; i<response.data.data.length; i++) {
+            tmpArr.push({
+              label: response.data.data[i].cmmnCdNm,
+              value: response.data.data[i].cmmnCd,
+            });
+          } 
+          this.userTypeItems = tmpArr
+          console.log(this.userTypeItems)
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+    },
+    chnageUseYn(useYn){
+      // switch(value){
+      //   case 0 : return '미사용'; break;
+      //   case 1 : return '사용'; break;
+      // }
+      if(useYn){
+        if(useYn === '0'){
+          return '미사용'
+        }else{
+          return '사용'
+        }
+      }
+    },
+    search(){ 
+    //여기
+    //@click을 사용할 때 함수는 이렇게 작성해야 한다.
+    new window.daum.Postcode({
+    oncomplete: (data) => { //function이 아니라 => 로 바꿔야한다.
+        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+        // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+        var roadAddr = data.roadAddress; // 도로명 주소 변수
+        var extraRoadAddr = ''; // 참고 항목 변수
+
+        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+            extraRoadAddr += data.bname;
+        }
+        // 건물명이 있고, 공동주택일 경우 추가한다.
+        if(data.buildingName !== '' && data.apartment === 'Y'){
+            extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+        }
+        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+        if(extraRoadAddr !== ''){
+            extraRoadAddr = ' (' + extraRoadAddr + ')';
+        }
+
+        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+        
+        this.selectedUpdateZipcode = data.zonecode; //
+        this.selectedChangeZipcode = data.zonecode;
+        this.selectedUpdateAddr = data.roadAddress;
+        this.selectedChangeAddr = data.roadAddress;
+//        this.selectedAddr = data.jibunAddress;
+        
+        // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+        if(roadAddr !== ''){
+            this.selectedUpdateAddr += extraRoadAddr;
+            this.selectedChangeAddr += extraRoadAddr;
+        }
+
+        // var guideTextBox = document.getElementById("guide");
+        // // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+        // if(data.autoRoadAddress) {
+        //     var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+        //     guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+        //     guideTextBox.style.display = 'block';
+
+        // } else if(data.autoJibunAddress) {
+        //     var expJibunAddr = data.autoJibunAddress;
+        //     guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+        //     guideTextBox.style.display = 'block';
+        // } else {
+        //     guideTextBox.innerHTML = '';
+        //     guideTextBox.style.display = 'none';
+        // }
+
+    
     }
+    }).open();
+    },
+    },
+    mounted(){
+    
+    const script = document.createElement("script");
+    script.src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    
+    document.head.appendChild(script);
+    
+  },
 }
 </script>
 <style>
