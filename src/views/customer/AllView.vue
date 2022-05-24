@@ -20,21 +20,21 @@
             <div class="popup_cnt">
                 <div class="input_wrap">
                   <div class="input_area">
-                    <p class="input_tit">이메일</p>
+                    <p class="input_tit">사용자 이름</p>
                     <div class="add_btn_input">
-                      <input type="text" value="">
-                      <button type="button" class="input_btn">중복 확인</button>
+                      <input type="text" v-model="selectRecipient">
+                      <!-- <button type="button" class="input_btn">중복 확인</button> -->
                     </div>
                   </div>
                   <div class="input_area half">
                     <p class="input_tit">생년월일</p>
-                    <input type="text" value="">
+                    <input type="text" v-model="selectBirthday">
                   </div>
                   <div class="btn_area half">
                       <p class="input_tit">성별</p>
                       <div class="toggle_btn">
-                          <button type="button" class="btn on">남</button>
-                          <button type="button" class="btn">여</button>
+                          <button type="button" :class="this.userGender ===1 ? 'btn on':'btn'" @click="selectGender(1)">남</button>
+                          <button type="button" :class="this.userGender ===2 ? 'btn on':'btn'" @click="selectGender(2)">여</button>
                       </div>
                   </div>
                 </div>
@@ -60,45 +60,41 @@
                 <div class="input_wrap">
                   <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" value="">
+                    <input type="text" v-model="selectedPhoneNumber">
                   </div>
                   <div class="input_area">
-                    <p class="input_tit">유선연락처</p>
-                    <input type="text" value="">
-                  </div>
-                </div>
-                <div class="input_wrap">
-                    <div class="input_area">
                         <p class="input_tit">사용자 구분</p>
-                        <select>
-                          <option value=""></option>
+                        <select v-model="selectedRecipeType">
+                          <option v-for="(recipetype, index) in recipeType" :value="recipetype.value" v-bind:key="index">{{recipetype.text}}</option>
                         </select>
                     </div>
+                </div>
+                <div class="input_wrap">
                     <div class="input_area">
                         <p class="input_tit">광역</p>
-                        <select>
-                          <option value=""></option>
+                        <select v-model="userSido" @change="onChangeSgg($event)">
+                          <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                         </select>
                     </div>
-                </div>
-                <div class="input_wrap">
                     <div class="input_area">
                         <p class="input_tit">시/군/구</p>
-                        <select v-model="selectedUpdateSggItems" @change="onChangeOrg($event)">
+                        <select v-model="userSigungu" @change="onChangeOrg($event)">
                           <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                         </select>
                     </div>
-                    <div class="input_area">
-                        <p class="input_tit">수행기관</p>
-                        <select>
-                          <option value=""></option>
+                </div>
+                <div class="input_wrap">  
+                  <div class="input_area">
+                      <p class="input_tit">수행기관</p>
+                        <select v-model="userOrg">
+                          <option v-for="(orgm, index) in orgmItems" :value="{value: orgm.value, label: orgm.label}" v-bind:key="index">{{orgm.label}}</option>
                         </select>
-                    </div>
+                  </div>
                 </div>
             </div>
             <div class="popbtn_area">
-                <button type="button" class="btn" @click="closeModal">취 소</button>
-                <button type="button" class="btn form2" @click="uploadData()">회원가입 승인 요청</button>
+              <button type="button" class="btn form2" @click="regUser()">회원가입</button>
+              <button type="button" class="btn" @click="closeModal">취 소</button>
             </div>
         </div>
       </div>
@@ -137,11 +133,9 @@
                         </select>
                       </td>
                       <td>
-                        
                         <select v-model="selectedOrgItems">
                           <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                         </select>
-
                       </td>
                         <td>
                             <input type="text" value=" " v-model="filterName" @keypress.enter="getFilteredRecipientData()">
@@ -496,8 +490,12 @@ export default {
         { key: 'delete', label: '', _classes: 'text-center' },    
       ],
       addCustomer: false, fileUpload: false,selectedUpdateSggItems:null,
-      zipCode: null,selectedAddr: null, selectedAddrDetail: null
-
+      //대상자 등록
+      zipCode: null,selectedAddr: null, selectedAddrDetail: null,selectBirthday: null,selectRecipient: null,
+      selectedPhoneNumber: null,userSido: null,userSigungu: null,userOrg: null,
+      selectedUserOrg: null, userState:[{value:'STE001', text: '승인'},{value:'STE002', text: '서비스중'},{value:'STE003', text: '서비스종료'},],
+      selectedRecipeType: null, recipeType:[{value:'TPE001', text: '고령자'},{value:'TPE002', text: '장애인'},],
+      userGender: 0 ,
     }
   },
   created() {
@@ -564,6 +562,7 @@ export default {
           });
           
           this.sggItems = [...tmpResult2,...tmpResult]
+          
           console.log("this.sggItems ")
           console.log(this.sggItems)
         })
@@ -608,6 +607,7 @@ export default {
     },
   onChangeSgg(event){
       this.sidoCd = event.target.value
+      
       this.getSggData()
       this.sggCd = ''
       this.getOrgmData()
@@ -736,8 +736,11 @@ export default {
     this.modalOpen = false;
 
   },
+  selectGender(input){
+    this.userGender = input;
+  },
   search(){ 
-    //여기
+    
     //@click을 사용할 때 함수는 이렇게 작성해야 한다.
     new window.daum.Postcode({
     oncomplete: (data) => { //function이 아니라 => 로 바꿔야한다.
@@ -794,6 +797,51 @@ export default {
     }).open();
     
     
+    },
+    regUser(){
+      //여기
+      let data= {
+        activeUnsensingCycle: 60,//완
+        addr: this.selectedAddr,//완
+        addrCd: "1168010800",
+        addrDetail: this.selectedAddrDetail,//완
+        addrXCoordinate: "",//완
+        addrYCoordinate: "",//완
+        birthday: this.$moment(this.selectBirthday).format('YYYYMMDD'),//완, yyyymmdd
+        careLevelCd: "LVL001",//고정
+        installFileNo: "1", //우선 고정
+        measureCycle: 240,//완
+        orgId: this.userOrg.value,//완
+        orgNm: this.userOrg.label,
+        recipientNm: this.selectRecipient,//완
+        recipientPhoneno: this.selectedPhoneNumber,//완
+        sex: this.userGender===1?"M":this.userGender===2?"F":"", //완
+        sigunguCd: this.userSigungu,//완
+        stateCd: this.selectedRecipeType, //완
+        typeCd: "TPE001",//고정
+        zipCode: this.zipCode,//완
+        regId: this.$store.state.userId//완
+      }
+      console.log(data)
+      
+      // const url  = this.$store.state.serverApi + `/admin/recipients`
+      //   // /sensors/{sensorId}/gw-send-cycle
+      //   axios.post(url,data,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      //     .then(res => {
+      //       let resData = res.data.data
+      //       console.log(resData)
+      //       // this.getCSensorsData = res.data.data
+      //       // console.log("sensors ")
+      //       // console.log(this.getCSensorsData)
+      //       if(resData){
+      //           alert("저장이 완료되었습니다.")
+      //       }
+      //     })
+      //     .catch(error => {
+      //         console.log("fail to load")
+      //       this.errorMessage = error.message;
+      //       console.error("There was an error!", error);
+      //     });
     },
 
     // getPartData() {
