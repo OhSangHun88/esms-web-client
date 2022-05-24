@@ -3,6 +3,7 @@
         <!--<HeaderComp></HeaderComp>-->
         <div class="container type-02">
           <div id="" class="popupLayer" v-if="writeOrg === true">
+            <!--관리 기관 등록-->
                 <div class="popup_wrap">
                     <div class="title_wrap">
                         <div class="title">관리기관 등록</div>
@@ -53,8 +54,8 @@
                           <div class="input_area">
                             <p class="input_tit">우편번호</p>
                             <div class="add_btn_input">
-                              <input type="text" value="" v-model="selectedUpdateZipcodeCd">
-                              <button type="button" class="input_btn">검색</button>
+                              <input type="text" value="" v-model="selectedUpdateZipcode">
+                              <button type="button" class="input_btn" @click="search()">검색</button>
                             </div>
                           </div>
                         </div>
@@ -78,7 +79,7 @@
                 </div>
             </div>
 
-          
+          <!--관리 기관 상세 정보-->
             <div id="" class="popupLayer" v-if="detailOrg === true">
               <div class="popup_wrap">
                   <div class="title_wrap">
@@ -117,10 +118,16 @@
                           </div>
                       </div>
                       <div class="input_wrap">
+                          <div class="input_area">
+                              <p class="input_tit">기관 상태</p>
+                              <input type="text" value="" v-model="selectedDetailUseYn">
+                          </div>
+                      </div>
+                      <div class="input_wrap">
                         <div class="input_area">
                           <p class="input_tit">우편번호</p>
                           <div class="add_btn_input">
-                            <input type="text" value="" v-model="selectedDetailZipcodeCd">
+                            <input type="text" value="" v-model="selectedDetailZipcode">
                           </div>
                         </div>
                       </div>
@@ -148,18 +155,15 @@
                               </div>
                           </div>
                       </div>
+                      
                   </div>
                   <div class="popbtn_area">
-                      <button type="button" class="btn form2" @click="changeOrg = true, detailOrg = false">수정</button>
+                      <button type="button" class="btn form2" @click="changeOrgFormat(), detailOrg = false">수정</button>
                       <button type="button" class="btn form3" @click="deleteOrg = true">삭제</button>
                   </div>
               </div>
             </div>
-         
-
-
-
-          
+          <!--관리 기관 정보 수정-->
             <div id="" class="popupLayer" v-if="changeOrg === true">
               <div class="popup_wrap">
                   <div class="title_wrap">
@@ -170,17 +174,23 @@
                       <div class="input_wrap">
                           <div class="input_area">
                               <p class="input_tit">시/도</p>
-                              <input type="text" value="" v-model="selectedChangeSidoItems">
+                              <select v-model="selectedChangeSidoItems" @change="onChangeSgg($event)">
+                                  <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                                </select>
                           </div>
                           <div class="input_area">
                               <p class="input_tit">시/군/구</p>
-                              <input type="text" value="" v-model="selectedChangeSggItems">
+                              <select v-model="selectedChangeSggItems" @change="onChangeOrg($event)">
+                                  <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                                </select>
                           </div>
                       </div>
                       <div class="input_wrap">
                           <div class="input_area">
                               <p class="input_tit">관리기관명</p>
-                              <input type="text" value="" v-model="selectedChangeOrgItems">
+                              <select v-model="selectedChangeOrgItems">
+                                <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                              </select>
                           </div>
                           <div class="input_area">
                               <p class="input_tit">대표 전화번호</p>
@@ -202,10 +212,19 @@
                         </div>
                       </div>
                       <div class="input_wrap">
+                          <div class="input_area">
+                              <p class="input_tit">기관 상태</p>
+                              <select v-model="selectedChangeUseYn">
+                              <option v-for="(useyn, index) in UseYnItems" :value="useyn.value" v-bind:key="index">{{useyn.label}}</option>
+                            </select>
+                          </div>
+                      </div>
+                      <div class="input_wrap">
                         <div class="input_area">
                           <p class="input_tit">우편번호</p>
                           <div class="add_btn_input">
-                            <input type="text" value="" v-model="selectedChangeZipcodeCd">
+                            <input type="text" value="" v-model="selectedChangeZipcodeCd" @click="search">
+                            <button type="button" class="input_btn" @click="search()">검색</button>
                           </div>
                         </div>
                       </div>
@@ -229,7 +248,7 @@
               </div>
             </div>
           
-
+            <!--관리 기관 삭제-->
             <div id="" class="popupLayer" v-if="deleteOrg == true">
               <div class="popup_wrap type-02">
                 <div class="title_wrap">
@@ -310,7 +329,8 @@
                           <col style="width:10%;">
                           <col style="width:14%;">
                           <col style="width:auto;">
-                          <col style="width:10%;">
+                          <col style="width:8%;">
+                          <col style="width:8%;">
                           <col style="width:10%;">
                           <col style="width:10%;">
                         </colgroup>
@@ -324,6 +344,7 @@
                               <th scope="col">대표 전화번호</th>
                               <th scope="col">주소</th>
                               <th scope="col">세부주소</th>
+                              <th scope="col">기관상태</th>
                               <th scope="col">등록일시</th>
                               <th scope="col">수정일시</th>
                             </tr>
@@ -339,7 +360,8 @@
                             <col style="width:10%;">
                             <col style="width:14%;">
                             <col style="width:auto;">
-                            <col style="width:10%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
                             </colgroup>
@@ -350,9 +372,10 @@
                                   <td>{{item.sidoName}}</td>
                                   <td>{{item.sggName}}</td>
                                   <td>{{item.orgNm}}</td>
-                                  <td>{{item.phoneNumber}}</td>
+                                  <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
                                   <td>{{item.addr}}</td>
                                   <td>{{item.addrDetail}}</td>
+                                  <td>{{chnageUseYn(item.useYn)}}</td>
                                   <td>{{item.regDtime}}</td>
                                   <td></td>
                                 </tr>
@@ -399,26 +422,27 @@ export default {
     data(){
       return{
         sido:'', sidoCd:'', sgg:'', sggCd:'',
-        sidoName:'',sggName:'', orgNm:'', typeNm:'', upperOrgNm:'', orgId:'', orgmItems2:[],
-        sidoItems:[], sggItems:[], orgmItems:[], upperOrgItems:[], orgTypeItems:[], noticItems:[], TorgItems:[],
+        sidoName:'',sggName:'', orgNm:'', orgNm2:'', typeNm:'', upperOrgNm:'', orgId:'', updateOrgId:'', orgmItems2:[],
+        sidoItems:[], sggItems:[], orgmItems:[], upperOrgItems:[], orgTypeItems:[], noticItems:[], TorgItems:[], 
+        UseYnItems:[{value:'', label:'전체'},{value:0, label:'미사용'},{value:1, label:'사용'}],
         orgSido:'', orgSgg:'', orgCode:'', 
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedOrgNm:'', selectedPhoneNumber:'',
 
         selectedUpdateSidoItems:'', selectedUpdateSggItems:'', selectedUpdateOrgItems:'',
         selectedUpdateOrgNm:'', selectedUpdatePhoneNumber:'', selectedUpdateTypeCd:'', selectedUpdateUpperOrgId:'',
-        selectedUpdateZipcodeCd:'', selectedUpdateAddr:'', selectedUpdateDetailAddr:'',
+        selectedUpdateZipcode:'', selectedUpdateAddr:'', selectedUpdateDetailAddr:'',
         selectedUpdateUpdDUser:'',selectedUpdateUpdDtime:'',
 
         selectedDetailSidoItems:'', selectedDetailSggItems:'', selectedDetailOrgItems:'',
         selectedDetailOrgNm:'', selectedDetailPhoneNumber:'', selectedDetailTypeCd:'', selectedDetailUpperOrgId:'',
-        selectedDetailZipcodeCd:'', selectedDetailAddr:'', selectedDetailDetailAddr:'',
-        selectedDetailUpdDUser:'',selectedDetailUpdDtime:'',
+        selectedDetailZipcode:'', selectedDetailAddr:'', selectedDetailDetailAddr:'',
+        selectedDetailUpdDUser:'',selectedDetailUpdDtime:'', selectedDetailUseYn:'',
         
 
         selectedChangeSidoItems:'', selectedChangeSggItems:'', selectedChangeOrgItems:'',
         selectedChangeOrgNm:'', selectedChangePhoneNumber:'', selectedChangeTypeCd:'', selectedChangeUpperOrgId:'',
         selectedChangeZipcodeCd:'', selectedChangeAddr:'', selectedChangeDetailAddr:'',
-        selectedChangeUpdDUser:'',selectedChangeUpdDtime:'',
+        selectedChangeUpdDUser:'',selectedChangeUpdDtime:'', selectedChangeUseYn:'',
 
         selectDetailsido:'',selectDetailSgg:'',selectDetailOrg:'',
         selectedAddr: '', selectedAddrDetail: '',
@@ -426,6 +450,8 @@ export default {
         saveChangeData: null,
         detailOrgId: '',
         detailArr: [],
+
+        zipCode: null,selectedAddr: null, selectedAddrDetail: null, selectUserData: null,
       }
     },
     created(){
@@ -525,7 +551,7 @@ export default {
         console.log(this.upperOrgItems)
     },
     getUpperOrgData(){
-      let url =this.$store.state.serverApi + "/admin/organizations/all";
+      let url =this.$store.state.serverApi + "/admin/organizations/all?pageIndex=1&recordCountPerPage=100";
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           const tmpArr = [{label: '전체', value: ''}];
@@ -540,21 +566,21 @@ export default {
             });
           } 
           for(let i =0; i<tmpArr.length; i++){
-            this.orgId = tmpArr[i].value
+            this.updateOrgId = tmpArr[i].value
           }
           let num = 0
           while(true){
-            let found = this.orgId.indexOf("0", num);
+            let found = this.updateOrgId.indexOf("0", num);
             if(found === -1){
               break;
             }
             num = found+1;
           }
-          let string = this.orgId.substring(0,num)
-          let changenum = this.orgId.substring(num)
+          let string = this.updateOrgId.substring(0,num)
+          let changenum = this.updateOrgId.substring(num)
           num = Number(changenum)+1
           num = String(num)
-          this.orgId = string + num
+          this.updateOrgId = string + num
           
           tmpResult1=tmpArr.filter(cd=>{
             return cd.value2 === 'TPE001'
@@ -607,7 +633,7 @@ export default {
           .then(response => {
             this.TorgItems = response.data.data
             console.log(this.TorgItems[0])
-            
+            console.log(this.orgId)
           })          
           .catch(error => {
             this.errorMessage = error.message;
@@ -638,7 +664,7 @@ export default {
       this.selectedUpdatePhoneNumber=''
       this.selectedUpdateTypeCd=''
       this.selectedUpdateUpperOrgId=''
-      this.selectedUpdateZipcodeCd=''
+      this.selectedUpdateZipcode=''
       this.selectedUpdateAddr=''
       this.selectedUpdateDetailAddr=''
       this.selectedUpdateUpdDUser=''
@@ -646,10 +672,10 @@ export default {
       this.writeOrg = true
     }, 
     detailOrgpopup(index){
-      this.selectedDetailUpdDUser
       
-
+      // this.selectedDetailUpdDUser
       this.detailArr = this.TorgItems[index]
+      this.selectUserData = this.TorgItems[index]
       let upperorg=this.detailArr.upperOrgId
       this.upperOrgNm = this.upperOrgItems.filter(cd=>{
         return cd.value === upperorg
@@ -661,39 +687,175 @@ export default {
       this.selectedDetailPhoneNumber=''
       this.selectedDetailTypeCd=''
       this.selectedDetailUpperOrgId=''
-      this.selectedDetailZipcodeCd=''
+      this.selectedDetailZipcode=''
       this.selectedDetailAddr=''
       this.selectedDetailDetailAddr=''
       this.selectedDetailUpdDtime = ''
+      this.selectedDetailUseYn = ''
 
-      this.selectedChangeSidoItems=this.selectedDetailSidoItems=this.detailArr.sidoName
-      this.selectedChangeSggItems=this.selectedDetailSggItems=this.detailArr.sggName
-      this.selectedChangeOrgItems=this.selectedDetailOrgItems=this.detailArr.orgNm
-      this.selectedChangeOrgNm=this.selectedDetailOrgNm=this.detailArr.orgNm
-      this.selectedChangePhoneNumber=this.selectedDetailPhoneNumber=this.detailArr.phoneNumber
+      this.selectedDetailSidoItems=this.detailArr.sidoName
+      this.selectedDetailSggItems=this.detailArr.sggName
+      this.selectedDetailOrgItems=this.detailArr.orgNm
+      this.selectedDetailOrgNm=this.detailArr.orgNm
+      this.selectedDetailPhoneNumber=this.detailArr.phoneNumber
       this.selectedDetailTypeCd=this.detailArr.typeNm
       this.selectedDetailUpperOrgId=this.upperOrgNm[0].label
-      this.selectedChangeZipcodeCd=this.selectedDetailZipcodeCd=this.detailArr.zipcodeCd
-      this.selectedChangeAddr=this.selectedDetailAddr=this.detailArr.addr
-      this.selectedChangeDetailAddr=this.selectedDetailDetailAddr=this.detailArr.addrDetail
+      this.selectedDetailZipcode=this.detailArr.zipCode
+      this.selectedDetailAddr=this.detailArr.addr
+      this.selectedDetailDetailAddr=this.detailArr.addrDetail
       this.selectedDetailUpdDtime=this.detailArr.updDtime.substring(0,10)
+      this.selectedDetailUseYn=this.chnageUseYn(this.detailArr.useYn)
+
+      this.orgId = this.detailArr.orgId
 
       this.detailOrg = true
       
     },
-    changeOrgSuccess(){
-      alert("성공적으로 변경되었습니다")
-      this.changeOrg = false
-      this.detailOrg = true
+    changeOrgFormat(){
+      
+      console.log(this.selectUserData)
+      this.selectedChangeSidoItems = ''
+      this.selectedChangeSggItems = ''
+      this.selectedChangeOrgItems = ''
+      this.selectedChangePhoneNumber = this.selectUserData.phoneNumber
+      this.selectedChangeTypeCd = this.selectUserData.typeCd
+      this.selectedChangeUpperOrgId = this.selectUserData.upperOrgId
+      this.selectedChangeZipcodeCd = this.selectUserData.zipCode
+      this.selectedChangeAddr = this.selectUserData.addr
+      this.selectedChangeDetailAddr = this.selectUserData.addrDetail
+      this.selectedChangeUseYn = this.selectUserData.useYn
+      this.changeOrg = true
+    },
+    async changeOrgSuccess(){
+      let uri =this.$store.state.serverApi + "/admin/organizations/all?pageIndex=1&recordCountPerPage=100";
+      await axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          this.orgmItems2=[];
+          console.log("upper ok")
+          for(let i=0; i<response.data.data.length; i++) {
+            this.orgmItems2.push({
+              label: response.data.data[i].orgNm,
+              value: response.data.data[i].orgId,
+              value2: response.data.data[i].typeCd,
+              value3: response.data.data[i].typeNm,
+              sidoName: response.data.data[i].sidoName,
+              sggName: response.data.data[i].sggName
+            });
+          }
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+
+      if(this.selectedChangeOrgItems === ''){
+        this.sidoName = this.orgmItems2.filter(cd=>{
+          return cd.sidoName === '세종특별자치시'
+        })
+        this.sggName = this.orgmItems2.filter(cd=>{
+          return cd.sggName === '세종특별자치구'
+        })
+        this.orgNm = this.orgmItems2.filter(cd=>{
+          return cd.value === 'ORG0000001'
+        })
+        this.orgNm2 = this.orgmItems2.filter(cd=>{
+          return cd.value === 'ORG0000001'
+        })
+        this.selectedChangeTypeCd = 'TPE001'
+        this.selectedChangeOrgItems = ''
+        this.typeNm = '관리기관'
+      }else{
+        this.sidoName = this.sidoItems.filter(cd=>{
+        return cd.value === this.selectedChangeSidoItems
+        })
+        this.sggName = this.sggItems.filter(cd=>{
+          return cd.value === this.selectedChangeSggItems
+        })
+        this.orgNm = this.orgmItems2.filter(cd=>{
+          return cd.value === this.selectedChangeOrgItems
+        })
+        this.orgNm2 = this.orgmItems2.filter(cd=>{
+          return cd.value === this.selectedChangeOrgItems && cd.value2 === this.selectedChangeTypeCd
+        })
+        this.typeNm = this.orgTypeItems.filter(cd=>{
+        return cd.value === this.selectedChangeTypeCd
+      })
+      }
+      
+      if(this.selectedChangeTypeCd === 'TPE001' && this.orgNm2.length !== 0){
+        alert("이미 등록된 관리기관 입니다.")
+        return false
+      }
+
+      console.log(this.sidoName)
+
+      let data = {
+        sidoName:this.sidoName[0].label,
+        addrCd:this.selectedChangeSggItems,
+        sggName:this.sggName[0].label,
+        orgId:this.orgNm[0].value,
+        orgNm:this.orgNm[0].label,
+        phoneNumber:this.selectedChangePhoneNumber,
+        typeCd:this.selectedChangeTypeCd,
+        typeNm:this.typeNm[0].label,
+        upperOrgId:this.selectedChangeUpperOrgId,
+        zipcodeCd:this.selectedChangeZipcodeCd,
+        addr:this.selectedChangeAddr,
+        addrDetail:this.selectedChangeDetailAddr,
+        useYn:this.selectedChangeUseYn
+      }
+      console.log(data)
+
+      let url = this.$store.state.serverApi+`/admin/organizations/${this.orgId}`
+      axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            let resData = res.data.data
+            console.log(resData)
+            if(resData){
+              alert("성공적으로 변경되었습니다")
+              this.getTorgData()
+              this.changeOrg = false
+              this.detailOrg = false
+            }
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+
+
+      
+      
     },
     deleteOrgFail(){
       alert("취소되었습니다")
       this.deleteOrg = false
     },
-    deleteOrgSuccess(){
-      alert("성공적으로 삭제되었습니다")
-      this.deleteOrg = false
-      this.detailOrg = false
+    async deleteOrgSuccess(){
+      let url = this.$store.state.serverApi+`/admin/organizations/${this.orgId}`
+      console.log(this.orgId)
+      console.log(url)
+      await axios.delete(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+           .then(res => {
+             console.log(res.data.data)
+            let resData = res.data.data
+            console.log(resData)
+            if(resData){
+              alert("성공적으로 삭제되었습니다")
+              this.writeOrg = false
+              this.deleteOrg = false
+              this.detailOrg = false
+              this.getTorgData()
+            }
+           })
+           .catch(error => {
+               console.log("fail to load")
+             this.errorMessage = error.message;
+             console.error("There was an error!", error);
+           });
+      this.getTorgData()
+
     },
     async uploadData(){
       this.$store.state.userId = sessionStorage.getItem("userId")
@@ -719,9 +881,10 @@ export default {
       this.typeNm = this.orgTypeItems.filter(cd=>{
         return cd.value === this.selectedUpdateTypeCd
       })
+      
       console.log(this.orgNm)
 
-      let uri =this.$store.state.serverApi + "/admin/organizations/all";
+      let uri =this.$store.state.serverApi + "/admin/organizations/all?pageIndex=1&recordCountPerPage=100";
       await axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           this.orgmItems2=[];
@@ -740,52 +903,154 @@ export default {
         });
 
         console.log(this.orgmItems2)
-      if(this.selectedUpdateSidoItems === '' || this.selectedUpdateSggItems === '' || this.selectedUpdateOrgItems === ''){
+      if(this.selectedUpdateOrgItems === ''){
         this.orgNm = this.orgmItems2.filter(cd=>{
           return cd.value === 'ORG0000001'
         })
-        this.selectedUpdateOrgItems === null
+        this.orgNm2 = this.orgmItems2.filter(cd=>{
+          return cd.value === 'ORG0000001'
+        })
+        this.selectedUpdateTypeCd = 'TPE001'
+        this.typeNm = '관리기관'
+        this.selectedUpdateOrgItems = ''
       }else{
         this.orgNm = this.orgmItems2.filter(cd=>{
           return cd.value === this.selectedUpdateOrgItems
         })
+        this.orgNm2 = this.orgmItems2.filter(cd=>{
+          return cd.value === this.selectedUpdateOrgItems && cd.value2 === this.selectedUpdateTypeCd
+        })
       }
-      console.log(this.orgNm)
+      console.log(this.orgNm2)
+      console.log(this.selectedUpdateTypeCd)
+      if(this.selectedUpdateTypeCd === 'TPE001' && this.orgNm2.length !== 0){
+        alert("이미 등록된 관리기관 입니다.")
+        return false
+      }
 
       let data = {
         sidoName:this.sidoName[0].label,
         addrCd:this.selectedUpdateSggItems,
         sggName:this.sggName[0].label,
-        orgId:this.orgId,
+        orgId:this.updateOrgId,
         orgNm:this.orgNm[0].label,
         phoneNumber:this.selectedUpdatePhoneNumber,
         typeCd:this.selectedUpdateTypeCd,
         typeNm:this.typeNm[0].label,
         upperOrgId:this.selectedUpdateUpperOrgId,
-        zipcodeCd:this.selectedUpdateZipcodeCd,
+        zipcodeCd:this.selectedUpdateZipcode,
         addr:this.selectedUpdateAddr,
         addrDetail:this.selectedUpdateDetailAddr,
       }
       console.log(data)
 
-       let url = this.$store.state.serverApi+`/admin/organizations`
-       axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-           .then(res => {
-             let resData = res.data.data
-             console.log(resData)
-             if(resData){
-               alert("성공적으로 등록되었습니다")
-               this.writeOrg = false
-               this.getTorgData()
-             }
-           })
-           .catch(error => {
-               console.log("fail to load")
-             this.errorMessage = error.message;
-             console.error("There was an error!", error);
-           });
+      let url = this.$store.state.serverApi+`/admin/organizations`
+      axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+         .then(res => {
+           let resData = res.data.data
+           console.log(resData)
+           if(resData){
+             alert("성공적으로 등록되었습니다")
+             this.writeOrg = false
+             this.getTorgData()
+           }
+         })
+         .catch(error => {
+             console.log("fail to load")
+           this.errorMessage = error.message;
+           console.error("There was an error!", error);
+         });
+    },
+    changeRecipientPhoneno(phone){
+        if(phone){
+            let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+            return changeNumber
+        }else{
+            return ''
+        }
+    },
+    chnageUseYn(useYn){
+      // switch(value){
+      //   case 0 : return '미사용'; break;
+      //   case 1 : return '사용'; break;
+      // }
+      if(useYn){
+        if(useYn === '0'){
+          return '미사용'
+        }else{
+          return '사용'
+        }
+      }
+    },
+    search(){ 
+    //여기
+    //@click을 사용할 때 함수는 이렇게 작성해야 한다.
+    new window.daum.Postcode({
+    oncomplete: (data) => { //function이 아니라 => 로 바꿔야한다.
+        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+        // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+        var roadAddr = data.roadAddress; // 도로명 주소 변수
+        var extraRoadAddr = ''; // 참고 항목 변수
+
+        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+            extraRoadAddr += data.bname;
+        }
+        // 건물명이 있고, 공동주택일 경우 추가한다.
+        if(data.buildingName !== '' && data.apartment === 'Y'){
+            extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+        }
+        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+        if(extraRoadAddr !== ''){
+            extraRoadAddr = ' (' + extraRoadAddr + ')';
+        }
+
+        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+        
+        this.selectedUpdateZipcode = data.zonecode; //
+        this.selectedChangeZipcodeCd = data.zonecode;
+        this.selectedUpdateAddr = data.roadAddress;
+        this.selectedChangeAddr = data.roadAddress;
+//        this.selectedAddr = data.jibunAddress;
+        
+        // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+        if(roadAddr !== ''){
+            this.selectedUpdateAddr += extraRoadAddr;
+            this.selectedChangeAddr += extraRoadAddr;
+        }
+
+        // var guideTextBox = document.getElementById("guide");
+        // // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+        // if(data.autoRoadAddress) {
+        //     var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+        //     guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+        //     guideTextBox.style.display = 'block';
+
+        // } else if(data.autoJibunAddress) {
+        //     var expJibunAddr = data.autoJibunAddress;
+        //     guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+        //     guideTextBox.style.display = 'block';
+        // } else {
+        //     guideTextBox.innerHTML = '';
+        //     guideTextBox.style.display = 'none';
+        // }
+
+    
     }
-    }
+    }).open();
+    },
+    },
+    mounted(){
+    
+    const script = document.createElement("script");
+    script.src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    
+    document.head.appendChild(script);
+    
+  },
 }
 </script>
 <style>
