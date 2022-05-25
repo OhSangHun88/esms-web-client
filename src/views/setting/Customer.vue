@@ -165,13 +165,13 @@
                           <div class="input_area">
                             <p class="input_tit">사용자ID</p>
                             <div class="add_btn_input">
-                              <input type="text" value="" v-model="selectedDetailUserId">
+                              <input type="text" value="" v-model="selectedDetailUserId" disabled>
                               <!-- <button type="button" class="input_btn" @click="checkId()">ID 중복 체크</button> -->
                             </div>
                           </div>
                           <div class="input_area">
                             <p class="input_tit">이름</p>
-                            <input type="text" value="" v-model="selectedDetailUserNm">
+                            <input type="text" value="" v-model="selectedDetailUserNm" disabled>
                           </div>
                           <!-- <div class="input_area">
                             <p class="input_tit">Password</p>
@@ -188,7 +188,7 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">생년월일</p>
-                            <input type="text" value="" v-model="selectedDetailBirthday">
+                            <input type="text" value="" v-model="selectedDetailBirthday" disabled>
                           </div>
                           <div class="btn_area">
                               <p class="input_tit">성별</p>
@@ -201,7 +201,7 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">이메일</p>
-                            <input type="text" value="" v-model="selectedDetailEmail">
+                            <input type="text" value="" v-model="selectedDetailEmail" disabled>
                           </div>
                           <div class="input_area">
                             <p class="input_tit">휴대폰번호</p>
@@ -212,19 +212,19 @@
                           <div class="input_area">
                             <p class="input_tit">우편번호</p>
                             <div class="add_btn_input">
-                              <input type="text" value="" v-model="selectedDetailAddrNumber">
+                              <input type="text" value="" v-model="selectedDetailAddrNumber" disabled>
                               <!-- <button type="button" class="input_btn">검색</button> -->
                             </div>
                           </div>
                           <div class="input_area">
                             <p class="input_tit">주소</p>
-                            <input type="text" value="" v-model="selectedDetailAddr">
+                            <input type="text" value="" v-model="selectedDetailAddr" disabled>
                           </div>
                         </div>
                         <div class="input_wrap type-02">
                             <div class="input_area" >
                                 <p class="input_tit">상세주소</p>
-                                <input type="text" value="" v-model="selectedDetailDetailAddr">
+                                <input type="text" value="" v-model="selectedDetailDetailAddr" disabled>
                             </div>
                         </div>
                         <!-- <div class="input_wrap">
@@ -240,7 +240,7 @@
                         <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">관리기관</p>
-                                <input type="text" value="" v-model="selectedDetailOrgItems">
+                                <input type="text" value="" v-model="selectedDetailOrgItems" disabled>
                             </div>
                             <!-- <div class="input_area">
                                 <p class="input_tit">관리지역</p>
@@ -251,39 +251,39 @@
                           <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">사용자 구분</p>
-                                <input type="text" value="" v-model="selectedDetailUserType">
+                                <input type="text" value="" v-model="selectedDetailUserType" disabled>
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">재직 상태</p>
-                                <input type="text" value="" v-model="selectedDetailEmployStateCd">
+                                <input type="text" value="" v-model="selectedDetailEmployStateCd" disabled>
                             </div>
                         </div>
                         <!-- <div class="input_wrap col3"> -->
                           <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">부서명</p>
-                                <input type="text" value="" v-model="selectedDetailDeptNm">
+                                <input type="text" value="" v-model="selectedDetailDeptNm" disabled>
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">사무실 전화번호</p>
-                                <input type="text" value="" v-model="selectedDetailPhoneNumber">
+                                <input type="text" value="" v-model="selectedDetailPhoneNumber" disabled>
                             </div>
                         </div>
                         <div class="input_wrap">
                           <div class="input_area">
                               <p class="input_tit">사용자 상태</p>
-                              <input type="text" value="" v-model="selectedDetailUseYn">
+                              <input type="text" value="" v-model="selectedDetailUseYn" disabled>
                           </div>
                         </div>
                         <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">등록자 ID</p>
-                                <input type="text" value="" v-model="selectedDetailRegDUserNm">
+                                <input type="text" value="" v-model="selectedDetailRegDUserNm" disabled>
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">등록 일자</p>
                                 <div class="date_warp">
-                                    <input type="date" v-model="selectedDetailRegDtime">
+                                    <input type="date" v-model="selectedDetailRegDtime" disabled>
                                 </div>
                             </div>
                         </div>

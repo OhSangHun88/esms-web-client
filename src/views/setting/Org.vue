@@ -88,68 +88,68 @@
                       <div class="input_wrap">
                           <div class="input_area">
                               <p class="input_tit">시/도</p>
-                              <input type="text" value="" v-model="selectedDetailSidoItems">
+                              <input type="text" value="" v-model="selectedDetailSidoItems" disabled>
                           </div>
                           <div class="input_area">
                               <p class="input_tit">시/군/구</p>
-                              <input type="text" value="" v-model="selectedDetailSggItems">
+                              <input type="text" value="" v-model="selectedDetailSggItems" disabled>
                           </div>
                       </div>
                       <div class="input_wrap">
                           <div class="input_area">
                               <p class="input_tit">관리기관명</p>
-                              <input type="text" value="" v-model="selectedDetailOrgItems">
+                              <input type="text" value="" v-model="selectedDetailOrgItems" disabled>
                           </div>
                           <div class="input_area">
                               <p class="input_tit">대표 전화번호</p>
-                              <input type="text" value="" v-model="selectedDetailPhoneNumber">
+                              <input type="text" value="" v-model="selectedDetailPhoneNumber" disabled>
                           </div>
                       </div>
                       <div class="input_wrap">
                           <div class="input_area">
                               <p class="input_tit">관리기관 구분</p>
-                              <input type="text" value="" v-model="selectedDetailTypeCd">
+                              <input type="text" value="" v-model="selectedDetailTypeCd" disabled>
                           </div>
                           <div class="input_area">
                               <p class="input_tit">상위기관</p>
-                              <input type="text" value="" v-model="selectedDetailUpperOrgId">
+                              <input type="text" value="" v-model="selectedDetailUpperOrgId" disabled>
                           </div>
                       </div>
                       <div class="input_wrap">
                           <div class="input_area">
                               <p class="input_tit">기관 상태</p>
-                              <input type="text" value="" v-model="selectedDetailUseYn">
+                              <input type="text" value="" v-model="selectedDetailUseYn" disabled>
                           </div>
                       </div>
                       <div class="input_wrap">
                         <div class="input_area">
                           <p class="input_tit">우편번호</p>
                           <div class="add_btn_input">
-                            <input type="text" value="" v-model="selectedDetailZipcode">
+                            <input type="text" value="" v-model="selectedDetailZipcode" disabled>
                           </div>
                         </div>
                       </div>
                       <div class="input_wrap type-02">
                           <div class="input_area">
                           <p class="input_tit">주소</p>
-                          <input type="text" value="" v-model="selectedDetailAddr">
+                          <input type="text" value="" v-model="selectedDetailAddr" disabled>
                         </div>
                       </div> 
                       <div class="input_wrap type-02">
                           <div class="input_area" >
                               <p class="input_tit">상세주소</p>
-                              <input type="text" value="" v-model="selectedDetailDetailAddr">
+                              <input type="text" value="" v-model="selectedDetailDetailAddr" disabled>
                           </div>
                       </div>                 
                       <div class="input_wrap">
                           <div class="input_area">
                               <p class="input_tit">등록자 ID</p>
-                              <input type="text" value="" v-model="selectedDetailUpdDUser">
+                              <input type="text" value="" v-model="selectedDetailUpdDUser" disabled>
                           </div>
                           <div class="input_area">
                               <p class="input_tit">등록자 일시</p>
                               <div class="date_warp">
-                                  <input type="date" v-model="selectedDetailUpdDtime">
+                                  <input type="date" v-model="selectedDetailUpdDtime" disabled>
                               </div>
                           </div>
                       </div>
