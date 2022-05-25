@@ -495,7 +495,7 @@ export default {
       selectedPhoneNumber: null,userSido: null,userSigungu: null,userOrg: null,
       selectedUserOrg: null, userState:[{value:'STE001', text: '승인'},{value:'STE002', text: '서비스중'},{value:'STE003', text: '서비스종료'},],
       selectedRecipeType: null, recipeType:[{value:'TPE001', text: '고령자'},{value:'TPE002', text: '장애인'},],
-      userGender: 0 ,
+      userGender: 1 ,
     }
   },
   created() {
@@ -803,11 +803,11 @@ export default {
       let data= {
         activeUnsensingCycle: 60,//완
         addr: this.selectedAddr,//완
-        addrCd: "1168010800",
+        addrCd: "1168010800",//이부분 진행해야함
         addrDetail: this.selectedAddrDetail,//완
         addrXCoordinate: "",//완
         addrYCoordinate: "",//완
-        birthday: this.$moment(this.selectBirthday).format('YYYYMMDD'),//완, yyyymmdd
+        birthday: this.$moment(this.selectBirthday).format('YYYY-MM-DD'),//완, yyyymmdd
         careLevelCd: "LVL001",//고정
         installFileNo: "1", //우선 고정
         measureCycle: 240,//완
@@ -817,31 +817,38 @@ export default {
         recipientPhoneno: this.selectedPhoneNumber,//완
         sex: this.userGender===1?"M":this.userGender===2?"F":"", //완
         sigunguCd: this.userSigungu,//완
-        stateCd: this.selectedRecipeType, //완
-        typeCd: "TPE001",//고정
+        stateCd: "STE001" , //완
+        typeCd: this.selectedRecipeType,//고정
         zipCode: this.zipCode,//완
         regId: this.$store.state.userId//완
       }
       console.log(data)
       
-      // const url  = this.$store.state.serverApi + `/admin/recipients`
-      //   // /sensors/{sensorId}/gw-send-cycle
-      //   axios.post(url,data,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-      //     .then(res => {
-      //       let resData = res.data.data
-      //       console.log(resData)
-      //       // this.getCSensorsData = res.data.data
-      //       // console.log("sensors ")
-      //       // console.log(this.getCSensorsData)
-      //       if(resData){
-      //           alert("저장이 완료되었습니다.")
-      //       }
-      //     })
-      //     .catch(error => {
-      //         console.log("fail to load")
-      //       this.errorMessage = error.message;
-      //       console.error("There was an error!", error);
-      //     });
+       const url  = this.$store.state.serverApi + `/admin/recipients`
+         // /sensors/{sensorId}/gw-send-cycle
+         axios.post(url,data,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+           .then(res => {
+             let resData = res.data.data
+             console.log(resData)
+            // this.getCSensorsData = res.data.data
+             // console.log("sensors ")
+             // console.log(this.getCSensorsData)
+             if(resData){
+                 alert("저장이 완료되었습니다.")
+             }
+             this.selectedAddr = null
+             this.selectedAddrDetail = null
+             this.selectBirthday = null
+             this.userOrg = null
+             this.selectRecipient = null
+             this.selectedPhoneNumber = null
+
+           })
+           .catch(error => {
+               console.log("fail to load")
+             this.errorMessage = error.message;
+             console.error("There was an error!", error);
+           });
     },
 
     // getPartData() {
