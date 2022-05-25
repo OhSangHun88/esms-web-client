@@ -161,14 +161,24 @@
                                 <col style="width:20%;">
                                 <col style="width:20%;">
                             </colgroup>
-                            <tbody>
+                            <tbody v-if="!this.getCSensorsData">
+                                <tr >
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                            <tbody v-else>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index,0)">
                                     <td>{{index+1}}</td>
-                                    <td>{{!this.getCSensorsData? '' :item.sensorTypeNm}}</td>
-                                    <td>{{!this.getCSensorsData? '' :locationCode(item.sensorLocCd)}}</td>
-                                    <td>{{!this.getCSensorsData? '' :item.sensorVersion}}</td>
-                                    <td>{{!this.getCSensorsData? '' :item.serialNo}}</td>
-                                    <td>{{!this.getCSensorsData? '' :item.macAddr}}</td>
+                                    <td>{{item.sensorTypeNm}}</td>
+                                    <td>{{locationCode(item.sensorLocCd)}}</td>
+                                    <td>{{item.sensorVersion}}</td>
+                                    <td>{{item.serialNo}}</td>
+                                    <td>{{item.macAddr}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -209,15 +219,26 @@
                                 <col style="width:16%;">
                                 <col style="width:16%;">
                             </colgroup>
-                            <tbody>
+                            <tbody v-if="!this.getCSensorsData">
+                                <tr >
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                            <tbody v-else>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" >
-                                    <td>{{!this.getCSensorsData? '' :index+1}}</td>
-                                    <td>{{!this.getCSensorsData? '' :item.sensorTypeNm}}</td>
-                                    <td>{{!this.getCSensorsData? '' :item.previousVersion}}</td>
-                                    <td>{{!this.getCSensorsData? '' :item.sensorVersion}}</td>
-                                    <td>{{!this.getCSensorsData? '' :item.incomeNm}}</td>
-                                    <td>{{!this.getCSensorsData? '' :item.incomeDtime}}</td>
-                                    <td>{{!this.getCSensorsData? '' :item.regDtime}}</td>
+                                    <td>{{index+1}}</td>
+                                    <td>{{item.sensorTypeNm}}</td>
+                                    <td>{{item.previousVersion}}</td>
+                                    <td>{{item.sensorVersion}}</td>
+                                    <td>{{item.incomeNm}}</td>
+                                    <td>{{item.incomeDtime}}</td>
+                                    <td>{{item.regDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -455,27 +476,37 @@ import axios from "axios";
      }
    },
    created() {
-    this.pending=false;
+    
     this.getCSensers();
     this.getCGateway();
     this.getCTablets();
+    
+    console.log("bbbbbbbbbb")
+    console.log(this.getCSensorsData)
+    
+    
+    
     //this.getBeforeVersionSensors(this.tmpIdx);
     //this.getBeforeVersionTablets();
     //this.getBeforeVersionGateway();
   },
   methods: {
-      async getCSensers(){
-      const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30` 
-        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      delay(){
+          this.pending = true
+      },
+       async getCSensers(){
+           this.pending = false;
+           let tmpData = null;
+        const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30` 
+         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
-            this.getCSensorsData = res.data.data
-            console.log("sensors ")
+            tmpData = res.data.data
+            this.getCSensorsData = tmpData
+            this.getBSensorsData = tmpData[0]
+            console.log("aaaaaaaa ")
             console.log(this.getCSensorsData)
-            this.getBSensorsData = this.getCSensorsData[0]
-            console.log("sensors ")
-            console.log(this.getCSensorsData)
-
-            if(this.getCSensorsData.length===0){alert("연결된 센서가 존재하지 않습니다")}
+            
+            
 
           })
           .catch(error => {
@@ -483,9 +514,12 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
+          this.getCSensorsData = tmpData
           console.log("pending false")
-          this.pending=true;
+          console.log(this.getCSensorsData)
           console.log("pending true")
+          setTimeout(this.delay, 2000)
+          
     },
     getBSensers(input,time){
         if(!input) input =0;
@@ -499,9 +533,10 @@ import axios from "axios";
         console.log(this.getBSensorsData)
     },
     
-    async getCGateway(){
+     getCGateway(){
+         this.pending = false;
         const url  = this.$store.state.serverApi + `/admin/gateways/recipient/${this.recipientId}`
-        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+         axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.getCGatewayData = res.data.data
             console.log("getCGatewayData ")
@@ -513,10 +548,12 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
+          setTimeout(this.delay, 1000)
     },
-    async getCTablets(){
+     getCTablets(){
+         this.pending = false;
       const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets`
-        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+         axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.getCTabletsData = res.data.data
             console.log("태블릿")
@@ -528,65 +565,66 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
+          setTimeout(this.delay, 1000)
     },
     //현재버전 센서 호출
     getNowToggle(){
         this.beforeToggle= 0
     },
     //이전버전 센서 호출
-    async getBeforeVersionSensors(){
-        console.log("aa")
-        this.beforeToggle =1
-        this.tmpIdx = this.getCSensorsData[0];
-        console.log(this.getBSensorsData.sensorId)
-      const url  = this.$store.state.serverApi + `/admin/recipients/sensors/statehistory?sensorId=${this.getBSensorsData.sensorId}`
-        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(res => {
-            this.beforeVersionSensorsData = res.data.data
-            console.log("이전버전센서")
-            console.log(this.beforeVersionSensorsData)
-        })
-          .catch(error => {
-              console.log("fail to load")
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-        });
-    },
-    async getBeforeVersionTablets(){
-        this.tmpIdx = this.getCSensorsData[0].sensorId;
-        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets/states`
-            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-            .then(res => {
-                this.beforeVersionTabletsData = res.data.data
-                console.log("이전버전태블릿")
-                console.log(this.beforeVersionTabletsData)
-            })
-            .catch(error => {
-                console.log("fail to load")
-                this.errorMessage = error.message;
-                console.error("There was an error!", error);
-            });
-    },
-    async getBeforeVersionGateway(){
-        this.tmpIdx = this.getCSensorsData[0].sensorId;
-        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/gateways/states`
-            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-            .then(res => {
-                this.beforeVersionGatewayData = res.data.data
-                console.log("이전버전게이트웨이")
-                console.log(this.beforeVersionGatewayData)
-            })
-            .catch(error => {
-                console.log("fail to load")
-                this.errorMessage = error.message;
-                console.error("There was an error!", error);
-            });
-    },  
+    // async getBeforeVersionSensors(){
+    //     console.log("aa")
+    //     this.beforeToggle =1
+    //     this.tmpIdx = this.getCSensorsData[0];
+    //     console.log(this.getBSensorsData.sensorId)
+    //   const url  = this.$store.state.serverApi + `/admin/recipients/sensors/statehistory?sensorId=${this.getBSensorsData.sensorId}`
+    //     await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+    //       .then(res => {
+    //         this.beforeVersionSensorsData = res.data.data
+    //         console.log("이전버전센서")
+    //         console.log(this.beforeVersionSensorsData)
+    //     })
+    //       .catch(error => {
+    //           console.log("fail to load")
+    //         this.errorMessage = error.message;
+    //         console.error("There was an error!", error);
+    //     });
+    // },
+    // async getBeforeVersionTablets(){
+    //     this.tmpIdx = this.getCSensorsData[0].sensorId;
+    //     const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets/states`
+    //         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+    //         .then(res => {
+    //             this.beforeVersionTabletsData = res.data.data
+    //             console.log("이전버전태블릿")
+    //             console.log(this.beforeVersionTabletsData)
+    //         })
+    //         .catch(error => {
+    //             console.log("fail to load")
+    //             this.errorMessage = error.message;
+    //             console.error("There was an error!", error);
+    //         });
+    // },
+    // async getBeforeVersionGateway(){
+    //     this.tmpIdx = this.getCSensorsData[0].sensorId;
+    //     const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/gateways/states`
+    //         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+    //         .then(res => {
+    //             this.beforeVersionGatewayData = res.data.data
+    //             console.log("이전버전게이트웨이")
+    //             console.log(this.beforeVersionGatewayData)
+    //         })
+    //         .catch(error => {
+    //             console.log("fail to load")
+    //             this.errorMessage = error.message;
+    //             console.error("There was an error!", error);
+    //         });
+    // },  
     dataTogle(value){
         switch (value){
-          case 1 : this.connectTap=1;if(this.getCSensorsData.length===0){alert("연결된 센서가 존재하지 않습니다")};break;
-          case 2 : this.connectTap=2;if(!this.getCGatewayData){alert("연결된 게이트웨이가 존재하지 않습니다")};break;
-          case 3 : this.connectTap=3;if(!this.getCTabletsData){alert("연결된 태블릿이 존재하지 않습니다")};break;
+          case 1 : this.connectTap=1;break;
+          case 2 : this.connectTap=2;break;
+          case 3 : this.connectTap=3;break;
 
       }
     },
