@@ -63,7 +63,7 @@
                                         <td >설정 값(분)</td>
                                         <td>
                                             <div class="input_area">
-                                                <input type="text" name="gatewaySendTime" id="gatewaySendTime" :value="this.getCGatewayData.stateSendCycle">
+                                                <input type="text" name="gatewaySendTime" id="gatewaySendTime" :value="!this.getCGatewayData? 0: this.getCGatewayData.stateSendCycle">
                                             </div>
                                         </td>
                                         <td >변경 값(분)</td>
@@ -120,7 +120,17 @@
                                 <col style="width:24%;">
                                 <col style="width:24%;">
                             </colgroup>
-                            <tbody>
+                            <tbody v-if="!getCSensorsData">
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                            <tbody v-else>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index">
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="chk_area radio">
@@ -192,7 +202,17 @@
                                 <col style="width:26%;">
                                 <col style="width:26%;">
                             </colgroup>
-                            <tbody>
+                            <tbody v-if="!getCSensorsData">
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                            <tbody v-else>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index">
                                     <td>
                                         <div class="chk_area radio">
