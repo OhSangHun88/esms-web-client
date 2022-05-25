@@ -50,7 +50,17 @@
                                 <col style="width:16%;">
                                 <col style="width:17%;">
                             </colgroup>
-                            <tbody>
+                            <tbody v-if="!this.getCTabletsData">
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                            <tbody v-else>
                                 <tr>
                                     <td>{{changeRecipientPhoneno(this.getCTabletsData.phoneNumber)}}</td>
                                     <td>{{this.getCTabletsData.provider}}</td>
@@ -518,7 +528,7 @@ import axios from "axios";
           console.log("pending false")
           console.log(this.getCSensorsData)
           console.log("pending true")
-          setTimeout(this.delay, 2000)
+          setTimeout(this.delay, 1500)
           
     },
     getBSensers(input,time){

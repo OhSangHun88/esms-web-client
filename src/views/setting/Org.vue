@@ -831,7 +831,7 @@ export default {
       console.log(this.selectUserData)
       this.selectedChangeSidoItems = ''
       this.selectedChangeSggItems = ''
-      this.selectedChangeOrgItems = ''
+      this.selectedChangeOrgItems = this.selectUserData.orgNm
       this.selectedChangePhoneNumber = this.selectUserData.phoneNumber
       this.selectedChangeTypeCd = this.selectUserData.typeCd
       this.selectedChangeUpperOrgId = this.selectUserData.upperOrgId
