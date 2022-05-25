@@ -18,18 +18,18 @@
                             </div>
                           </div>
                           <div class="input_area">
-                            <p class="input_tit">Password</p>
-                            <input type="text"  v-model="selectedUpdatePassword" />
+                            <p class="input_tit">이름</p>
+                            <input type="text" value="" v-model="selectedUpdateUserNm">
                           </div>
                         </div>
                         <div class="input_wrap">
                           <div class="input_area">
-                            <p class="input_tit">Password 확인</p>
-                            <input type="text" value="">
+                            <p class="input_tit">Password</p>
+                            <input type="password"  v-model="selectedUpdatePassword" />
                           </div>
                           <div class="input_area">
-                            <p class="input_tit">이름</p>
-                            <input type="text" value="" v-model="selectedUpdateUserNm">
+                            <p class="input_tit">Password 확인</p>
+                            <input type="password" value="" v-model="selectedUpdatePasswordCheck" />
                           </div>
                         </div>
                         <div class="input_wrap">
@@ -55,7 +55,7 @@
                           </div>
                           <div class="input_area">
                             <p class="input_tit">휴대폰번호</p>
-                            <input type="text" value="" v-model="selectedUpdateMobileNumber">
+                            <input type="text" v-model="selectedUpdateMobileNumber"  >
                           </div>
                         </div>
                         <div class="input_wrap">
@@ -98,12 +98,12 @@
                                   <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                 </select>
                             </div>
-                            <div class="input_area">
+                            <!-- <div class="input_area">
                                 <p class="input_tit">관리지역</p>
                                 <select v-model="selectedUpdateChargeRegion">
                                   <option v-for="(charge, index) in chargeRegionItems" :value="charge.value" v-bind:key="index">{{charge.label}}</option>
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- <div class="input_wrap col3"> -->
                           <div class="input_wrap">
@@ -205,7 +205,7 @@
                           </div>
                           <div class="input_area">
                             <p class="input_tit">휴대폰번호</p>
-                            <input type="text" value="" v-model="selectedDetailMobileNumber">
+                            <input type="text" value="" v-model="selectedDetailMobileNumber" disabled />
                           </div>
                         </div>
                         <div class="input_wrap">
@@ -242,10 +242,10 @@
                                 <p class="input_tit">관리기관</p>
                                 <input type="text" value="" v-model="selectedDetailOrgItems">
                             </div>
-                            <div class="input_area">
+                            <!-- <div class="input_area">
                                 <p class="input_tit">관리지역</p>
                                 <input type="text" value="" v-model="selectedDetailChargeRegion">
-                            </div>
+                            </div> -->
                         </div>
                         <!-- <div class="input_wrap col3"> -->
                           <div class="input_wrap">
@@ -281,7 +281,7 @@
                                 <input type="text" value="" v-model="selectedDetailRegDUserNm">
                             </div>
                             <div class="input_area">
-                                <p class="input_tit">등록자 일시</p>
+                                <p class="input_tit">등록 일자</p>
                                 <div class="date_warp">
                                     <input type="date" v-model="selectedDetailRegDtime">
                                 </div>
@@ -312,19 +312,20 @@
                             </div>
                           </div>
                           <div class="input_area">
-                            <p class="input_tit">Password</p>
-                            <input type="password" value="" v-model="selectedChangePassword">
-                          </div>
-                        </div>
-                        <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">Password 확인</p>
-                            <input type="password" value="">
-                          </div>
-                          <div class="input_area">
                             <p class="input_tit">이름</p>
                             <input type="text" value="" v-model="selectedChangeUserNm">
                           </div>
+                          <!-- <div class="input_area">
+                            <p class="input_tit">Password</p>
+                            <input type="password" value="" v-model="selectedChangePassword">
+                          </div> -->
+                        </div>
+                        <div class="input_wrap">
+                          <!-- <div class="input_area">
+                            <p class="input_tit">Password 확인</p>
+                            <input type="password" value="">
+                          </div> -->
+                          
                         </div>
                         <div class="input_wrap">
                           <div class="input_area">
@@ -392,12 +393,12 @@
                                   <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                                 </select>
                             </div>
-                            <div class="input_area">
+                            <!-- <div class="input_area">
                                 <p class="input_tit">관리지역</p>
                                 <select v-model="selectedChangeChargeRegion">
                                   <option v-for="(charge, index) in chargeRegionItems" :value="charge.value" v-bind:key="index">{{charge.label}}</option>
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- <div class="input_wrap col3"> -->
                           <div class="input_wrap">
@@ -600,6 +601,7 @@
 				</div>
             </div>
         </div>
+        
     </div>
 </template>
 <style lang="scss">
@@ -632,7 +634,7 @@ export default {
         selectedUpdateAddr:'', selectedUpdateDetailAddr:'', selectedUpdateSidoItems:'', selectedUpdateSggItems:'', 
         selectedUpdateOrgItems:'', selectedUpdateChargeRegion:'', selectedUpdateUserType:'', selectedUpdateDeptNm:'',
         selectedUpdatePhoneNumber:'', selectedUpdateRegDUserNm:'', selectedUpdateRegDtime:'', selectedUpdateEmployStateCd:'',
-        selectedUpdateUseYn:1,
+        selectedUpdateUseYn:1, selectedUpdatePasswordCheck:'',
 
         
         selectedDetailUserNm:'', selectedDetailBirthday:'', selectedDetailMobileNumber:'', selectedDetailSex:'',
@@ -647,7 +649,7 @@ export default {
         selectedChangeAddr:'', selectedChangeDetailAddr:'', selectedChangeSidoItems:'', selectedChangeSggItems:'', 
         selectedChangeOrgItems:'', selectedChangeChargeRegion:'', selectedChangeUserType:'', selectedChangeDeptNm:'',
         selectedChangePhoneNumber:'', selectedChangeRegDUserNm:'', selectedChangeRegDtime:'', selectedChangeEmployStateCd:'',
-        selectedChangeUseYn:1,
+        selectedChangeUseYn:1, selectedChangePasswordCheck:'',
         
 
         selectedUserId:'',selectedphoneNumber:'',selectedmobileNumber:'',selectedEmail:'',selectedemployStateNm:'', selectedEmployStateCd:'',
@@ -801,6 +803,7 @@ export default {
       this.sggCd = event.target.value
       this.getOrgmData()
     },
+    // 등록 시 등록 변수 초기화
     createData(){
       this.selectedUpdateUserNm = ''
       this.selectedUpdateBirthday = ''
@@ -822,8 +825,84 @@ export default {
       this.selectedUpdateRegDUserNm = ''
       this.selectedUpdateRegDtime = ''
       this.selectedUpdateEmployStateCd = ''
+      this.checkUserId = 'None'
+      this.checkemaildata = 'None'
       this.writeCus = true
     },
+    // 사용자 등록 내용 부분
+    async uploadData(){
+      this.$store.state.userId = sessionStorage.getItem("userId")
+      if(this.checkUserId === 'None'){
+        alert("아이디를 다시 확인하여 주세요")
+        return false
+      }
+      if(this.checkemaildata === 'None'){
+        alert("이메일을 다시 확인하여 주세요")
+        return false
+      }
+      if(this.selectedUpdatePassword.length < 4){
+        alert("비밀번호는 4자리 이상 입력하여 주세요")
+        return false
+      }
+      if(this.selectedUpdatePassword !== this.selectedUpdatePasswordCheck){
+        alert("비밀번호가 다릅니다. 다시 확인하여 주세요")
+        return false
+      }
+      if(this.bodysex === 1){
+        this.selectedUpdateSex = 'M'
+      }else{
+        this.selectedUpdateSex = 'F'
+      }
+      if(this.selectedUpdateUserId === '' || this.selectedUpdatePassword === '' || this.selectedUpdatePasswordCheck === '' || this.selectedUpdateUserNm === '' || 
+      this.selectedUpdateBirthday === '' || this.selectedUpdateSex === '' || this.selectedUpdateEmail === '' || this.selectedUpdateMobileNumber === '' || this.selectedUpdateZipcode === '' ||
+      this.selectedUpdateAddr === '' || this.selectedUpdateDetailAddr === '' || this.selectedUpdateSidoItems === '' || this.selectedUpdateSggItems === '' ||
+      this.selectedUpdateOrgItems === '' || this.selectedUpdateUserType === '' || this.selectedUpdateEmployStateCd === '' || this.selectedUpdateDeptNm === '' ||
+       this.selectedUpdatePhoneNumber === ''){
+        alert("모든 항목을 작성하여 주세요")
+        return false
+      }
+      this.$store.state.userId = sessionStorage.getItem("userId")
+      
+      let data = {
+        addr:this.selectedUpdateAddr,
+        addrCd:this.selectedUpdateSggItems,
+        addrDetail:this.selectedUpdateDetailAddr,
+        birthday:this.selectedUpdateBirthday,
+        chargeRegion:this.selectedUpdateSggItems,
+        email:this.selectedUpdateEmail,
+        employStateCd:this.selectedUpdateEmployStateCd,
+        mobileNumber:this.selectedUpdateMobileNumber,
+        orgId:this.selectedUpdateOrgItems,
+        password:this.selectedUpdatePassword,
+        phoneNumber:this.selectedUpdatePhoneNumber,
+        sex:this.selectedUpdateSex,
+        useYn:this.selectedUpdateUseYn,
+        userId:this.selectedUpdateUserId,
+        userNm:this.selectedUpdateUserNm,
+        userTypeCd:this.selectedUpdateUserType,
+        zipCode:this.selectedUpdateZipcode,
+        regId:this.$store.state.userId,
+        deptNm:this.selectedUpdateDeptNm,
+      }
+      console.log(data)
+        let url = this.$store.state.serverApi+`/admin/users`
+        await axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+              let resData = res.data.data
+              console.log(resData)
+              if(resData){
+                alert("성공적으로 등록되었습니다")
+                this.writeCus = false
+                this.getUserData()
+              }
+            })
+            .catch(error => {
+                console.log("fail to load")
+              this.errorMessage = error.message;
+              console.error("There was an error!", error);
+            });
+    },
+    // 사용자 상세 정보
     async detailCuspopup(index){
       this.detailArr=this.userItems[index]
       this.selectUserData = this.userItems[index]
@@ -842,36 +921,36 @@ export default {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
-      let detailorg = this.detailArr.chargeRegion
-      console.log(detailorg)
-      this.DetailChargeRegion = this.DetailChargeRegion2.filter(cd=>{
-        return cd.value === detailorg
-      })
+      // let detailorg = this.detailArr.chargeRegion
+      // console.log(detailorg)
+      // this.DetailChargeRegion = this.DetailChargeRegion2.filter(cd=>{
+      //   return cd.value === detailorg
+      // })
       let detailtyppe = this.detailArr.userTypeCd
       this.DetailTypeCd = this.userTypeItems.filter(cd=>{
         return cd.value === detailtyppe
       })
-      console.log(this.DetailChargeRegion[0].label)
+      console.log(this.DetailTypeCd)
       this.selectedDetailSidoItems = this.detailArr.sido
       this.selectedDetailSggItems = this.detailArr.sgg
       this.selectedDetailOrgItems = this.detailArr.orgNm
       this.selectedDetailUserNm = this.detailArr.userNm
       this.selectedDetailUserId = this.detailArr.userId
       this.selectedDetailPhoneNumber = this.detailArr.phoneNumber
-      this.selectedDetailMobileNumber = this.detailArr.mobileNumber
+      this.selectedDetailMobileNumber = this.changeRecipientPhoneno(this.detailArr.mobileNumber)
       this.selectedDetailEmail = this.detailArr.email
       this.selectedDetailEmployStateCd = this.detailArr.employStateNm
       this.selectedDetailBirthday = this.detailArr.birthday
       this.selectedDetailSex = this.detailArr.sex
       if(this.selectedDetailSex === 'M'){
         this.DetailBodysex = 1
-      }else if(this.selectedDetailSex === 'W'){
+      }else if(this.selectedDetailSex === 'F'){
         this.DetailBodysex = 2
       }
       this.selectedDetailAddrNumber = this.detailArr.zipCode
       this.selectedDetailAddr = this.detailArr.addr
       this.selectedDetailDetailAddr = this.detailArr.addrDetail
-      this.selectedDetailChargeRegion = this.DetailChargeRegion[0].label
+      // this.selectedDetailChargeRegion = this.DetailChargeRegion[0].label
       this.selectedDetailUserType = this.DetailTypeCd[0].label
       this.selectedDetailDeptNm = this.detailArr.deptNm
       this.selectedDetailRegDUserNm = this.detailArr.regId
@@ -880,6 +959,7 @@ export default {
 
       this.detailCus = true
     },
+    // 사용자 등록 시 ID 체크
     async checkId(){
       let url = this.$store.state.serverApi+`/admin/users`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -897,16 +977,15 @@ export default {
             return cd.userId === this.selectedUpdateUserId
           })
           console.log(this.userId2)
-          if(this.userId[0]){
+          if(this.userId[0]){ 
             alert("이미 등록된 아이디 입니다.")
             return this.checkUserId = 'None'
           }else{
             alert("사용 가능한 아이디 입니다.")
             return this.checkUserId = 'ok'
           }
-
-          
     },
+    // 사용자 수정 시 ID 체크
     async checkId2(){
       let url = this.$store.state.serverApi+`/admin/users`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -930,21 +1009,25 @@ export default {
             return this.checkUserId2 = 'ok'
           }
     },
+    // 사용자 등록 시 email 체크
     async checkEmail(){
       let url = this.$store.state.serverApi+`/admin/users`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.checkEmailItems = res.data.data
-            console.log(this.checkEmailItems)
           })
           .catch(error => {
             console.log("fail to load")
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
+          console.log(this.checkEmailItems)
+          console.log(this.selectedUpdateEmail)
           this.useremail = this.checkEmailItems.filter(cd=>{
-            return cd.email === this.selectedChangeEmail
+            return cd.email === this.selectedUpdateEmail
           })
+          console.log(this.useremail)
+          console.log(this.selectedUpdateEmail)
           if(this.useremail[0]){
             alert("이미 등록된 이메일 입니다.")
             return this.checkemaildata = 'None'
@@ -953,6 +1036,7 @@ export default {
             return this.checkemaildata = 'ok'
           }
     },
+    // 사용자 수정 시 email 체크
     async checkEmail2(){
       let url = this.$store.state.serverApi+`/admin/users`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -976,62 +1060,7 @@ export default {
             return this.checkemaildata2 = 'ok'
           }
     },
-    uploadData(){
-      this.$store.state.userId = sessionStorage.getItem("userId")
-      if(this.checkUserId === 'None'){
-        alert("아이디를 다시 확인하여 주세요")
-        return false
-      }
-      if(this.checkemaildata === 'None'){
-        alert("아이디를 다시 확인하여 주세요")
-        return false
-      }
-      this.$store.state.userId = sessionStorage.getItem("userId")
-      if(this.bodysex === 1){
-        this.selectedUpdateSex = 'M'
-      }else{
-        this.selectedUpdateSex = 'W'
-      }
-      let data = {
-        addr:this.selectedUpdateAddr,
-        addrCd:this.selectedUpdateSggItems,
-        addrDetail:this.selectedUpdateDetailAddr,
-        birthday:this.selectedUpdateBirthday,
-        chargeRegion:this.selectedUpdateChargeRegion,
-        email:this.selectedUpdateEmail,
-        employStateCd:this.selectedUpdateEmployStateCd,
-        mobileNumber:this.selectedUpdateMobileNumber,
-        orgId:this.selectedUpdateOrgItems,
-        password:this.selectedUpdatePassword,
-        phoneNumber:this.selectedUpdatePhoneNumber,
-        sex:this.selectedUpdateSex,
-        useYn:this.selectedUpdateUseYn,
-        userId:this.selectedUpdateUserId,
-        userNm:this.selectedUpdateUserNm,
-        userTypeCd:this.selectedUpdateUserType,
-        zipCode:this.selectedUpdateZipcode,
-        regId:this.$store.state.userId,
-        deptNm:this.selectedUpdateDeptNm,
-      }
-      console.log(data)
-
-        let url = this.$store.state.serverApi+`/admin/users`
-        axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-            .then(res => {
-              let resData = res.data.data
-              console.log(resData)
-              if(resData){
-                alert("성공적으로 등록되었습니다")
-                this.writeCus = false
-                this.getUserData()
-              }
-            })
-            .catch(error => {
-                console.log("fail to load")
-              this.errorMessage = error.message;
-              console.error("There was an error!", error);
-            });
-    },
+    // 사용자 정보 수정 시 상세 정보 값 띄우기 및 일부 초기화
     changeFormat(){
       console.log(this.selectUserData)
       this.selectedChangeUserId = this.selectUserData.userId
@@ -1052,7 +1081,7 @@ export default {
       this.selectedChangeSidoItems = ''
       this.selectedChangeSggItems = ''
       this.selectedChangeOrgItems = ''
-      this.selectedChangeChargeRegion = ''
+      // this.selectedChangeChargeRegion = ''
       this.selectedChangeUserType = this.selectUserData.userTypeCd
       this.selectedChangeEmployStateCd = this.selectUserData.employStateCd
       this.selectedChangeDeptNm = this.selectUserData.deptNm
@@ -1060,6 +1089,7 @@ export default {
       this.selectedChangeUseYn = this.selectUserData.useYn
       this.changeCus = true
     },
+    // 사용자 정보 수정 확인
     changeCusSuccess(){
       this.$store.state.userId = sessionStorage.getItem("userId")
       if(this.checkUserId2 === 'None'){
@@ -1073,7 +1103,7 @@ export default {
       if(this.bodysex === 1){
         this.selectedChangeSex = 'M'
       }else{
-        this.selectedChangeSex = 'W'
+        this.selectedChangeSex = 'F'
       }
       let data = {
         addr:this.selectedChangeAddr,
@@ -1118,6 +1148,7 @@ export default {
       this.changeCus = false
       this.detailCus = true
     },
+    // 사용자 정보 삭제
     async deleteCusSuccess(){
       console.log(this.selectedDetailUserId)
       let url = this.$store.state.serverApi+`/admin/users/${this.selectedDetailUserId}`
@@ -1135,10 +1166,12 @@ export default {
            });
       
     },
+    // 사용자 정보 삭제 취소
     deleteCusFail(){
       alert("취소되었습니다")
       this.deleteCus = false
     },
+    // 휴대폰 - 입력
     changeRecipientPhoneno(phone){
         if(phone){
             let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
@@ -1147,15 +1180,18 @@ export default {
             return ''
         }
     },
+    // 검색
     manageInquiry() {
         this.getUserData();
     },
+    // 성별 체크
     sextoggle(value){
       switch(value){
         case 1 : this.bodysex=1; break;
         case 2 : this.bodysex=2; break;
       }
     },
+    // 사용자 데이터 리스트 업
     userTypeData(){
       let url =this.$store.state.serverApi + "/admin/codes?cmmnCdGroup=USER.TYPECD";
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
@@ -1178,6 +1214,7 @@ export default {
           console.error("There was an error!", error);
         });
     },
+    // useYn 체크
     chnageUseYn(useYn){
       // switch(value){
       //   case 0 : return '미사용'; break;
@@ -1191,6 +1228,7 @@ export default {
         }
       }
     },
+    // 주소 검색
     search(){ 
     //여기
     //@click을 사용할 때 함수는 이렇게 작성해야 한다.
@@ -1260,6 +1298,36 @@ export default {
     document.head.appendChild(script);
     
   },
+  watch:{
+    selectedUpdatePhoneNumber:function(){
+      let tmp = this.selectedUpdatePhoneNumber.charAt(this.selectedUpdatePhoneNumber.length-1)
+      let regex = /^[0-9]/g;
+
+      if(!this.selectedUpdatePhoneNumber&&!tmp.match(regex) ){alert("숫자만 입력 할 수 있습니다.") }
+      return this.selectedUpdatePhoneNumber = this.selectedUpdatePhoneNumber.replace(/[^0-9]/g, '');
+    },
+    selectedUpdateMobileNumber:function(){
+      let tmp2 = this.selectedUpdateMobileNumber.charAt(this.selectedUpdateMobileNumber.length-1)
+      let regex2 = /^[0-9]/g;
+
+      if(!this.selectedUpdateMobileNumber&&!tmp2.match(regex2) ){alert("숫자만 입력 할 수 있습니다.") }
+      return this.selectedUpdateMobileNumber = this.selectedUpdateMobileNumber.replace(/[^0-9]/g, '');
+    },
+    selectedChangePhoneNumber:function(){
+      let tmp3 = this.selectedChangePhoneNumber.charAt(this.selectedChangePhoneNumber.length-1)
+      let regex3 = /^[0-9]/g;
+
+      if(!this.selectedChangePhoneNumber&&!tmp3.match(regex3) ){alert("숫자만 입력 할 수 있습니다.") }
+      return this.selectedChangePhoneNumber = this.selectedChangePhoneNumber.replace(/[^0-9]/g, '');
+    },
+    selectedChangeMobileNumber:function(){
+      let tmp4 = this.selectedChangeMobileNumber.charAt(this.selectedChangeMobileNumber.length-1)
+      let regex4 = /^[0-9]/g;
+
+      if(!this.selectedChangeMobileNumber&&!tmp4.match(regex4) ){alert("숫자만 입력 할 수 있습니다.") }
+      return this.selectedChangeMobileNumber = this.selectedChangeMobileNumber.replace(/[^0-9]/g, '');
+    }
+  }
 }
 </script>
 <style>

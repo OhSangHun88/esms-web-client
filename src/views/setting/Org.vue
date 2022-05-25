@@ -27,9 +27,7 @@
                         <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">관리기관명</p>
-                                <select v-model="selectedUpdateOrgItems">
-                                  <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
-                                </select>
+                                <input type="text" value="" v-model="selectedUpdateOrgItems">
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">대표 전화번호</p>
@@ -188,9 +186,7 @@
                       <div class="input_wrap">
                           <div class="input_area">
                               <p class="input_tit">관리기관명</p>
-                              <select v-model="selectedChangeOrgItems">
-                                <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
-                              </select>
+                              <input type="text" value="" v-model="selectedChangeOrgItems">
                           </div>
                           <div class="input_area">
                               <p class="input_tit">대표 전화번호</p>
@@ -431,7 +427,7 @@ export default {
         selectedUpdateSidoItems:'', selectedUpdateSggItems:'', selectedUpdateOrgItems:'',
         selectedUpdateOrgNm:'', selectedUpdatePhoneNumber:'', selectedUpdateTypeCd:'', selectedUpdateUpperOrgId:'',
         selectedUpdateZipcode:'', selectedUpdateAddr:'', selectedUpdateDetailAddr:'',
-        selectedUpdateUpdDUser:'',selectedUpdateUpdDtime:'',
+        selectedUpdateUpdDUser:'',selectedUpdateUpdDtime:'', checkUpdateAdrr:'',
 
         selectedDetailSidoItems:'', selectedDetailSggItems:'', selectedDetailOrgItems:'',
         selectedDetailOrgNm:'', selectedDetailPhoneNumber:'', selectedDetailTypeCd:'', selectedDetailUpperOrgId:'',
@@ -565,9 +561,10 @@ export default {
               value2: response.data.data[i].typeCd
             });
           } 
-          for(let i =0; i<tmpArr.length; i++){
+          /*for(let i =0; i<tmpArr.length; i++){
             this.updateOrgId = tmpArr[i].value
-          }
+          }*/
+          this.updateOrgId = tmpArr[1].value
           let num = 0
           while(true){
             let found = this.updateOrgId.indexOf("0", num);
@@ -581,6 +578,7 @@ export default {
           num = Number(changenum)+1
           num = String(num)
           this.updateOrgId = string + num
+          console.log(this.updateOrgId)
           
           tmpResult1=tmpArr.filter(cd=>{
             return cd.value2 === 'TPE001'
@@ -657,6 +655,7 @@ export default {
     manageInquiry() {
         this.getTorgData();
     },
+    // 관리기관 등록 시 변수 초기화
     createData(){
       this.selectedUpdateSidoItems='' 
       this.selectedUpdateSggItems='' 
@@ -671,6 +670,122 @@ export default {
       this.selectedUpdateUpdDtime=''
       this.writeOrg = true
     }, 
+    // 관리기관 등록
+    async uploadData(){
+      this.$store.state.userId = sessionStorage.getItem("userId")
+      console.log(this.$store.state.userId)
+      let addrCd = ''
+      let sgg = this.sggCd.substring(0,5)
+      if(this.selectedUpdateSidoItems != '' && this.selectedUpdateSggItems == ''){
+        sgg = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        sgg = this.sggCd.substring(0,5)
+      }else{
+        sgg = ''
+      }
+      this.sidoName = this.sidoItems.filter(cd=>{
+      return cd.value === this.selectedUpdateSidoItems
+      })
+      this.sggName = this.sggItems.filter(cd=>{
+        return cd.value === this.selectedUpdateSggItems
+      })
+      this.orgNm = this.orgmItems.filter(cd=>{
+        return cd.value === this.selectedUpdateOrgItems
+      })
+      this.typeNm = this.orgTypeItems.filter(cd=>{
+        return cd.value === this.selectedUpdateTypeCd
+      })
+      
+      console.log(this.orgNm)
+
+      let uri =this.$store.state.serverApi + "/admin/organizations/all?pageIndex=1&recordCountPerPage=100";
+      await axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          this.orgmItems2=[];
+          for(let i=0; i<response.data.data.length; i++) {
+            this.orgmItems2.push({
+              label: response.data.data[i].orgNm,
+              value: response.data.data[i].orgId,
+              value2: response.data.data[i].typeCd,
+              value3: response.data.data[i].typeNm,
+              value4: response.data.data[i].addr
+            });
+          }
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+
+        console.log(this.orgmItems2)
+      if(this.selectedUpdateOrgItems === ''){
+        this.orgNm = this.orgmItems2.filter(cd=>{
+          return cd.value === 'ORG0000001'
+        })
+        this.orgNm2 = this.orgmItems2.filter(cd=>{
+          return cd.value === 'ORG0000001'
+        })
+        this.selectedUpdateTypeCd = 'TPE001'
+        this.typeNm = '관리기관'
+        this.selectedUpdateOrgItems = ''
+      }else{
+        this.orgNm = this.orgmItems2.filter(cd=>{
+          return cd.value === this.selectedUpdateOrgItems
+        })
+        this.orgNm2 = this.orgmItems2.filter(cd=>{
+          return cd.value === this.selectedUpdateOrgItems && cd.value2 === this.selectedUpdateTypeCd
+        })
+        this.checkUpdateAdrr = this.orgmItems2.filter(cd=>{
+          return cd.value4 === this.selectedUpdateAddr
+        })
+      }
+
+      console.log(this.checkUpdateAdrr)
+      console.log(this.selectedUpdateTypeCd)
+      if(this.selectedUpdateTypeCd === 'TPE001' && this.orgNm2.length !== 0){
+        alert("이미 등록된 관리기관 입니다.")
+        return false
+      }
+      if(this.checkUpdateAdrr.length !== 0){
+        alert("이미 등록된 실행기관 입니다.")
+        return false
+      }
+
+      let data = {
+        sidoName:this.sidoName[0].label,
+        addrCd:this.selectedUpdateSggItems,
+        sggName:this.sggName[0].label,
+        orgId:this.updateOrgId,
+        orgNm:this.selectedUpdateOrgItems,
+        phoneNumber:this.selectedUpdatePhoneNumber,
+        typeCd:this.selectedUpdateTypeCd,
+        typeNm:this.typeNm[0].label,
+        upperOrgId:this.selectedUpdateUpperOrgId,
+        zipcodeCd:this.selectedUpdateZipcode,
+        addr:this.selectedUpdateAddr,
+        addrDetail:this.selectedUpdateDetailAddr,
+        regId:this.$store.state.userId,
+      }
+      console.log(data)
+
+      let url = this.$store.state.serverApi+`/admin/organizations`
+      axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+         .then(res => {
+           let resData = res.data.data
+           console.log(resData)
+           if(resData){
+             alert("성공적으로 등록되었습니다")
+             this.writeOrg = false
+             this.getTorgData()
+           }
+         })
+         .catch(error => {
+             console.log("fail to load")
+           this.errorMessage = error.message;
+           console.error("There was an error!", error);
+         });
+    },
+    // 관리기관 상세 정보
     detailOrgpopup(index){
       
       // this.selectedDetailUpdDUser
@@ -700,19 +815,19 @@ export default {
       this.selectedDetailPhoneNumber=this.detailArr.phoneNumber
       this.selectedDetailTypeCd=this.detailArr.typeNm
       this.selectedDetailUpperOrgId=this.upperOrgNm[0].label
-      this.selectedDetailZipcode=this.detailArr.zipCode
+      this.selectedDetailZipcode=this.detailArr.zipcodeCd
       this.selectedDetailAddr=this.detailArr.addr
       this.selectedDetailDetailAddr=this.detailArr.addrDetail
       this.selectedDetailUpdDtime=this.detailArr.updDtime.substring(0,10)
       this.selectedDetailUseYn=this.chnageUseYn(this.detailArr.useYn)
-
+      this.selectedDetailUpdDUser=this.detailArr.regId
       this.orgId = this.detailArr.orgId
 
       this.detailOrg = true
       
     },
+    // 관리기관 수정 시 상세정보 불러오기 및 일부 변수 초기화
     changeOrgFormat(){
-      
       console.log(this.selectUserData)
       this.selectedChangeSidoItems = ''
       this.selectedChangeSggItems = ''
@@ -724,8 +839,10 @@ export default {
       this.selectedChangeAddr = this.selectUserData.addr
       this.selectedChangeDetailAddr = this.selectUserData.addrDetail
       this.selectedChangeUseYn = this.selectUserData.useYn
+      this.selectedChangeZipcodeCd = this.selectUserData.zipcodeCd
       this.changeOrg = true
     },
+    // 관리기관 수정
     async changeOrgSuccess(){
       let uri =this.$store.state.serverApi + "/admin/organizations/all?pageIndex=1&recordCountPerPage=100";
       await axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
@@ -828,10 +945,12 @@ export default {
       
       
     },
+    // 관리기관 삭제 취소
     deleteOrgFail(){
       alert("취소되었습니다")
       this.deleteOrg = false
     },
+    // 관리기관 삭제
     async deleteOrgSuccess(){
       let url = this.$store.state.serverApi+`/admin/organizations/${this.orgId}`
       console.log(this.orgId)
@@ -857,110 +976,7 @@ export default {
       this.getTorgData()
 
     },
-    async uploadData(){
-      this.$store.state.userId = sessionStorage.getItem("userId")
-      console.log(this.$store.state.userId)
-      let addrCd = ''
-      let sgg = this.sggCd.substring(0,5)
-      if(this.selectedUpdateSidoItems != '' && this.selectedUpdateSggItems == ''){
-        sgg = this.sidoCd.substring(0,2)
-      }else if(this.selectedSggItems != ''){
-        sgg = this.sggCd.substring(0,5)
-      }else{
-        sgg = ''
-      }
-      this.sidoName = this.sidoItems.filter(cd=>{
-      return cd.value === this.selectedUpdateSidoItems
-      })
-      this.sggName = this.sggItems.filter(cd=>{
-        return cd.value === this.selectedUpdateSggItems
-      })
-      this.orgNm = this.orgmItems.filter(cd=>{
-        return cd.value === this.selectedUpdateOrgItems
-      })
-      this.typeNm = this.orgTypeItems.filter(cd=>{
-        return cd.value === this.selectedUpdateTypeCd
-      })
-      
-      console.log(this.orgNm)
-
-      let uri =this.$store.state.serverApi + "/admin/organizations/all?pageIndex=1&recordCountPerPage=100";
-      await axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
-        .then(response => {
-          this.orgmItems2=[];
-          for(let i=0; i<response.data.data.length; i++) {
-            this.orgmItems2.push({
-              label: response.data.data[i].orgNm,
-              value: response.data.data[i].orgId,
-              value2: response.data.data[i].typeCd,
-              value3: response.data.data[i].typeNm
-            });
-          }
-        })
-        .catch(error => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-
-        console.log(this.orgmItems2)
-      if(this.selectedUpdateOrgItems === ''){
-        this.orgNm = this.orgmItems2.filter(cd=>{
-          return cd.value === 'ORG0000001'
-        })
-        this.orgNm2 = this.orgmItems2.filter(cd=>{
-          return cd.value === 'ORG0000001'
-        })
-        this.selectedUpdateTypeCd = 'TPE001'
-        this.typeNm = '관리기관'
-        this.selectedUpdateOrgItems = ''
-      }else{
-        this.orgNm = this.orgmItems2.filter(cd=>{
-          return cd.value === this.selectedUpdateOrgItems
-        })
-        this.orgNm2 = this.orgmItems2.filter(cd=>{
-          return cd.value === this.selectedUpdateOrgItems && cd.value2 === this.selectedUpdateTypeCd
-        })
-      }
-      console.log(this.orgNm2)
-      console.log(this.selectedUpdateTypeCd)
-      if(this.selectedUpdateTypeCd === 'TPE001' && this.orgNm2.length !== 0){
-        alert("이미 등록된 관리기관 입니다.")
-        return false
-      }
-
-      let data = {
-        sidoName:this.sidoName[0].label,
-        addrCd:this.selectedUpdateSggItems,
-        sggName:this.sggName[0].label,
-        orgId:this.updateOrgId,
-        orgNm:this.orgNm[0].label,
-        phoneNumber:this.selectedUpdatePhoneNumber,
-        typeCd:this.selectedUpdateTypeCd,
-        typeNm:this.typeNm[0].label,
-        upperOrgId:this.selectedUpdateUpperOrgId,
-        zipcodeCd:this.selectedUpdateZipcode,
-        addr:this.selectedUpdateAddr,
-        addrDetail:this.selectedUpdateDetailAddr,
-      }
-      console.log(data)
-
-      let url = this.$store.state.serverApi+`/admin/organizations`
-      axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-         .then(res => {
-           let resData = res.data.data
-           console.log(resData)
-           if(resData){
-             alert("성공적으로 등록되었습니다")
-             this.writeOrg = false
-             this.getTorgData()
-           }
-         })
-         .catch(error => {
-             console.log("fail to load")
-           this.errorMessage = error.message;
-           console.error("There was an error!", error);
-         });
-    },
+    
     changeRecipientPhoneno(phone){
         if(phone){
             let changeNumber = phone.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);

@@ -203,8 +203,8 @@
                                 <th scope="col">센서이전버전</th>
                                 <th scope="col">센서버전</th>
                                 <th scope="col">입고명</th>
-                                <th scope="col">입고일시</th>
                                 <th scope="col">등록일시</th>
+                                <th scope="col">수정일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -382,7 +382,7 @@
                         </div>
                         <div class="toggle_btn">
                             <button type="button" :class="beforeToggle===0? 'btn on': 'btn'" @click="getNowToggle">최신정보</button>
-                            <button type="button" :class="beforeToggle===1? 'btn on': 'btn'" @click="getBeforeVersionSensors" >직전정보</button>
+                            <button type="button" :class="beforeToggle===1? 'btn on': 'btn'"  >직전정보</button>
                         </div>
                     </div>
                 </div>
