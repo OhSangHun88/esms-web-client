@@ -255,8 +255,8 @@
                   <p class="alert_txt">선택하신 관리기관을 삭제하시겠습니까?</p>
                 </div>
                 <div class="popbtn_area type-02">
-                  <button type="button" class="btn form2" @click="deleteOrgFail()">취소</button>
                   <button type="button" class="btn form3" @click="deleteOrgSuccess()">확인</button>
+                  <button type="button" class="btn form2" @click="deleteOrgFail()">취소</button>
                 </div>
               </div>
             </div>
@@ -626,7 +626,7 @@ export default {
       }else{
         sgg = ''
       }
-      let uri = this.$store.state.serverApi + "/admin/organizations?orgId="+this.selectedOrgItems+"&orgNm="+this.selectedOrgNm+"&sggCd="+sgg;
+      let uri = this.$store.state.serverApi + "/admin/organizations?pageIndex=1&recordCountPerPage=100"+"&orgId="+this.selectedOrgItems+"&orgNm="+this.selectedOrgNm+"&sggCd="+sgg;
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.TorgItems = response.data.data
@@ -888,9 +888,9 @@ export default {
         this.sggName = this.sggItems.filter(cd=>{
           return cd.value === this.selectedChangeSggItems
         })
-        this.orgNm = this.orgmItems2.filter(cd=>{
-          return cd.value === this.selectedChangeOrgItems
-        })
+        // this.orgNm = this.orgmItems2.filter(cd=>{
+        //   return cd.value === this.selectedChangeOrgItems
+        // })
         this.orgNm2 = this.orgmItems2.filter(cd=>{
           return cd.value === this.selectedChangeOrgItems && cd.value2 === this.selectedChangeTypeCd
         })
@@ -904,14 +904,14 @@ export default {
         return false
       }
 
-      console.log(this.sidoName)
+      console.log(this.orgNm)
 
       let data = {
         sidoName:this.sidoName[0].label,
         addrCd:this.selectedChangeSggItems,
         sggName:this.sggName[0].label,
-        orgId:this.orgNm[0].value,
-        orgNm:this.orgNm[0].label,
+        orgId:this.orgId,
+        orgNm:this.selectedChangeOrgItems,
         phoneNumber:this.selectedChangePhoneNumber,
         typeCd:this.selectedChangeTypeCd,
         typeNm:this.typeNm[0].label,

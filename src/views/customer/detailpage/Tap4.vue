@@ -86,12 +86,12 @@
                         </div>
                     </div>
                     <div v-if="!this.getCGatewayData"></div>
-                    <div class="btn_area" v-else>
+                    <!-- <div class="btn_area" v-else>
                         <button type="button" class="btn form2">cmdA4전송</button>
                         <button type="button" class="btn form2">역점검요청</button>
                         <button type="button" class="btn form2">문열림멘트-ON</button>
                         <button type="button" class="btn form2">자동착신-OFF</button>
-                    </div>
+                    </div> -->
                     
                 </div>
                 <div class="list">
@@ -135,7 +135,8 @@
                 <div class="list_top">
                     <div class="title_area">
                         <p class="tit">센서</p>
-                        <div class="toggle_btn">
+                        <div v-if="this.getCSensorsData.length === 0"></div>
+                        <div class="toggle_btn" v-else>
                             <button type="button" :class="sensorsTap===1? 'btn on':'btn'" @click="sensorsTogle(1)">기본정보</button>
                             <button type="button" :class="sensorsTap===2? 'btn on':'btn'" @click="sensorsTogle(2)" >상세정보</button>
                         </div>

@@ -98,6 +98,93 @@
             </div>
         </div>
       </div>
+      <div id="" class="popupLayer" v-if="changeOpen === true" >
+        <div class="popup_wrap">
+            <div class="title_wrap">
+                <div class="title">대상자 수정</div>
+                <button type="button" class="btn_close" @click="changeOpen = false">닫기</button>
+            </div>
+            <div class="popup_cnt">
+                <div class="input_wrap">
+                  <div class="input_area">
+                    <p class="input_tit">사용자 이름</p>
+                    <div class="add_btn_input">
+                      <input type="text" v-model="selecteChangeRecipient">
+                      <!-- <button type="button" class="input_btn">중복 확인</button> -->
+                    </div>
+                  </div>
+                  <div class="input_area half">
+                    <p class="input_tit">생년월일</p>
+                    <input type="text" v-model="selectChangeBirthday">
+                  </div>
+                  <div class="btn_area half">
+                      <p class="input_tit">성별</p>
+                      <div class="toggle_btn">
+                          <button type="button" :class="this.userGender ===1 ? 'btn on':'btn'" @click="selectGender(1)">남</button>
+                          <button type="button" :class="this.userGender ===2 ? 'btn on':'btn'" @click="selectGender(2)">여</button>
+                      </div>
+                  </div>
+                </div>
+                <div class="input_wrap">
+                  <div class="input_area">
+                    <p class="input_tit">우편번호</p>
+                    <div class="add_btn_input">
+                      <input type="text" value="" v-model="selectChangeZipCode">
+                      <button type="button" class="input_btn" @click="search">검색</button>
+                    </div>
+                  </div>
+                  <div class="input_area">
+                    <p class="input_tit">주소</p>
+                    <input type="text" value="" v-model="selectChangeAddr">
+                  </div>
+                </div>
+                <div class="input_wrap type-02">
+                    <div class="input_area" >
+                        <p class="input_tit">상세주소</p>
+                        <input type="text" value="" v-model="selectChangeAddrDetail">
+                    </div>
+                </div>
+                <div class="input_wrap">
+                  <div class="input_area">
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text" v-model="selectChangePhoneNumber">
+                  </div>
+                  <div class="input_area">
+                        <p class="input_tit">사용자 구분</p>
+                        <select v-model="selectChangeRecipeType">
+                          <option v-for="(recipetype, index) in recipeType" :value="recipetype.value" v-bind:key="index">{{recipetype.text}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input_wrap">
+                    <div class="input_area">
+                        <p class="input_tit">광역</p>
+                        <select v-model="selectChangeSido" @change="onChangeSgg($event)">
+                          <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                        </select>
+                    </div>
+                    <div class="input_area">
+                        <p class="input_tit">시/군/구</p>
+                        <select v-model="selectChangeSgg" @change="onChangeOrg($event)">
+                          <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input_wrap">  
+                  <div class="input_area">
+                      <p class="input_tit">수행기관</p>
+                        <select v-model="selectChangeOrg">
+                          <option v-for="(orgm, index) in orgmItems" :value="{value: orgm.value, label: orgm.label}" v-bind:key="index">{{orgm.label}}</option>
+                        </select>
+                  </div>
+                </div>
+            </div>
+            <div class="popbtn_area">
+              <button type="button" class="btn form2" @click="changeUser()">수정</button>
+              <button type="button" class="btn" @click="changeOpen = false">취 소</button>
+            </div>
+        </div>
+      </div>
       <div class="list_title_wrap">
         <span>대상자 관리</span>
         <i class="ico_nav"></i>
@@ -153,15 +240,17 @@
         <div class="result_txt">
             <p>조회결과 : {{ recipientItems ? recipientItems.length : 0}}건</p>
             <div class="btn_area">
+              <button type="button" style="margin-right:10px" class="btn" @click="changeData()">수정</button>
               <button type="button" style="margin-right:10px" class="btn" @click="createData()">등록</button>
             </div>
         </div>
         <div class="list result">
             <table>
                 <colgroup>
+                    <col style="width:5%;">
+                    <col style="width:5%;">
                     <col style="width:8%;">
-                    <col style="width:8%;">
-                    <col style="width:8%;">
+                    <col style="width:5%;">
                     <col style="width:5%;">
                     <col style="width:10%;"><!--전번-->
                     <col style="width:8%;">
@@ -173,6 +262,7 @@
                 </colgroup>
                 <thead>
                     <tr>
+                        <th scope="col">선택</th>
                         <th scope="col">대상자명</th>
                         <th scope="col">생년월일</th>
                         <th scope="col">나이</th>
@@ -190,9 +280,10 @@
             <div class="tbody">
                 <table>
                     <colgroup>
+                        <col style="width:5%;">
+                        <col style="width:5%;">
                         <col style="width:8%;">
-                        <col style="width:8%;">
-                        <col style="width:8%;">
+                        <col style="width:5%;">
                         <col style="width:5%;">
                         <col style="width:10%;"><!--전번-->
                         <col style="width:8%;">
@@ -203,19 +294,24 @@
                         <col style="width:10%;"><!--등록시간-->
                     </colgroup>
                     <tbody>
-                        <tr v-for="(item,index) in recipientItems" v-bind:key="index" @click="goToDetailView(item.recipientId)">
-                            
-                            <td><a href="#" >{{item.recipientNm}}</a></td>
-                            <td><a href="#">{{item.birthday}}</a></td>
-                            <td><a href="#">{{makeAge(item.birthday) }}</a></td>
-                            <td><a href="#">{{item.sex==="M"?'남':'여'}}</a></td>
-                            <td><a href="#">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
-                            <td><a href="#">{{item.typeNm}}</a></td>
-                            <td><a href="#">{{item.stateNm}}</a></td>
-                            <td style="text-align: left;"><a href="#" >{{item.addr}}</a></td>
-                            <td style="text-align: left;"><a href="#">{{item.orgNm}}</a></td>
-                            <td><a href="#">{{item.managerNm}}</a></td>
-                            <td><a href="#">{{$moment(item.regDtime).format('YYYY-MM-DD')}}</a></td>
+                        <tr v-for="(item,index) in recipientItems" v-bind:key="index" >
+                            <td>
+                              <div class="chk_area radio">
+                                <input type="radio" name="saveChangeData" :id="`radio1_${index}`" v-model="saveChangeData" :value="index">
+                                <label :for="`radio1_${index}`" class="chk"><i class="ico_chk"></i></label>
+                              </div>
+                            </td>
+                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.recipientNm}}</a></td>
+                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.birthday}}</a></td>
+                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{makeAge(item.birthday) }}</a></td>
+                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.sex==="M"?'남':'여'}}</a></td>
+                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
+                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.typeNm}}</a></td>
+                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.stateNm}}</a></td>
+                            <td style="text-align: left;"><a href="#" @click="goToDetailView(item.recipientId)">{{item.addr}}</a></td>
+                            <td style="text-align: left;"><a href="#" @click="goToDetailView(item.recipientId)">{{item.orgNm}}</a></td>
+                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.managerNm}}</a></td>
+                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{$moment(item.regDtime).format('YYYY-MM-DD')}}</a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -473,7 +569,7 @@ export default {
       orgCode: '', partCode: '', statusCode: '', sexCode: '', cycleCode: '',selectedSidoItems: '', selectedSggItems: '', selectedOrgItems: '',
       modelOrg: '', modelPart: '', modelStatus: '', modelName: '',
       orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-      sidoItems:[], sggItems:[],  actItems:[], recipientItems:[],recipientOrginItems:[], orgSido:'', orgSgg:'', filterName:'', modalOpen:false,
+      sidoItems:[], sggItems:[],  actItems:[], recipientItems:[],recipientOrginItems:[], orgSido:'', orgSgg:'', filterName:'', modalOpen:false, changeOpen:false,
       recipientFields: [
         { key: 'orgNm', label: '기관관리', _classes: 'text-center' },
         { key: 'typeNm', label: '구분', _classes: 'text-center' },
@@ -493,6 +589,11 @@ export default {
       //대상자 등록
       zipCode: null,selectedAddr: null, selectedAddrDetail: null,selectBirthday: null,selectRecipient: null,
       selectedPhoneNumber: null,userSido: null,userSigungu: null,userOrg: null,
+
+      selecteChangeRecipient: null, selectChangeBirthday: null, selectChangeAddrDetail: null, selectChangeZipCode: null, selectChangeSex: null,
+      selectChangePhoneNumber: null, selectChangeSido: null, selectChangeSgg: null, selectChangeOrg: null, selectChangeAddr: null,
+      selectChangeRecipeType: null, saveChangeData:null, changeRecipientItems:[],
+
       selectedUserOrg: null, userState:[{value:'STE001', text: '승인'},{value:'STE002', text: '서비스중'},{value:'STE003', text: '서비스종료'},],
       selectedRecipeType: null, recipeType:[{value:'TPE001', text: '고령자'},{value:'TPE002', text: '장애인'},],
       userGender: 1 ,
@@ -730,12 +831,38 @@ export default {
   },
   createData(){
     this.modalOpen = true;
-
   },
   closeModal(){
     this.modalOpen = false;
-
   },
+  changeData(){
+    if(this.saveChangeData===null||this.saveChangeData===undefined){
+        alert("변경하시고자 하는 값을 선택해 주세요"); 
+        return;
+    }
+    let changeDatatmp = this.recipientItems[this.saveChangeData]
+    console.log(changeDatatmp.birthday)
+
+    this.selecteChangeRecipient = changeDatatmp.recipientNm
+    this.selectChangeBirthday = changeDatatmp.birthday
+    this.selectChangeSex = changeDatatmp.sex
+    if(this.selectChangeSex === 'M'){
+      this.userGender = 1
+    }else if(this.selectChangeSex === 'F'){
+      this.userGender = 2
+    }
+    this.selectChangeZipCode = changeDatatmp.zipCode
+    this.selectChangeAddr = changeDatatmp.addr
+    this.selectChangeAddrDetail = changeDatatmp.addrDetail
+    this.selectChangePhoneNumber = changeDatatmp.recipientPhoneno
+    this.selectChangeRecipeType = changeDatatmp.typeCd
+    this.selectChangeSido = ''
+    this.selectChangeSgg = ''
+    this.selectChangeOrg = ''
+    this.recipientId = changeDatatmp.recipientId
+    this.changeOpen = true;
+  },
+
   selectGender(input){
     this.userGender = input;
   },
@@ -768,12 +895,15 @@ export default {
         // 우편번호와 주소 정보를 해당 필드에 넣는다.
         
         this.zipCode = data.zonecode; //
+        this.selectChangeZipCode = data.zonecode;
         this.selectedAddr = data.roadAddress;
+        this.selectChangeAddr = data.roadAddress;
 //        this.selectedAddr = data.jibunAddress;
         
         // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
         if(roadAddr !== ''){
             this.selectedAddr += extraRoadAddr;
+            this.selectChangeAddr += extraRoadAddr;
         }
 
         // var guideTextBox = document.getElementById("guide");
@@ -835,6 +965,65 @@ export default {
              // console.log(this.getCSensorsData)
              if(resData){
                  alert("저장이 완료되었습니다.")
+             }
+             this.selectedAddr = null
+             this.selectedAddrDetail = null
+             this.selectBirthday = null
+             this.userOrg = null
+             this.selectRecipient = null
+             this.selectedPhoneNumber = null
+
+           })
+           .catch(error => {
+               console.log("fail to load")
+             this.errorMessage = error.message;
+             console.error("There was an error!", error);
+           });
+    },
+    changeFormat(){
+
+    },
+    changeUser(){
+      //여기
+      let data= {
+        activeUnsensingCycle: 60,//완
+        addr: this.selectChangeAddr,//완
+        addrCd: "1168010800",//이부분 진행해야함
+        addrDetail: this.selectChangeAddrDetail,//완
+        addrXCoordinate: "",//완
+        addrYCoordinate: "",//완
+        birthday: this.$moment(this.selectChangeBirthday).format('YYYY-MM-DD'),//완, yyyymmdd
+        careLevelCd: "LVL001",//고정
+        installFileNo: "1", //우선 고정
+        measureCycle: 240,//완
+        orgId: this.selectChangeOrg.value,//완
+        orgNm: this.selectChangeOrg.label,
+        recipientNm: this.selecteChangeRecipient,//완
+        recipientPhoneno: this.selectChangePhoneNumber,//완
+        sex: this.userGender===1?"M":this.userGender===2?"F":"", //완
+        sigunguCd: this.selectChangeSgg,//완
+        stateCd: "STE001" , //완
+        typeCd: this.selectChangeRecipeType,//고정
+        zipCode: this.selectChangeZipCode,//완
+        regId: this.$store.state.userId//완
+      }
+      console.log(data)
+      
+       const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}`
+       console.log(this.recipientId)
+       
+         // /sensors/{sensorId}/gw-send-cycle
+         axios.post(url,data,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+           .then(res => {
+             let resData = res.data.data
+             console.log(resData)
+            // this.getCSensorsData = res.data.data
+             // console.log("sensors ")
+             // console.log(this.getCSensorsData)
+             if(resData){
+                 alert("수정이 완료되었습니다.")
+                 this.changeOpen = false
+                 this.getRecipientData()
              }
              this.selectedAddr = null
              this.selectedAddrDetail = null

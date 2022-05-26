@@ -147,8 +147,8 @@
                         </div> -->
                     </div>
                     <div class="popbtn_area">
-                        <button type="button" class="btn" @click="writeCus = false">취소</button>
-                        <button type="button" class="btn form2" @click="uploadData()">등록</button>
+                      <button type="button" class="btn form2" @click="uploadData()">등록</button>
+                      <button type="button" class="btn" @click="writeCus = false">취소</button>
                     </div>
                 </div>
             </div>
@@ -450,8 +450,8 @@
                         </div> -->
                     </div>
                     <div class="popbtn_area">
-                        <button type="button" class="btn" @click="changeCus = false, detailCus = true">취소</button>
-                        <button type="button" class="btn form2" @click="changeCusSuccess()">수정</button>
+                      <button type="button" class="btn form2" @click="changeCusSuccess()">수정</button>
+                      <button type="button" class="btn" @click="changeCus = false, detailCus = true">취소</button>
                     </div>
                 </div>
             </div>
@@ -469,8 +469,8 @@
                   <p class="alert_txt">선택하신 사용자를 삭제하시겠습니까?</p>
                 </div>
                 <div class="popbtn_area type-02">
-                  <button type="button" class="btn form2" @click="deleteCusFail()">취소</button>
                   <button type="button" class="btn form3" @click="deleteCusSuccess()">확인</button>
+                  <button type="button" class="btn form2" @click="deleteCusFail()">취소</button>
                 </div>
               </div>
             </div>

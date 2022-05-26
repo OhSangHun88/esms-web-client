@@ -273,7 +273,7 @@ table.asstatus tbody tr td.comple{color: #EE9D01;font-size: 18px; font-weight: b
 .popupLayer .popup_cnt .alert_txt{text-align: center;font-size: 20px;line-height: 29px;font-weight: 500;color: #fff;}
 .popupLayer .popup_cnt .input_wrap{font-size: 0;margin-left: -30px;margin-top: 20px;}
 .popupLayer .popup_cnt .input_wrap:first-child{margin-top: 0;}
-.popupLayer .popup_cnt .input_wrap .input_tit{font-size: 16px;font-weight: 300;color: #fff;}
+.popupLayer .popup_cnt .input_wrap .input_tit{font-size: 16px;font-weight: 300;color: #fff; height: 20px;}
 .popupLayer .popup_cnt .input_wrap .btn_area{display: inline-block;width: calc(33.33% - 30px);margin: 0 0 0 30px;}
 .popupLayer .popup_cnt .input_wrap .btn_area .toggle_btn{overflow: hidden;border-radius: 8px;width: 100px;display: inline-block;vertical-align: middle;}
 .popupLayer .popup_cnt .input_wrap .btn_area .toggle_btn .btn{display: inline-block;width: 50%;height: 42px;background-color: #384358;color: #fff;font-weight: 300; border-radius: 0;font-size: 16px;padding: 0;}

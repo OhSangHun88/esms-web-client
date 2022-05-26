@@ -380,6 +380,8 @@ export default {
         return;
       }
       let tmpSaveData = this.recipientItems[this.saveChangeData]
+      console.log(this.saveChangeData)
+      console.log(this.recipientItems[this.saveChangeData])
       let tmpObjectData = {
         areaNumberId: this.recipientItems[this.saveChangeData].areaNumberId , 
         firstZip: this.recipientItems[this.saveChangeData].firstZip ,
