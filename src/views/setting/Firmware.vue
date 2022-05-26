@@ -35,7 +35,33 @@
                 <i class="ico_nav"></i>
                 <span class="on">펌웨어관리</span>
             </div>
-            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
+            <div class="box_wrap">
+                <!-- 현재 최종 업로드 버전 -->
+                <div class="box_search_wrap add_btn box_style fw_info">
+                    <div class="table_wrap">
+                        <table>
+                            <colgroup>
+                                <col style="width:100%;">
+                            </colgroup>
+                            <thead>
+                                <th scope="row">현재 최종 업로드 버전</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select name="" id="">
+                                            <option value="">Ver 1.0.5</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="btn_area">
+                        <button type="button" class="btn">업로드</button>
+                    </div>
+                </div><!-- 현재 최종 업로드 버전 -->
+            <div class="box_search_wrap box_style type_fw add_btn" @keypress.enter='manageInquiry'>
                 <div class="table_wrap">
                     <table>
                         <colgroup>
@@ -73,7 +99,7 @@
                                     <input type="text" value="" v-model="selectedRecipientNm">
                                 </td>
                                 <td>
-                                    <input type="text" value="" v-model="firmwareVersion">
+                                    <input type="text" value="" v-model="selectedFirmwareVersion">
                                 </td>
                             </tr>
                         </tbody>
@@ -83,9 +109,13 @@
                     <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
                 </div>
             </div>
+            </div>
             <div class="one_box box_style">
                 <div class="result_txt">
                     <p>조회결과 : <strong class = "num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
+                    <div class="btn_area">
+                        <button type="button" class="btn">업그레이드</button>
+                    </div>
                 </div>
                 <div class="list result">
                     <table>
@@ -196,7 +226,7 @@ export default {
         sidoItems:[], sggItems:[], orgmItems:[], recipientItems:[],
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount: 0,
-        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
+        selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '', selectedFirmwareVersion:'',
         errorpopup1: false, errorpopup2: false,
       }
     },

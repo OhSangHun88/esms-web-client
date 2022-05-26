@@ -79,12 +79,14 @@
                 <div class="list_top">
                     <div class="title_area">
                         <p class="tit">게이트웨이</p>
-                        <div class="toggle_btn">
+                        <div v-if="!this.getCGatewayData"></div>
+                        <div class="toggle_btn" v-else>
                             <button type="button" class="btn on">기본정보</button>
                             <button type="button" class="btn">상세정보</button>
                         </div>
                     </div>
-                    <div class="btn_area">
+                    <div v-if="!this.getCGatewayData"></div>
+                    <div class="btn_area" v-else>
                         <button type="button" class="btn form2">cmdA4전송</button>
                         <button type="button" class="btn form2">역점검요청</button>
                         <button type="button" class="btn form2">문열림멘트-ON</button>

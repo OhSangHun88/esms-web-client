@@ -7,7 +7,8 @@
                         <div class="title_area">
                             <p class="tit">활동 미감지</p>
                         </div>
-                        <div class="btn_area">
+                        <div v-if="!this.getCSensorsData"></div>
+                        <div class="btn_area" v-else>
                             <button type="button" class="btn form2" @click="sendActiveUnsensingCycle">저장</button>
                         </div>
                     </div>
@@ -170,7 +171,8 @@
                     <div class="title_area">
                         <p class="tit">센서 상태값 전송 주기</p>
                     </div>
-                    <div class="btn_area">
+                    <div v-if="!this.getCSensorsData"></div>
+                    <div class="btn_area" v-else>
                         <button type="button" class="btn form2" @click="saveSensorsStateData">저장</button>
                     </div>
                 </div>
@@ -334,6 +336,7 @@ import axios from "axios";
         },
     //getsenser value
     async getCSensers(){
+        console.log(this.getCSensorsData)
     const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30`
     await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
