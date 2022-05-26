@@ -111,9 +111,9 @@ export default {
                     if(!lastMeasures[i]){
                         continue;
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE006"){
-                        this.reportMeasureData.TPE006 = lastMeasures[i].measureValue
+                        this.reportMeasureData.TPE006 = lastMeasures[i].measureValue.substring(15,17)
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE007"){
-                        this.reportMeasureData.TPE007 = lastMeasures[i].measureValue
+                        this.reportMeasureData.TPE007 = lastMeasures[i].measureValue.substring(15,17)
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE008"){
                         this.reportMeasureData.TPE008 = lastMeasures[i].measureValue
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE005"){
@@ -133,6 +133,8 @@ export default {
                     TPE012: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm? lm.sensorTypeCd === "TPE012" : 0}).measureValue,//.split(',').slice(-1)[0],//활동량
                 }*/
             }
+            console.log(lastMeasures[1].measureValue)
+            console.log(lastMeasures[1].measureValue.substring(15,17))
             console.log(this.reportMeasureData)
         }).catch(error => {
             console.log("fail to load")
