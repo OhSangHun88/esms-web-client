@@ -220,7 +220,7 @@
                                 <col style="width:16%;">
                             </colgroup>
                             <tbody v-if="!this.getCSensorsData">
-                                <tr >
+                                <tr>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -382,7 +382,7 @@
                         </div>
                         <div class="toggle_btn">
                             <button type="button" :class="beforeToggle===0? 'btn on': 'btn'" @click="getNowToggle">최신정보</button>
-                            <button type="button" :class="beforeToggle===1? 'btn on': 'btn'" @click="getBeforeVersionSensors" >직전정보</button>
+                            <button type="button" :class="beforeToggle===1? 'btn on': 'btn'"  >직전정보</button>
                         </div>
                     </div>
                 </div>
