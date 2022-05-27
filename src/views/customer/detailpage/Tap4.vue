@@ -1,5 +1,20 @@
 <template>
     <div >
+        <div id="" class="popupLayer" v-if="firmwareUpgradeCheck === true">
+              <div class="popup_wrap type-02">
+                <div class="title_wrap">
+                  <div class="title">경고</div>
+                  <button type="button" class="btn_close" @click="firmwareUpgradeCheck = false">닫기</button>
+                </div>
+                <div class="popup_cnt">
+                  <p class="alert_txt">업그레이드시 3분정도 시스템이 중지됩니다. <br> 펌웨어 업그레이를 진행하시겠습니까?</p>
+                </div>
+                <div class="popbtn_area type-02">
+                  <button type="button" class="btn form2" @click="firmwareUpgrade()">확인</button>
+                  <button type="button" class="btn" @click="firmwareUpgradeCheck = false">취소</button>
+                </div>
+              </div>
+            </div>
         <div v-if="!this.pending" style="text-align: center;">
             <img src="../../../assets/images/loading.png"  />
         </div>
@@ -87,7 +102,7 @@
                     </div>
                     <div v-if="!this.getCGatewayData"></div>
                     <div class="btn_area" v-else>
-                        <button type="button" class="btn form2" @click="firmwareUpgrade()">펌웨어 업그레이드</button>
+                        <button type="button" class="btn form2" @click="firmwareUpgradeCheck = true">펌웨어 업그레이드</button>
                         <button type="button" class="btn form2" @click="cmdA4post()">cmdA4전송</button>
                         <button type="button" class="btn form2">역점검요청</button>
                         <!-- <button type="button" class="btn form2">문열림멘트-ON</button>
@@ -485,7 +500,7 @@ import axios from "axios";
       tmpIdx: null,
       pending : false,
       beforeToggle: 0,
-
+      firmwareUpgradeCheck:false,
 
      }
    },
@@ -697,9 +712,9 @@ import axios from "axios";
              let cmdData
            cmdData = res.data
            if(cmdData.isSuccess === true){
-               alert("전송되었습니다")
+               alert("성공적으로 전송되었습니다")
            }else{
-               alert("실패되었습니다")
+               alert("전송이 실패되었습니다")
            }
            console.log(cmdData)
            //if(this.getCTabletsData.length===0){alert("연결된 태블릿이 존재하지 않습니다")}
@@ -740,17 +755,21 @@ import axios from "axios";
             stateSendCycle: this.getCGatewayData.stateSendCycle,
             updDtime: this.getCGatewayData.updDtime
         }
-            // axios.patch(url, data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-            // .then(res => {
-            //     this.beforeVersionTabletsData = res.data.data
-            //     console.log("이전버전태블릿")
-            //     console.log(this.beforeVersionTabletsData)
-            // })
-            // .catch(error => {
-            //     console.log("fail to load")
-            //     this.errorMessage = error.message;
-            //     console.error("There was an error!", error);
-            // });
+        
+            axios.patch(url,data ,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                let firmware = res.data.data
+                if(firmware){
+                    alert("성공적으로 업그레이드가 요청되었습니다")
+                    this.firmwareUpgradeCheck = false
+                }
+                console.log(firmware)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
     }
     
     
