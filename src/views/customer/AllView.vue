@@ -255,6 +255,7 @@
                 <colgroup>
                     <col style="width:5%;">
                     <col style="width:5%;">
+                    <col style="width:5%;">
                     <col style="width:8%;">
                     <col style="width:5%;">
                     <col style="width:5%;">
@@ -270,6 +271,7 @@
                     <tr>
                         <th scope="col">선택</th>
                         <th scope="col">대상자명</th>
+                        <th scope="col">대상자ID</th>
                         <th scope="col">생년월일</th>
                         <th scope="col">나이</th>
                         <th scope="col">성별</th>
@@ -286,6 +288,7 @@
             <div class="tbody">
                 <table>
                     <colgroup>
+                        <col style="width:5%;">
                         <col style="width:5%;">
                         <col style="width:5%;">
                         <col style="width:8%;">
@@ -308,6 +311,7 @@
                               </div>
                             </td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.recipientNm}}</a></td>
+                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.recipientId}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.birthday}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{makeAge(item.birthday) }}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.sex==="M"?'남':'여'}}</a></td>

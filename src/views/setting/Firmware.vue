@@ -114,7 +114,8 @@
                 <div class="result_txt">
                     <p>조회결과 : <strong class = "num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
                     <div class="btn_area">
-                        <button type="button" class="btn">업그레이드</button>
+                      <button type="button" style="margin-right:10px" class="btn">등록이력</button>
+                      <button type="button" style="margin-right:10px" class="btn">업그레이드</button>
                     </div>
                 </div>
                 <div class="list result">

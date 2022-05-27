@@ -86,12 +86,12 @@
                         </div>
                     </div>
                     <div v-if="!this.getCGatewayData"></div>
-                    <!-- <div class="btn_area" v-else>
-                        <button type="button" class="btn form2">cmdA4전송</button>
+                    <div class="btn_area" v-else>
+                        <button type="button" class="btn form2" @click="cmdA4post()">cmdA4전송</button>
                         <button type="button" class="btn form2">역점검요청</button>
-                        <button type="button" class="btn form2">문열림멘트-ON</button>
-                        <button type="button" class="btn form2">자동착신-OFF</button>
-                    </div> -->
+                        <!-- <button type="button" class="btn form2">문열림멘트-ON</button>
+                        <button type="button" class="btn form2">자동착신-OFF</button> -->
+                    </div>
                     
                 </div>
                 <div class="list">
@@ -678,10 +678,35 @@ import axios from "axios";
         if(input <=0 && input >= -80) {
 			return "양호";
 		}else if( input <-80  && input >= -99) {
-			return "보통";
+			return "미약";
 		}else {
-			return "미수신";
+			return "나쁨";
 		}
+    },
+    cmdA4post(){
+        let url = `http://210.122.45.62:8081/esms/app/batch/baseUnitSensor.do`
+        let data ={
+            recipientId:this.recipientId,
+            cmd:"cmdA4"
+        }
+        console.log(data)
+         axios.post(url, data)
+         .then(res => {
+             let cmdData
+           cmdData = res.data
+           if(cmdData.isSuccess === true){
+               alert("전송되었습니다")
+           }else{
+               alert("실패되었습니다")
+           }
+           console.log(cmdData)
+           //if(this.getCTabletsData.length===0){alert("연결된 태블릿이 존재하지 않습니다")}
+         })
+         .catch(error => {
+             console.log("fail to load")
+           this.errorMessage = error.message;
+           console.error("There was an error!", error);
+         });
     }
     
     

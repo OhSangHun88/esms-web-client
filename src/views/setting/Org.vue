@@ -373,7 +373,7 @@
                                   <td>{{item.addrDetail}}</td>
                                   <td>{{chnageUseYn(item.useYn)}}</td>
                                   <td>{{item.regDtime}}</td>
-                                  <td></td>
+                                  <td>{{item.updDtime}}</td>
                                 </tr>
                             </tbody>
 
