@@ -685,7 +685,7 @@ import axios from "axios";
 		}
     },
     cmdA4post(){
-        let url = this.$store.state.serverApi2 +`/app/esms/app/batch/baseUnitSensor.do`
+        let url = this.$store.state.serverApi2 +`/esms/app/batch/baseUnitSensor.do`
         let data ={
             recipientId:this.recipientId,
             cmd:"cmdA4"
@@ -714,30 +714,31 @@ import axios from "axios";
         let url  = this.$store.state.serverApi + `/admin/gateways/${this.getCGatewayData.gwId}/firmware-version`
         let gwid = this.getCGatewayData.gwId
         console.log(gwid)
+        console.log(this.getCGatewayData)
         let data = {
-            batteryValue: 60,
-            comStateCd: "TAK001",
-            equipVersionInfoSeq: 1,
-            faultYnCd: 0,
-            firmwareVersion: "V0.314",
-            gwId: 1,
-            gwStateCd: "STE001",
-            gwTypeCd: "TPE001",
-            hardwareVersion: "V1.000",
-            incomeDate: "2020-10-11",
-            incomeNm: "세트 #5",
-            logLevel: "1",
-            macAddr: "024b50fffea98732",
-            orgId: "ORG0000042",
-            orgNm: "보건복지부",
-            powerLinkYn: 1,
-            recipientId: 5,
-            recipientNm: "홍길동",
-            rssi: -10,
-            serialNo: "1122334455667788",
-            stateMeasureDtime: "2022-04-12 06:24:07",
-            stateSendCycle: 14400,
-            updDtime: "2022-04-12 06:24:07"
+            batteryValue: this.getCGatewayData.batteryValue,
+            comStateCd: this.getCGatewayData.comStateCd,
+            equipVersionInfoSeq: this.getCGatewayData.equipVersionInfoSeq,
+            faultYnCd: this.getCGatewayData.faultYnCd,
+            firmwareVersion: this.getCGatewayData.firmwareVersion,
+            gwId: this.getCGatewayData.gwId,
+            gwStateCd: this.getCGatewayData.gwStateCd,
+            gwTypeCd: this.getCGatewayData.gwTypeCd,
+            hardwareVersion: this.getCGatewayData.hardwareVersion,
+            incomeDate: this.getCGatewayData.incomeDate,
+            incomeNm: this.getCGatewayData.incomeNm,
+            logLevel: this.getCGatewayData.logLevel,
+            macAddr: this.getCGatewayData.macAddr,
+            orgId: this.getCGatewayData.orgId,
+            orgNm: this.getCGatewayData.orgNm,
+            powerLinkYn: this.getCGatewayData.powerLinkYn,
+            recipientId: this.getCGatewayData.recipientId,
+            recipientNm: this.getCGatewayData.recipientNm,
+            rssi: this.getCGatewayData.rssi,
+            serialNo: this.getCGatewayData.serialNo,
+            stateMeasureDtime: this.getCGatewayData.stateMeasureDtime,
+            stateSendCycle: this.getCGatewayData.stateSendCycle,
+            updDtime: this.getCGatewayData.updDtime
         }
             // axios.patch(url, data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             // .then(res => {
