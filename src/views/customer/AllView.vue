@@ -281,7 +281,7 @@
                         <th scope="col">주소</th>
                         <th scope="col">관리기관</th>
                         <th scope="col">생활관리사</th>
-                        <th scope="col">등록시간</th>
+                        <th scope="col">등록일자</th>
                     </tr>
                 </thead>
             </table>
