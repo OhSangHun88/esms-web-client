@@ -53,7 +53,7 @@
                         <input type="text" :value="this.bodyData? changeRecipientPhoneno(this.bodyData.recipientPhoneno) : ''">
                     </td>
                     <td>
-                        <input type="text" class="size-1" :value="this.bodyData? this.bodyData.measureCycle : ''">
+                        <input type="text" class="size-1" :value="this.bodyData? this.bodyData.activeUnsensingCycle : ''">
                     </td>
                     <td>
                         <input type="text" class="size-3" :value="this.bodyData? this.bodyData.orgNm : ''">

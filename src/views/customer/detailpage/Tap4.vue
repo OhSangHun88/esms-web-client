@@ -87,6 +87,7 @@
                     </div>
                     <div v-if="!this.getCGatewayData"></div>
                     <div class="btn_area" v-else>
+                        <button type="button" class="btn form2" @click="firmwareUpgrade()">펌웨어 업그레이드</button>
                         <button type="button" class="btn form2" @click="cmdA4post()">cmdA4전송</button>
                         <button type="button" class="btn form2">역점검요청</button>
                         <!-- <button type="button" class="btn form2">문열림멘트-ON</button>
@@ -684,12 +685,13 @@ import axios from "axios";
 		}
     },
     cmdA4post(){
-        let url = `http://210.122.45.62:8081/esms/app/batch/baseUnitSensor.do`
+        let url = this.$store.state.serverApi2 +`/app/esms/app/batch/baseUnitSensor.do`
         let data ={
             recipientId:this.recipientId,
             cmd:"cmdA4"
         }
         console.log(data)
+        console.log(url)
          axios.post(url, data)
          .then(res => {
              let cmdData
@@ -707,6 +709,47 @@ import axios from "axios";
            this.errorMessage = error.message;
            console.error("There was an error!", error);
          });
+    },
+    firmwareUpgrade(){
+        let url  = this.$store.state.serverApi + `/admin/gateways/${this.getCGatewayData.gwId}/firmware-version`
+        let gwid = this.getCGatewayData.gwId
+        console.log(gwid)
+        let data = {
+            batteryValue: 60,
+            comStateCd: "TAK001",
+            equipVersionInfoSeq: 1,
+            faultYnCd: 0,
+            firmwareVersion: "V0.314",
+            gwId: 1,
+            gwStateCd: "STE001",
+            gwTypeCd: "TPE001",
+            hardwareVersion: "V1.000",
+            incomeDate: "2020-10-11",
+            incomeNm: "세트 #5",
+            logLevel: "1",
+            macAddr: "024b50fffea98732",
+            orgId: "ORG0000042",
+            orgNm: "보건복지부",
+            powerLinkYn: 1,
+            recipientId: 5,
+            recipientNm: "홍길동",
+            rssi: -10,
+            serialNo: "1122334455667788",
+            stateMeasureDtime: "2022-04-12 06:24:07",
+            stateSendCycle: 14400,
+            updDtime: "2022-04-12 06:24:07"
+        }
+            // axios.patch(url, data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            // .then(res => {
+            //     this.beforeVersionTabletsData = res.data.data
+            //     console.log("이전버전태블릿")
+            //     console.log(this.beforeVersionTabletsData)
+            // })
+            // .catch(error => {
+            //     console.log("fail to load")
+            //     this.errorMessage = error.message;
+            //     console.error("There was an error!", error);
+            // });
     }
     
     
