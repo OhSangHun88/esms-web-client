@@ -97,6 +97,12 @@ export default {
       //여기
         const url  =  this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/lastmeasures`
         let lastMeasures
+        let measureValuetmp1=[]
+        let measureValuetmp2=[]
+        let measureValuetmp3=[]
+        let measureValuetmp4=[]
+        let measureValuetmp5=[]
+        let measureValuetmp6=[]
         this.reportMeasureData = { TPE005: 0,TPE011: 0,TPE006: 0,TPE008: 0,TPE007: 0,TPE012: 0 } 
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
@@ -111,17 +117,23 @@ export default {
                     if(!lastMeasures[i]){
                         continue;
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE006"){
-                        this.reportMeasureData.TPE006 = lastMeasures[i].measureValue.substring(15,17)
+                        measureValuetmp1 = lastMeasures[i].measureValue.split(',')
+                        this.reportMeasureData.TPE006 = measureValuetmp1[measureValuetmp1.length -1]
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE007"){
-                        this.reportMeasureData.TPE007 = lastMeasures[i].measureValue.substring(15,17)
+                        measureValuetmp2 = lastMeasures[i].measureValue.split(',')
+                        this.reportMeasureData.TPE007 = measureValuetmp2[measureValuetmp2.length -1]
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE008"){
-                        this.reportMeasureData.TPE008 = lastMeasures[i].measureValue
+                        measureValuetmp3 = lastMeasures[i].measureValue.split(',')
+                        this.reportMeasureData.TPE008 = measureValuetmp3[measureValuetmp3.length -1]
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE005"){
-                        this.reportMeasureData.TPE005 = lastMeasures[i].measureValue
+                        measureValuetmp4 = lastMeasures[i].measureValue.split(',')
+                        this.reportMeasureData.TPE005 = measureValuetmp4[measureValuetmp4.length -1]
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE011"){
-                        this.reportMeasureData.TPE011 = lastMeasures[i].measureValue
+                        measureValuetmp5 = lastMeasures[i].measureValue.split(',')
+                        this.reportMeasureData.TPE011 = measureValuetmp5[measureValuetmp5.length -1]
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE012"){
-                        this.reportMeasureData.TPE012 = lastMeasures[i].measureValue
+                        measureValuetmp6 = lastMeasures[i].measureValue.split(',')
+                        this.reportMeasureData.TPE012 = measureValuetmp6[measureValuetmp6.length -1]
                     }
                 }
                 /*this.reportMeasureData = {

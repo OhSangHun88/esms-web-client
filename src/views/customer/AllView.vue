@@ -20,7 +20,7 @@
             <div class="popup_cnt">
                 <div class="input_wrap">
                   <div class="input_area">
-                    <p class="input_tit">사용자 이름</p>
+                    <p class="input_tit">대상자명</p>
                     <div class="add_btn_input">
                       <input type="text" v-model="selectRecipient">
                       <!-- <button type="button" class="input_btn">중복 확인</button> -->
@@ -71,7 +71,7 @@
                 </div>
                 <div class="input_wrap">
                     <div class="input_area">
-                        <p class="input_tit">광역</p>
+                        <p class="input_tit">시/도</p>
                         <select v-model="userSido" @change="onChangeSgg($event)">
                           <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                         </select>
@@ -85,7 +85,7 @@
                 </div>
                 <div class="input_wrap">  
                   <div class="input_area">
-                      <p class="input_tit">수행기관</p>
+                      <p class="input_tit">관리기관</p>
                         <select v-model="userOrg">
                           <option v-for="(orgm, index) in orgmItems" :value="{value: orgm.value, label: orgm.label}" v-bind:key="index">{{orgm.label}}</option>
                         </select>
@@ -107,9 +107,9 @@
             <div class="popup_cnt">
                 <div class="input_wrap">
                   <div class="input_area">
-                    <p class="input_tit">사용자 이름</p>
+                    <p class="input_tit">대상자명</p>
                     <div class="add_btn_input">
-                      <input type="text" v-model="selecteChangeRecipient">
+                      <input type="text" v-model="selectChangeRecipient">
                       <!-- <button type="button" class="input_btn">중복 확인</button> -->
                     </div>
                   </div>
@@ -158,7 +158,7 @@
                 </div>
                 <div class="input_wrap">
                     <div class="input_area">
-                        <p class="input_tit">광역</p>
+                        <p class="input_tit">시/도</p>
                         <select v-model="selectChangeSido" @change="onChangeSgg($event)">
                           <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                         </select>
@@ -172,9 +172,15 @@
                 </div>
                 <div class="input_wrap">  
                   <div class="input_area">
-                      <p class="input_tit">수행기관</p>
+                      <p class="input_tit">관리기관</p>
                         <select v-model="selectChangeOrg">
                           <option v-for="(orgm, index) in orgmItems" :value="{value: orgm.value, label: orgm.label}" v-bind:key="index">{{orgm.label}}</option>
+                        </select>
+                  </div>
+                  <div class="input_area">
+                      <p class="input_tit">상태 구분</p>
+                        <select v-model="selectChangeState">
+                          <option v-for="(state, index) in statusItems" :value="state.value" v-bind:key="index">{{state.label}}</option>
                         </select>
                   </div>
                 </div>
@@ -588,11 +594,11 @@ export default {
       addCustomer: false, fileUpload: false,selectedUpdateSggItems:null,
       //대상자 등록
       zipCode: null,selectedAddr: null, selectedAddrDetail: null,selectBirthday: null,selectRecipient: null,
-      selectedPhoneNumber: null,userSido: null,userSigungu: null,userOrg: null,
+      selectedPhoneNumber: null,userSido: null,userSigungu: null,userOrg: null, selectState:null,
 
-      selecteChangeRecipient: null, selectChangeBirthday: null, selectChangeAddrDetail: null, selectChangeZipCode: null, selectChangeSex: null,
+      selectChangeRecipient: null, selectChangeBirthday: null, selectChangeAddrDetail: null, selectChangeZipCode: null, selectChangeSex: null,
       selectChangePhoneNumber: null, selectChangeSido: null, selectChangeSgg: null, selectChangeOrg: null, selectChangeAddr: null,
-      selectChangeRecipeType: null, saveChangeData:null, changeRecipientItems:[],
+      selectChangeRecipeType: null, saveChangeData:null, changeRecipientItems:[], selectChangeState:null,
 
       selectedUserOrg: null, userState:[{value:'STE001', text: '승인'},{value:'STE002', text: '서비스중'},{value:'STE003', text: '서비스종료'},],
       selectedRecipeType: null, recipeType:[{value:'TPE001', text: '고령자'},{value:'TPE002', text: '장애인'},],
@@ -607,7 +613,7 @@ export default {
     
     this.getRecipientData();
     //this.getPartData();
-    //this.getStatusData();
+    this.getStatusData();
     //this.getCycleData();
     this.cBirthday=moment().format('YYYY-MM-DD');
     this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
@@ -706,6 +712,26 @@ export default {
           console.error("There was an error!", error);
         });
     },
+    getStatusData() {
+      let url = this.$store.state.serverApi + "/admin/codes?cmmnCdGroup=RECIPIENT.STATECD"
+       axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+           .then(response => {
+             this.selectChangeState = null;
+             this.statusItems=[];
+             this.statusItems.push({label: '전체', value: ''});
+             for(let i=0; i<response.data.data.length; i++) {
+               this.statusItems.push({
+                 label: response.data.data[i].cmmnCdNm,
+                 value: response.data.data[i].cmmnCd
+               });
+             }
+             console.log(this.statusItems)
+           })
+           .catch(error => {
+             this.errorMessage = error.message;
+             console.error("There was an error!", error);
+           });
+     },
   onChangeSgg(event){
       this.sidoCd = event.target.value
       
@@ -841,9 +867,9 @@ export default {
         return;
     }
     let changeDatatmp = this.recipientItems[this.saveChangeData]
-    console.log(changeDatatmp.birthday)
+    console.log(changeDatatmp)
 
-    this.selecteChangeRecipient = changeDatatmp.recipientNm
+    this.selectChangeRecipient = changeDatatmp.recipientNm
     this.selectChangeBirthday = changeDatatmp.birthday
     this.selectChangeSex = changeDatatmp.sex
     if(this.selectChangeSex === 'M'){
@@ -861,6 +887,7 @@ export default {
     this.selectChangeOrg = ''
     this.recipientId = changeDatatmp.recipientId
     this.changeOpen = true;
+    this.selectChangeState = changeDatatmp.stateCd
   },
 
   selectGender(input){
@@ -998,11 +1025,11 @@ export default {
         measureCycle: 240,//완
         orgId: this.selectChangeOrg.value,//완
         orgNm: this.selectChangeOrg.label,
-        recipientNm: this.selecteChangeRecipient,//완
+        recipientNm: this.selectChangeRecipient,//완
         recipientPhoneno: this.selectChangePhoneNumber,//완
         sex: this.userGender===1?"M":this.userGender===2?"F":"", //완
         sigunguCd: this.selectChangeSgg,//완
-        stateCd: "STE001" , //완
+        stateCd: this.selectChangeState , //완
         typeCd: this.selectChangeRecipeType,//고정
         zipCode: this.selectChangeZipCode,//완
         regId: this.$store.state.userId//완
