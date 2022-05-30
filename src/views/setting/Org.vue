@@ -362,18 +362,18 @@
                             <col style="width:10%;">
                             </colgroup>
                             <tbody >
-                                <tr v-for="(item,index) in TorgItems" v-bind:key="index" :ref="`target_${index}`" @click="detailOrgpopup(index)">
-                                  <td>{{index+1}}</td>
-                                  <td>{{item.orgId}}</td>
-                                  <td>{{item.sidoName}}</td>
-                                  <td>{{item.sggName}}</td>
-                                  <td>{{item.orgNm}}</td>
-                                  <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
-                                  <td>{{item.addr}}</td>
-                                  <td>{{item.addrDetail}}</td>
-                                  <td>{{chnageUseYn(item.useYn)}}</td>
-                                  <td>{{item.regDtime}}</td>
-                                  <td>{{item.updDtime}}</td>
+                                <tr v-for="(item,index) in TorgItems" v-bind:key="index" :ref="`target_${index}`">
+                                  <td><a href="#" @click="detailOrgpopup(index)">{{index+1}}</a></td>
+                                  <td><a href="#" @click="detailOrgpopup(index)">{{item.orgId}}</a></td>
+                                  <td><a href="#" @click="detailOrgpopup(index)">{{item.sidoName}}</a></td>
+                                  <td><a href="#" @click="detailOrgpopup(index)">{{item.sggName}}</a></td>
+                                  <td><a href="#" @click="detailOrgpopup(index)">{{item.orgNm}}</a></td>
+                                  <td><a href="#" @click="detailOrgpopup(index)">{{changeRecipientPhoneno(item.phoneNumber)}}</a></td>
+                                  <td><a href="#" @click="detailOrgpopup(index)">{{item.addr}}</a></td>
+                                  <td><a href="#" @click="detailOrgpopup(index)">{{item.addrDetail}}</a></td>
+                                  <td><a href="#" @click="detailOrgpopup(index)">{{chnageUseYn(item.useYn)}}</a></td>
+                                  <td><a href="#" @click="detailOrgpopup(index)">{{item.regDtime}}</a></td>
+                                  <td><a href="#" @click="detailOrgpopup(index)">{{item.updDtime}}</a></td>
                                 </tr>
                             </tbody>
 

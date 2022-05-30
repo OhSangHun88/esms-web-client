@@ -22,13 +22,13 @@
                   <div class="input_area">
                     <p class="input_tit">대상자명</p>
                     <div class="add_btn_input">
-                      <input type="text" v-model="selectRecipient">
+                      <input type="text" v-model="selectedUpdateRecipient">
                       <!-- <button type="button" class="input_btn">중복 확인</button> -->
                     </div>
                   </div>
                   <div class="input_area half">
                     <p class="input_tit">생년월일</p>
-                    <input type="text" v-model="selectBirthday">
+                    <input type="text" v-model="selectedUpdateBirthday">
                   </div>
                   <div class="btn_area half">
                       <p class="input_tit">성별</p>
@@ -42,52 +42,52 @@
                   <div class="input_area">
                     <p class="input_tit">우편번호</p>
                     <div class="add_btn_input">
-                      <input type="text" value="" v-model="zipCode">
+                      <input type="text" value="" v-model="selectedUpdateZipCode">
                       <button type="button" class="input_btn" @click="search">검색</button>
                     </div>
                   </div>
                   <div class="input_area">
                     <p class="input_tit">주소</p>
-                    <input type="text" value="" v-model="selectedAddr">
+                    <input type="text" value="" v-model="selectedUpdateAddr">
                   </div>
                 </div>
                 <div class="input_wrap type-02">
                     <div class="input_area" >
                         <p class="input_tit">상세주소</p>
-                        <input type="text" value="" v-model="selectedAddrDetail">
+                        <input type="text" value="" v-model="selectedUpdateAddrDetail">
                     </div>
                 </div>
                 <div class="input_wrap">
                   <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="selectedPhoneNumber">
+                    <input type="text" v-model="selectedUpdatePhoneNumber">
                   </div>
                   <div class="input_area">
                         <p class="input_tit">사용자 구분</p>
-                        <select v-model="selectedRecipeType">
-                          <option v-for="(recipetype, index) in recipeType" :value="recipetype.value" v-bind:key="index">{{recipetype.text}}</option>
+                        <select v-model="selectedUpdateUserType">
+                          <option v-for="(recipetype, index) in TypeItems2" :value="recipetype.value" v-bind:key="index">{{recipetype.label}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="input_wrap">
                     <div class="input_area">
                         <p class="input_tit">시/도</p>
-                        <select v-model="userSido" @change="onChangeSgg($event)">
-                          <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                        <select v-model="selectedUpdateSidoItems" @change="onChangeSgg($event)">
+                          <option v-for="(sido, index) in sidoItems2" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                         </select>
                     </div>
                     <div class="input_area">
                         <p class="input_tit">시/군/구</p>
-                        <select v-model="userSigungu" @change="onChangeOrg($event)">
-                          <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                        <select v-model="selectedUpdateSggItems" @change="onChangeOrg($event)">
+                          <option v-for="(sgg, index) in sggItems2" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="input_wrap">  
                   <div class="input_area">
                       <p class="input_tit">관리기관</p>
-                        <select v-model="userOrg">
-                          <option v-for="(orgm, index) in orgmItems" :value="{value: orgm.value, label: orgm.label}" v-bind:key="index">{{orgm.label}}</option>
+                        <select v-model="selectedUpdateOrgItems">
+                          <option v-for="(orgm, index) in orgmItems2" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                         </select>
                   </div>
                 </div>
@@ -152,7 +152,7 @@
                   <div class="input_area">
                         <p class="input_tit">사용자 구분</p>
                         <select v-model="selectChangeRecipeType">
-                          <option v-for="(recipetype, index) in recipeType" :value="recipetype.value" v-bind:key="index">{{recipetype.text}}</option>
+                          <option v-for="(recipetype, index) in TypeItems2" :value="recipetype.value" v-bind:key="index">{{recipetype.label}}</option>
                         </select>
                     </div>
                 </div>
@@ -160,13 +160,13 @@
                     <div class="input_area">
                         <p class="input_tit">시/도</p>
                         <select v-model="selectChangeSido" @change="onChangeSgg($event)">
-                          <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                          <option v-for="(sido, index) in sidoItems2" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                         </select>
                     </div>
                     <div class="input_area">
                         <p class="input_tit">시/군/구</p>
                         <select v-model="selectChangeSgg" @change="onChangeOrg($event)">
-                          <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                          <option v-for="(sgg, index) in sggItems2" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                         </select>
                     </div>
                 </div>
@@ -174,13 +174,13 @@
                   <div class="input_area">
                       <p class="input_tit">관리기관</p>
                         <select v-model="selectChangeOrg">
-                          <option v-for="(orgm, index) in orgmItems" :value="{value: orgm.value, label: orgm.label}" v-bind:key="index">{{orgm.label}}</option>
+                          <option v-for="(orgm, index) in orgmItems2" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                         </select>
                   </div>
                   <div class="input_area">
                       <p class="input_tit">상태 구분</p>
                         <select v-model="selectChangeState">
-                          <option v-for="(state, index) in statusItems" :value="state.value" v-bind:key="index">{{state.label}}</option>
+                          <option v-for="(state, index) in statusItems2" :value="state.value" v-bind:key="index">{{state.label}}</option>
                         </select>
                   </div>
                 </div>
@@ -200,16 +200,22 @@
         <div class="table_wrap">
             <table>
                 <colgroup>
-                    <col style="width:23%;">
-                    <col style="width:23.6%;">
-                    <col style="width:23.6%">
-                    <col style="width:23.6%;">
+                    <col style="width:20%">
+                    <col style="width:20%">
+                    <col style="width:20%">
+                    <col style="width:8%">
+                    <col style="width:15%">
+                    <col style="width:15%">
+                    <col style="width:20%">
                     <col style="width:auto;">
                 </colgroup>
                 <thead>
                     <th scope="row">시/도</th>
                     <th scope="row">시/군/구</th>
                     <th scope="row">관리기관</th>
+                    <th scope="row">성별</th>
+                    <th scope="row">구분</th>
+                    <th scope="row">상태</th>
                     <th scope="row">대상자명</th>
                     
                 </thead>
@@ -228,6 +234,21 @@
                       <td>
                         <select v-model="selectedOrgItems">
                           <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select v-model="selectedUserSex">
+                          <option v-for="(sex, index) in sexItems" :value="sex.value" v-bind:key="index">{{sex.label}}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select v-model="selectedUserType">
+                          <option v-for="(type, index) in TypeItems" :value="type.value" v-bind:key="index">{{type.label}}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select v-model="selectedUserState">
+                          <option v-for="(state, index) in statusItems" :value="state.value" v-bind:key="index">{{state.label}}</option>
                         </select>
                       </td>
                         <td>
@@ -257,15 +278,15 @@
                     <col style="width:5%;">
                     <col style="width:5%;">
                     <col style="width:8%;">
-                    <col style="width:5%;">
-                    <col style="width:5%;">
+                    <col style="width:4%;">
+                    <col style="width:4%;">
                     <col style="width:10%;"><!--전번-->
                     <col style="width:8%;">
                     <col style="width:8%;">
                     <col style="width:auto;">
                     <col style="width:8%;">
                     <col style="width:8%;">
-                    <col style="width:10%;"><!--등록시간-->
+                    <col style="width:8%;"><!--등록시간-->
                 </colgroup>
                 <thead>
                     <tr>
@@ -292,15 +313,15 @@
                         <col style="width:5%;">
                         <col style="width:5%;">
                         <col style="width:8%;">
-                        <col style="width:5%;">
-                        <col style="width:5%;">
+                        <col style="width:4%;">
+                        <col style="width:4%;">
                         <col style="width:10%;"><!--전번-->
                         <col style="width:8%;">
                         <col style="width:8%;">
                         <col style="width:auto;">
                         <col style="width:8%;">
                         <col style="width:8%;">
-                        <col style="width:10%;"><!--등록시간-->
+                        <col style="width:8%;"><!--등록시간-->
                     </colgroup>
                     <tbody>
                         <tr v-for="(item,index) in recipientItems" v-bind:key="index" >
@@ -313,12 +334,13 @@
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.recipientNm}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.recipientId}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.birthday}}</a></td>
-                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{makeAge(item.birthday) }}</a></td>
+                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{makeAge(item.birthday)}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.sex==="M"?'남':'여'}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{changeRecipientPhoneno(item.recipientPhoneno)}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.typeNm}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.stateNm}}</a></td>
-                            <td style="text-align: left;"><a href="#" @click="goToDetailView(item.recipientId)">{{item.addr}}</a></td>
+                            <td style="text-align: left;" v-if="item.addr.length < 55"><a href="#" style="margin-right:10px;" @click="goToDetailView(item.recipientId)">{{item.addr}}</a></td>
+                            <td style="text-align: left;" v-else><a href="#" style="margin-right:10px;" @click="goToDetailView(item.recipientId)">{{item.addr.substring(0,55)+"..."}}</a></td>
                             <td style="text-align: left;"><a href="#" @click="goToDetailView(item.recipientId)">{{item.orgNm}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.managerNm}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{$moment(item.regDtime).format('YYYY-MM-DD')}}</a></td>
@@ -575,11 +597,11 @@ export default {
       pending:true, cName: '', cBirthday: '', cPhone: '', cSex: '', cSocial: '', cPart: '', cStatus: '', cCycle: '', cAddr: '', cDetail: '',
       caption: '', fileName: '',
       counter: 0,pageIndex: 1,
-      orgmItems: [], partItems: [], statusItems: [], cycleItems: [], sexItems:[{label: '남', value: 'M'}, {label: '여', value: 'F'}],
-      orgCode: '', partCode: '', statusCode: '', sexCode: '', cycleCode: '',selectedSidoItems: '', selectedSggItems: '', selectedOrgItems: '',
-      modelOrg: '', modelPart: '', modelStatus: '', modelName: '',
+      orgmItems: [], orgmItems2: [], partItems: [], statusItems: [], statusItems2: [], cycleItems: [], sexItems:[{label:'전체', value:''},{label: '남', value: 'M'}, {label: '여', value: 'F'}],
+      orgCode: '', partCode: '', statusCode: '', sexCode: '', cycleCode: '',
+      modelOrg: '', modelPart: '', modelStatus: '', modelName: '', TypeItems:[], TypeItems2:[],
       orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-      sidoItems:[], sggItems:[],  actItems:[], recipientItems:[],recipientOrginItems:[], orgSido:'', orgSgg:'', filterName:'', modalOpen:false, changeOpen:false,
+      sidoItems:[], sidoItems2:[], sggItems:[], sggItems2:[],  actItems:[], recipientItems:[],recipientOrginItems:[], orgSido:'', orgSgg:'', filterName:'', modalOpen:false, changeOpen:false,
       recipientFields: [
         { key: 'orgNm', label: '기관관리', _classes: 'text-center' },
         { key: 'typeNm', label: '구분', _classes: 'text-center' },
@@ -596,16 +618,20 @@ export default {
         { key: 'delete', label: '', _classes: 'text-center' },    
       ],
       addCustomer: false, fileUpload: false,selectedUpdateSggItems:null,
-      //대상자 등록
-      zipCode: null,selectedAddr: null, selectedAddrDetail: null,selectBirthday: null,selectRecipient: null,
-      selectedPhoneNumber: null,userSido: null,userSigungu: null,userOrg: null, selectState:null,
+      //대상자 조회
+      selectedSidoItems:null, selectedSggItems:null, selectedOrgItems:null, selectedUserSex:null, selectedUserType:null, selectedUserState:null,
 
+      //대상자 등록
+      selectedUpdateZipCode:null, selectedUpdateAddr:null, selectedUpdateAddrDetail:null, selectedUpdateBirthday:null, selectedUpdateRecipient:null,
+      selectedUpdatePhoneNumber:null, selectedUpdateSidoItems:null, selectedUpdateSggItems:null, selectedUpdateOrgItems:null, selectedUpdateUserType:null,
+      selectedUpdateUserState:null, selectedUpdateOrgNm:null,
+      //사용자 정보 변경
       selectChangeRecipient: null, selectChangeBirthday: null, selectChangeAddrDetail: null, selectChangeZipCode: null, selectChangeSex: null,
       selectChangePhoneNumber: null, selectChangeSido: null, selectChangeSgg: null, selectChangeOrg: null, selectChangeAddr: null,
-      selectChangeRecipeType: null, saveChangeData:null, changeRecipientItems:[], selectChangeState:null,
+      selectChangeRecipeType: null, saveChangeData:null, changeRecipientItems:[], selectChangeState:null, selectChangeOrgNm:null,
 
       selectedUserOrg: null, userState:[{value:'STE001', text: '승인'},{value:'STE002', text: '서비스중'},{value:'STE003', text: '서비스종료'},],
-      selectedRecipeType: null, recipeType:[{value:'TPE001', text: '고령자'},{value:'TPE002', text: '장애인'},],
+      selectedRecipeType: null, recipeType:[{value:'', text: '선택'},{value:'TPE001', text: '고령자'},{value:'TPE002', text: '장애인'},],
       userGender: 1 ,
     }
   },
@@ -614,10 +640,11 @@ export default {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
-    
+    this.getTypeData();
+    this.getStatusData();
     this.getRecipientData();
     //this.getPartData();
-    this.getStatusData();
+    
     //this.getCycleData();
     this.cBirthday=moment().format('YYYY-MM-DD');
     this.s_date=moment().subtract(7, 'days').format('YYYY-MM-DD');
@@ -626,14 +653,20 @@ export default {
   },
   methods: {
     getSidoData() {
+      this.selectedSidoItems = ''
+      this.selectedUserSex = ''
     axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
-            
             this.sidoItems=[];
+            this.sidoItems2=[];
             this.sidoItems.push({label: '전체', value: ''});
-
+            this.sidoItems2.push({label: '선택', value: ''});
             for(let i=0; i<response.data.data.length; i++) {
               this.sidoItems.push({
+                label: response.data.data[i].sido,
+                value: response.data.data[i].sidoCd
+              });
+              this.sidoItems2.push({
                 label: response.data.data[i].sido,
                 value: response.data.data[i].sidoCd
               });
@@ -654,13 +687,16 @@ export default {
       }else{
         this.selectedSggItems = ''
         this.sggItems=[];
+        this.sggItems2=[];
         this.sggItems.push({label: '전체', value: ''});
+        this.sggItems2.push({label: '선택', value: ''});
         return ; 
       }
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           const tempArr = [{label: '전체', value: ''}];
           let tmpResult2 = [{label: '전체', value: ''}];
+          let tmpResult3 = [{label: '선택', value: ''}];
           for(let i=0; i<response.data.data.length; i++) {
             tempArr.push({
               label: response.data.data[i].sgg,
@@ -673,6 +709,7 @@ export default {
           });
           
           this.sggItems = [...tmpResult2,...tmpResult]
+          this.sggItems2 = [...tmpResult3,...tmpResult]
           
           console.log("this.sggItems ")
           console.log(this.sggItems)
@@ -691,17 +728,27 @@ export default {
         url += "?sggCd="+sggCode;
       }else{
         this.selectedOrgItems = ''
+        this.selectedUpdateOrgItems = ''
         this.orgmItems=[];
+        this.orgmItems2=[];
         this.orgmItems.push({label: '전체', value: ''});
+        this.orgmItems2.push({label: '선택', value: ''});
         return ; 
       }
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           const tmpArr = [{label: '전체', value: ''}];
+          const tmpArr2 = [{label: '선택', value: ''}];
           let tmpResult2 = [{label: '전체', value: ''}];
+          let tmpResult3 = [{label: '선택', value: ''}];
           this.orgmItems=[];
+          this.orgmItems2=[];
           for(let i=0; i<response.data.data.length; i++) {
             tmpArr.push({
+              label: response.data.data[i].orgNm,
+              value: response.data.data[i].orgId,
+            });
+            tmpArr2.push({
               label: response.data.data[i].orgNm,
               value: response.data.data[i].orgId,
             });
@@ -709,6 +756,7 @@ export default {
           let tmpResult = tmpArr
           this.orgmItems = [...tmpResult2,...tmpResult]
         this.orgmItems=tmpArr;
+        this.orgmItems2=tmpArr2;
         console.log(this.orgmItems)
         })
         .catch(error => {
@@ -717,19 +765,53 @@ export default {
         });
     },
     getStatusData() {
+      this.selectedUserState = ''
       let url = this.$store.state.serverApi + "/admin/codes?cmmnCdGroup=RECIPIENT.STATECD"
        axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
            .then(response => {
              this.selectChangeState = null;
              this.statusItems=[];
+             this.statusItems2=[];
              this.statusItems.push({label: '전체', value: ''});
+             this.statusItems2.push({label: '선택', value: ''});
              for(let i=0; i<response.data.data.length; i++) {
                this.statusItems.push({
                  label: response.data.data[i].cmmnCdNm,
                  value: response.data.data[i].cmmnCd
                });
+               this.statusItems2.push({
+                 label: response.data.data[i].cmmnCdNm,
+                 value: response.data.data[i].cmmnCd
+               });
              }
              console.log(this.statusItems)
+           })
+           .catch(error => {
+             this.errorMessage = error.message;
+             console.error("There was an error!", error);
+           });
+     },
+     getTypeData() {
+      this.selectedUserType = ''
+      this.selectedUpdateUserType =''
+      let url = this.$store.state.serverApi + "/admin/codes?cmmnCdGroup=RECIPIENT.TYPECD"
+       axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+           .then(response => {
+             this.TypeItems=[];
+             this.TypeItems2=[];
+             this.TypeItems.push({label: '전체', value: ''});
+             this.TypeItems2.push({label: '선택', value: ''});
+             for(let i=0; i<response.data.data.length; i++) {
+               this.TypeItems.push({
+                 label: response.data.data[i].cmmnCdNm,
+                 value: response.data.data[i].cmmnCd
+               });
+               this.TypeItems2.push({
+                 label: response.data.data[i].cmmnCdNm,
+                 value: response.data.data[i].cmmnCd
+               });
+             }
+             console.log(this.TypeItems)
            })
            .catch(error => {
              this.errorMessage = error.message;
@@ -794,13 +876,18 @@ export default {
       }else{
         addrCd = ''
       }
-    if(this.selectedOrgItems == '' && this.filterName == ''&& this.selectedSidoItems == ''&& this.selectedSggItems == '') {
-      uri = this.$store.state.serverApi + "/admin/recipients?pageIndex=1&recordCountPerPage=100";
+    if(this.selectedOrgItems == '' && this.filterName == ''&& this.selectedSidoItems == ''&& this.selectedSggItems == '' && this.selectedUserType =='' && this.selectedUserState =='' && this.selectedUserSex ==''){
+      uri = this.$store.state.serverApi + "/admin/recipients?pageIndex=1&recordCountPerPage=100"
     } else {
       uri = this.$store.state.serverApi + "/admin/recipients?pageIndex=1&recordCountPerPage=100";
       uri += "&addrCd="+addrCd;
+      console.log(this.selectType)
+      if(this.selectedUserType != '') uri += "&typeCd="+this.selectedUserType;
+      if(this.selectedUserState != '') uri += "&stateCd="+this.selectedUserState;
       if(this.selectedOrgItems != '') uri += "&orgId=" + this.selectedOrgItems;
       if(this.filterName != '') uri += "&recipientNm=" + this.filterName;
+      if(this.selectedUserSex != '') uri += "&sex=" + this.selectedUserSex
+      
       console.log("uri")
       console.log(uri)
 
@@ -860,6 +947,17 @@ export default {
     })
   },
   createData(){
+    this.selectedUpdateZipCode = null
+    this.selectedUpdateAddr = null
+    this.selectedUpdateAddrDetail = null
+    this.selectedUpdateBirthday = null
+    this.selectedUpdateRecipient = null
+    this.selectedUpdatePhoneNumber = null
+    this.selectedUpdateSidoItems = ''
+    this.selectedUpdateSggItems = ''
+    this.selectedUpdateOrgItems = ''
+    this.selectedUpdateUserType = ''
+    this.selectedUpdateUserState = ''
     this.modalOpen = true;
   },
   closeModal(){
@@ -890,8 +988,8 @@ export default {
     this.selectChangeSgg = ''
     this.selectChangeOrg = ''
     this.recipientId = changeDatatmp.recipientId
-    this.changeOpen = true;
     this.selectChangeState = changeDatatmp.stateCd
+    this.changeOpen = true;
   },
 
   selectGender(input){
@@ -925,15 +1023,15 @@ export default {
 
         // 우편번호와 주소 정보를 해당 필드에 넣는다.
         
-        this.zipCode = data.zonecode; //
+        this.selectedUpdateZipCode = data.zonecode; //
         this.selectChangeZipCode = data.zonecode;
-        this.selectedAddr = data.roadAddress;
+        this.selectedUpdateAddr = data.roadAddress;
         this.selectChangeAddr = data.roadAddress;
 //        this.selectedAddr = data.jibunAddress;
         
         // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
         if(roadAddr !== ''){
-            this.selectedAddr += extraRoadAddr;
+            this.selectedUpdateAddr += extraRoadAddr;
             this.selectChangeAddr += extraRoadAddr;
         }
 
@@ -959,35 +1057,50 @@ export default {
     
     
     },
-    regUser(){
+    async regUser(){
       //여기
+      this.selectedUpdateOrgNm = this.orgmItems2.filter(cd=>{
+        return cd.value === this.selectedUpdateOrgItems
+      })
+      if(this.userGender === 1){
+        this.selectSex = 'M'
+      }else{
+        this.selectSex = 'F'
+      }
+      if(this.selectedUpdateZipCode === '' || this.selectedUpdateAddr === '' || this.selectedUpdateAddrDetail === '' ||
+      this.selectedUpdateBirthday === '' || this.selectedUpdateRecipient === '' || this.selectedUpdatePhoneNumber === '' ||
+      this.selectedUpdateSidoItems === '' || this.selectedUpdateSggItems === '' || this.selectedUpdateOrgItems === '' ||
+      this.selectedUpdateUserType === ''){
+        alert("모든 항목을 작성하여 주세요");
+        return false;
+      }
       let data= {
         activeUnsensingCycle: 60,//완
-        addr: this.selectedAddr,//완
-        addrCd: "1168010800",//이부분 진행해야함
-        addrDetail: this.selectedAddrDetail,//완
+        addr: this.selectedUpdateAddr,//완
+        addrCd: this.selectedUpdateSggItems,//이부분 진행해야함
+        addrDetail: this.selectedUpdateAddrDetail,//완
         addrXCoordinate: "",//완
         addrYCoordinate: "",//완
-        birthday: this.$moment(this.selectBirthday).format('YYYY-MM-DD'),//완, yyyymmdd
+        birthday: this.$moment(this.selectedUpdateBirthday).format('YYYY-MM-DD'),//완, yyyymmdd
         careLevelCd: "LVL001",//고정
         installFileNo: "1", //우선 고정
         measureCycle: 240,//완
-        orgId: this.userOrg.value,//완
-        orgNm: this.userOrg.label,
-        recipientNm: this.selectRecipient,//완
-        recipientPhoneno: this.selectedPhoneNumber,//완
+        orgId: this.selectedUpdateOrgItems,//완
+        orgNm: this.selectedUpdateOrgNm[0].label,
+        recipientNm: this.selectedUpdateRecipient,//완
+        recipientPhoneno: this.selectedUpdatePhoneNumber,//완
         sex: this.userGender===1?"M":this.userGender===2?"F":"", //완
-        sigunguCd: this.userSigungu,//완
+        sigunguCd: this.selectedUpdateSggItems,//완
         stateCd: "STE001" , //완
-        typeCd: this.selectedRecipeType,//고정
-        zipCode: this.zipCode,//완
+        typeCd: this.selectedUpdateUserType,//고정
+        zipCode: this.selectedUpdateZipCode,//완
         regId: this.$store.state.userId//완
       }
       console.log(data)
       
        const url  = this.$store.state.serverApi + `/admin/recipients`
          // /sensors/{sensorId}/gw-send-cycle
-         axios.post(url,data,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+         await axios.post(url,data,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
            .then(res => {
              let resData = res.data.data
              console.log(resData)
@@ -997,13 +1110,8 @@ export default {
              if(resData){
                  alert("저장이 완료되었습니다.")
              }
-             this.selectedAddr = null
-             this.selectedAddrDetail = null
-             this.selectBirthday = null
-             this.userOrg = null
-             this.selectRecipient = null
-             this.selectedPhoneNumber = null
-
+             this.modalOpen = false
+             this.getRecipientData()
            })
            .catch(error => {
                console.log("fail to load")
@@ -1016,10 +1124,20 @@ export default {
     },
     changeUser(){
       //여기
+      this.selectChangeOrgNm = this.orgmItems2.filter(cd=>{
+        return cd.value === this.selectChangeOrg
+      })
+      if(this.selectChangeZipCode === '' || this.selectChangeAddr === '' || this.selectChangeAddrDetail === '' ||
+      this.selectChangeBirthday === '' || this.selectChangeRecipient === '' || this.selectChangePhoneNumber === '' ||
+      this.selectChangeSido === '' || this.selectChangeSgg === '' || this.selectChangeOrg === '' ||
+      this.selectChangeRecipeType === '' || this.selectChangeState === ''){
+        alert("모든 항목을 작성하여 주세요");
+        return false;
+      }
       let data= {
         activeUnsensingCycle: 60,//완
         addr: this.selectChangeAddr,//완
-        addrCd: "1168010800",//이부분 진행해야함
+        addrCd: this.selectChangeSgg,//이부분 진행해야함
         addrDetail: this.selectChangeAddrDetail,//완
         addrXCoordinate: "",//완
         addrYCoordinate: "",//완
@@ -1027,8 +1145,8 @@ export default {
         careLevelCd: "LVL001",//고정
         installFileNo: "1", //우선 고정
         measureCycle: 240,//완
-        orgId: this.selectChangeOrg.value,//완
-        orgNm: this.selectChangeOrg.label,
+        orgId: this.selectChangeOrg,//완
+        orgNm: this.selectChangeOrgNm[0].label,
         recipientNm: this.selectChangeRecipient,//완
         recipientPhoneno: this.selectChangePhoneNumber,//완
         sex: this.userGender===1?"M":this.userGender===2?"F":"", //완
@@ -1056,12 +1174,6 @@ export default {
                  this.changeOpen = false
                  this.getRecipientData()
              }
-             this.selectedAddr = null
-             this.selectedAddrDetail = null
-             this.selectBirthday = null
-             this.userOrg = null
-             this.selectRecipient = null
-             this.selectedPhoneNumber = null
 
            })
            .catch(error => {
@@ -1070,6 +1182,21 @@ export default {
              console.error("There was an error!", error);
            });
     },
+    // sort(){
+    //   console.log(this.recipientItems)
+    //   let sortArr = []
+    //   let age=''
+    //   for(let i=0; i<this.recipientItems.length; i++){
+    //     sortArr.push({
+    //       birthday: this.makeAge(this.recipientItems[i].birthday)
+    //     })
+    //   }
+    //   console.log(sortArr)
+    //   sortArr.birthday.sort();
+    //   console.log(sortArr)
+    //   // this.item.birthday.sort()
+    //   // console.log(makeAge(item.birthday))
+    // },
 
     // getPartData() {
     //   axios.get(this.$store.state.serverApi + "/codes?cmmnCdGroup=RECIPIENT.TYPECD", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})

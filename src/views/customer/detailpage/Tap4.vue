@@ -700,14 +700,15 @@ import axios from "axios";
 		}
     },
     cmdA4post(){
-        let url = this.$store.state.serverApi2 +`/esms/app/batch/baseUnitSensor.do`
+        //let url = this.$store.state.serverApi2 +`/esms/app/batch/baseUnitSensor.do`
         let data ={
             recipientId:this.recipientId,
             cmd:"cmdA4"
         }
         console.log(data)
-        console.log(url)
-         axios.post(url, data)
+        //console.log(url)
+         //axios.post(url, data)
+         axios.post(`/esms/app/batch/baseUnitSensor.do`, data)
          .then(res => {
              let cmdData
            cmdData = res.data

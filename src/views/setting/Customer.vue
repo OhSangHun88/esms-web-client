@@ -1100,6 +1100,14 @@ export default {
         alert("이메일을 다시 확인하여 주세요")
         return false
       }
+      if(this.selectedChangeUserId === '' || this.selectedChangeUserNm === '' || 
+      this.selectedChangeBirthday === '' || this.selectedChangeSex === '' || this.selectedChangeEmail === '' || this.selectedChangeMobileNumber === '' || this.selectedChangeZipcode === '' ||
+      this.selectedChangeAddr === '' || this.selectedChangeDetailAddr === '' || this.selectedChangeSidoItems === '' || this.selectedChangeSggItems === '' ||
+      this.selectedChangeOrgItems === '' || this.selectedChangeUserType === '' || this.selectedChangeEmployStateCd === '' || this.selectedChangeDeptNm === '' ||
+       this.selectedChangePhoneNumber === ''){
+        alert("모든 항목을 작성하여 주세요")
+        return false
+      }
       if(this.bodysex === 1){
         this.selectedChangeSex = 'M'
       }else{
@@ -1110,12 +1118,11 @@ export default {
         addrCd:this.selectedChangeSggItems,
         addrDetail:this.selectedChangeDetailAddr,
         birthday:this.selectedChangeBirthday,
-        chargeRegion:this.selectedChangeChargeRegion,
+        chargeRegion:this.selectedChangeSggItems,
         email:this.selectedChangeEmail,
         employStateCd:this.selectedChangeEmployStateCd,
         mobileNumber:this.selectedChangeMobileNumber,
         orgId:this.selectedChangeOrgItems,
-        password:this.selectedChangePassword,
         phoneNumber:this.selectedChangePhoneNumber,
         sex:this.selectedChangeSex,
         useYn:this.selectedChangeUseYn,
@@ -1134,9 +1141,9 @@ export default {
               let resData = res.data.data
               console.log(resData)
               if(resData){
-                alert("성공적으로 등록되었습니다")
-                this.writeCus = false
-                this.getUserData()
+                alert("성공적으로 변경되었습니다")
+                this.changeCus = false
+                this.detailCus = true
               }
             })
             .catch(error => {
@@ -1144,9 +1151,6 @@ export default {
               this.errorMessage = error.message;
               console.error("There was an error!", error);
             });
-      alert("성공적으로 변경되었습니다")
-      this.changeCus = false
-      this.detailCus = true
     },
     // 사용자 정보 삭제
     async deleteCusSuccess(){
