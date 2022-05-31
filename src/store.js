@@ -7,7 +7,7 @@ const state = {
   sidebarMinimize: false,
   //serverApi:'http://localhost:8080',
   serverApi:'http://210.122.45.62:8080',
-  serverApi2:'http://210.122.45.62:8081',
+  // serverApi2:'http://210.122.45.62:8081',
   moduleName:'/admin',
   userId:null,
 

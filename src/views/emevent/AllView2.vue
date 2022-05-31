@@ -252,7 +252,7 @@ export default {
       selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm:'', selectedTypeItems:'', selectedStateItems:'STE001',
       cBirthday:'', cAddr: '', NCount : 0,
       errorpopup1: false, errorpopup2: false, errorpopup3: false,
-      saveChangeData: null,
+      saveChangeData: null, updDtime:''
     } 
   },
   created() {
@@ -463,14 +463,18 @@ export default {
       }else{
         this.errorpopup3 = true
       }
-
-
-
     },
     saveState(){
       let url = this.$store.state.serverApi+`/admin/emergencys/${this.recipientItems[this.saveChangeData].emergSignalId}/cancel`
       console.log(this.recipientItems[this.saveChangeData].emergSignalId)
-      axios.patch(url, this.recipientItems[this.saveChangeData].emergSignalId, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      this.updDtime = moment().format('YYYY-MM-DD HH:mm:ss')
+      let data ={
+        alarmId:this.recipientItems[this.saveChangeData].emergSignalId,
+        updDtime:this.updDtime,
+        updId:this.$store.state.userId
+      }
+      console.log(data)
+      axios.patch(url, data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
             console.log(resData)

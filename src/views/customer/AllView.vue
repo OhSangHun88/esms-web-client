@@ -294,7 +294,7 @@
                         <th scope="col">대상자명</th>
                         <th scope="col">대상자ID</th>
                         <th scope="col">생년월일</th>
-                        <th scope="col">나이</th>
+                        <th scope="col"><a href="#" @click="sort()">나이</a></th>
                         <th scope="col">성별</th>
                         <th scope="col">전화번호</th>
                         <th scope="col">구분</th>
@@ -1182,21 +1182,18 @@ export default {
              console.error("There was an error!", error);
            });
     },
-    // sort(){
-    //   console.log(this.recipientItems)
-    //   let sortArr = []
-    //   let age=''
-    //   for(let i=0; i<this.recipientItems.length; i++){
-    //     sortArr.push({
-    //       birthday: this.makeAge(this.recipientItems[i].birthday)
-    //     })
-    //   }
-    //   console.log(sortArr)
-    //   sortArr.birthday.sort();
-    //   console.log(sortArr)
-    //   // this.item.birthday.sort()
-    //   // console.log(makeAge(item.birthday))
-    // },
+    sort(){
+      console.log(this.recipientItems)
+      this.recipientItems.sort()
+      console.log(this.recipientItems)
+      let sortArr = []
+      for(let i=0; i<this.recipientItems.length; i++){
+        sortArr[i]=this.makeAge(this.recipientItems[i].birthday)
+        
+      }
+      sortArr.sort();
+      console.log(sortArr)
+    },
 
     // getPartData() {
     //   axios.get(this.$store.state.serverApi + "/codes?cmmnCdGroup=RECIPIENT.TYPECD", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})

@@ -104,7 +104,7 @@
                     <div class="btn_area" v-else>
                         <button type="button" class="btn form2" @click="firmwareUpgradeCheck = true">펌웨어 업그레이드</button>
                         <button type="button" class="btn form2" @click="cmdA4post()">cmdA4전송</button>
-                        <button type="button" class="btn form2">역점검요청</button>
+                        <button type="button" class="btn form2" @click="reverseCheck()">역점검요청</button>
                         <!-- <button type="button" class="btn form2">문열림멘트-ON</button>
                         <button type="button" class="btn form2">자동착신-OFF</button> -->
                     </div>
@@ -699,33 +699,79 @@ import axios from "axios";
 			return "나쁨";
 		}
     },
+    reverseCheck(){
+        let url = this.$store.state.serverApi + `/admin//revcheck/${this.recipientId}/send`
+        console.log(url)
+        axios.patch(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        .then(res => {
+            console.log(res)
+            let revData = ''
+            revData = res.data
+            if(revData.data === true){
+                alert("성공적으로 요청 되었습니다")
+            }
+            console.log(revData)
+        })
+        .catch(error => {
+            console.log("fail to load")
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+    },
     cmdA4post(){
-        //let url = this.$store.state.serverApi2 +`/esms/app/batch/baseUnitSensor.do`
+        let url = this.$store.state.serverApi + `/admin/cmda4/${this.recipientId}/send`
+        console.log(url)
         let data ={
             recipientId:this.recipientId,
             cmd:"cmdA4"
         }
         console.log(data)
-        //console.log(url)
-         //axios.post(url, data)
-         axios.post(`/esms/app/batch/baseUnitSensor.do`, data)
-         .then(res => {
-             let cmdData
-           cmdData = res.data
-           if(cmdData.isSuccess === true){
-               alert("성공적으로 전송되었습니다")
-           }else{
-               alert("전송이 실패되었습니다")
-           }
-           console.log(cmdData)
-           //if(this.getCTabletsData.length===0){alert("연결된 태블릿이 존재하지 않습니다")}
-         })
-         .catch(error => {
-             console.log("fail to load")
-           this.errorMessage = error.message;
-           console.error("There was an error!", error);
-         });
+        axios.patch(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        .then(res => {
+            console.log(res)
+            let cmdData = ''
+          cmdData = res.data
+          if(cmdData.data === true){
+              alert("성공적으로 전송되었습니다")
+          }
+          console.log(cmdData)
+        })
+        .catch(error => {
+            console.log("fail to load")
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
     },
+    // async cmdA4post(){
+    //     //let url =  this.$store.state.serverApi2 +`/esms/app/batch/baseUnitSensor.do`
+    //     let url =  `/esms/app/batch/baseUnitSensor.do`
+    //     //const url =` https://cors.bridged.cc/http://210.122.45.62:8081/esms/app/batch/baseUnitSensor.do`
+    //     let data ={
+    //         recipientId:this.recipientId,
+    //         cmd:"cmdA4"
+    //     }
+    //     console.log(data)
+    //     //console.log(url)
+    //      await axios.post(url, data)
+    //      //axios.post(`/esms/app/batch/baseUnitSensor.do`, data)
+    //      .then(res => {
+    //          console.log(res)
+    //          let cmdData
+    //        cmdData = res.data
+    //        if(cmdData.isSuccess === true){
+    //            alert("성공적으로 전송되었습니다")
+    //        }else{
+    //            alert("전송이 실패되었습니다")
+    //        }
+    //        console.log(cmdData)
+    //        //if(this.getCTabletsData.length===0){alert("연결된 태블릿이 존재하지 않습니다")}
+    //      })
+    //      .catch(error => {
+    //          console.log("fail to load")
+    //        this.errorMessage = error.message;
+    //        console.error("There was an error!", error);
+    //      });
+    // },
     firmwareUpgrade(){
         let url  = this.$store.state.serverApi + `/admin/gateways/${this.getCGatewayData.gwId}/firmware-version`
         let gwid = this.getCGatewayData.gwId

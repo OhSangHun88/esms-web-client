@@ -252,7 +252,7 @@ export default {
       selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm:'', selectedTypeItems:'', selectedStateItems:'',
       cBirthday:'', cAddr: '', NCount : 0,
       errorpopup1: false, errorpopup2: false, errorpopup3: false,
-      saveChangeData: null,
+      saveChangeData: null, updDtime:'',
     }
   },
   created() {
@@ -265,6 +265,7 @@ export default {
     this.getStateData();
     this.cBirthday=moment().format('YYYY-MM-DD');
     this.getRecipientData();
+    
   },
   methods:{
   // 시/도 목록
@@ -466,21 +467,28 @@ export default {
     saveState(){
       let url = this.$store.state.serverApi+`/admin/emergencys/${this.recipientItems[this.saveChangeData].emergSignalId}/cancel`
       console.log(this.recipientItems[this.saveChangeData].emergSignalId)
-      axios.patch(url, this.recipientItems[this.saveChangeData].emergSignalId, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(res => {
-            let resData = res.data.data
-            console.log(resData)
-            if(resData){
-              alert("응급알람이 취소되었습니다.")
-              this.errorpopup3 = false
-              this.getRecipientData()
-            }
-          })
-          .catch(error => {
-              console.log("fail to load")
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
+      this.updDtime = moment().format('YYYY-MM-DD HH:mm:ss')
+      let data ={
+        alarmId:this.recipientItems[this.saveChangeData].emergSignalId,
+        updDtime:this.updDtime,
+        updId:this.$store.state.userId
+      }
+      console.log(data)
+       axios.patch(url, data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+           .then(res => {
+             let resData = res.data.data
+             console.log(resData)
+             if(resData){
+               alert("응급알람이 취소되었습니다.")
+               this.errorpopup3 = false
+               this.getRecipientData()
+             }
+           })
+           .catch(error => {
+               console.log("fail to load")
+             this.errorMessage = error.message;
+             console.error("There was an error!", error);
+           });
     },
   },
 }
