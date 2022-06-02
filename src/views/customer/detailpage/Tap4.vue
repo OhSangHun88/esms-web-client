@@ -260,7 +260,7 @@
                                 </tr>
                             </tbody>
                             <tbody v-else>
-                                <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" >
+                                <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index,0)">
                                     <td>{{index+1}}</td>
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{item.previousVersion}}</td>
@@ -411,7 +411,7 @@
                         </div>
                         <div class="toggle_btn">
                             <button type="button" :class="beforeToggle===0? 'btn on': 'btn'" @click="getNowToggle">최신정보</button>
-                            <button type="button" :class="beforeToggle===1? 'btn on': 'btn'"  >직전정보</button>
+                            <button type="button" :class="beforeToggle===1? 'btn on': 'btn'" @click="getBeforeVersionSensors" >직전정보</button>
                         </div>
                     </div>
                 </div>
@@ -451,7 +451,7 @@
                             </colgroup>
                             <tbody v-if="connectTap===1 && beforeToggle===0">
                                 <tr>
-                                    <td>{{!this.getBSensorsData? '': this.getBSensorsData.sensorStateNm}}</td>
+                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.comStateNm}}</td>
                                     <td>{{!this.getBSensorsData? '':this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
                                     <td>{{!this.getBSensorsData? '':this.getBSensorsData.batteryValue}}</td>
                                     <td>{{!this.getBSensorsData? '':this.getBSensorsData.keepAliveRcvYn===1?'정상':this.getBSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
@@ -460,9 +460,10 @@
                                     <td>{{!this.getBSensorsData? '':this.getBSensorsData.updDtime}}</td>
                                 </tr>
                             </tbody>
-                            <tbody v-else>
+                            <tbody v-if="this.beforeVersionSensorsData && connectTap===1 && beforeToggle===1">
+                                <!-- <tbody v-else> -->
                                 <tr>
-                                    <td>{{!this.beforeVersionSensorsData.sensorStateNm? '': this.beforeVersionSensorsData.sensorStateNm}}</td>
+                                    <td>{{!this.beforeVersionSensorsData.comStateNm? '': this.beforeVersionSensorsData.comStateNm}}</td>
                                     <td>{{this.beforeVersionSensorsData.checkYnCd ===null|| this.beforeVersionSensorsData.checkYnCd ===undefined ? '' : this.beforeVersionSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
                                     <td>{{this.beforeVersionSensorsData.batteryValue}}</td>
                                     <td>{{this.beforeVersionSensorsData.keepAliveRcvYn===1?'정상':this.beforeVersionSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
@@ -487,7 +488,7 @@ import axios from "axios";
      recipientId: String
    },
    data () {
-     return {
+    return {
       getCSensorsData: null,
       getCGatewayData: null,
       getCTabletsData: null,
@@ -501,15 +502,15 @@ import axios from "axios";
       pending : false,
       beforeToggle: 0,
       firmwareUpgradeCheck:false,
-
-     }
+      checkCorB: false,
+    }
    },
    created() {
     
     this.getCSensers();
     this.getCGateway();
     this.getCTablets();
-    
+    //this.getBeforeVersionSensors();
     console.log("bbbbbbbbbb")
     console.log(this.getCSensorsData)
     
@@ -534,9 +535,6 @@ import axios from "axios";
             this.getBSensorsData = tmpData[0]
             console.log("aaaaaaaa ")
             console.log(this.getCSensorsData)
-            
-            
-
           })
           .catch(error => {
               console.log("fail to load")
@@ -555,11 +553,17 @@ import axios from "axios";
         if(!time) time =0;
         if(time===0){
             this.getBSensorsData = this.getCSensorsData[input]
+            if(this.checkCorB === true){
+            this.getBeforeVersionSensors();
+        }
         }else{
             this.getBSensorsData = this.beforeVersionSensorsData[input]
+            if(this.checkCorB === true){
+            this.getBeforeVersionSensors();
         }
+        }
+        console.log(this.getBSensorsData.sensorId)
         
-        console.log(this.getBSensorsData)
     },
     
      getCGateway(){
@@ -599,26 +603,31 @@ import axios from "axios";
     //현재버전 센서 호출
     getNowToggle(){
         this.beforeToggle= 0
+        this.checkCorB = false
     },
     //이전버전 센서 호출
-    // async getBeforeVersionSensors(){
-    //     console.log("aa")
-    //     this.beforeToggle =1
-    //     this.tmpIdx = this.getCSensorsData[0];
-    //     console.log(this.getBSensorsData.sensorId)
-    //   const url  = this.$store.state.serverApi + `/admin/recipients/sensors/statehistory?sensorId=${this.getBSensorsData.sensorId}`
-    //     await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-    //       .then(res => {
-    //         this.beforeVersionSensorsData = res.data.data
-    //         console.log("이전버전센서")
-    //         console.log(this.beforeVersionSensorsData)
-    //     })
-    //       .catch(error => {
-    //           console.log("fail to load")
-    //         this.errorMessage = error.message;
-    //         console.error("There was an error!", error);
-    //     });
-    // },
+    async getBeforeVersionSensors(){
+        this.checkCorB = true
+        console.log("aa")
+        let beforeSensor = []
+        this.beforeToggle = 1
+        this.tmpIdx = this.getCSensorsData[0];
+        console.log(this.getBSensorsData.sensorId)
+        let url  = this.$store.state.serverApi + `/admin/recipients/sensors/statehistory?sensorId=${this.getBSensorsData.sensorId}`
+        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+              console.log(res)
+            beforeSensor = res.data.data
+            this.beforeVersionSensorsData = beforeSensor[1]
+            console.log("이전버전센서")
+            console.log(this.beforeVersionSensorsData)
+        })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+        });
+    },
     // async getBeforeVersionTablets(){
     //     this.tmpIdx = this.getCSensorsData[0].sensorId;
     //     const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets/states`

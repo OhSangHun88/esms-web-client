@@ -223,6 +223,7 @@
                     <tr>
                       <td>
                         <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
+                          <option disabled value="">선택</option>
                           <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                         </select> 
                       </td>
@@ -294,7 +295,7 @@
                         <th scope="col">대상자명</th>
                         <th scope="col">대상자ID</th>
                         <th scope="col">생년월일</th>
-                        <th scope="col"><a href="#" @click="sort()">나이</a></th>
+                        <th scope="col"><a href="#" @click="sort">나이</a></th>
                         <th scope="col">성별</th>
                         <th scope="col">전화번호</th>
                         <th scope="col">구분</th>
@@ -633,6 +634,7 @@ export default {
       selectedUserOrg: null, userState:[{value:'STE001', text: '승인'},{value:'STE002', text: '서비스중'},{value:'STE003', text: '서비스종료'},],
       selectedRecipeType: null, recipeType:[{value:'', text: '선택'},{value:'TPE001', text: '고령자'},{value:'TPE002', text: '장애인'},],
       userGender: 1 ,
+      sortCount: 0,
     }
   },
   created() {
@@ -1183,16 +1185,39 @@ export default {
            });
     },
     sort(){
-      console.log(this.recipientItems)
-      this.recipientItems.sort()
-      console.log(this.recipientItems)
-      let sortArr = []
-      for(let i=0; i<this.recipientItems.length; i++){
-        sortArr[i]=this.makeAge(this.recipientItems[i].birthday)
-        
+      // let test = [{name:'이용' ,birthday:"14", test:'3'},{name:'현준' ,birthday:"17", test:'22'}, {name:'길동' ,birthday:"2", test:'1'},]
+      // console.log(test)
+      // test.sort(function(a, b){
+      //   return b.test - a.test
+      // })
+      // console.log(test)
+      //console.log(this.recipientItems)
+      this.sortCount++
+      console.log(this.sortCount)
+      if(this.sortCount === 1){
+        this.recipientItems.sort(function(a, b){      
+         return makeAge(a.birthday) - makeAge(b.birthday)
+        })
+      }else if(this.sortCount === 2){
+        this.recipientItems.sort(function(a, b){
+          return b.recipientId - a.recipientId
+        })
+        this.sortCount = 0
       }
-      sortArr.sort();
-      console.log(sortArr)
+      //console.log(this.recipientItems)
+      // console.log(this.recipientItems)
+      // this.recipientItems.sort()
+      // console.log(this.recipientItems)
+      // let sortArr = []
+      // for(let i=0; i<this.recipientItems.length; i++){
+      //   sortArr[i]=this.makeAge(this.recipientItems[i].birthday)
+        
+      // }
+      // sortArr.sort();
+      // console.log(sortArr)
+    },
+    resetData(){
+
     },
 
     // getPartData() {
