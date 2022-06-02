@@ -307,8 +307,8 @@
                                 <th scope="col">배터리</th>
                                 <th scope="col">Keep-Alive</th>
                                 <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
-                                <th scope="col">상태측정 일시</th>
-                                <th scope="col">서버 등록 일시</th>
+                                <th scope="col">상태측정일시</th>
+                                <th scope="col">서버보고일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -371,8 +371,8 @@
                                 <th scope="col">배터리</th>
                                 <th scope="col">Keep-Alive</th>
                                 <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
-                                <th scope="col">상태측정 일시</th>
-                                <th scope="col">서버 등록 일시</th>
+                                <th scope="col">상태측정일시</th>
+                                <th scope="col">서버보고일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -433,8 +433,8 @@
                                 <th scope="col">배터리</th>
                                 <th scope="col">Keep-Alive</th>
                                 <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
-                                <th scope="col">상태측정 일시</th>
-                                <th scope="col">서버 등록 일시</th>
+                                <th scope="col">상태측정일시</th>
+                                <th scope="col">서버보고일시</th>
                             </tr>
                         </thead>
                     </table>
