@@ -7,7 +7,7 @@
                   <button type="button" class="btn_close" @click="firmwareUpgradeCheck = false">닫기</button>
                 </div>
                 <div class="popup_cnt">
-                  <p class="alert_txt">업그레이드시 3분정도 시스템이 중지됩니다. <br> 펌웨어 업그레이를 진행하시겠습니까?</p>
+                  <p class="alert_txt">업그레이드시 3분정도 소요됩니다. <br> 펌웨어 업그레이드를 진행하시겠습니까?</p>
                 </div>
                 <div class="popbtn_area type-02">
                   <button type="button" class="btn form2" @click="firmwareUpgrade()">확인</button>
@@ -307,8 +307,8 @@
                                 <th scope="col">배터리</th>
                                 <th scope="col">Keep-Alive</th>
                                 <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
-                                <th scope="col">상태측정 일시</th>
-                                <th scope="col">서버 등록 일시</th>
+                                <th scope="col">상태측정일시</th>
+                                <th scope="col">서버보고일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -371,8 +371,8 @@
                                 <th scope="col">배터리</th>
                                 <th scope="col">Keep-Alive</th>
                                 <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
-                                <th scope="col">상태측정 일시</th>
-                                <th scope="col">서버 등록 일시</th>
+                                <th scope="col">상태측정일시</th>
+                                <th scope="col">서버보고일시</th>
                             </tr>
                         </thead>
                     </table>
@@ -433,8 +433,8 @@
                                 <th scope="col">배터리</th>
                                 <th scope="col">Keep-Alive</th>
                                 <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
-                                <th scope="col">상태측정 일시</th>
-                                <th scope="col">서버 등록 일시</th>
+                                <th scope="col">상태측정일시</th>
+                                <th scope="col">서버보고일시</th>
                             </tr>
                         </thead>
                     </table>
