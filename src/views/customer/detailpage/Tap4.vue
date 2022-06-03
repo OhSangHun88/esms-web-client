@@ -508,6 +508,7 @@ import axios from "axios";
       sensorTakeNm:null,
       CbatteryValue:null,
       BbatteryValue:null,
+      firmwarelist:[],
     }
    },
    created() {
@@ -515,7 +516,7 @@ import axios from "axios";
     // this.getSensorTakeData();
     this.getCGateway();
     this.getCTablets();
-    
+    this.firmwareList();
     //this.getBeforeVersionSensors();
     //this.getBeforeVersionSensors(this.tmpIdx);
     //this.getBeforeVersionTablets();
@@ -825,37 +826,58 @@ import axios from "axios";
     //        console.error("There was an error!", error);
     //      });
     // },
+    firmwareList(){
+        let url  = this.$store.state.serverApi + `/admin/gateways/firmwarelist`
+         axios.get(url,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                console.log(res)
+                this.firmwarelist = res.data.data
+                console.log(this.firmwarelist)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+    },
     firmwareUpgrade(){
         let url  = this.$store.state.serverApi + `/admin/gateways/${this.getCGatewayData.gwId}/firmware-version`
         let gwid = this.getCGatewayData.gwId
         console.log(gwid)
         console.log(this.getCGatewayData)
+        // let data = {
+        //     batteryValue: this.getCGatewayData.batteryValue,
+        //     comStateCd: this.getCGatewayData.comStateCd,
+        //     equipVersionInfoSeq: this.getCGatewayData.equipVersionInfoSeq,
+        //     faultYnCd: this.getCGatewayData.faultYnCd,
+        //     firmwareVersion: this.getCGatewayData.firmwareVersion,
+        //     gwId: this.getCGatewayData.gwId,
+        //     gwStateCd: this.getCGatewayData.gwStateCd,
+        //     gwTypeCd: this.getCGatewayData.gwTypeCd,
+        //     hardwareVersion: this.getCGatewayData.hardwareVersion,
+        //     incomeDate: this.getCGatewayData.incomeDate,
+        //     incomeNm: this.getCGatewayData.incomeNm,
+        //     logLevel: this.getCGatewayData.logLevel,
+        //     macAddr: this.getCGatewayData.macAddr,
+        //     orgId: this.getCGatewayData.orgId,
+        //     orgNm: this.getCGatewayData.orgNm,
+        //     powerLinkYn: this.getCGatewayData.powerLinkYn,
+        //     recipientId: this.getCGatewayData.recipientId,
+        //     recipientNm: this.getCGatewayData.recipientNm,
+        //     rssi: this.getCGatewayData.rssi,
+        //     serialNo: this.getCGatewayData.serialNo,
+        //     stateMeasureDtime: this.getCGatewayData.stateMeasureDtime,
+        //     stateSendCycle: this.getCGatewayData.stateSendCycle,
+        //     updDtime: this.getCGatewayData.updDtime
+        // }
+        console.log(this.firmwarelist)
         let data = {
-            batteryValue: this.getCGatewayData.batteryValue,
-            comStateCd: this.getCGatewayData.comStateCd,
-            equipVersionInfoSeq: this.getCGatewayData.equipVersionInfoSeq,
-            faultYnCd: this.getCGatewayData.faultYnCd,
-            firmwareVersion: this.getCGatewayData.firmwareVersion,
-            gwId: this.getCGatewayData.gwId,
-            gwStateCd: this.getCGatewayData.gwStateCd,
-            gwTypeCd: this.getCGatewayData.gwTypeCd,
-            hardwareVersion: this.getCGatewayData.hardwareVersion,
-            incomeDate: this.getCGatewayData.incomeDate,
-            incomeNm: this.getCGatewayData.incomeNm,
-            logLevel: this.getCGatewayData.logLevel,
-            macAddr: this.getCGatewayData.macAddr,
-            orgId: this.getCGatewayData.orgId,
-            orgNm: this.getCGatewayData.orgNm,
-            powerLinkYn: this.getCGatewayData.powerLinkYn,
-            recipientId: this.getCGatewayData.recipientId,
-            recipientNm: this.getCGatewayData.recipientNm,
-            rssi: this.getCGatewayData.rssi,
-            serialNo: this.getCGatewayData.serialNo,
-            stateMeasureDtime: this.getCGatewayData.stateMeasureDtime,
-            stateSendCycle: this.getCGatewayData.stateSendCycle,
-            updDtime: this.getCGatewayData.updDtime
+            firmwareVersion:this.firmwarelist[0].version,
+            recipientId:this.getCGatewayData.recipientId,
+            regId: this.$store.state.userId,
+            regNo: this.firmwarelist[0].regNo
         }
-        
+        console.log(data)
             axios.patch(url,data ,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
                 let firmware = res.data.data
