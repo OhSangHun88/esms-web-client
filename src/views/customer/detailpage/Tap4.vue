@@ -429,10 +429,10 @@
                         <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">통신상태</th>
-                                <th scope="col">점검대상여부</th>
                                 <th scope="col">배터리</th>
-                                <th scope="col">Keep-Alive</th>
                                 <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
+                                <th scope="col">점검대상여부</th>
+                                <th scope="col">Keep-Alive</th>
                                 <th scope="col">상태측정일시</th>
                                 <th scope="col">서버보고일시</th>
                             </tr>
@@ -449,27 +449,27 @@
                                 <col style="width:14%;">
                                 <col style="width:auto;">
                             </colgroup>
-                            <tbody v-if="connectTap===1 && beforeToggle===0">
+                            <tbody v-if="this.getBSensorsData && connectTap===1 && beforeToggle===0">
                                 <tr>
-                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.comStateNm}}</td>
-                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
-                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.batteryValue}}</td>
-                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.keepAliveRcvYn===1?'정상':this.getBSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
-                                    <td>{{!this.getBSensorsData? '':changeRssi(this.getBSensorsData.rssi)}}</td>
-                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.stateMeasureDtime}}</td>
-                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.updDtime}}</td>
+                                    <td>{{!this.sensorTakeNm? '':this.sensorTakeNm}}</td>
+                                    <td>{{!this.getBSensorsData.batteryValue? '':this.getBSensorsData.batteryValue+"("+changeBattery(this.getBSensorsData.batteryValue)+")"}}</td>
+                                    <td>{{!this.getBSensorsData.rssi? '':this.getBSensorsData.rssi+"("+changeRssi(this.getBSensorsData.rssi)+")"}}</td>
+                                    <td>{{this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
+                                    <td>{{!this.getBSensorsData.keepAliveRcvYn? '':this.getBSensorsData.keepAliveRcvYn===1?'정상':this.getBSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.getBSensorsData.stateMeasureDtime? '':this.getBSensorsData.stateMeasureDtime}}</td>
+                                    <td>{{!this.getBSensorsData.updDtime? '':this.getBSensorsData.updDtime}}</td>
                                 </tr>
                             </tbody>
                             <tbody v-if="this.beforeVersionSensorsData && connectTap===1 && beforeToggle===1">
                                 <!-- <tbody v-else> -->
                                 <tr>
                                     <td>{{!this.beforeVersionSensorsData.comStateNm? '': this.beforeVersionSensorsData.comStateNm}}</td>
+                                    <td>{{!this.beforeVersionSensorsData.batteryValue? '': this.beforeVersionSensorsData.batteryValue+"("+changeBattery(this.beforeVersionSensorsData.batteryValue)+")"}}</td>
+                                    <td>{{!this.beforeVersionSensorsData.rssi? '': this.beforeVersionSensorsData.rssi+"("+changeRssi(this.beforeVersionSensorsData.rssi)+")"}}</td>
                                     <td>{{this.beforeVersionSensorsData.checkYnCd ===null|| this.beforeVersionSensorsData.checkYnCd ===undefined ? '' : this.beforeVersionSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
-                                    <td>{{this.beforeVersionSensorsData.batteryValue}}</td>
-                                    <td>{{this.beforeVersionSensorsData.keepAliveRcvYn===1?'정상':this.beforeVersionSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
-                                    <td>{{changeRssi(this.beforeVersionSensorsData.rssi)}}</td>
-                                    <td>{{this.beforeVersionSensorsData.stateMeasureDtime}}</td>
-                                    <td>{{this.beforeVersionSensorsData.updDtime}}</td>
+                                    <td>{{!this.beforeVersionSensorsData.keepAliveRcvYn? '': this.beforeVersionSensorsData.keepAliveRcvYn===1?'정상':this.beforeVersionSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.beforeVersionSensorsData.stateMeasureDtime? '': this.beforeVersionSensorsData.stateMeasureDtime}}</td>
+                                    <td>{{!this.beforeVersionSensorsData.updDtime? '': this.beforeVersionSensorsData.updDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -503,19 +503,20 @@ import axios from "axios";
       beforeToggle: 0,
       firmwareUpgradeCheck:false,
       checkCorB: false,
+      sensorTakeItems:[],
+      sensorTake:null,
+      sensorTakeNm:null,
+      CbatteryValue:null,
+      BbatteryValue:null,
     }
    },
    created() {
-    
     this.getCSensers();
+    // this.getSensorTakeData();
     this.getCGateway();
     this.getCTablets();
+    
     //this.getBeforeVersionSensors();
-    console.log("bbbbbbbbbb")
-    console.log(this.getCSensorsData)
-    
-    
-    
     //this.getBeforeVersionSensors(this.tmpIdx);
     //this.getBeforeVersionTablets();
     //this.getBeforeVersionGateway();
@@ -533,8 +534,6 @@ import axios from "axios";
             tmpData = res.data.data
             this.getCSensorsData = tmpData
             this.getBSensorsData = tmpData[0]
-            console.log("aaaaaaaa ")
-            console.log(this.getCSensorsData)
           })
           .catch(error => {
               console.log("fail to load")
@@ -542,17 +541,42 @@ import axios from "axios";
             console.error("There was an error!", error);
           });
           this.getCSensorsData = tmpData
-          console.log("pending false")
-          console.log(this.getCSensorsData)
-          console.log("pending true")
-          setTimeout(this.delay, 1500)
+          console.log(this.getBSensorsData)
+            
+
+          setTimeout(this.delay, 2000)
+          if(this.getBSensorsData.comStateCd){
+                this.getSensorTakeData();
+            }
           
+    },
+    async getSensorTakeData(){
+        let url = this.$store.state.serverApi + `/admin/codes?cmmnCdGroup=SENSOR.TAKECD`
+        console.log(url)
+        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        .then(res => {
+            this.sensorTakeItems = res.data.data
+            console.log(this.sensorTakeItems)
+        })
+        .catch(error => {
+            console.log("fail to load")
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+        console.log("asdfasdf")
+        this.sensorTake = this.sensorTakeItems.filter(cd=>{
+        return cd.cmmnCd === this.getBSensorsData.comStateCd
+        })
+        console.log("this.sensorTakeItems => "+this.sensorTakeItems)
+        this.sensorTakeNm = this.sensorTake[0].cmmnCdNm
+        console.log(this.sensorTakeNm)
     },
     getBSensers(input,time){
         if(!input) input =0;
         if(!time) time =0;
         if(time===0){
             this.getBSensorsData = this.getCSensorsData[input]
+            console.log(this.getCSensorsData[input])
             if(this.checkCorB === true){
             this.getBeforeVersionSensors();
         }
@@ -561,6 +585,9 @@ import axios from "axios";
             if(this.checkCorB === true){
             this.getBeforeVersionSensors();
         }
+        }
+        if(this.getBSensorsData.comStateCd){
+            this.getSensorTakeData();
         }
         console.log(this.getBSensorsData.sensorId)
         
@@ -613,6 +640,7 @@ import axios from "axios";
         this.beforeToggle = 1
         this.tmpIdx = this.getCSensorsData[0];
         console.log(this.getBSensorsData.sensorId)
+
         let url  = this.$store.state.serverApi + `/admin/recipients/sensors/statehistory?sensorId=${this.getBSensorsData.sensorId}`
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
@@ -627,6 +655,9 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
         });
+        
+        console.log(this.beforeVersionSensorsData)
+        
     },
     // async getBeforeVersionTablets(){
     //     this.tmpIdx = this.getCSensorsData[0].sensorId;
@@ -699,6 +730,19 @@ import axios from "axios";
         }
     
     },
+    changeBattery(input){
+        if(input === null || input === undefined){
+          return ''
+        }else if(input === 255){
+            return '미수신'
+        }else if(input >= 95 && input <= 100){
+            return '양호'
+        }else if(input < 95 && input > 90){
+            return '부족'
+        }else{
+            return '교체대상'
+        }
+    },
     changeRssi(input){
         if(input <=0 && input >= -80) {
 			return "양호";
@@ -709,7 +753,7 @@ import axios from "axios";
 		}
     },
     reverseCheck(){
-        let url = this.$store.state.serverApi + `/admin//revcheck/${this.recipientId}/send`
+        let url = this.$store.state.serverApi + `/admin/revcheck/${this.recipientId}/send`
         console.log(url)
         axios.patch(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
