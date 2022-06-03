@@ -282,21 +282,21 @@
                             <input type="text" name="" id="" :value="connectTap===3?'tablet':connectTap===2?'gateway':'sensors'">
                         </div>
                         <div class="toggle_btn">
-                            <button type="button" class="btn on">최신정보</button>
-                            <button type="button" class="btn" >직전정보</button>
+                            <button type="button" :class="beforeGatewayToggle===0 ? 'btn on': 'btn'" @click="getNowGatewayToggle">최신정보</button>
+                            <button type="button" :class="beforeGatewayToggle===1 ? 'btn on': 'btn'" @click="getBeforeVersionGateway">직전정보</button>
                         </div>
                     </div>
                 </div>
                 <div class="list">
                     <table>
                         <colgroup>
+                            <col style="width:10%;">
+                            <col style="width:10%;">
                             <col style="width:12%;">
                             <col style="width:12%;">
                             <col style="width:12%;">
                             <col style="width:12%;">
-                            <col style="width:12%;">
-                            <col style="width:12%;">
-                            <col style="width:12%;">
+                            <col style="width:14%;">
                             <col style="width:auto;">
                         </colgroup>
                         <thead class="thead htype-01">
@@ -315,25 +315,37 @@
                     <div class="tbody ">
                         <table>
                             <colgroup>
+                                <col style="width:10%;">
+                                <col style="width:10%;">
                                 <col style="width:12%;">
                                 <col style="width:12%;">
                                 <col style="width:12%;">
                                 <col style="width:12%;">
-                                <col style="width:12%;">
-                                <col style="width:12%;">
-                                <col style="width:12%;">
+                                <col style="width:14%;">
                                 <col style="width:auto;">
                             </colgroup>
-                            <tbody v-if="connectTap===2">
+                            <tbody v-if="connectTap===2 && beforeGatewayToggle===0" >
                                 <tr>
-                                    <td>{{!this.getCGatewayData? '':!this.getCGatewayData.gwStateNm? '': this.getCGatewayData.gwStateNm}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData.powerLinkYn===undefined||this.getCGatewayData.powerLinkYn===null ? '' : this.getCGatewayData.powerLinkYn===1?'연결':'차단'}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData.checkYnCd===null||this.getCGatewayData.checkYnCd===undefined||this.getCGatewayData.checkYnCd===''? '': this.getCGatewayData.checkYnCd===0? '정상':'점검대상'}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData.batteryValue}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData.keepAliveRcvYn===1?'정상':this.getCGatewayData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
-                                    <td>{{!this.getCGatewayData? '':changeRssi(this.getCGatewayData.rssi)}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData.stateMeasureDtime}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData.updDtime}}</td>
+                                    <td>{{!this.getCGatewayData? '':!this.gatewayTakeNm? '': this.gatewayTakeNm}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.powerLinkYn===undefined||this.getCGatewayData2.powerLinkYn===null ? '' : this.getCGatewayData2.powerLinkYn===1?'연결':'차단'}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.checkYnCd===null||this.getCGatewayData2.checkYnCd===undefined||this.getCGatewayData2.checkYnCd===''? '': this.getCGatewayData2.checkYnCd===0? '정상':'점검대상'}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.batteryValue+"("+changeTaGaBattery(getCGatewayData2.batteryValue)+")"}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.keepAliveRcvYn===1?'정상':this.getCGatewayData2.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.rssi+"("+changeRssi(this.getCGatewayData2.rssi)+")"}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.stateMeasureDtime}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.reportDtime}}</td>
+                                </tr>
+                            </tbody>
+                            <tbody v-if="this.beforeVersionGatewayData && connectTap===2 && beforeGatewayToggle===1" >
+                                <tr>
+                                    <td>{{!this.getCGatewayData? '':!this.beforeGatewayTakeNm? '': this.beforeGatewayTakeNm}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.powerLinkYn===undefined||this.beforeVersionGatewayData.powerLinkYn===null ? '' : this.beforeVersionGatewayData.powerLinkYn===1?'연결':'차단'}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.checkYnCd===null||this.beforeVersionGatewayData.checkYnCd===undefined||this.beforeVersionGatewayData.checkYnCd===''? '': this.beforeVersionGatewayData.checkYnCd===0? '정상':'점검대상'}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.batteryValue+"("+changeTaGaBattery(this.beforeVersionGatewayData.batteryValue)+")"}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.keepAliveRcvYn===1?'정상':this.beforeVersionGatewayData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.rssi+"("+changeRssi(this.beforeVersionGatewayData.rssi)+")"}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.stateMeasureDtime}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.reportDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -348,8 +360,8 @@
                             <input type="text" name="" id="" :value="connectTap===3?'tablet':connectTap===2?'gateway':'sensors'">
                         </div>
                         <div class="toggle_btn">
-                            <button type="button" :class="beforeToggle===0? 'btn on': 'btn'">최신정보</button>
-                            <button type="button" :class="beforeToggle===1? 'btn on': 'btn'" >직전정보</button>
+                            <button type="button" :class="beforeTabletToggle===0? 'btn on': 'btn'" @click="getNowTabletToggle">최신정보</button>
+                            <button type="button" :class="beforeTabletToggle===1? 'btn on': 'btn'" @click="getBeforeVersionTablets">직전정보</button>
                         </div>
                     </div>
                 </div>
@@ -358,10 +370,9 @@
                         <colgroup>
                             <col style="width:14%;">
                             <col style="width:14%;">
-                            <col style="width:14%;">
-                            <col style="width:14%;">
-                            <col style="width:14%;">
-                            <col style="width:14%;">
+                            <col style="width:12%;">
+                            <col style="width:18%;">
+                            <col style="width:18%;">
                             <col style="width:auto;">
                         </colgroup>
                         <thead class="thead htype-01">
@@ -369,8 +380,7 @@
                                 <th scope="col">통신상태</th>
                                 <th scope="col">점검대상여부</th>
                                 <th scope="col">배터리</th>
-                                <th scope="col">Keep-Alive</th>
-                                <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
+                                <th scope="col">게이트웨이연결상태</th>
                                 <th scope="col">상태측정일시</th>
                                 <th scope="col">서버보고일시</th>
                             </tr>
@@ -381,21 +391,29 @@
                             <colgroup>
                                 <col style="width:14%;">
                                 <col style="width:14%;">
-                                <col style="width:14%;">
-                                <col style="width:14%;">
-                                <col style="width:14%;">
-                                <col style="width:14%;">
+                                <col style="width:12%;">
+                                <col style="width:18%;">
+                                <col style="width:18%;">
                                 <col style="width:auto;">
                             </colgroup>
-                            <tbody v-if="connectTap===3">
+                            <tbody v-if="this.getCTabletsData2 && connectTap===3 && beforeTabletToggle===0">
                                 <tr>
-                                    <td>{{!this.getCTabletsData? '': this.getCTabletsData.gwLinkYnNm}}</td>
-                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData.checkYnCd===null||this.getCTabletsData.checkYnCd===undefined||this.getCTabletsData.checkYnCd===''? '': this.getCTabletsData.checkYnCd===0? '정상':'점검대상'}}</td>
-                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData.batteryValue}}</td>
-                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData.keepAliveRcvYn===1?'정상':this.getCTabletsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
-                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData.tabletStateNm}}</td>
-                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData.stateMeasureDtime}}</td>
-                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData.updDtime}}</td>
+                                    <td>{{!this.getCTabletsData? '': this.tabletTakeNm}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData2.checkYnCd===null||this.getCTabletsData2.checkYnCd===undefined||this.getCTabletsData2.checkYnCd===''? '': this.getCTabletsData2.checkYnCd===0? '정상':'점검대상'}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData2.batteryValue+"("+changeTaGaBattery(this.getCTabletsData2.batteryValue)+")"}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData2.gwLinkYnNm}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData2.stateMeasureDtime}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData2.regDtime}}</td>
+                                </tr>
+                            </tbody>
+                            <tbody v-if="this.beforeVersionTabletsData && connectTap===3 && beforeTabletToggle===1">
+                                <tr>
+                                    <td>{{!this.getCTabletsData? '': this.beforeTabletTakeNm}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.checkYnCd===null||this.beforeVersionTabletsData.checkYnCd===undefined||this.beforeVersionTabletsData.checkYnCd===''? '': this.beforeVersionTabletsData.checkYnCd===0? '정상':'점검대상'}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.batteryValue+"("+changeTaGaBattery(this.beforeVersionTabletsData.batteryValue)+")"}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.gwLinkYnNm}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.stateMeasureDtime}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.regDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -410,8 +428,8 @@
                             <input type="text" name="" id="" :value="connectTap===3?'tablet':connectTap===2?'gateway':'sensors'">
                         </div>
                         <div class="toggle_btn">
-                            <button type="button" :class="beforeToggle===0? 'btn on': 'btn'" @click="getNowToggle">최신정보</button>
-                            <button type="button" :class="beforeToggle===1? 'btn on': 'btn'" @click="getBeforeVersionSensors" >직전정보</button>
+                            <button type="button" :class="beforeSensorToggle===0? 'btn on': 'btn'" @click="getNowSensorToggle">최신정보</button>
+                            <button type="button" :class="beforeSensorToggle===1? 'btn on': 'btn'" @click="getBeforeVersionSensors" >직전정보</button>
                         </div>
                     </div>
                 </div>
@@ -449,10 +467,10 @@
                                 <col style="width:14%;">
                                 <col style="width:auto;">
                             </colgroup>
-                            <tbody v-if="this.getBSensorsData && connectTap===1 && beforeToggle===0">
+                            <tbody v-if="this.getBSensorsData && connectTap===1 && beforeSensorToggle===0">
                                 <tr>
                                     <td>{{!this.sensorTakeNm? '':this.sensorTakeNm}}</td>
-                                    <td>{{!this.getBSensorsData.batteryValue? '':this.getBSensorsData.batteryValue+"("+changeBattery(this.getBSensorsData.batteryValue)+")"}}</td>
+                                    <td>{{!this.getBSensorsData.batteryValue? '':this.getBSensorsData.batteryValue+"("+changeSensorBattery(this.getBSensorsData.batteryValue)+")"}}</td>
                                     <td>{{!this.getBSensorsData.rssi? '':this.getBSensorsData.rssi+"("+changeRssi(this.getBSensorsData.rssi)+")"}}</td>
                                     <td>{{this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
                                     <td>{{!this.getBSensorsData.keepAliveRcvYn? '':this.getBSensorsData.keepAliveRcvYn===1?'정상':this.getBSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
@@ -460,11 +478,11 @@
                                     <td>{{!this.getBSensorsData.updDtime? '':this.getBSensorsData.updDtime}}</td>
                                 </tr>
                             </tbody>
-                            <tbody v-if="this.beforeVersionSensorsData && connectTap===1 && beforeToggle===1">
+                            <tbody v-if="this.beforeVersionSensorsData && connectTap===1 && beforeSensorToggle===1">
                                 <!-- <tbody v-else> -->
                                 <tr>
                                     <td>{{!this.beforeVersionSensorsData.comStateNm? '': this.beforeVersionSensorsData.comStateNm}}</td>
-                                    <td>{{!this.beforeVersionSensorsData.batteryValue? '': this.beforeVersionSensorsData.batteryValue+"("+changeBattery(this.beforeVersionSensorsData.batteryValue)+")"}}</td>
+                                    <td>{{!this.beforeVersionSensorsData.batteryValue? '': this.beforeVersionSensorsData.batteryValue+"("+changeSensorBattery(this.beforeVersionSensorsData.batteryValue)+")"}}</td>
                                     <td>{{!this.beforeVersionSensorsData.rssi? '': this.beforeVersionSensorsData.rssi+"("+changeRssi(this.beforeVersionSensorsData.rssi)+")"}}</td>
                                     <td>{{this.beforeVersionSensorsData.checkYnCd ===null|| this.beforeVersionSensorsData.checkYnCd ===undefined ? '' : this.beforeVersionSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
                                     <td>{{!this.beforeVersionSensorsData.keepAliveRcvYn? '': this.beforeVersionSensorsData.keepAliveRcvYn===1?'정상':this.beforeVersionSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
@@ -490,8 +508,8 @@ import axios from "axios";
    data () {
     return {
       getCSensorsData: null,
-      getCGatewayData: null,
-      getCTabletsData: null,
+      getCGatewayData: null, getCGatewayData2:null,
+      getCTabletsData: null, getCTabletsData2:null,
       getBSensorsData: null,
       beforeVersionSensorsData: null,
       beforeVersionGatewayData: null,
@@ -500,12 +518,13 @@ import axios from "axios";
       sensorsTap: 1,
       tmpIdx: null,
       pending : false,
-      beforeToggle: 0,
+      beforeSensorToggle: 0, beforeGatewayToggle: 0, beforeTabletToggle: 0,
       firmwareUpgradeCheck:false,
       checkCorB: false,
-      sensorTakeItems:[],
-      sensorTake:null,
-      sensorTakeNm:null,
+      sensorTakeItems:[], gatewayTakeItems:[], beforeGatewayTakeItems:[], tabletTakeItems:[],
+      sensorTake:null, sensorTakeNm:null,
+      gatewayTake:null, gatewayTakeNm:null, beforeGatewayTake:null, beforeGatewayTakeNm:null,
+      tabletTake:null, tabletTakeNm:null, beforeTabletTake:null, beforeTabletTakeNm:null,
       CbatteryValue:null,
       BbatteryValue:null,
       firmwarelist:[],
@@ -513,7 +532,6 @@ import axios from "axios";
    },
    created() {
     this.getCSensers();
-    // this.getSensorTakeData();
     this.getCGateway();
     this.getCTablets();
     this.firmwareList();
@@ -526,6 +544,7 @@ import axios from "axios";
       delay(){
           this.pending = true
       },
+      // 센서 현재 통신 상태 함수
        async getCSensers(){
            this.pending = false;
            let tmpData = null;
@@ -551,6 +570,7 @@ import axios from "axios";
             }
           
     },
+    // 센서 통신상태 이름 변경 함수
     async getSensorTakeData(){
         let url = this.$store.state.serverApi + `/admin/codes?cmmnCdGroup=SENSOR.TAKECD`
         console.log(url)
@@ -560,18 +580,16 @@ import axios from "axios";
             console.log(this.sensorTakeItems)
         })
         .catch(error => {
-            console.log("fail to load")
+          console.log("fail to load")
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
-        console.log("asdfasdf")
         this.sensorTake = this.sensorTakeItems.filter(cd=>{
         return cd.cmmnCd === this.getBSensorsData.comStateCd
         })
-        console.log("this.sensorTakeItems => "+this.sensorTakeItems)
         this.sensorTakeNm = this.sensorTake[0].cmmnCdNm
-        console.log(this.sensorTakeNm)
     },
+    // 센서 클릭 시 '장비상태정보' 변경 함수
     getBSensers(input,time){
         if(!input) input =0;
         if(!time) time =0;
@@ -593,7 +611,7 @@ import axios from "axios";
         console.log(this.getBSensorsData.sensorId)
         
     },
-    
+    // 게이트웨이 현재 통신 상태 함수
      getCGateway(){
          this.pending = false;
         const url  = this.$store.state.serverApi + `/admin/gateways/recipient/${this.recipientId}`
@@ -603,14 +621,52 @@ import axios from "axios";
             console.log("getCGatewayData ")
             console.log(this.getCGatewayData)
             if(this.getCGatewayData.length===0){alert("연결된 게이트웨이가 존재하지 않습니다")}
+            this.getCGatewayReal();
           })
           .catch(error => {
               console.log("fail to load")
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-          setTimeout(this.delay, 1000)
+          
+          setTimeout(this.delay, 1500)
     },
+    async getCGatewayReal(){
+        let gateway = ''
+        const url  = this.$store.state.serverApi + `/admin/recipients/gateway/statehistory?gwId=${this.getCGatewayData.gwId}`
+            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                gateway = res.data.data
+                this.getCGatewayData2 = gateway[0]
+                console.log(this.getCGatewayData2)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+            this.getGatewayTakeData()
+    },
+    // 게이트웨이 통신상태 이름 변경 함수
+    async getGatewayTakeData(){
+        let url = this.$store.state.serverApi + `/admin/codes?cmmnCdGroup=GATEWAY.TAKECD`
+        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        .then(res => {
+            this.gatewayTakeItems = res.data.data
+            console.log(this.gatewayTakeItems)
+        })
+        .catch(error => {
+            console.log("fail to load")
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+        this.gatewayTake = this.gatewayTakeItems.filter(cd=>{
+            return cd.cmmnCd === this.getCGatewayData2.comStateCd
+        })
+        this.gatewayTakeNm = this.gatewayTake[0].cmmnCdNm
+        console.log(this.gatewayTakeNm)
+    },
+    // 테블릿 현재 통신 상태 함수
      getCTablets(){
          this.pending = false;
       const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets`
@@ -620,17 +676,61 @@ import axios from "axios";
             console.log("태블릿")
             console.log(this.getCTabletsData)
             if(this.getCTabletsData.length===0){alert("연결된 태블릿이 존재하지 않습니다")}
+            this.getCTablet()
           })
           .catch(error => {
               console.log("fail to load")
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-          setTimeout(this.delay, 1000)
+          
+          setTimeout(this.delay, 1500)
+    },
+    async getCTablet(){
+        let tablet=''
+        const url  = this.$store.state.serverApi + `/admin/recipients/tablet/statehistory?tabletId=${this.getCTabletsData.tabletId}`
+        console.log(url)
+            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                this.tablet = res.data.data
+                this.getCTabletsData2 = this.tablet[0]
+                console.log("=============")
+                console.log(this.getCTabletsData2)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+            this.getTabletTakeData()
+    },
+    async getTabletTakeData(){
+        let url = this.$store.state.serverApi + `/admin/codes?cmmnCdGroup=TABLET.TAKECD`
+        await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        .then(res => {
+            this.tabletTakeItems = res.data.data
+        })
+        .catch(error => {
+            console.log("fail to load")
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+        this.tabletTake = this.tabletTakeItems.filter(cd=>{
+            return cd.cmmnCd === this.getCTabletsData2.comStateCd
+        })
+        this.tabletTakeNm = this.tabletTake[0].cmmnCdNm
+        console.log(this.tabletTakeNm)
+    },
+    // 현재버전 게이트웨이 호출
+    getNowGatewayToggle(){
+        this.beforeGatewayToggle = 0
+    },
+    getNowTabletToggle(){
+        this.beforeTabletToggle = 0
     },
     //현재버전 센서 호출
-    getNowToggle(){
-        this.beforeToggle= 0
+    getNowSensorToggle(){
+        this.beforeSensorToggle= 0
         this.checkCorB = false
     },
     //이전버전 센서 호출
@@ -638,9 +738,9 @@ import axios from "axios";
         this.checkCorB = true
         console.log("aa")
         let beforeSensor = []
-        this.beforeToggle = 1
+        this.beforeSensorToggle = 1
         this.tmpIdx = this.getCSensorsData[0];
-        console.log(this.getBSensorsData.sensorId)
+        
 
         let url  = this.$store.state.serverApi + `/admin/recipients/sensors/statehistory?sensorId=${this.getBSensorsData.sensorId}`
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -660,36 +760,53 @@ import axios from "axios";
         console.log(this.beforeVersionSensorsData)
         
     },
-    // async getBeforeVersionTablets(){
-    //     this.tmpIdx = this.getCSensorsData[0].sensorId;
-    //     const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets/states`
-    //         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-    //         .then(res => {
-    //             this.beforeVersionTabletsData = res.data.data
-    //             console.log("이전버전태블릿")
-    //             console.log(this.beforeVersionTabletsData)
-    //         })
-    //         .catch(error => {
-    //             console.log("fail to load")
-    //             this.errorMessage = error.message;
-    //             console.error("There was an error!", error);
-    //         });
-    // },
-    // async getBeforeVersionGateway(){
-    //     this.tmpIdx = this.getCSensorsData[0].sensorId;
-    //     const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/gateways/states`
-    //         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-    //         .then(res => {
-    //             this.beforeVersionGatewayData = res.data.data
-    //             console.log("이전버전게이트웨이")
-    //             console.log(this.beforeVersionGatewayData)
-    //         })
-    //         .catch(error => {
-    //             console.log("fail to load")
-    //             this.errorMessage = error.message;
-    //             console.error("There was an error!", error);
-    //         });
-    // },  
+    // 이전 버전 테블릿 호출
+    async getBeforeVersionTablets(){
+        this.beforeTabletToggle = 1
+        let beforetablet=[]
+        //this.tmpIdx = this.getCSensorsData[0].sensorId;
+        const url  = this.$store.state.serverApi + `/admin/recipients/tablet/statehistory?tabletId=${this.getCTabletsData.tabletId}`
+        console.log(url)
+            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                this.beforetablet = res.data.data
+                this.beforeVersionTabletsData = this.beforetablet[1]
+                console.log("이전버전태블릿")
+                console.log(this.beforeVersionTabletsData)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+            this.beforeTabletTake = this.tabletTakeItems.filter(cd=>{
+                return cd.cmmnCd === this.beforeVersionTabletsData.comStateCd
+            })
+            this.beforeTabletTakeNm = this.beforeTabletTake[0].cmmnCdNm
+    },
+    // 이전 버전 게이트웨이 호출
+    async getBeforeVersionGateway(){
+        this.beforeGatewayToggle = 1
+        //this.tmpIdx = this.getCSensorsData[0].sensorId;
+        let beforegateway=[]
+        const url  = this.$store.state.serverApi + `/admin/recipients/gateway/statehistory?gwId=${this.getCGatewayData.gwId}`
+            await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                beforegateway = res.data.data
+                this.beforeVersionGatewayData = beforegateway[1]
+                console.log("이전버전게이트웨이")
+                console.log(this.beforeVersionGatewayData)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+            this.beforeGatewayTake = this.gatewayTakeItems.filter(cd=>{
+            return cd.cmmnCd === this.beforeVersionGatewayData.comStateCd
+        })
+        this.beforeGatewayTakeNm = this.beforeGatewayTake[0].cmmnCdNm
+    },  
     dataTogle(value){
         switch (value){
           case 1 : this.connectTap=1;break;
@@ -731,7 +848,8 @@ import axios from "axios";
         }
     
     },
-    changeBattery(input){
+    // 센서 배터리 수치값 
+    changeSensorBattery(input){
         if(input === null || input === undefined){
           return ''
         }else if(input === 255){
@@ -741,11 +859,28 @@ import axios from "axios";
         }else if(input < 95 && input > 90){
             return '부족'
         }else{
-            return '교체대상'
+            return '교체'
         }
     },
+    // 테블릿, 게이트웨이 수치값
+    changeTaGaBattery(input){
+        if(input === null || input === undefined){
+          return ''
+        }else if(input === 255){
+            return '미수신'
+        }else if(input >= 51 && input <= 100){
+            return '양호'
+        }else if(input <= 50 && input > 30){
+            return '부족'
+        }else{
+            return '교체'
+        }
+    },
+    // Rssi 수치값
     changeRssi(input){
-        if(input <=0 && input >= -80) {
+        if(input === 255){
+            return '미수신'
+        }else if(input <=0 && input >= -80) {
 			return "양호";
 		}else if( input <-80  && input >= -99) {
 			return "미약";
