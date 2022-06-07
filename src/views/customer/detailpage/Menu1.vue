@@ -118,28 +118,88 @@ export default {
                         continue;
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE006"){
                         measureValuetmp1 = lastMeasures[i].measureValue.split(',')
-                        this.reportMeasureData.TPE006 = measureValuetmp1[0]
-                        // this.reportMeasureData.TPE006 = measureValuetmp1[measureValuetmp1.length -1]
+                        //this.reportMeasureData.TPE006 = measureValuetmp1[0]
+                        console.log(measureValuetmp1)
+                        this.reportMeasureData.TPE006 = measureValuetmp1[measureValuetmp1.length -1]
+                        console.log(this.reportMeasureData.TPE006)
+                        if(this.reportMeasureData.TPE006 === '0'){
+                        for(let i=measureValuetmp1.length-1; i>=0; i--){
+                            if(this.reportMeasureData.TPE006 === '0'){
+                                this.reportMeasureData.TPE006 = measureValuetmp1[i]
+                            }else{
+                                break;
+                            }
+                        }
+                        }
+                        console.log(this.reportMeasureData.TPE006)
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE007"){
                         measureValuetmp2 = lastMeasures[i].measureValue.split(',')
-                        this.reportMeasureData.TPE007 = measureValuetmp2[0]
-                        // this.reportMeasureData.TPE007 = measureValuetmp2[measureValuetmp2.length -1]
+                        //this.reportMeasureData.TPE007 = measureValuetmp2[0]
+                        this.reportMeasureData.TPE007 = measureValuetmp2[measureValuetmp2.length -1]
+                        if(this.reportMeasureData.TPE007 === '0'){
+                        for(let i=measureValuetmp2.length-1; i>=0; i--){
+                            if(this.reportMeasureData.TPE007 === '0'){
+                            this.reportMeasureData.TPE007 = measureValuetmp2[i]
+                            }else{
+                                break;
+                            }
+                        }
+                        }
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE008"){
                         measureValuetmp3 = lastMeasures[i].measureValue.split(',')
-                        this.reportMeasureData.TPE008 = measureValuetmp3[0]
-                        // this.reportMeasureData.TPE008 = measureValuetmp3[measureValuetmp3.length -1]
+                        //this.reportMeasureData.TPE008 = measureValuetmp3[0]
+                        this.reportMeasureData.TPE008 = measureValuetmp3[measureValuetmp3.length -1]
+                        if(this.reportMeasureData.TPE008 === '0'){
+                        for(let i=measureValuetmp3.length-1; i>=0; i--){
+                            if(this.reportMeasureData.TPE008 === '0'){
+                            this.reportMeasureData.TPE008 = measureValuetmp3[i]
+                            }else{
+                                break;
+                            }
+                        }
+                        }
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE005"){
                         measureValuetmp4 = lastMeasures[i].measureValue.split(',')
-                        this.reportMeasureData.TPE005 = measureValuetmp4[0]
-                        // this.reportMeasureData.TPE005 = measureValuetmp4[measureValuetmp4.length -1]
+                        //this.reportMeasureData.TPE005 = measureValuetmp4[0]
+                        this.reportMeasureData.TPE005 = measureValuetmp4[measureValuetmp4.length -1]
+                        console.log(measureValuetmp4)
+                        if(this.reportMeasureData.TPE005 === '0'){
+                        for(let i=measureValuetmp4.length-1; i>=0; i--){
+                            if(this.reportMeasureData.TPE005 === '0'){
+                            this.reportMeasureData.TPE005 = measureValuetmp4[i]
+                            }else{
+                                break;
+                            }
+                        }
+                        }
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE011"){
                         measureValuetmp5 = lastMeasures[i].measureValue.split(',')
-                        this.reportMeasureData.TPE011 = measureValuetmp5[0]
-                        // this.reportMeasureData.TPE011 = measureValuetmp5[measureValuetmp5.length -1]
+                        //this.reportMeasureData.TPE011 = measureValuetmp5[0]
+                        console.log(measureValuetmp5)
+                        this.reportMeasureData.TPE011 = measureValuetmp5[measureValuetmp5.length -1]
+                        if(this.reportMeasureData.TPE011 === '0'){
+                        for(let i=measureValuetmp5.length-1; i>=0; i--){
+                            if(this.reportMeasureData.TPE011 === '0'){
+                            this.reportMeasureData.TPE011 = measureValuetmp5[i]
+                            }else{
+                                break;
+                            }
+                        }
+                        }
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE012"){
                         measureValuetmp6 = lastMeasures[i].measureValue.split(',')
-                        this.reportMeasureData.TPE012 = measureValuetmp6[0]
-                        // this.reportMeasureData.TPE012 = measureValuetmp6[measureValuetmp6.length -1]
+                        //this.reportMeasureData.TPE012 = measureValuetmp6[0]
+                        console.log(measureValuetmp6)
+                        this.reportMeasureData.TPE012 = measureValuetmp6[measureValuetmp6.length -1]
+                        if(this.reportMeasureData.TPE012 === '0'){
+                        for(let i=measureValuetmp6.length-1; i>=0; i--){
+                            if(this.reportMeasureData.TPE012 === '0'){
+                            this.reportMeasureData.TPE012 = measureValuetmp6[i]
+                            }else{
+                                break;
+                            }
+                        }
+                        }
                     }
                 }
                 /*this.reportMeasureData = {
