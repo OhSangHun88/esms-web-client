@@ -148,7 +148,7 @@ import moment from "moment";
       codeText:'°C',
       envData:[{text: '환경 정보', value:''},{text: '온도', value: 2},{text: '조도', value: 3},{text: '습도', value: 4}, ],
       bioData:[{text: '바이오 정보', value: ''},{text: '심장박동', value: 6},{text: '호흡', value: 7},{text: '활동량', value: 8}, ],
-      actPData:[{text: '활동감지기{P) 정보', value: ''},{text: '전체', value: 9},{text: '화장실', value: 10},{text: '안방', value: 11}, ],
+      actPData:[{text: '활동감지기(P) 정보', value: ''},{text: '전체', value: 9},{text: '화장실', value: 10},{text: '안방', value: 11}, ],
       doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 12},{text: '현관', value: 13},{text: '뒷문', value: 14}, ],
       selectedValue : null,
       sensorsTmp1Data: [],
