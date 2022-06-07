@@ -246,9 +246,10 @@ export default {
       this.getSidoData();
       this.getSggData();
       this.getOrgmData();
+      this.getnoticeData();
       this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
       this.e_date=moment().format('YYYY-MM-DD');
-      this.getnoticeData();
+      
 
 //      this.getnoticeData();
     },

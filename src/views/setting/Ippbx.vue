@@ -35,7 +35,7 @@
                 <i class="ico_nav"></i>
                 <span class="on">IP-PBX 관리</span>
             </div>
-            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
+            <!-- <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
                 <div class="table_wrap">
                     <table>
                         <colgroup>
@@ -49,7 +49,7 @@
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
-                            <th scope="row">대상자명</th>
+                            <th scope="row">관리지역명</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -87,7 +87,7 @@
                 <div class="btn_area">
                     <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
                 </div>
-            </div>
+            </div> -->
             <div class="one_box box_style">
                 <div class="result_txt">
                   <p>조회결과 : <strong class = "num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>

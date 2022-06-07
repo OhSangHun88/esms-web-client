@@ -120,10 +120,11 @@ export default {
       }
     },
     created(){
-      this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
-      this.e_date=moment().format('YYYY-MM-DD');
       this.getLogData();
       this.getEquLogData();
+      this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
+      this.e_date=moment().format('YYYY-MM-DD');
+      
     },
     methods:{
       getLogData() {
