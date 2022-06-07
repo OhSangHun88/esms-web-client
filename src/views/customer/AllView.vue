@@ -159,6 +159,29 @@
                 <div class="input_wrap">
                     <div class="input_area">
                         <p class="input_tit">시/도</p>
+                        <input type="text" v-model="selectChangeSido" disabled>
+                    </div>
+                    <div class="input_area">
+                        <p class="input_tit">시/군/구</p>
+                        <input type="text" v-model="selectChangeSgg" disabled>
+                    </div>
+                </div>
+                <div class="input_wrap">  
+                  <div class="input_area">
+                      <p class="input_tit">관리기관</p>
+                      <input type="text" v-model="selectChangeOrg" disabled>
+                  </div>
+                  <div class="input_area">
+                      <p class="input_tit">상태 구분</p>
+                        <select v-model="selectChangeState">
+                          <option v-for="(state, index) in statusItems2" :value="state.value" v-bind:key="index">{{state.label}}</option>
+                        </select>
+                  </div>
+                </div>
+                <!-- 대상자 정보 수정 시 필요 -->
+                <!-- <div class="input_wrap">
+                    <div class="input_area">
+                        <p class="input_tit">시/도</p>
                         <select v-model="selectChangeSido" @change="onChangeSgg($event)">
                           <option v-for="(sido, index) in sidoItems2" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                         </select>
@@ -183,7 +206,7 @@
                           <option v-for="(state, index) in statusItems2" :value="state.value" v-bind:key="index">{{state.label}}</option>
                         </select>
                   </div>
-                </div>
+                </div> -->
             </div>
             <div class="popbtn_area">
               <button type="button" class="btn form2" @click="changeUser()">수정</button>
@@ -602,7 +625,7 @@ export default {
       orgCode: '', partCode: '', statusCode: '', sexCode: '', cycleCode: '',
       modelOrg: '', modelPart: '', modelStatus: '', modelName: '', TypeItems:[], TypeItems2:[],
       orgNm:'',orgId:'', sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-      sidoItems:[], sidoItems2:[], sggItems:[], sggItems2:[],  actItems:[], recipientItems:[],recipientOrginItems:[], orgSido:'', orgSgg:'', filterName:'', modalOpen:false, changeOpen:false,
+      sidoItems:[], sidoItems2:[], sggItems:[], sggItems2:[], sggItems3:[],  actItems:[], recipientItems:[],recipientOrginItems:[], orgSido:'', orgSgg:'', filterName:'', modalOpen:false, changeOpen:false,
       recipientFields: [
         { key: 'orgNm', label: '기관관리', _classes: 'text-center' },
         { key: 'typeNm', label: '구분', _classes: 'text-center' },
@@ -683,6 +706,7 @@ export default {
 
     // 시/군/구 목록
     getSggData() {
+      this.sggItems3=[];
       let url =this.$store.state.serverApi + "/admin/address/sgg";
       if(this.sidoCd != ''){
         url += "?sidoCd="+this.sidoCd;
@@ -690,6 +714,7 @@ export default {
         this.selectedSggItems = ''
         this.sggItems=[];
         this.sggItems2=[];
+        
         this.sggItems.push({label: '전체', value: ''});
         this.sggItems2.push({label: '선택', value: ''});
         return ; 
@@ -709,12 +734,9 @@ export default {
           let tmpResult = tempArr.filter(cd=>{
             return cd.value2 === this.sidoCd
           });
-          
           this.sggItems = [...tmpResult2,...tmpResult]
           this.sggItems2 = [...tmpResult3,...tmpResult]
-          
-          console.log("this.sggItems ")
-          console.log(this.sggItems)
+          this.sggItems3 = tempArr
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -759,7 +781,6 @@ export default {
           this.orgmItems = [...tmpResult2,...tmpResult]
         this.orgmItems=tmpArr;
         this.orgmItems2=tmpArr2;
-        console.log(this.orgmItems)
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -786,7 +807,6 @@ export default {
                  value: response.data.data[i].cmmnCd
                });
              }
-             console.log(this.statusItems)
            })
            .catch(error => {
              this.errorMessage = error.message;
@@ -813,7 +833,6 @@ export default {
                  value: response.data.data[i].cmmnCd
                });
              }
-             console.log(this.TypeItems)
            })
            .catch(error => {
              this.errorMessage = error.message;
@@ -872,7 +891,6 @@ export default {
     let addrCd = ''
     if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
-        console.log(addrCd)
       }else if(this.selectedSggItems != ''){
         addrCd = this.sggCd.substring(0,5)
       }else{
@@ -883,29 +901,22 @@ export default {
     } else {
       uri = this.$store.state.serverApi + "/admin/recipients?pageIndex=1&recordCountPerPage=100";
       uri += "&addrCd="+addrCd;
-      console.log(this.selectType)
       if(this.selectedUserType != '') uri += "&typeCd="+this.selectedUserType;
       if(this.selectedUserState != '') uri += "&stateCd="+this.selectedUserState;
       if(this.selectedOrgItems != '') uri += "&orgId=" + this.selectedOrgItems;
       if(this.filterName != '') uri += "&recipientNm=" + this.filterName;
       if(this.selectedUserSex != '') uri += "&sex=" + this.selectedUserSex
-      
-      console.log("uri")
-      console.log(uri)
 
       // var fIdx = uri.indexOf("&", 0);
       // var uriArray = uri.split('');
       // uriArray.splice(fIdx, 1);
       // uri = uriArray.join('');
     }
-    console.log(uri)
 
     axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(response => {
           this.recipientItems = response.data.data
           this.recipientOrginItems = response.data.data
-          console.log("this.recipientItems")
-          console.log(this.recipientItems)
           // this.recipientItems = [];
           // for(let i=0; i<response.data.data.length; i++) {
           //   this.recipientItems.push({
@@ -965,14 +976,13 @@ export default {
   closeModal(){
     this.modalOpen = false;
   },
-  changeData(){
+  async changeData(){
     if(this.saveChangeData===null||this.saveChangeData===undefined){
         alert("변경하시고자 하는 값을 선택해 주세요"); 
         return;
     }
     let changeDatatmp = this.recipientItems[this.saveChangeData]
     console.log(changeDatatmp)
-
     this.selectChangeRecipient = changeDatatmp.recipientNm
     this.selectChangeBirthday = changeDatatmp.birthday
     this.selectChangeSex = changeDatatmp.sex
@@ -986,9 +996,35 @@ export default {
     this.selectChangeAddrDetail = changeDatatmp.addrDetail
     this.selectChangePhoneNumber = changeDatatmp.recipientPhoneno
     this.selectChangeRecipeType = changeDatatmp.typeCd
-    this.selectChangeSido = ''
-    this.selectChangeSgg = ''
-    this.selectChangeOrg = ''
+    this.selectChangeSido = this.sidoItems2.filter(cd=>{
+      return cd.value.substring(0,2) === changeDatatmp.addrCd.substring(0,2)
+    })
+    let url =this.$store.state.serverApi + "/admin/address/sgg?sidoCd="+this.selectChangeSido[0].value;
+      await axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          for(let i=0; i<response.data.data.length; i++) {
+            this.sggItems3.push({
+              label: response.data.data[i].sgg,
+              value: response.data.data[i].sggCd,
+              value2: response.data.data[i].sidoCd
+            });
+          } 
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+    this.selectChangeSido = this.selectChangeSido[0].label
+    this.selectChangeSgg = this.sggItems3.filter(cd=>{
+      return cd.value.substring(0,5) === changeDatatmp.addrCd.substring(0,5)
+    })
+    this.selectChangeSgg = this.selectChangeSgg[0].label
+    //this.selectChangeSgg = changeDatatmp.addrCd.substring(0,5)
+    this.selectChangeOrg = changeDatatmp.orgNm
+    // 대상자 정보 수정 시
+    // this.selectChangeSido = ''
+    // this.selectChangeSgg = ''
+    // this.selectChangeOrg = ''
     this.recipientId = changeDatatmp.recipientId
     this.selectChangeState = changeDatatmp.stateCd
     this.changeOpen = true;
@@ -1097,18 +1133,14 @@ export default {
         typeCd: this.selectedUpdateUserType,//고정
         zipCode: this.selectedUpdateZipCode,//완
         regId: this.$store.state.userId//완
-      }
+      }      
       console.log(data)
-      
        const url  = this.$store.state.serverApi + `/admin/recipients`
-         // /sensors/{sensorId}/gw-send-cycle
+         ///sensors/{sensorId}/gw-send-cycle
          await axios.post(url,data,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
            .then(res => {
              let resData = res.data.data
-             console.log(resData)
             // this.getCSensorsData = res.data.data
-             // console.log("sensors ")
-             // console.log(this.getCSensorsData)
              if(resData){
                  alert("저장이 완료되었습니다.")
              }
@@ -1139,7 +1171,7 @@ export default {
       let data= {
         activeUnsensingCycle: 60,//완
         addr: this.selectChangeAddr,//완
-        addrCd: this.selectChangeSgg,//이부분 진행해야함
+        //addrCd: this.selectChangeSgg,//대상자 정보 수정 시
         addrDetail: this.selectChangeAddrDetail,//완
         addrXCoordinate: "",//완
         addrYCoordinate: "",//완
@@ -1147,36 +1179,29 @@ export default {
         careLevelCd: "LVL001",//고정
         installFileNo: "1", //우선 고정
         measureCycle: 240,//완
-        orgId: this.selectChangeOrg,//완
-        orgNm: this.selectChangeOrgNm[0].label,
+        //orgId: this.selectChangeOrg,//완//대상자 정보 수정 시
+        //orgNm: this.selectChangeOrgNm[0].label,//대상자 정보 수정 시
         recipientNm: this.selectChangeRecipient,//완
         recipientPhoneno: this.selectChangePhoneNumber,//완
         sex: this.userGender===1?"M":this.userGender===2?"F":"", //완
-        sigunguCd: this.selectChangeSgg,//완
+        //sigunguCd: this.selectChangeSgg,//대상자 정보 수정 시 
         stateCd: this.selectChangeState , //완
         typeCd: this.selectChangeRecipeType,//고정
         zipCode: this.selectChangeZipCode,//완
         regId: this.$store.state.userId//완
       }
       console.log(data)
-      
-       const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}`
-       console.log(this.recipientId)
-       
+       const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}`       
          // /sensors/{sensorId}/gw-send-cycle
          axios.post(url,data,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
            .then(res => {
              let resData = res.data.data
-             console.log(resData)
             // this.getCSensorsData = res.data.data
-             // console.log("sensors ")
-             // console.log(this.getCSensorsData)
              if(resData){
                  alert("수정이 완료되었습니다.")
                  this.changeOpen = false
                  this.getRecipientData()
              }
-
            })
            .catch(error => {
                console.log("fail to load")
@@ -1186,14 +1211,10 @@ export default {
     },
     sort(){
       // let test = [{name:'이용' ,birthday:"14", test:'3'},{name:'현준' ,birthday:"17", test:'22'}, {name:'길동' ,birthday:"2", test:'1'},]
-      // console.log(test)
       // test.sort(function(a, b){
       //   return b.test - a.test
       // })
-      // console.log(test)
-      //console.log(this.recipientItems)
       this.sortCount++
-      console.log(this.sortCount)
       if(this.sortCount === 1){
         this.recipientItems.sort(function(a, b){      
          return makeAge(a.birthday) - makeAge(b.birthday)
@@ -1204,17 +1225,13 @@ export default {
         })
         this.sortCount = 0
       }
-      //console.log(this.recipientItems)
-      // console.log(this.recipientItems)
       // this.recipientItems.sort()
-      // console.log(this.recipientItems)
       // let sortArr = []
       // for(let i=0; i<this.recipientItems.length; i++){
       //   sortArr[i]=this.makeAge(this.recipientItems[i].birthday)
         
       // }
       // sortArr.sort();
-      // console.log(sortArr)
     },
     resetData(){
 
@@ -1334,11 +1351,9 @@ export default {
     //     if(response.data.data() == true){
     //       self.fileUpload=false;
     //     }
-    //     console.log(response);
     //   })
     //   .catch(function (response) {
     //     //handle error
-    //     console.log(response);
     //   });
 
     // },
@@ -1395,11 +1410,9 @@ export default {
     //       self.getRecipientData();
     //       self.addCustomer=false;
     //     }
-    //     console.log(response);
     //   })
     //   .catch(function (response) {
     //     //handle error
-    //     console.log(response);
     //   });
     // },
     // customCancel() {

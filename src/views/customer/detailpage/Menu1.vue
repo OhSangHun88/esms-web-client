@@ -118,22 +118,28 @@ export default {
                         continue;
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE006"){
                         measureValuetmp1 = lastMeasures[i].measureValue.split(',')
-                        this.reportMeasureData.TPE006 = measureValuetmp1[measureValuetmp1.length -1]
+                        this.reportMeasureData.TPE006 = measureValuetmp1[0]
+                        // this.reportMeasureData.TPE006 = measureValuetmp1[measureValuetmp1.length -1]
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE007"){
                         measureValuetmp2 = lastMeasures[i].measureValue.split(',')
-                        this.reportMeasureData.TPE007 = measureValuetmp2[measureValuetmp2.length -1]
+                        this.reportMeasureData.TPE007 = measureValuetmp2[0]
+                        // this.reportMeasureData.TPE007 = measureValuetmp2[measureValuetmp2.length -1]
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE008"){
                         measureValuetmp3 = lastMeasures[i].measureValue.split(',')
-                        this.reportMeasureData.TPE008 = measureValuetmp3[measureValuetmp3.length -1]
+                        this.reportMeasureData.TPE008 = measureValuetmp3[0]
+                        // this.reportMeasureData.TPE008 = measureValuetmp3[measureValuetmp3.length -1]
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE005"){
                         measureValuetmp4 = lastMeasures[i].measureValue.split(',')
-                        this.reportMeasureData.TPE005 = measureValuetmp4[measureValuetmp4.length -1]
+                        this.reportMeasureData.TPE005 = measureValuetmp4[0]
+                        // this.reportMeasureData.TPE005 = measureValuetmp4[measureValuetmp4.length -1]
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE011"){
                         measureValuetmp5 = lastMeasures[i].measureValue.split(',')
-                        this.reportMeasureData.TPE011 = measureValuetmp5[measureValuetmp5.length -1]
+                        this.reportMeasureData.TPE011 = measureValuetmp5[0]
+                        // this.reportMeasureData.TPE011 = measureValuetmp5[measureValuetmp5.length -1]
                     }else if(lastMeasures[i].sensorTypeCd ==="TPE012"){
                         measureValuetmp6 = lastMeasures[i].measureValue.split(',')
-                        this.reportMeasureData.TPE012 = measureValuetmp6[measureValuetmp6.length -1]
+                        this.reportMeasureData.TPE012 = measureValuetmp6[0]
+                        // this.reportMeasureData.TPE012 = measureValuetmp6[measureValuetmp6.length -1]
                     }
                 }
                 /*this.reportMeasureData = {
@@ -145,8 +151,7 @@ export default {
                     TPE012: !lastMeasures ? 0: lastMeasures.find(lm=>{return lm? lm.sensorTypeCd === "TPE012" : 0}).measureValue,//.split(',').slice(-1)[0],//활동량
                 }*/
             }
-            console.log(lastMeasures[1].measureValue)
-            console.log(lastMeasures[1].measureValue.substring(15,17))
+            console.log(lastMeasures[4].measureValue)
             console.log(this.reportMeasureData)
         }).catch(error => {
             console.log("fail to load")
