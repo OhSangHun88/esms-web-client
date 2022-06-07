@@ -253,7 +253,7 @@ import moment from "moment";
                             measureValue: tmp[j] + this.codeText,
                             testYn: tmpData.testYn,
                             sensorLocCd: tmpData.sensorLocCd,
-                            measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                            measureDtime: moment(tmpData.measureDtime).subtract(tmpData.intervalTime*(tmp.length-1), 's').add(tmpData.intervalTime*j, 's').format('YYYY-MM-DD HH:mm:ss'),
                             regDtime : tmpData.regDtime,
                         })
                         
@@ -271,7 +271,7 @@ import moment from "moment";
                                 measureValue: tmp[j] + this.codeText,
                                 testYn: tmpData.testYn,
                                 sensorLocCd: tmpData.sensorLocCd,
-                                measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                                measureDtime: moment(tmpData.measureDtime).subtract(tmpData.intervalTime*(tmp.length-1), 's').add(tmpData.intervalTime*j, 's').format('YYYY-MM-DD HH:mm:ss'),
                                 regDtime : tmpData.regDtime,
                             })
                         }
@@ -288,7 +288,7 @@ import moment from "moment";
                                 measureValue: tmp[j] + this.codeText,
                                 testYn: tmpData.testYn,
                                 sensorLocCd: tmpData.sensorLocCd,
-                                measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                                measureDtime: moment(tmpData.measureDtime).subtract(tmpData.intervalTime*(tmp.length-1), 's').add(tmpData.intervalTime*j, 's').format('YYYY-MM-DD HH:mm:ss'),
                                 regDtime : tmpData.regDtime,
                             })
                         
@@ -306,7 +306,7 @@ import moment from "moment";
                             measureValue: tmp[j] + this.codeText,
                             testYn: tmpData.testYn,
                             sensorLocCd: tmpData.sensorLocCd,
-                            measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                            measureDtime: moment(tmpData.measureDtime).subtract(tmpData.intervalTime*(tmp.length-1), 's').add(tmpData.intervalTime*j, 's').format('YYYY-MM-DD HH:mm:ss'),
                             regDtime : tmpData.regDtime,
                         })
                         
@@ -324,7 +324,7 @@ import moment from "moment";
                                 measureValue: tmp[j]==='0'?'닫힘': '열림',
                                 testYn: tmpData.testYn,
                                 sensorLocCd: tmpData.sensorLocCd,
-                                measureDtime: moment(tmpData.measureDtime).subtract( j, 'm').format('YYYY-MM-DD HH:mm:ss'),
+                                measureDtime: moment(tmpData.measureDtime).subtract(tmpData.intervalTime*(tmp.length-1), 's').add(tmpData.intervalTime*j, 's').format('YYYY-MM-DD HH:mm:ss'),
                                 regDtime : tmpData.regDtime,
                             })     
                         }
