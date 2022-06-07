@@ -246,7 +246,7 @@ import moment from "moment";
                     for(let i=0; i <lengthTmp.totalCount ;i++ ){
                         tmpData = res.data.data[i]
                         tmp = res.data.data[i].measureValue.split(',')
-                        for(let j=0; j <tmp.length ;j++ ){
+                        for(let j=tmp.length-1; j >=0 ;j-- ){
                             this.sensorsData.push({
                             sensorId: tmpData.sensorId,
                             sensorTypeCd: tmpData.sensorTypeCd,
@@ -264,7 +264,7 @@ import moment from "moment";
                     for(let i=0; i <lengthTmp.totalCount ;i++ ){
                         tmpData = res.data.data[i]
                         tmp = res.data.data[i].measureValue.split(',')
-                        for(let j=0; j <tmp.length ;j++ ){
+                        for(let j=tmp.length-1; j >=0 ;j-- ){
                             this.sensorsData.push({
                                 sensorId: tmpData.sensorId,
                                 sensorTypeCd: tmpData.sensorTypeCd,
@@ -274,15 +274,14 @@ import moment from "moment";
                                 measureDtime: moment(tmpData.measureDtime).subtract( 10*j, 'm').format('YYYY-MM-DD HH:mm:ss'),
                                 regDtime : tmpData.regDtime,
                             })
-                        
                         }
-                        
+                        console.log(this.sensorsData)
                     }
                 }else if(this.selectedValue==="TPE012"){
                     for(let i=0; i <lengthTmp.totalCount ;i++ ){
                         tmpData = res.data.data[i]
                         tmp = res.data.data[i].measureValue.split(',')
-                        for(let j=0; j <tmp.length ;j++ ){
+                        for(let j=tmp.length-1; j >=0 ;j-- ){
                             this.sensorsData.push({
                                 sensorId: tmpData.sensorId,
                                 sensorTypeCd: tmpData.sensorTypeCd,
@@ -300,7 +299,7 @@ import moment from "moment";
                     for(let i=0; i <lengthTmp.totalCount ;i++ ){
                         tmpData = res.data.data[i]
                         tmp = res.data.data[i].measureValue.split(',')
-                        for(let j=0; j <tmp.length ;j++ ){
+                        for(let j=tmp.length-1; j >=0 ;j-- ){
                             this.sensorsData.push({
                             sensorId: tmpData.sensorId,
                             sensorTypeCd: tmpData.sensorTypeCd,
@@ -318,7 +317,7 @@ import moment from "moment";
                     for(let i=0; i <lengthTmp.totalCount ;i++ ){
                         tmpData = res.data.data[i]
                         tmp = res.data.data[i].measureValue.split(',')
-                        for(let j=0; j <tmp.length ;j++ ){
+                        for(let j=tmp.length-1; j >=0 ;j-- ){
                             this.sensorsData.push({
                                 sensorId: tmpData.sensorId,
                                 sensorTypeCd: tmpData.sensorTypeCd,
