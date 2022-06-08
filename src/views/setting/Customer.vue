@@ -59,25 +59,6 @@
                           </div>
                         </div>
                         <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">우편번호</p>
-                            <div class="add_btn_input">
-                              <input type="text" value="" v-model="selectedUpdateZipcode">
-                              <button type="button" class="input_btn" @click="search">검색</button>
-                            </div>
-                          </div>
-                          <div class="input_area">
-                            <p class="input_tit">주소</p>
-                            <input type="text" value="" v-model="selectedUpdateAddr">
-                          </div>
-                        </div>
-                        <div class="input_wrap type-02">
-                            <div class="input_area" >
-                                <p class="input_tit">상세주소</p>
-                                <input type="text" value="" v-model="selectedUpdateDetailAddr">
-                            </div>
-                        </div>
-                        <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">시/도</p>
                                 <select v-model="selectedUpdateSidoItems" @change="onChangeSgg($event)">
@@ -105,6 +86,26 @@
                                 </select>
                             </div> -->
                         </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">우편번호</p>
+                            <div class="add_btn_input">
+                              <input type="text" value="" v-model="selectedUpdateZipcode">
+                              <button type="button" class="input_btn" @click="search">검색</button>
+                            </div>
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">주소</p>
+                            <input type="text" value="" v-model="selectedUpdateAddr">
+                          </div>
+                        </div>
+                        <div class="input_wrap type-02">
+                            <div class="input_area" >
+                                <p class="input_tit">상세주소</p>
+                                <input type="text" value="" v-model="selectedUpdateDetailAddr">
+                            </div>
+                        </div>
+                        
                         <!-- <div class="input_wrap col3"> -->
                           <div class="input_wrap">
                             <div class="input_area">
@@ -533,7 +534,8 @@
                     <table>
                         <colgroup>
                                 <col style="width:5%;">
-                                <col style="width:8%;">
+                                <col style="width:5%;">
+                                <col style="width:5%;">
                                 <col style="width:8%;">
                                 <col style="width:8%;">
                                 <col style="width:16%;">
@@ -546,6 +548,7 @@
                                 <th scope="col">순번</th>
                                 <th scope="col">사용자ID</th>
                                 <th scope="col">사용자명</th>
+                                <th scope="col">사용자구분</th>
                                 <th scope="col">전화번호</th>
                                 <th scope="col">핸드폰번호</th>
                                 <th scope="col">이메일주소</th>
@@ -559,7 +562,8 @@
                         <table>
                             <colgroup>
                                 <col style="width:5%;">
-                                <col style="width:8%;">
+                                <col style="width:5%;">
+                                <col style="width:5%;">
                                 <col style="width:8%;">
                                 <col style="width:8%;">
                                 <col style="width:16%;">
@@ -572,6 +576,7 @@
                                   <td>{{index+1}}</td>
                                   <td>{{item.userId}}</td>
                                   <td>{{item.userNm}}</td>
+                                  <td>{{item.userTypeNm}}</td>
                                   <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
                                   <td>{{changeRecipientPhoneno(item.mobileNumber)}}</td>
                                   <td>{{item.email}}</td>
@@ -812,6 +817,7 @@ export default {
       this.selectedUpdateEmail = ''
       this.selectedUpdateUserId = ''
       this.selectedUpdatePassword = ''
+      this.selectedUpdatePasswordCheck = ''
       this.selectedUpdateZipcode = ''
       this.selectedUpdateAddr = ''
       this.selectedUpdateDetailAddr = ''
@@ -893,6 +899,8 @@ export default {
               if(resData){
                 alert("성공적으로 등록되었습니다")
                 this.writeCus = false
+                this.selectedUpdatePhoneNumber=''
+                this.selectedUpdateMobileNumber=''
                 this.getUserData()
               }
             })
@@ -961,6 +969,10 @@ export default {
     },
     // 사용자 등록 시 ID 체크
     async checkId(){
+      if(this.selectedUpdateUserId === ''){
+        alert("아이디를 입력하여 주세요.")
+        return false;
+      }
       let url = this.$store.state.serverApi+`/admin/users`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
@@ -987,6 +999,10 @@ export default {
     },
     // 사용자 수정 시 ID 체크
     async checkId2(){
+      if(this.selectedChangeUserId === ''){
+        alert("아이디를 입력하여 주세요.")
+        return false;
+      }
       let url = this.$store.state.serverApi+`/admin/users`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
@@ -1011,6 +1027,10 @@ export default {
     },
     // 사용자 등록 시 email 체크
     async checkEmail(){
+      if(this.selectedUpdateEmail === ''){
+        alert("이메일을 입력하여 주세요.")
+        return false
+      }
       let url = this.$store.state.serverApi+`/admin/users`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
@@ -1038,6 +1058,10 @@ export default {
     },
     // 사용자 수정 시 email 체크
     async checkEmail2(){
+      if(this.selectedChangeEmail === ''){
+        alert("이메일을 입력하여 주세요.")
+        return false;
+      }
       let url = this.$store.state.serverApi+`/admin/users`
       await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
@@ -1144,6 +1168,9 @@ export default {
                 alert("성공적으로 변경되었습니다")
                 this.changeCus = false
                 this.detailCus = true
+                this.selectedChangePhoneNumber=''
+                this.selectedChangeMobileNumber=''
+                this.getUserData()
               }
             })
             .catch(error => {
@@ -1307,28 +1334,28 @@ export default {
       let tmp = this.selectedUpdatePhoneNumber.charAt(this.selectedUpdatePhoneNumber.length-1)
       let regex = /^[0-9]/g;
 
-      if(!this.selectedUpdatePhoneNumber&&!tmp.match(regex) ){alert("숫자만 입력 할 수 있습니다.") }
+      if(!this.selectedUpdatePhoneNumber&&!tmp.match(regex) )//{alert("숫자만 입력 할 수 있습니다.") }
       return this.selectedUpdatePhoneNumber = this.selectedUpdatePhoneNumber.replace(/[^0-9]/g, '');
     },
     selectedUpdateMobileNumber:function(){
       let tmp2 = this.selectedUpdateMobileNumber.charAt(this.selectedUpdateMobileNumber.length-1)
       let regex2 = /^[0-9]/g;
 
-      if(!this.selectedUpdateMobileNumber&&!tmp2.match(regex2) ){alert("숫자만 입력 할 수 있습니다.") }
+      if(!this.selectedUpdateMobileNumber&&!tmp2.match(regex2) )//{alert("숫자만 입력 할 수 있습니다.") }
       return this.selectedUpdateMobileNumber = this.selectedUpdateMobileNumber.replace(/[^0-9]/g, '');
     },
     selectedChangePhoneNumber:function(){
       let tmp3 = this.selectedChangePhoneNumber.charAt(this.selectedChangePhoneNumber.length-1)
       let regex3 = /^[0-9]/g;
 
-      if(!this.selectedChangePhoneNumber&&!tmp3.match(regex3) ){alert("숫자만 입력 할 수 있습니다.") }
+      if(!this.selectedChangePhoneNumber&&!tmp3.match(regex3) )//{alert("숫자만 입력 할 수 있습니다.") }
       return this.selectedChangePhoneNumber = this.selectedChangePhoneNumber.replace(/[^0-9]/g, '');
     },
     selectedChangeMobileNumber:function(){
       let tmp4 = this.selectedChangeMobileNumber.charAt(this.selectedChangeMobileNumber.length-1)
       let regex4 = /^[0-9]/g;
 
-      if(!this.selectedChangeMobileNumber&&!tmp4.match(regex4) ){alert("숫자만 입력 할 수 있습니다.") }
+      if(!this.selectedChangeMobileNumber&&!tmp4.match(regex4) )//{alert("숫자만 입력 할 수 있습니다.") }
       return this.selectedChangeMobileNumber = this.selectedChangeMobileNumber.replace(/[^0-9]/g, '');
     }
   }

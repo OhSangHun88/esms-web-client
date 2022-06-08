@@ -275,7 +275,6 @@ import moment from "moment";
                                 regDtime : tmpData.regDtime,
                             })
                         }
-                        console.log(this.sensorsData)
                     }
                 }else if(this.selectedValue==="TPE012"){
                     for(let i=0; i <lengthTmp.totalCount ;i++ ){
@@ -348,7 +347,7 @@ import moment from "moment";
                 this.sensorsTmp1Data= []
                 let lengthTmp = []
                 lengthTmp = res.data
-                
+                console.log("this ================")
                 for(let i=0; i <lengthTmp.totalCount ;i++ ){
                     tmpData = res.data.data[i]
                     tmp = res.data.data[i].measureValue.split(',')

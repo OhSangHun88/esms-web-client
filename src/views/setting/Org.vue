@@ -565,16 +565,45 @@ export default {
             this.updateOrgId = tmpArr[i].value
           }*/
           this.updateOrgId = tmpArr[1].value
+          let tmp = this.updateOrgId.split('')
+          console.log(tmp.indexOf('0',0))
           let num = 0
-          while(true){
-            let found = this.updateOrgId.indexOf("0", num);
-            if(found === -1){
+          let found= 0
+          let arr = []
+          // while(true){
+          //   found = this.updateOrgId.indexOf("0", num);
+          //   console.log(found)
+          //   if(found === -1){
+          //     break;
+          //   }
+          //   num = found+1;
+          // }
+          // console.log(num)
+          // if(num === 10){
+          // found = this.updateOrgId.indexOf('0')
+          // while(found != -1){
+          //   arr.push(found)
+          //   found = this.updateOrgId.indexOf('0', found + 1)
+          // }
+          // num = arr[arr.length-1]
+          // }
+          for(let i=3; i<this.updateOrgId.length; i++){
+            if(tmp[i] === '0'){
+              found = i+1
+              num = found
+              console.log("count = >"+ i)
+            }else if(tmp[i] !== '0' ){
               break;
             }
-            num = found+1;
           }
+          console.log(this.updateOrgId)
+          console.log(found)
+          console.log(num)
+          console.log(arr)
           let string = this.updateOrgId.substring(0,num)
+          console.log(string)
           let changenum = this.updateOrgId.substring(num)
+          console.log(changenum)
           num = Number(changenum)+1
           num = String(num)
           this.updateOrgId = string + num
@@ -750,6 +779,11 @@ export default {
         alert("이미 등록된 실행기관 입니다.")
         return false
       }
+      if(this.selectedUpdateSidoItems === '' || this.selectedUpdateSggItems ==='' || this.selectedUpdateOrgItems === '' || this.selectedUpdatePhoneNumber === '' ||
+      this.selectedUpdateTypeCd === '' || this.selectedUpdateUpperOrgId === '' || this.selectedUpdateZipcode === '' || this.selectedUpdateAddr === '' || this.selectedUpdateDetailAddr === ''){
+        alert("모든 항목을 작성하여 주세요")
+        return false
+      }
 
       let data = {
         sidoName:this.sidoName[0].label,
@@ -777,6 +811,7 @@ export default {
              alert("성공적으로 등록되었습니다")
              this.writeOrg = false
              this.getTorgData()
+             this.getUpperOrgData()
            }
          })
          .catch(error => {
