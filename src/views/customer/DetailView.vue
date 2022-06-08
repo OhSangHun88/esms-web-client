@@ -145,6 +145,7 @@
       </div>
     </div>
     <div id="" class="popupLayer" v-if="popCheck3">
+      <!-- 말벗 추가 -->
       <div class="popup_wrap">
           <div class="title_wrap">
               <div class="title">{{this.msg}} 추가</div>
@@ -221,6 +222,7 @@
           </div>
       </div>
     </div>
+    <!-- 응급요원 추가 팝업 -->
     <div id="" class="popupLayer" v-if="popCheck2">
       <div class="popup_wrap">
           <div class="title_wrap col3">
@@ -228,10 +230,16 @@
               <button type="button" class="btn_close" @click="closeModal">닫기</button>
           </div>
           <div class="popup_cnt">
-            <div class="input_wrap">
+            <div class="input_wrap col3">
+              <div class="input_area">
+                  <p class="input_tit">응급요원선택</p>
+                  <select v-model="selectedEm" @change="ifselectem($event.target.selectedIndex)">
+                    <option v-for="(em, index) in emData" :value="em.value" v-bind:key="index">{{em.label}}</option>
+                  </select> 
+                </div>
                 <div class="input_area">
-                  <p class="input_tit">이름</p>
-                  <input type="text" v-model="managerName">
+                  <p class="input_tit">응급요원ID</p>
+                  <input type="text" v-model="managerId">
                 </div>
                 <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
@@ -245,6 +253,7 @@
           </div>
       </div>
     </div>
+    <!-- 생활관리사 추가 팝업 -->
     <div id="" class="popupLayer" v-if="popCheck4">
       <div class="popup_wrap">
           <div class="title_wrap">
@@ -253,9 +262,15 @@
           </div>
           <div class="popup_cnt">
             <div class="input_wrap col3">
+              <div class="input_area">
+                  <p class="input_tit">생활관리사선택</p>
+                  <select v-model="selectedLi" @change="ifselectli($event.target.selectedIndex)">
+                    <option v-for="(li, index) in liData" :value="li.value" v-bind:key="index">{{li.label}}</option>
+                  </select> 
+                </div>
                 <div class="input_area">
-                  <p class="input_tit">이름</p>
-                  <input type="text" v-model="managerName">
+                  <p class="input_tit">생활관리사ID</p>
+                  <input type="text" v-model="managerId">
                 </div>
                 <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
@@ -424,12 +439,15 @@ export default {
     return {
       pending:true,
       d_phone: '', d_sex: '', d_endcycle: '', d_part: '', d_status: '', d_zipCode: '', d_address: '', personinfo: '',
-      recipientId: '',taptoggle:1, bodyData : null, menutoggle: 1,popCheck3:false,popCheck2:null,popCheck4:null,popCheck5:null,insertData:null,msg: null,
-      managerName: null,managerPhone: null,managerRelationNm: null,managerRelationCd:null,emerManagerRelationCd:"TPE001", menu3Refresh:1,menu2Refresh:1,menu4Refresh:1,menu5Refresh:1,
+      recipientId: '',taptoggle:1, bodyData : null,  menutoggle: 1,popCheck3:false,popCheck2:null,popCheck4:null,popCheck5:null,insertData:null,msg: null,
+      managerName: null, managerId:null, managerPhone: null,managerRelationNm: null,managerRelationCd:null,emerManagerRelationCd:"TPE001", menu3Refresh:1,menu2Refresh:1,menu4Refresh:1,menu5Refresh:1,
       relationArr : [{value:'RL001', text: '남편'},{value:'RL002', text: '와이프'},{value:'RL003', text: '아들'},{value:'RL004', text: '딸'},{value:'RL005', text: '사위'},{value:'RL006', text: '며느리'},{value:'RL007', text: '손자'},{value:'RL008', text: '손녀'},{value:'RL009' , text:'기타'},],
       //emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE003', text: '중앙모니터링센터'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}],
       emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}],
       menu5Data: null,
+      emData:[], emorgId:null, selectedEm:null,
+      liData:[], liorgId:null, selectedLi:null,
+      selectedIndex:0,
     }
   },
   components: {
@@ -466,6 +484,7 @@ export default {
     menu3Lending(data) {this.menu3Refresh = data},
     menu2Lending(data) {this.menu2Refresh = data},
     closeModal() {this.managerPhone = null; this.managerName = null; this.popCheck3 = false;this.popCheck2 = false;this.popCheck4 = false;this.popCheck5 = false;},
+    // 대상자 정보
     async getRecipientInfo() {
       //this.$store.mutation.logout
       //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");
@@ -476,12 +495,85 @@ export default {
             this.bodyData = res.data.data
             console.log("bodyData is ");
             console.log(this.bodyData)
-            
+            this.emorgId = this.bodyData.orgId
+            this.getEmuserInfo()
+            this.getLiuserInfo()
           })
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
+    },
+    // 응급요원 정보
+    async getEmuserInfo(){
+      this.selectedEm = ''
+      let uri = this.$store.state.serverApi + "/admin/users?orgId=" + this.emorgId + "&userTypeCd=TPE005"
+      console.log(uri)
+      await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+          const emArr = [{label: '전체', value: ''}];
+          // let tmpResult2 = [{label: '전체', value: ''}];
+          this.emData=[];
+          console.log(res.data.data)
+          for(let i=0; i<res.data.data.length; i++) {
+          emArr.push({
+            label: res.data.data[i].userNm,
+            value: res.data.data[i].userId,
+            value2: res.data.data[i].mobileNumber,
+          });
+        } 
+        this.emData = emArr
+        console.log(this.emData)
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    ifselectem(selectedIndex){
+      console.log("this ok")
+      console.log(selectedIndex)
+      this.managerName = this.emData[selectedIndex].label
+      this.managerId = this.emData[selectedIndex].value
+      this.managerPhone = this.emData[selectedIndex].value2
+      console.log(this.managerName)
+      console.log(this.managerId)
+      console.log(this.managerPhone)
+    },
+    async getLiuserInfo(){
+      this.selectedLi = ''
+      let uri = this.$store.state.serverApi + "/admin/users?orgId=" + this.emorgId + "&userTypeCd=TPE004"
+      console.log(uri)
+      await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+          const liArr = [{label: '전체', value: ''}];
+          // let tmpResult2 = [{label: '전체', value: ''}];
+          this.liData=[];
+          console.log(res.data.data)
+          for(let i=0; i<res.data.data.length; i++) {
+          liArr.push({
+            label: res.data.data[i].userNm,
+            value: res.data.data[i].userId,
+            value2: res.data.data[i].mobileNumber,
+          });
+        } 
+        this.liData = liArr
+        console.log(this.liArr)
+          })
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
+    ifselectli(selectedIndex){
+      console.log("this ok")
+      console.log(selectedIndex)
+      this.managerName = this.liData[selectedIndex].label
+      this.managerId = this.liData[selectedIndex].value
+      this.managerPhone = this.liData[selectedIndex].value2
+      console.log(this.managerName)
+      console.log(this.managerId)
+      console.log(this.managerPhone)
     },
     tap(value){
       switch (value){
@@ -557,6 +649,7 @@ export default {
        return cd.value === this.managerRelationCd
       })[0].text
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
+      if(this.managerPhone.length>11){ alert("전화번호는 최대 11자리까지 입력 가능합니다."); return false;}
       console.log(this.managerRelationNm)
       let data = {
         recipientId: this.recipientId,
@@ -592,8 +685,9 @@ export default {
         recipientId: this.recipientId,
         relationNm: this.managerName,
         relationPhone: this.managerPhone,
-        relationCd: this.managerRelationCd, 
-        relationCdNm: this.managerRelationNm,
+        //relationCd: this.managerRelationCd, 
+        //relationCdNm: this.managerRelationNm,
+        managerId: this.managerId,
         typeCd: "TPE007"
       }
       console.log(data)
@@ -602,12 +696,12 @@ export default {
           .then(res => {
             this.insertData = res.data.data
             this.$refs.menu2.sendMenu2Lending();
-            this.popCheck3 = false
+            this.popCheck2 = false
             console.log("insertData is ");
             console.log(this.insertData)
             
             alert("등록성공")
-            this.managerPhone = null; this.managerName = null;
+            this.managerPhone = null; this.managerName = null; this.managerId = null;
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -707,6 +801,8 @@ export default {
     this.pending = false;
     this.recipientId = this.$route.params.recipientId
     this.getRecipientInfo();
+    this.getEmuserInfo();
+    this.getLiuserInfo();
     this.pending = true;
   },
   mounted(){
@@ -720,13 +816,13 @@ export default {
     
   },
   watch:{
-    managerPhone:function(){
-      let tmp = this.managerPhone.charAt(this.managerPhone.length-1)
-      let regex = /^[0-9]/g;
+    // managerPhone:function(){
+    //   let tmp = this.managerPhone.charAt(this.managerPhone.length-1)
+    //   let regex = /^[0-9]/g;
 
-      if(!this.managerPhone&&!tmp.match(regex) ){alert("숫자만 입력 할 수 있습니다.") }
-      return this.managerPhone = this.managerPhone.replace(/[^0-9]/g, '');
-    }
+    //   if(!this.managerPhone&&!tmp.match(regex) ){alert("숫자만 입력 할 수 있습니다.") }
+    //   return this.managerPhone = this.managerPhone.replace(/[^0-9]/g, '');
+    // }
   }
 
 }

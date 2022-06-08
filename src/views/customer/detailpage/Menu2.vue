@@ -119,6 +119,10 @@ export default {
     },
     //부모 컴포넌트에 데이터 전송
     sendParent(){
+        if(this.relationPhoneData.length > 1){
+            alert("응급요원은 한명만 추가할 수 있습니다.")
+            return false;
+        }
         this.popCheck=true
         this.msg = '응급관리요원'
         this.$emit("openPopMsg",this.msg) 

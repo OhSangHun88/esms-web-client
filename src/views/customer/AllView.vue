@@ -318,7 +318,7 @@
                         <th scope="col">대상자명</th>
                         <th scope="col">대상자ID</th>
                         <th scope="col">생년월일</th>
-                        <th scope="col"><a href="#" @click="sort">나이</a></th>
+                        <th scope="col">나이</th>
                         <th scope="col">성별</th>
                         <th scope="col">전화번호</th>
                         <th scope="col">구분</th>

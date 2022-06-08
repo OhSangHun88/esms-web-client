@@ -184,7 +184,10 @@ export default {
             }
         },
         modifyRelationPhoneData(){
-            
+            if(this.relationPhoneData[this.selectIndex].relationPhone.length >11){
+                alert("전화번호는 최대 11자리까지 입력 가능합니다.")
+                return false
+            }
             let selectData = this.relationPhoneData[this.selectIndex]
             let selectRegSn = selectData.regSn
             const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${selectRegSn}/update`

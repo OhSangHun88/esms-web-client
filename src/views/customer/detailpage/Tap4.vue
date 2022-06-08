@@ -326,7 +326,7 @@
                             </colgroup>
                             <tbody v-if="connectTap===2 && beforeGatewayToggle===0" >
                                 <tr>
-                                    <td>{{!this.getCGatewayData? '':!this.gatewayTakeNm? '': this.gatewayTakeNm}}</td>
+                                    <td>{{!this.getCGatewayData? '':!this.gatewayTakeNm? '':this.getCGatewayData2.comStateCd+"("+this.gatewayTakeNm+")"}}</td>
                                     <td>{{!this.getCGatewayData? '':this.getCGatewayData2.powerLinkYn===undefined||this.getCGatewayData2.powerLinkYn===null ? '' : this.getCGatewayData2.powerLinkYn===1?'연결':'차단'}}</td>
                                     <td>{{!this.getCGatewayData? '':this.getCGatewayData2.checkYnCd===null||this.getCGatewayData2.checkYnCd===undefined||this.getCGatewayData2.checkYnCd===''? '': this.getCGatewayData2.checkYnCd===0? '정상':'점검대상'}}</td>
                                     <td>{{!this.getCGatewayData? '':this.getCGatewayData2.batteryValue+"("+changeTaGaBattery(getCGatewayData2.batteryValue)+")"}}</td>
@@ -338,7 +338,7 @@
                             </tbody>
                             <tbody v-if="this.beforeVersionGatewayData && connectTap===2 && beforeGatewayToggle===1" >
                                 <tr>
-                                    <td>{{!this.getCGatewayData? '':!this.beforeGatewayTakeNm? '': this.beforeGatewayTakeNm}}</td>
+                                    <td>{{!this.getCGatewayData? '':!this.beforeGatewayTakeNm? '': this.beforeVersionGatewayData.comStateCd+"("+this.beforeGatewayTakeNm+")"}}</td>
                                     <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.powerLinkYn===undefined||this.beforeVersionGatewayData.powerLinkYn===null ? '' : this.beforeVersionGatewayData.powerLinkYn===1?'연결':'차단'}}</td>
                                     <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.checkYnCd===null||this.beforeVersionGatewayData.checkYnCd===undefined||this.beforeVersionGatewayData.checkYnCd===''? '': this.beforeVersionGatewayData.checkYnCd===0? '정상':'점검대상'}}</td>
                                     <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.batteryValue+"("+changeTaGaBattery(this.beforeVersionGatewayData.batteryValue)+")"}}</td>
@@ -398,7 +398,7 @@
                             </colgroup>
                             <tbody v-if="this.getCTabletsData2 && connectTap===3 && beforeTabletToggle===0">
                                 <tr>
-                                    <td>{{!this.getCTabletsData? '': this.tabletTakeNm}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData2.comStateCd+"("+this.tabletTakeNm+")"}}</td>
                                     <td>{{!this.getCTabletsData? '':this.getCTabletsData2.checkYnCd===null||this.getCTabletsData2.checkYnCd===undefined||this.getCTabletsData2.checkYnCd===''? '': this.getCTabletsData2.checkYnCd===0? '정상':'점검대상'}}</td>
                                     <td>{{!this.getCTabletsData? '':this.getCTabletsData2.batteryValue+"("+changeTaGaBattery(this.getCTabletsData2.batteryValue)+")"}}</td>
                                     <td>{{!this.getCTabletsData? '':this.getCTabletsData2.gwLinkYnNm}}</td>
@@ -408,7 +408,7 @@
                             </tbody>
                             <tbody v-if="this.beforeVersionTabletsData && connectTap===3 && beforeTabletToggle===1">
                                 <tr>
-                                    <td>{{!this.getCTabletsData? '': this.beforeTabletTakeNm}}</td>
+                                    <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.comStateCd+"("+this.beforeTabletTakeNm+")"}}</td>
                                     <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.checkYnCd===null||this.beforeVersionTabletsData.checkYnCd===undefined||this.beforeVersionTabletsData.checkYnCd===''? '': this.beforeVersionTabletsData.checkYnCd===0? '정상':'점검대상'}}</td>
                                     <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.batteryValue+"("+changeTaGaBattery(this.beforeVersionTabletsData.batteryValue)+")"}}</td>
                                     <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.gwLinkYnNm}}</td>
@@ -469,7 +469,7 @@
                             </colgroup>
                             <tbody v-if="this.getBSensorsData && connectTap===1 && beforeSensorToggle===0">
                                 <tr>
-                                    <td>{{!this.sensorTakeNm? '':this.sensorTakeNm}}</td>
+                                    <td>{{!this.sensorTakeNm? '':this.getBSensorsData.comStateCd+"("+this.sensorTakeNm+")"}}</td>
                                     <td>{{!this.getBSensorsData.batteryValue? '':this.getBSensorsData.batteryValue+"("+changeSensorBattery(this.getBSensorsData.batteryValue)+")"}}</td>
                                     <td>{{!this.getBSensorsData.rssi? '':this.getBSensorsData.rssi+"("+changeRssi(this.getBSensorsData.rssi)+")"}}</td>
                                     <td>{{this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
@@ -481,7 +481,7 @@
                             <tbody v-if="this.beforeVersionSensorsData && connectTap===1 && beforeSensorToggle===1">
                                 <!-- <tbody v-else> -->
                                 <tr>
-                                    <td>{{!this.beforeVersionSensorsData.comStateNm? '': this.beforeVersionSensorsData.comStateNm}}</td>
+                                    <td>{{!this.beforeVersionSensorsData.comStateNm? '':this.beforeVersionSensorsData.comStateCd+"("+this.beforeVersionSensorsData.comStateNm+")"}}</td>
                                     <td>{{!this.beforeVersionSensorsData.batteryValue? '': this.beforeVersionSensorsData.batteryValue+"("+changeSensorBattery(this.beforeVersionSensorsData.batteryValue)+")"}}</td>
                                     <td>{{!this.beforeVersionSensorsData.rssi? '': this.beforeVersionSensorsData.rssi+"("+changeRssi(this.beforeVersionSensorsData.rssi)+")"}}</td>
                                     <td>{{this.beforeVersionSensorsData.checkYnCd ===null|| this.beforeVersionSensorsData.checkYnCd ===undefined ? '' : this.beforeVersionSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
@@ -880,7 +880,9 @@ import axios from "axios";
     changeRssi(input){
         if(input === 255){
             return '미수신'
-        }else if(input <=0 && input >= -80) {
+        }else if(input === 0){
+            return "양호";
+        }else if(input < 0 && input >= -80) {
 			return "양호";
 		}else if( input <-80  && input >= -99) {
 			return "미약";
