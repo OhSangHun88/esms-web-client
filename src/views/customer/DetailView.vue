@@ -457,7 +457,7 @@ export default {
       d_phone: '', d_sex: '', d_endcycle: '', d_part: '', d_status: '', d_zipCode: '', d_address: '', personinfo: '',
       recipientId: '',taptoggle:1, bodyData : null,  menutoggle: 1,popCheck3:false,popCheck2:null,popCheck4:null,popCheck5:null,insertData:null,msg: null,
       managerName: null, managerId:null, managerPhone: null,managerRelationNm: null,managerRelationCd:null,emerManagerRelationCd:"TPE001", menu3Refresh:1,menu2Refresh:1,menu4Refresh:1,menu5Refresh:1,
-      relationArr : [{value:'RL001', text: '남편'},{value:'RL002', text: '와이프'},{value:'RL003', text: '아들'},{value:'RL004', text: '딸'},{value:'RL005', text: '사위'},{value:'RL006', text: '며느리'},{value:'RL007', text: '손자'},{value:'RL008', text: '손녀'},{value:'RL009' , text:'기타'},],
+      relationArr : [{value:'', text: '선택'},{value:'RL001', text: '남편'},{value:'RL002', text: '와이프'},{value:'RL003', text: '아들'},{value:'RL004', text: '딸'},{value:'RL005', text: '사위'},{value:'RL006', text: '며느리'},{value:'RL007', text: '손자'},{value:'RL008', text: '손녀'},{value:'RL009' , text:'기타'},],
       //emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE003', text: '중앙모니터링센터'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}],
       emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}],
       menu5Data: null,
@@ -500,10 +500,11 @@ export default {
     menu3Lending(data) {this.menu3Refresh = data},
     menu2Lending(data) {this.menu2Refresh = data},
     closeModal() {this.managerId=null; this.managerPhone = null; this.managerName = null; this.popCheck3 = false;this.popCheck2 = false;this.popCheck4 = false;this.popCheck5 = false;  this.selectedEm=''; this.selectedLi='';
-    this.emdisable=false; this.lidisable=false},
+    this.emdisable=false; this.lidisable=false; this.managerRelationCd = null; this.managerRelationCd=''},
 
     // 대상자 정보
     async getRecipientInfo() {
+      this.managerRelationCd = ''
       //this.$store.mutation.logout
       //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");
       let uri = this.$store.state.serverApi + "/admin/recipients/" + this.recipientId
@@ -683,10 +684,23 @@ export default {
     },
     insertManager(){
       // /recipients/{recipientId}/phoneNumbers
+      
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
+      console.log(this.managerRelationCd)
+      if(this.managerName === null || this.managerName === undefined || this.managerName === ''){
+        alert("이름을 작성하여 주세요.")
+        return false
+      }else if(this.managerPhone === null || this.managerPhone === undefined || this.managerPhone === ''){
+        alert("휴대폰번호를 작성하여 주세요.")
+        return false
+      }else if(this.managerRelationCd === null || this.managerRelationCd === undefined || this.managerRelationCd === ''){
+        alert("관계를 선택하여 주세요.")
+        return false
+      }
       this.managerRelationNm = this.relationArr.filter(cd=>{
        return cd.value === this.managerRelationCd
       })[0].text
+      
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
       if(this.managerPhone.length>11){ alert("전화번호는 최대 11자리까지 입력 가능합니다."); return false;}
       console.log(this.managerRelationNm)
@@ -708,7 +722,7 @@ export default {
             console.log(this.insertData)
             
             alert("성공적으로 등록되었습니다.")
-            this.managerPhone = null; this.managerName = null;
+            this.managerPhone = null; this.managerName = null; this.managerRelationCd = '';
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -718,6 +732,14 @@ export default {
     },
     insertEmergencyManager(){
       // /recipients/{recipientId}/phoneNumbers
+      if(this.managerName === '' || this.managerName === null || this.managerName === undefined){
+        alert("응급요원명을 작성하여 주세요")
+        return false
+      }else if(this.managerPhone === '' || this.managerPhone === null || this.managerPhone === undefined){
+        alert("휴대폰번호를 작성하여 주세요")
+        return false  
+      }
+
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
       let data = {
@@ -749,6 +771,13 @@ export default {
           
     },
     insertCareManager(){
+      if(this.managerName === '' || this.managerName === null || this.managerName === undefined){
+        alert("생활관리사명을 작성하여 주세요")
+        return false
+      }else if(this.managerPhone === '' || this.managerPhone === null || this.managerPhone === undefined){
+        alert("휴대폰번호를 작성하여 주세요")
+        return false  
+      }
       // /recipients/{recipientId}/phoneNumbers
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
@@ -770,7 +799,7 @@ export default {
             console.log("insertData is ");
             console.log(this.insertData)
             
-            alert("생활관리사 등록을 성공하였습니다.")
+            alert("성공적으로 등록되었습니다.")
             this.managerPhone = null; this.managerName = null; this.managerId = null; this.selectedLi = ''; this.lidisable=false;
           })
           .catch(error => {
@@ -780,6 +809,10 @@ export default {
           
     },
     insertEmergency(){
+      if(this.managerPhone === null || this.managerPhone === undefined || this.managerPhone === ''){
+        alert("전화번호를 작성하여 주세요.")
+        return false
+      }
       // /recipients/{recipientId}/phoneNumbers
       //this.menu5Data
       console.log("this.menu5Data")
