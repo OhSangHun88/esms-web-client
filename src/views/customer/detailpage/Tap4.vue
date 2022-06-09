@@ -669,7 +669,7 @@ import axios from "axios";
     // 테블릿 현재 통신 상태 함수
      getCTablets(){
          this.pending = false;
-      const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets`
+        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets`
          axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.getCTabletsData = res.data.data
@@ -683,7 +683,6 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-          
           setTimeout(this.delay, 1500)
     },
     async getCTablet(){

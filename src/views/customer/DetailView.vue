@@ -463,7 +463,7 @@ export default {
       menu5Data: null,
       emData:[], emorgId:null, selectedEm:null, emdisable:false,
       liData:[], liorgId:null, selectedLi:null, lidisable:false,
-      selectedIndex:0,
+      selectedIndex:0, TabletsData:null,
     }
   },
   components: {
@@ -517,6 +517,7 @@ export default {
             this.emorgId = this.bodyData.orgId
             this.getEmuserInfo()
             this.getLiuserInfo()
+            this.tabletCheck()
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -703,6 +704,11 @@ export default {
       
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
       if(this.managerPhone.length>11){ alert("전화번호는 최대 11자리까지 입력 가능합니다."); return false;}
+      console.log(this.TabletsData)
+      if(this.TabletsData === '' || this.TabletsData === null || this.TabletsData === undefined || this.TabletsData.length === 0){
+        alert("연결된 태블릿이 존재하지 않습니다.")
+        return false
+      }
       console.log(this.managerRelationNm)
       let data = {
         recipientId: this.recipientId,
@@ -742,6 +748,10 @@ export default {
 
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
+      if(this.TabletsData === '' || this.TabletsData === null || this.TabletsData === undefined || this.TabletsData.length === 0){
+        alert("연결된 태블릿이 존재하지 않습니다.")
+        return false
+      }
       let data = {
         recipientId: this.recipientId,
         relationNm: this.managerName,
@@ -781,6 +791,10 @@ export default {
       // /recipients/{recipientId}/phoneNumbers
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
+      if(this.TabletsData === '' || this.TabletsData === null || this.TabletsData === undefined || this.TabletsData.length === 0){
+        alert("연결된 태블릿이 존재하지 않습니다.")
+        return false
+      }
       let data = {
         recipientId: this.recipientId,
         relationNm: this.managerName,
@@ -819,6 +833,10 @@ export default {
       console.log(this.menu5Data)
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
+      if(this.TabletsData === '' || this.TabletsData === null || this.TabletsData === undefined || this.TabletsData.length === 0){
+        alert("연결된 태블릿이 존재하지 않습니다.")
+        return false
+      }
       let data = {
         recipientId: this.recipientId,
         relationNm: this.emerCodeLabel(this.emerManagerRelationCd),
@@ -867,6 +885,22 @@ export default {
       }
       return result
     },
+    async tabletCheck(){
+      console.log(this.bodyData)
+        const url  = this.$store.state.serverApi + `/admin/tablets?recipientNm=${this.bodyData.recipientNm}`
+        console.log(url)
+         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            this.TabletsData = res.data.data
+            console.log("태블릿")
+            console.log(this.TabletsData)
+          })
+          .catch(error => {
+            console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+    },
     
 
   },
@@ -876,6 +910,7 @@ export default {
     this.getRecipientInfo();
     this.getEmuserInfo();
     this.getLiuserInfo();
+    this.tabletCheck();
     this.pending = true;
   },
   mounted(){
