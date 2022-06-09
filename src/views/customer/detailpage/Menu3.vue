@@ -236,6 +236,7 @@ export default {
             
             alert("성공적으로 수정되었습니다")
             this.sendMenu3Lending()
+            this.selectIndex = ''
             
             }).catch(error => {
                 console.log("fail to load")

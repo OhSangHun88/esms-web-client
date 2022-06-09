@@ -384,6 +384,9 @@ export default {
       this.firstZip = this.recipientItems[index].firstZip
       this.lastZip = this.recipientItems[index].lastZip
     },
+    resetRadio(){
+      this.saveChangeData = ''
+    },
     saveIPPBX(){
       if(this.saveChangeData===null||this.saveChangeData===undefined){
         alert("변경하시고자 하는 값을 선택해 주세요"); 
@@ -421,6 +424,7 @@ export default {
             if(resData){
                 alert("저장이 완료되었습니다.")
                 this.getRecipientData()
+                this.resetRadio()
                 console.log(resData)
             }
             // this.getCSensorsData = res.data.data

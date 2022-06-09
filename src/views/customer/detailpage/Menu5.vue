@@ -219,6 +219,7 @@ export default {
         .then(res => {
         console.log(res.data.data)
         alert("성공적으로 수정되었습니다")
+        this.selectIndex = ''
         this.sendMenu4Lending()
         }).catch(error => {
             console.log("fail to load")
