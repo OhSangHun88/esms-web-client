@@ -833,10 +833,10 @@ export default {
       console.log(this.menu5Data)
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
-      if(this.TabletsData === '' || this.TabletsData === null || this.TabletsData === undefined || this.TabletsData.length === 0){
-        alert("연결된 태블릿이 존재하지 않습니다.")
-        return false
-      }
+      // if(this.TabletsData === '' || this.TabletsData === null || this.TabletsData === undefined || this.TabletsData.length === 0){
+      //   alert("연결된 태블릿이 존재하지 않습니다.")
+      //   return false
+      // }
       let data = {
         recipientId: this.recipientId,
         relationNm: this.emerCodeLabel(this.emerManagerRelationCd),
