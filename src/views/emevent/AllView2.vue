@@ -40,8 +40,8 @@
                   <p class="alert_txt">선택하신 응급알람을 취소하시겠습니까?</p>
                 </div>
                 <div class="popbtn_area type-02">
-                  <button type="button" class="btn form2" @click="errorpopup3 = false">취소</button>
                   <button type="button" class="btn form3" @click="saveState()">확인</button>
+                  <button type="button" class="btn form2" @click="errorpopup3 = false">취소</button>
                 </div>
               </div>
             </div>

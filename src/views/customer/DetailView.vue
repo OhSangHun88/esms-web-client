@@ -322,7 +322,7 @@
                 </div> 
                 <div class="input_area" style="width:200px">
                     <p class="input_tit">전화번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3">
+                    <input type="text" v-model="managerPhone" minlength="3" maxlength="11">
                 </div>
             </div>
           </div>
@@ -707,7 +707,7 @@ export default {
             console.log("insertData is ");
             console.log(this.insertData)
             
-            alert("등록성공")
+            alert("성공적으로 등록되었습니다.")
             this.managerPhone = null; this.managerName = null;
           })
           .catch(error => {
@@ -739,7 +739,7 @@ export default {
             console.log("insertData is ");
             console.log(this.insertData)
             
-            alert("등록성공")
+            alert("성공적으로 등록되었습니다.")
             this.managerPhone = null; this.managerName = null; this.managerId = null; this.selectedEm = ''; this.emdisable=false;
           })
           .catch(error => {
@@ -770,7 +770,7 @@ export default {
             console.log("insertData is ");
             console.log(this.insertData)
             
-            alert("등록성공")
+            alert("생활관리사 등록을 성공하였습니다.")
             this.managerPhone = null; this.managerName = null; this.managerId = null; this.selectedLi = ''; this.lidisable=false;
           })
           .catch(error => {
@@ -809,7 +809,7 @@ export default {
             console.log("insertData is ");
             console.log(this.insertData)
             
-            alert("등록성공")
+            alert("성공적으로 등록되었습니다.")
             this.managerPhone = null; this.managerName = null;
           })
           .catch(error => {

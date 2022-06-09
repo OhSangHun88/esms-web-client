@@ -142,7 +142,7 @@
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                                     <td>
                                         <div class="chk_area radio">
-                                            <input type="radio" name="saveChangeData" :id="`radio1_${index}`" v-model="saveChangeData" :value="index">
+                                            <input type="radio" name="saveChangeData" :id="`radio1_${index}`" v-model="saveChangeData" :value="index" @click="reset(index)">
                                             <label :for="`radio1_${index}`" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td>
@@ -151,25 +151,25 @@
                                     <td>{{item.numberArea}}</td><!--[this.saveChangeData]-->
                                     <td v-if="saveChangeData === index">
                                       <div class="input_area" style="margin-left:10px; margin-right:10px;">
-                                        <input type="text" name="" :id="`radio1_${index}`" v-model="item.numberFire" @change="changeRecipientPhoneno(item.numberFire)" >
+                                        <input type="text" name="" :id="`radio1_${index}`" v-model="numberFire" >
                                       </div>
                                     </td>
                                     <td v-else>{{changeRecipientPhoneno(item.numberFire)}}</td>
                                     <td v-if="saveChangeData === index">
                                       <div class="input_area" style="margin-left:10px; margin-right:10px;">
-                                        <input type="text" name="" id="" v-model="item.numberEmg">
+                                        <input type="text" name="" id="" v-model="numberEmg">
                                       </div>
                                     </td>
                                     <td v-else>{{changeRecipientPhoneno(item.numberEmg)}}</td>
                                     <td v-if="saveChangeData === index">
                                       <div class="input_area" style="margin-left:10px; margin-right:10px;">
-                                        <input type="text" name="" id="" v-model="item.firstZip">
+                                        <input type="text" name="" id="" v-model="firstZip">
                                       </div>
                                     </td>
                                     <td v-else>{{item.firstZip}}</td>
                                     <td v-if="saveChangeData === index">
                                       <div class="input_area" style="margin-left:10px; margin-right:10px;">
-                                        <input type="text" name="" id="" v-model="item.lastZip">
+                                        <input type="text" name="" id="" v-model="lastZip">
                                       </div>
                                     </td>
                                     <td v-else>{{item.lastZip}}</td>
@@ -211,6 +211,7 @@ export default {
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
         errorpopup1: false, errorpopup2: false,
         saveChangeData: null,
+        numberFire:null, numberEmg:null, firstZip:null, lastZip:null,
       }
     },
     created() {
@@ -329,6 +330,7 @@ export default {
           .then(response => {
             this.recipientItems = response.data.data
             this.NCount = this.recipientItems.length
+            console.log(this.recipientItems)
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -374,6 +376,14 @@ export default {
         this.getRecipientData();
       }
     },
+    reset(index){
+      console.log(index)
+      console.log(this.recipientItems[index])
+      this.numberFire = this.recipientItems[index].numberFire
+      this.numberEmg = this.recipientItems[index].numberEmg
+      this.firstZip = this.recipientItems[index].firstZip
+      this.lastZip = this.recipientItems[index].lastZip
+    },
     saveIPPBX(){
       if(this.saveChangeData===null||this.saveChangeData===undefined){
         alert("변경하시고자 하는 값을 선택해 주세요"); 
@@ -393,18 +403,25 @@ export default {
         regDtime: this.recipientItems[this.saveChangeData].regDtime ,
         updDtime: this.recipientItems[this.saveChangeData].updDtime ,
       }
+      tmpObjectData.numberFire = this.numberFire
+      tmpObjectData.numberEmg = this.numberEmg
+      tmpObjectData.firstZip = this.firstZip
+      tmpObjectData.lastZip = this.lastZip
+      console.log(tmpObjectData)
 
       const url = this.$store.state.serverApi+`/admin/ippbx/update.do?areaNumberId=${this.recipientItems[this.saveChangeData].areaNumberId}
-      &firstZip=${this.recipientItems[this.saveChangeData].firstZip}
-      &lastZip=${this.recipientItems[this.saveChangeData].lastZip}
-      &numberFire=${this.recipientItems[this.saveChangeData].numberFire}
-      &numberEmg=${this.recipientItems[this.saveChangeData].numberEmg}`
+      &firstZip=${this.firstZip}
+      &lastZip=${this.lastZip}
+      &numberFire=${this.numberFire}
+      &numberEmg=${this.numberEmg}`
 
         axios.post(url,tmpObjectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
             if(resData){
                 alert("저장이 완료되었습니다.")
+                this.getRecipientData()
+                console.log(resData)
             }
             // this.getCSensorsData = res.data.data
           })

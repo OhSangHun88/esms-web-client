@@ -471,7 +471,7 @@
                                 <tr>
                                     <td>{{!this.sensorTakeNm? '':this.getBSensorsData.comStateCd+"("+this.sensorTakeNm+")"}}</td>
                                     <td>{{!this.getBSensorsData.batteryValue? '':this.getBSensorsData.batteryValue+"("+changeSensorBattery(this.getBSensorsData.batteryValue)+")"}}</td>
-                                    <td>{{!this.getBSensorsData.rssi? '':this.getBSensorsData.rssi+"("+changeRssi(this.getBSensorsData.rssi)+")"}}</td>
+                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.rssi+"("+changeRssi(this.getBSensorsData.rssi)+")"}}</td>
                                     <td>{{this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
                                     <td>{{!this.getBSensorsData.keepAliveRcvYn? '':this.getBSensorsData.keepAliveRcvYn===1?'정상':this.getBSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
                                     <td>{{!this.getBSensorsData.stateMeasureDtime? '':this.getBSensorsData.stateMeasureDtime}}</td>
@@ -878,11 +878,11 @@ import axios from "axios";
     },
     // Rssi 수치값
     changeRssi(input){
+        console.log("this")
+        console.log(input)
         if(input === 255){
             return '미수신'
-        }else if(input === 0){
-            return "양호";
-        }else if(input < 0 && input >= -80) {
+        }else if(input <= 0 && input >= -80) {
 			return "양호";
 		}else if( input <-80  && input >= -99) {
 			return "미약";

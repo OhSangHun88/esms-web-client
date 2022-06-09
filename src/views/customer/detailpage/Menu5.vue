@@ -38,14 +38,14 @@
                                 <tr v-for="(item,index) in relationPhoneData" v-bind:key="index">
                                     <td>
                                         <div class="chk_area">
-                                            <input type="radio" name="chk" :id="`chk1_${index}`" v-model="selectIndex" :value="index">
+                                            <input type="radio" name="chk" :id="`chk1_${index}`" v-model="selectIndex" :value="index" @click="reset(index)">
                                             <label :for="`chk1_${index}`" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td>
                                     <td>{{index+1}}</td>
                                     <td >{{emerCodeLabel(item.typeCd)}}</td>
                                     <td v-if="selectIndex === index">
-                                        <input type="text" name="relationPhone" :id="`relationPhone_${index}`" v-model="item.relationPhone" >
+                                        <input type="text" name="relationPhone" :id="`relationPhone_${index}`" v-model="relationPhone" maxlength="11">
                                     </td>
                                     <td v-else>{{changeRecipientPhoneno(item.relationPhone)}}</td>
                                 </tr>
@@ -74,6 +74,7 @@ export default {
             lending : 0,
             msg : '',
             selectIndex: null,
+            relationPhone:null,
         }
     },
     created(){
@@ -198,12 +199,18 @@ export default {
         this.$emit("openPop",this.popCheck)
         
     },
+    reset(index){
+        console.log(index)
+        console.log(this.relationPhoneData[index])
+        this.relationPhone = this.relationPhoneData[index].relationPhone
+    },
     modifyRelationPhoneData(){
         if(this.selectIndex === null || this.selectIndex === undefined || this.selectIndex === ''){
             alert("수정할 대상자를 선택하여 주세요.")
             return false;
         }
         let selectData = this.relationPhoneData[this.selectIndex]
+        selectData.relationPhone = this.relationPhone
         let selectRegSn = selectData.regSn
         console.log(selectData)
         console.log(selectRegSn)
@@ -218,7 +225,6 @@ export default {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
         });
-        
     },
     deleteRelationPhoneData(){
         if(this.selectIndex === null || this.selectIndex ===undefined || this.selectIndex === ''){

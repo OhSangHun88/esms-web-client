@@ -55,7 +55,7 @@
                           </div>
                           <div class="input_area">
                             <p class="input_tit">휴대폰번호</p>
-                            <input type="text" v-model="selectedUpdateMobileNumber"  >
+                            <input type="text" v-model="selectedUpdateMobileNumber" maxlength="11" >
                           </div>
                         </div>
                         <div class="input_wrap">
@@ -129,7 +129,7 @@
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">사무실 전화번호</p>
-                                <input type="text" value="" v-model="selectedUpdatePhoneNumber">
+                                <input type="text" value="" v-model="selectedUpdatePhoneNumber" maxlength="11">
                             </div>
                         </div>
                         <!-- <div class="input_wrap">
@@ -351,27 +351,8 @@
                           </div>
                           <div class="input_area">
                             <p class="input_tit">휴대폰번호</p>
-                            <input type="text" value="" v-model="selectedChangeMobileNumber">
+                            <input type="text" value="" v-model="selectedChangeMobileNumber" maxlength="11">
                           </div>
-                        </div>
-                        <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">우편번호</p>
-                            <div class="add_btn_input">
-                              <input type="text" value="" v-model="selectedChangeZipcode">
-                              <button type="button" class="input_btn" @click="search">검색</button>
-                            </div>
-                          </div>
-                          <div class="input_area">
-                            <p class="input_tit">주소</p>
-                            <input type="text" value="" v-model="selectedChangeAddr">
-                          </div>
-                        </div>
-                        <div class="input_wrap type-02">
-                            <div class="input_area" >
-                                <p class="input_tit">상세주소</p>
-                                <input type="text" value="" v-model="selectedChangeDetailAddr">
-                            </div>
                         </div>
                         <div class="input_wrap">
                             <div class="input_area">
@@ -401,6 +382,26 @@
                                 </select>
                             </div> -->
                         </div>
+                        <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">우편번호</p>
+                            <div class="add_btn_input">
+                              <input type="text" value="" v-model="selectedChangeZipcode">
+                              <button type="button" class="input_btn" @click="search">검색</button>
+                            </div>
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">주소</p>
+                            <input type="text" value="" v-model="selectedChangeAddr">
+                          </div>
+                        </div>
+                        <div class="input_wrap type-02">
+                            <div class="input_area" >
+                                <p class="input_tit">상세주소</p>
+                                <input type="text" value="" v-model="selectedChangeDetailAddr">
+                            </div>
+                        </div>
+                        
                         <!-- <div class="input_wrap col3"> -->
                           <div class="input_wrap">
                             <div class="input_area">
@@ -424,7 +425,7 @@
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">사무실 전화번호</p>
-                                <input type="text" value="" v-model="selectedChangePhoneNumber">
+                                <input type="text" value="" v-model="selectedChangePhoneNumber" maxlength="11">
                             </div>
                         </div>
                         <div class="input_wrap">
@@ -897,7 +898,7 @@ export default {
               let resData = res.data.data
               console.log(resData)
               if(resData){
-                alert("성공적으로 등록되었습니다")
+                alert("성공적으로 등록되었습니다.")
                 this.writeCus = false
                 this.selectedUpdatePhoneNumber=''
                 this.selectedUpdateMobileNumber=''

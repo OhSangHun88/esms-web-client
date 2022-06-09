@@ -31,7 +31,7 @@
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">대표 전화번호</p>
-                                <input type="text" value="" v-model="selectedUpdatePhoneNumber">
+                                <input type="text" value="" v-model="selectedUpdatePhoneNumber" maxlength="11">
                             </div>
                         </div>
                         <div class="input_wrap">
@@ -190,7 +190,7 @@
                           </div>
                           <div class="input_area">
                               <p class="input_tit">대표 전화번호</p>
-                              <input type="text" value="" v-model="selectedChangePhoneNumber">
+                              <input type="text" value="" v-model="selectedChangePhoneNumber" maxlength="11">
                           </div>
                       </div>
                       <div class="input_wrap">
@@ -808,7 +808,7 @@ export default {
            let resData = res.data.data
            console.log(resData)
            if(resData){
-             alert("성공적으로 등록되었습니다")
+             alert("성공적으로 등록되었습니다.")
              this.writeOrg = false
              this.getTorgData()
              this.getUpperOrgData()

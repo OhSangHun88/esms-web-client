@@ -60,7 +60,7 @@
                 <div class="input_wrap">
                   <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="selectedUpdatePhoneNumber">
+                    <input type="text" v-model="selectedUpdatePhoneNumber" maxlength="11">
                   </div>
                   <div class="input_area">
                         <p class="input_tit">사용자 구분</p>
@@ -147,7 +147,7 @@
                 <div class="input_wrap">
                   <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="selectChangePhoneNumber">
+                    <input type="text" v-model="selectChangePhoneNumber" maxlength="11">
                   </div>
                   <div class="input_area">
                         <p class="input_tit">사용자 구분</p>
