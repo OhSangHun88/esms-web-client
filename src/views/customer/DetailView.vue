@@ -163,7 +163,7 @@
                 </div> -->
                 <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3">
+                    <input type="text" v-model="managerPhone" minlength="3" maxlength="11">
                 </div>
                 <div class="input_area">
                     <p class="input_tit">관계</p>
@@ -217,8 +217,8 @@
               </div> -->
           </div>
           <div class="popbtn_area">
-              <button type="button" class="btn" @click="closeModal">취소</button>
-              <button type="button" class="btn form2" @click="insertManager()">추가</button>
+            <button type="button" class="btn form2" @click="insertManager()">추가</button>
+            <button type="button" class="btn" @click="closeModal">취소</button>
           </div>
       </div>
     </div>
@@ -237,19 +237,27 @@
                     <option v-for="(em, index) in emData" :value="em.value" v-bind:key="index">{{em.label}}</option>
                   </select> 
                 </div>
-                <div class="input_area">
-                  <p class="input_tit">응급요원ID</p>
-                  <input type="text" v-model="managerId">
+                <div class="input_area" v-if="this.emdisable===false">
+                  <p class="input_tit">응급요원명</p>
+                  <input type="text" v-model="managerName">
                 </div>
-                <div class="input_area">
+                <div class="input_area" v-else>
+                  <p class="input_tit">응급요원ID</p>
+                  <input type="text" v-model="managerId" disabled>
+                </div>
+                <div class="input_area" v-if="this.emdisable===false">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3">
+                    <input type="text" v-model="managerPhone" minlength="3" maxlength="11">
+                </div>
+                <div class="input_area" v-else>
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text" v-model="managerPhone" minlength="3" disabled>
                 </div>
             </div>
           </div>
           <div class="popbtn_area">
-              <button type="button" class="btn" @click="closeModal">취소</button>
-              <button type="button" class="btn form2" @click="insertEmergencyManager()">추가</button>
+            <button type="button" class="btn form2" @click="insertEmergencyManager()">추가</button>
+            <button type="button" class="btn" @click="closeModal">취소</button>
           </div>
       </div>
     </div>
@@ -268,19 +276,27 @@
                     <option v-for="(li, index) in liData" :value="li.value" v-bind:key="index">{{li.label}}</option>
                   </select> 
                 </div>
-                <div class="input_area">
-                  <p class="input_tit">생활관리사ID</p>
-                  <input type="text" v-model="managerId">
+                <div class="input_area" v-if="this.lidisable===false">
+                  <p class="input_tit">생활관리사명</p>
+                  <input type="text" v-model="managerName">
                 </div>
-                <div class="input_area">
+                <div class="input_area" v-else>
+                  <p class="input_tit">생활관리사ID</p>
+                  <input type="text" v-model="managerId" disabled>
+                </div>
+                <div class="input_area" v-if="this.lidisable===false">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3">
+                    <input type="text" v-model="managerPhone" minlength="3" maxlength="11">
+                </div>
+                <div class="input_area" v-else>
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text" v-model="managerPhone" minlength="3" disabled>
                 </div>
             </div>
           </div>
           <div class="popbtn_area">
+            <button type="button" class="btn form2" @click="insertCareManager()">추가</button>
               <button type="button" class="btn" @click="closeModal">취소</button>
-              <button type="button" class="btn form2" @click="insertCareManager()">추가</button>
           </div>
       </div>
     </div>
@@ -445,8 +461,8 @@ export default {
       //emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE003', text: '중앙모니터링센터'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}],
       emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}],
       menu5Data: null,
-      emData:[], emorgId:null, selectedEm:null,
-      liData:[], liorgId:null, selectedLi:null,
+      emData:[], emorgId:null, selectedEm:null, emdisable:false,
+      liData:[], liorgId:null, selectedLi:null, lidisable:false,
       selectedIndex:0,
     }
   },
@@ -483,7 +499,9 @@ export default {
     menu4Lending(data) {this.menu4Refresh = data},
     menu3Lending(data) {this.menu3Refresh = data},
     menu2Lending(data) {this.menu2Refresh = data},
-    closeModal() {this.managerPhone = null; this.managerName = null; this.popCheck3 = false;this.popCheck2 = false;this.popCheck4 = false;this.popCheck5 = false;},
+    closeModal() {this.managerId=null; this.managerPhone = null; this.managerName = null; this.popCheck3 = false;this.popCheck2 = false;this.popCheck4 = false;this.popCheck5 = false;  this.selectedEm=''; this.selectedLi='';
+    this.emdisable=false; this.lidisable=false},
+
     // 대상자 정보
     async getRecipientInfo() {
       //this.$store.mutation.logout
@@ -511,7 +529,7 @@ export default {
       console.log(uri)
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
-          const emArr = [{label: '전체', value: ''}];
+          const emArr = [{label: '선택', value: '', value2:''}];
           // let tmpResult2 = [{label: '전체', value: ''}];
           this.emData=[];
           console.log(res.data.data)
@@ -533,9 +551,20 @@ export default {
     ifselectem(selectedIndex){
       console.log("this ok")
       console.log(selectedIndex)
-      this.managerName = this.emData[selectedIndex].label
-      this.managerId = this.emData[selectedIndex].value
-      this.managerPhone = this.emData[selectedIndex].value2
+      if(selectedIndex === 0){
+        this.emdisable = false
+        this.managerName = ''
+        this.managerId = ''
+        this.managerPhone = ''
+        console.log("this ok")
+      }else{
+        this.emdisable = true
+        this.managerName = this.emData[selectedIndex].label
+        this.managerId = this.emData[selectedIndex].value
+        this.managerPhone = this.emData[selectedIndex].value2
+      }
+      
+      
       console.log(this.managerName)
       console.log(this.managerId)
       console.log(this.managerPhone)
@@ -546,7 +575,7 @@ export default {
       console.log(uri)
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
-          const liArr = [{label: '전체', value: ''}];
+          const liArr = [{label: '선택', value: '', value2:''}];
           // let tmpResult2 = [{label: '전체', value: ''}];
           this.liData=[];
           console.log(res.data.data)
@@ -568,9 +597,19 @@ export default {
     ifselectli(selectedIndex){
       console.log("this ok")
       console.log(selectedIndex)
-      this.managerName = this.liData[selectedIndex].label
-      this.managerId = this.liData[selectedIndex].value
-      this.managerPhone = this.liData[selectedIndex].value2
+      if(selectedIndex === 0){
+        this.lidisable = false
+        this.managerName = ''
+        this.managerId = ''
+        this.managerPhone = ''
+      }else{
+        this.lidisable = true
+        this.managerName = this.liData[selectedIndex].label
+        this.managerId = this.liData[selectedIndex].value
+        this.managerPhone = this.liData[selectedIndex].value2
+      }
+      
+      
       console.log(this.managerName)
       console.log(this.managerId)
       console.log(this.managerPhone)
@@ -701,7 +740,7 @@ export default {
             console.log(this.insertData)
             
             alert("등록성공")
-            this.managerPhone = null; this.managerName = null; this.managerId = null;
+            this.managerPhone = null; this.managerName = null; this.managerId = null; this.selectedEm = ''; this.emdisable=false;
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -719,6 +758,7 @@ export default {
         relationPhone: this.managerPhone,
         relationCd: this.managerRelationCd, 
         relationCdNm: this.managerRelationNm,
+        managerId: this.managerId,
         typeCd: "TPE006"
       }
       console.log(data)
@@ -731,7 +771,7 @@ export default {
             console.log(this.insertData)
             
             alert("등록성공")
-            this.managerPhone = null; this.managerName = null;
+            this.managerPhone = null; this.managerName = null; this.managerId = null; this.selectedLi = ''; this.lidisable=false;
           })
           .catch(error => {
             this.errorMessage = error.message;

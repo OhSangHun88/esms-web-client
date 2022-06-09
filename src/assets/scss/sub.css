@@ -127,7 +127,7 @@
 .info_wrap_1 .tabcontent .list .tbody table tbody tr td input[type="text"]{width: 200px;height: 30px;font-size: 14px;}
 .info_wrap_1 .tabcontent .list .tbody table tbody tr td .input_area{padding: 0 10px 0 0;}
 .info_wrap_1 .tabcontent .list .tbody table tbody tr td .input_area input[type="text"]{width: 100%;}
-.info_wrap_1 .tabcontent .list .tbody table tbody tr td select{width: 200px;height: 30px;font-size: 14px;}
+.info_wrap_1 .tabcontent .list .tbody table tbody tr td select{width: 150px;height: 30px;font-size: 14px;}
 .info_wrap_1 .tabcontent .list .tbody table tbody tr:nth-of-type(even) td{background-color: unset;}
 .info_wrap_1 .tabcontent .list .tbody table tbody tr:hover td{background-color: #4B556A;}
 

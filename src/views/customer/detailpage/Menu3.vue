@@ -54,8 +54,10 @@
                                     </td>
                                     <td v-else>{{item.relationNm}}</td>
                                     <td v-if="selectIndex === index">
-                                        <div class="input_area">
-                                            <input type="text" name="relationCdNm" :id="`relationCdNm_${index}`" v-model="item.relationCdNm" >
+                                        <div>
+                                            <select v-model="selectrelation">
+                                                <option v-for="(re, index) in relationArr" :value="re.value" v-bind:key="index">{{re.text}}</option>
+                                            </select> 
                                         </div>
                                     </td>
                                     <td v-else>{{item.relationCdNm}}</td>
@@ -90,6 +92,11 @@ export default {
             lending : 0,
             msg : '',
             selectIndex: null,
+            selectrelation:[{value:'', text:'선택'}],
+            relationArr : [{value:'RL001', text: '남편'},{value:'RL002', text: '와이프'},{value:'RL003', text: '아들'},
+            {value:'RL004', text: '딸'},{value:'RL005', text: '사위'},{value:'RL006', text: '며느리'},
+            {value:'RL007', text: '손자'},{value:'RL008', text: '손녀'},{value:'RL009' , text:'기타'},],
+            changerelation:null, changerelationNm:null, changerelationCd:null,
         }
     },
     created(){
@@ -160,6 +167,10 @@ export default {
         },
         //말벗 삭제
         deleteRelationPhoneData(){
+            if(this.selectIndex === null || this.selectIndex === undefined || this.selectIndex === ''){
+                alert("삭제할 대상자를 선택하여 주세요.")
+                return false
+            }
             if(confirm("정말로 삭제하시겠습니까? ")===true){
                 let selectData = this.relationPhoneData[this.selectIndex]
                 let selectRegSn = selectData.regSn
@@ -184,11 +195,23 @@ export default {
             }
         },
         modifyRelationPhoneData(){
+            if(this.selectIndex === null || this.selectIndex === undefined || this.selectIndex === ''){
+                alert("수정할 대상자를 선택하여 주세요.")
+                return false;
+            }
             if(this.relationPhoneData[this.selectIndex].relationPhone.length >11){
                 alert("전화번호는 최대 11자리까지 입력 가능합니다.")
                 return false
             }
+            this.changerelation = this.relationArr.filter(cd=>{
+                return cd.value === this.selectrelation
+            })
+            this.changerelationNm = this.changerelation[0].text
+            this.changerelationCd = this.changerelation[0].value
             let selectData = this.relationPhoneData[this.selectIndex]
+            selectData.relationCdNm = this.changerelationNm
+            selectData.relationCd = this.changerelationCd
+            console.log(selectData)
             let selectRegSn = selectData.regSn
             const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${selectRegSn}/update`
             

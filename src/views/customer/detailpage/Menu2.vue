@@ -5,7 +5,7 @@
                 <div class="list_top">
                     <div class="btn_area">
                         <button v-if="this.relationPhoneData.length<1" type="button" class="btn form2" @click="sendParent">추가</button>
-                        <button type="button" class="btn form2" @click="modifyRelationPhoneData">수정</button>
+                        <!-- <button type="button" class="btn form2" @click="modifyRelationPhoneData">수정</button> -->
                         <button type="button" class="btn form3" @click="deleteRelationPhoneData">삭제</button> 
                     </div>
                 </div>
@@ -54,20 +54,20 @@
                                         </div>
                                     </td>
                                     <td>{{index+1}}</td>
-                                    <td v-if="selectIndex === index">
+                                    <!-- <td v-if="selectIndex === index">
                                         <div class="input_area">
                                             <input type="text" name="relationNm" :id="`relationNm_${index}`" v-model="item.relationNm" >
                                         </div>
-                                    </td>
-                                    <td v-else>{{item.relationNm}}</td>
+                                    </td> -->
+                                    <td>{{item.relationNm}}</td>
                                     <td>
                                         <!-- <input type="text" name="" id="" :value="item.relationCdNm"> -->
                                         응급관리요원
                                     </td>
-                                    <td v-if="selectIndex === index">
+                                    <!-- <td v-if="selectIndex === index">
                                         <input type="text" name="relationPhone" :id="`relationPhone_${index}`" v-model="item.relationPhone" >
-                                    </td>
-                                    <td v-else>{{changeRecipientPhoneno(item.relationPhone)}}</td>
+                                    </td> -->
+                                    <td >{{changeRecipientPhoneno(item.relationPhone)}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -119,10 +119,6 @@ export default {
     },
     //부모 컴포넌트에 데이터 전송
     sendParent(){
-        if(this.relationPhoneData.length > 1){
-            alert("응급요원은 한명만 추가할 수 있습니다.")
-            return false;
-        }
         this.popCheck=true
         this.msg = '응급관리요원'
         this.$emit("openPopMsg",this.msg) 
@@ -152,6 +148,14 @@ export default {
             
     },
     modifyRelationPhoneData(){
+        if(this.selectIndex === null || this.selectIndex === undefined || this.selectIndex === ''){
+            alert("수정할 대상자를 선택하여 주세요.")
+            return false;
+        }
+        if(this.relationPhoneData[this.selectIndex].relationPhone.length >11){
+                alert("전화번호는 최대 11자리까지 입력 가능합니다.")
+                return false
+            }
         let selectData = this.relationPhoneData[this.selectIndex]
         let selectRegSn = selectData.regSn
         console.log(selectData)
@@ -170,7 +174,12 @@ export default {
         
     },
     deleteRelationPhoneData(){
-        if(confirm("정말로 삭제하시겠습니까? ")===true){
+        console.log(this.selectIndex)
+        if(this.selectIndex === null || this.selectIndex === undefined || this.selectIndex === ''){
+            alert("삭제할 대상자를 선택하여 주세요.")
+            return false
+        }
+        if(confirm("정말로 삭제하시겠습니까? ")===true){ 
             let selectData = this.relationPhoneData[this.selectIndex]
             let selectRegSn = selectData.regSn
             

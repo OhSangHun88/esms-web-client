@@ -59,6 +59,7 @@
 </template>
 <script>
 import axios from "axios";
+import { cilAlignCenter } from '@coreui/icons';
 
 export default {
     name: "Menu5",
@@ -198,6 +199,10 @@ export default {
         
     },
     modifyRelationPhoneData(){
+        if(this.selectIndex === null || this.selectIndex === undefined || this.selectIndex === ''){
+            alert("수정할 대상자를 선택하여 주세요.")
+            return false;
+        }
         let selectData = this.relationPhoneData[this.selectIndex]
         let selectRegSn = selectData.regSn
         console.log(selectData)
@@ -216,6 +221,10 @@ export default {
         
     },
     deleteRelationPhoneData(){
+        if(this.selectIndex === null || this.selectIndex ===undefined || this.selectIndex === ''){
+            alert("삭제할 대상자를 선택하여 주세요.")
+            return false;
+        }
         if(confirm("정말로 삭제하시겠습니까? ")===true){
             let selectData = this.relationPhoneData[this.selectIndex]
             let selectRegSn = selectData.regSn
