@@ -45,7 +45,7 @@
                                     <td>{{index+1}}</td>
                                     <td >{{emerCodeLabel(item.typeCd)}}</td>
                                     <td v-if="selectIndex === index">
-                                        <input type="text" name="relationPhone" :id="`relationPhone_${index}`" v-model="relationPhone" maxlength="11">
+                                        <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="relationPhone" :id="`relationPhone_${index}`" v-model="relationPhone" maxlength="11">
                                     </td>
                                     <td v-else>{{changeRecipientPhoneno(item.relationPhone)}}</td>
                                 </tr>

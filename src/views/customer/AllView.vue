@@ -28,7 +28,7 @@
                   </div>
                   <div class="input_area half">
                     <p class="input_tit">생년월일</p>
-                    <input type="text" v-model="selectedUpdateBirthday">
+                    <input type="text" v-model="selectedUpdateBirthday" maxlength="8">
                   </div>
                   <div class="btn_area half">
                       <p class="input_tit">성별</p>
@@ -60,7 +60,7 @@
                 <div class="input_wrap">
                   <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="selectedUpdatePhoneNumber" maxlength="11">
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="selectedUpdatePhoneNumber" maxlength="11">
                   </div>
                   <div class="input_area">
                         <p class="input_tit">사용자 구분</p>
@@ -115,7 +115,7 @@
                   </div>
                   <div class="input_area half">
                     <p class="input_tit">생년월일</p>
-                    <input type="text" v-model="selectChangeBirthday">
+                    <input type="text" v-model="selectChangeBirthday" maxlength="8">
                   </div>
                   <div class="btn_area half">
                       <p class="input_tit">성별</p>
@@ -147,7 +147,7 @@
                 <div class="input_wrap">
                   <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="selectChangePhoneNumber" maxlength="11">
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="selectChangePhoneNumber" maxlength="11">
                   </div>
                   <div class="input_area">
                         <p class="input_tit">사용자 구분</p>
@@ -1112,6 +1112,14 @@ export default {
         alert("모든 항목을 작성하여 주세요");
         return false;
       }
+      if(this.selectedUpdatePhoneNumber.length < 3){
+        alert("전화번호는 세자리 이상을 입력해 주세요")
+        return false;
+      }
+      if(this.selectedUpdateBirthday.length < 8){
+        alert("생년월일 여덟 자리를 모두 입력해 주세요")
+        return false
+      }
       let data= {
         activeUnsensingCycle: 60,//완
         addr: this.selectedUpdateAddr,//완
@@ -1167,6 +1175,14 @@ export default {
       this.selectChangeRecipeType === '' || this.selectChangeState === ''){
         alert("모든 항목을 작성하여 주세요");
         return false;
+      }
+      if(this.selectChangePhoneNumber.length < 3){
+        alert("전화번호는 세자리 이상을 입력해 주세요")
+        return false;
+      }
+      if(this.selectChangeBirthday.length < 8){
+        alert("생년월일 여덟 자리를 모두 입력해 주세요")
+        return false
       }
       let data= {
         activeUnsensingCycle: 60,//완

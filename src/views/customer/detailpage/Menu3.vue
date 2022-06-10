@@ -62,7 +62,7 @@
                                     </td>
                                     <td v-else>{{item.relationCdNm}}</td>
                                     <td v-if="selectIndex === index">
-                                        <input type="text" name="relationPhone" :id="`relationPhone_${index}`" v-model="relationPhone" maxlength="11">
+                                        <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="relationPhone" :id="`relationPhone_${index}`" v-model="relationPhone" maxlength="11">
                                     </td>
                                     <td v-else>{{changeRecipientPhoneno(item.relationPhone)}}</td>
                                     
@@ -199,7 +199,7 @@ export default {
         },
         reset(index){
             console.log(this.relationPhoneData[index])
-            this.selectrelation = ''
+            this.selectrelation = this.relationPhoneData[index].relationCd
             this.radioCheck = this.relationPhoneData[index].regSn
             this.relationNm = this.relationPhoneData[index].relationNm
             this.relationPhone = this.relationPhoneData[index].relationPhone
@@ -248,11 +248,8 @@ export default {
                 console.log("fail to load")
                 this.errorMessage = error.message;
                 console.error("There was an error!", error);
-            });
-            
+            });  
         },
-
-
     }
 }
 </script>

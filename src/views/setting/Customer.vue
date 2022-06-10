@@ -35,7 +35,7 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">생년월일</p>
-                            <input type="text" value="" v-model="selectedUpdateBirthday">
+                            <input type="text" @keydown="inputBirthday(check)" value="" v-model="selectedUpdateBirthday" maxlength="8">
                           </div>
                           <div class="btn_area">
                               <p class="input_tit">성별</p>
@@ -55,7 +55,7 @@
                           </div>
                           <div class="input_area">
                             <p class="input_tit">휴대폰번호</p>
-                            <input type="text" v-model="selectedUpdateMobileNumber" maxlength="11" >
+                            <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="selectedUpdateMobileNumber" maxlength="11" >
                           </div>
                         </div>
                         <div class="input_wrap">
@@ -129,7 +129,7 @@
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">사무실 전화번호</p>
-                                <input type="text" value="" v-model="selectedUpdatePhoneNumber" maxlength="11">
+                                <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  value="" v-model="selectedUpdatePhoneNumber" maxlength="11">
                             </div>
                         </div>
                         <!-- <div class="input_wrap">
@@ -206,7 +206,7 @@
                           </div>
                           <div class="input_area">
                             <p class="input_tit">휴대폰번호</p>
-                            <input type="text" value="" v-model="selectedDetailMobileNumber" disabled />
+                            <input type="text"  value="" v-model="selectedDetailMobileNumber" disabled />
                           </div>
                         </div>
                         <div class="input_wrap">
@@ -331,7 +331,7 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">생년월일</p>
-                            <input type="text" value="" v-model="selectedChangeBirthday">
+                            <input type="text" value="" v-model="selectedChangeBirthday" maxlength="8">
                           </div>
                           <div class="btn_area">
                               <p class="input_tit">성별</p>
@@ -351,7 +351,7 @@
                           </div>
                           <div class="input_area">
                             <p class="input_tit">휴대폰번호</p>
-                            <input type="text" value="" v-model="selectedChangeMobileNumber" maxlength="11">
+                            <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  value="" v-model="selectedChangeMobileNumber" maxlength="11">
                           </div>
                         </div>
                         <div class="input_wrap">
@@ -425,7 +425,7 @@
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">사무실 전화번호</p>
-                                <input type="text" value="" v-model="selectedChangePhoneNumber" maxlength="11">
+                                <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  value="" v-model="selectedChangePhoneNumber" maxlength="11">
                             </div>
                         </div>
                         <div class="input_wrap">
@@ -663,6 +663,7 @@ export default {
         writeCus: false, changeCus: false, deleteCus: false, detailCus: false,
         saveChangeData: null,selectUserData: null,
         detailArr:[],
+        check:'',
       }
     },
     created(){
@@ -866,6 +867,18 @@ export default {
       this.selectedUpdateOrgItems === '' || this.selectedUpdateUserType === '' || this.selectedUpdateEmployStateCd === '' || this.selectedUpdateDeptNm === '' ||
        this.selectedUpdatePhoneNumber === ''){
         alert("모든 항목을 작성하여 주세요")
+        return false
+      }
+      if(this.selectedUpdatePhoneNumber.length < 3){
+        alert("전화번호는 세자리 이상을 입력해 주세요")
+        return false;
+      }
+      if(this.selectedUpdateMobileNumber.length < 3){
+        alert("전화번호는 세자리 이상을 입력해 주세요")
+        return false;
+      }
+      if(this.selectedUpdateBirthday.length < 8){
+        alert("생년월일 여덟 자리를 모두 입력해 주세요")
         return false
       }
       this.$store.state.userId = sessionStorage.getItem("userId")
@@ -1133,6 +1146,18 @@ export default {
         alert("모든 항목을 작성하여 주세요")
         return false
       }
+      if(this.selectedChangePhoneNumber.length < 3){
+        alert("전화번호는 세자리 이상을 입력해 주세요")
+        return false;
+      }
+      if(this.selectedChangeMobileNumber.length < 3){
+        alert("전화번호는 세자리 이상을 입력해 주세요")
+        return false;
+      }
+      if(this.selectedChangeBirthday.length < 8){
+        alert("생년월일 여덟 자리를 모두 입력해 주세요")
+        return false
+      }
       if(this.bodysex === 1){
         this.selectedChangeSex = 'M'
       }else{
@@ -1168,7 +1193,7 @@ export default {
               if(resData){
                 alert("성공적으로 변경되었습니다")
                 this.changeCus = false
-                this.detailCus = true
+                this.detailCus = false
                 this.selectedChangePhoneNumber=''
                 this.selectedChangeMobileNumber=''
                 this.getUserData()
@@ -1260,6 +1285,26 @@ export default {
         }
       }
     },
+    inputBirthday(check){
+      console.log("this. ====")
+      let birth = this.check.replace(/[^0-9]/g, '');
+      let birthday = ''
+      console.log(birth)
+      if(birth.length<5){
+        return birth
+      }else if(birth.length < 7){
+        birthday += birth.substring(0,4)
+        birthday += '-'
+        birthday += birth.substring(4)
+      }else{
+        birthday += birth.substring(0,4)
+        birthday += '-'
+        birthday += birth.substring(4,6)
+        birthday += '-'
+        birthday += birth.substring(6)
+      }
+      check.value = birthday
+    },
     // 주소 검색
     search(){ 
     //여기
@@ -1330,36 +1375,36 @@ export default {
     document.head.appendChild(script);
     
   },
-  watch:{
-    selectedUpdatePhoneNumber:function(){
-      let tmp = this.selectedUpdatePhoneNumber.charAt(this.selectedUpdatePhoneNumber.length-1)
-      let regex = /^[0-9]/g;
+  // watch:{
+  //   selectedUpdatePhoneNumber:function(){
+  //     let tmp = this.selectedUpdatePhoneNumber.charAt(this.selectedUpdatePhoneNumber.length-1)
+  //     let regex = /^[0-9]/g;
 
-      if(!this.selectedUpdatePhoneNumber&&!tmp.match(regex) )//{alert("숫자만 입력 할 수 있습니다.") }
-      return this.selectedUpdatePhoneNumber = this.selectedUpdatePhoneNumber.replace(/[^0-9]/g, '');
-    },
-    selectedUpdateMobileNumber:function(){
-      let tmp2 = this.selectedUpdateMobileNumber.charAt(this.selectedUpdateMobileNumber.length-1)
-      let regex2 = /^[0-9]/g;
+  //     if(!this.selectedUpdatePhoneNumber&&!tmp.match(regex) )//{alert("숫자만 입력 할 수 있습니다.") }
+  //     return this.selectedUpdatePhoneNumber = this.selectedUpdatePhoneNumber.replace(/[^0-9]/g, '');
+  //   },
+  //   selectedUpdateMobileNumber:function(){
+  //     let tmp2 = this.selectedUpdateMobileNumber.charAt(this.selectedUpdateMobileNumber.length-1)
+  //     let regex2 = /^[0-9]/g;
 
-      if(!this.selectedUpdateMobileNumber&&!tmp2.match(regex2) )//{alert("숫자만 입력 할 수 있습니다.") }
-      return this.selectedUpdateMobileNumber = this.selectedUpdateMobileNumber.replace(/[^0-9]/g, '');
-    },
-    selectedChangePhoneNumber:function(){
-      let tmp3 = this.selectedChangePhoneNumber.charAt(this.selectedChangePhoneNumber.length-1)
-      let regex3 = /^[0-9]/g;
+  //     if(!this.selectedUpdateMobileNumber&&!tmp2.match(regex2) )//{alert("숫자만 입력 할 수 있습니다.") }
+  //     return this.selectedUpdateMobileNumber = this.selectedUpdateMobileNumber.replace(/[^0-9]/g, '');
+  //   },
+  //   selectedChangePhoneNumber:function(){
+  //     let tmp3 = this.selectedChangePhoneNumber.charAt(this.selectedChangePhoneNumber.length-1)
+  //     let regex3 = /^[0-9]/g;
 
-      if(!this.selectedChangePhoneNumber&&!tmp3.match(regex3) )//{alert("숫자만 입력 할 수 있습니다.") }
-      return this.selectedChangePhoneNumber = this.selectedChangePhoneNumber.replace(/[^0-9]/g, '');
-    },
-    selectedChangeMobileNumber:function(){
-      let tmp4 = this.selectedChangeMobileNumber.charAt(this.selectedChangeMobileNumber.length-1)
-      let regex4 = /^[0-9]/g;
+  //     if(!this.selectedChangePhoneNumber&&!tmp3.match(regex3) )//{alert("숫자만 입력 할 수 있습니다.") }
+  //     return this.selectedChangePhoneNumber = this.selectedChangePhoneNumber.replace(/[^0-9]/g, '');
+  //   },
+  //   selectedChangeMobileNumber:function(){
+  //     let tmp4 = this.selectedChangeMobileNumber.charAt(this.selectedChangeMobileNumber.length-1)
+  //     let regex4 = /^[0-9]/g;
 
-      if(!this.selectedChangeMobileNumber&&!tmp4.match(regex4) )//{alert("숫자만 입력 할 수 있습니다.") }
-      return this.selectedChangeMobileNumber = this.selectedChangeMobileNumber.replace(/[^0-9]/g, '');
-    }
-  }
+  //     if(!this.selectedChangeMobileNumber&&!tmp4.match(regex4) )//{alert("숫자만 입력 할 수 있습니다.") }
+  //     return this.selectedChangeMobileNumber = this.selectedChangeMobileNumber.replace(/[^0-9]/g, '');
+  //   }
+  // }
 }
 </script>
 <style>

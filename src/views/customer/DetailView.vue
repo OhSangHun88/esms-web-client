@@ -163,7 +163,7 @@
                 </div> -->
                 <div class="input_area">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3" maxlength="11">
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="managerPhone" minlength="3" maxlength="11">
                 </div>
                 <div class="input_area">
                     <p class="input_tit">관계</p>
@@ -247,11 +247,11 @@
                 </div>
                 <div class="input_area" v-if="this.emdisable===false">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3" maxlength="11">
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="managerPhone" minlength="3" maxlength="11">
                 </div>
                 <div class="input_area" v-else>
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3" disabled>
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="managerPhone" minlength="3" disabled>
                 </div>
             </div>
           </div>
@@ -285,11 +285,11 @@
                 </div>
                 <div class="input_area" v-if="this.emdisable===false">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3" maxlength="11">
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="managerPhone" minlength="3" maxlength="11">
                 </div>
                 <div class="input_area" v-else>
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3" disabled>
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="managerPhone" minlength="3" disabled>
                 </div>
             </div>
           </div>
@@ -324,11 +324,11 @@
                 </div>
                 <div class="input_area" v-if="this.lidisable===false">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3" maxlength="11">
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="managerPhone" minlength="3" maxlength="11">
                 </div>
                 <div class="input_area" v-else>
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3" disabled>
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="managerPhone" minlength="3" disabled>
                 </div>
             </div>
           </div>
@@ -362,11 +362,11 @@
                 </div>
                 <div class="input_area" v-if="this.lidisable===false">
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3" maxlength="11">
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="managerPhone" minlength="3" maxlength="11">
                 </div>
                 <div class="input_area" v-else>
                     <p class="input_tit">휴대폰번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3" disabled>
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="managerPhone" minlength="3" disabled>
                 </div>
             </div>
           </div>
@@ -398,7 +398,7 @@
                 </div> 
                 <div class="input_area" style="width:200px">
                     <p class="input_tit">전화번호</p>
-                    <input type="text" v-model="managerPhone" minlength="3" maxlength="11">
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="managerPhone" minlength="3" maxlength="11">
                 </div>
             </div>
           </div>

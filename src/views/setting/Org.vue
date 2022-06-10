@@ -31,7 +31,7 @@
                             </div>
                             <div class="input_area">
                                 <p class="input_tit">대표 전화번호</p>
-                                <input type="text" value="" v-model="selectedUpdatePhoneNumber" maxlength="11">
+                                <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  value="" v-model="selectedUpdatePhoneNumber" maxlength="11">
                             </div>
                         </div>
                         <div class="input_wrap">
@@ -190,7 +190,7 @@
                           </div>
                           <div class="input_area">
                               <p class="input_tit">대표 전화번호</p>
-                              <input type="text" value="" v-model="selectedChangePhoneNumber" maxlength="11">
+                              <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  value="" v-model="selectedChangePhoneNumber" maxlength="11">
                           </div>
                       </div>
                       <div class="input_wrap">
@@ -784,6 +784,10 @@ export default {
         alert("모든 항목을 작성하여 주세요")
         return false
       }
+      if(this.selectedUpdatePhoneNumber.length < 3){
+        alert("전화번호는 세자리 이상을 입력해 주세요")
+        return false;
+      }
 
       let data = {
         sidoName:this.sidoName[0].label,
@@ -933,10 +937,19 @@ export default {
         return cd.value === this.selectedChangeTypeCd
       })
       }
-      
+      if(this.selectedChangeSidoItems === '' || this.selectedChangeSggItems ==='' || this.selectedChangeOrgItems === '' || this.selectedChangePhoneNumber === '' ||
+      this.selectedChangeTypeCd === '' || this.selectedChangeUpperOrgId === '' || this.selectedChangeUseYn === '' || this.selectedChangeZipcodeCd === '' || this.selectedChangeAddr === '' ||
+      this.selectedChangeDetailAddr === ''){
+        alert("모든 항목을 작성하여 주세요")
+        return false
+      }
       if(this.selectedChangeTypeCd === 'TPE001' && this.orgNm2.length !== 0){
         alert("이미 등록된 관리기관 입니다.")
         return false
+      }
+      if(this.selectedChangePhoneNumber.length < 3){
+        alert("전화번호는 세자리 이상을 입력해 주세요")
+        return false;
       }
 
       console.log(this.orgNm)
