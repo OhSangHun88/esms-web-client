@@ -35,7 +35,7 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">생년월일</p>
-                            <input type="text" @keydown="inputBirthday(check)" value="" v-model="selectedUpdateBirthday" maxlength="8">
+                            <input type="text" @keydown="inputBirthday(check)" value="" v-model="selectedUpdateBirthday" >
                           </div>
                           <div class="btn_area">
                               <p class="input_tit">성별</p>
@@ -331,7 +331,7 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">생년월일</p>
-                            <input type="text" value="" v-model="selectedChangeBirthday" maxlength="8">
+                            <input type="text" value="" v-model="selectedChangeBirthday" >
                           </div>
                           <div class="btn_area">
                               <p class="input_tit">성별</p>
