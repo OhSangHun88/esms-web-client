@@ -261,6 +261,44 @@
           </div>
       </div>
     </div>
+    <div id="" class="popupLayer" v-if="popCheck2_2">
+      <div class="popup_wrap">
+          <div class="title_wrap col3">
+              <div class="title">{{this.msg}} 수정</div>
+              <button type="button" class="btn_close" @click="closeModal">닫기</button>
+          </div>
+          <div class="popup_cnt">
+            <div class="input_wrap col3">
+              <div class="input_area">
+                  <p class="input_tit">응급요원선택</p>
+                  <select v-model="selectedEm" @change="ifselectem($event.target.selectedIndex)">
+                    <option v-for="(em, index) in emData" :value="em.value" v-bind:key="index">{{em.label}}</option>
+                  </select> 
+                </div>
+                <div class="input_area" v-if="this.emdisable===false">
+                  <p class="input_tit">응급요원명</p>
+                  <input type="text" v-model="managerName">
+                </div>
+                <div class="input_area" v-else>
+                  <p class="input_tit">응급요원ID</p>
+                  <input type="text" v-model="managerId" disabled>
+                </div>
+                <div class="input_area" v-if="this.emdisable===false">
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text" v-model="managerPhone" minlength="3" maxlength="11">
+                </div>
+                <div class="input_area" v-else>
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text" v-model="managerPhone" minlength="3" disabled>
+                </div>
+            </div>
+          </div>
+          <div class="popbtn_area">
+            <button type="button" class="btn form2" @click="changeEmergencyManager()">수정</button>
+            <button type="button" class="btn" @click="closeModal">취소</button>
+          </div>
+      </div>
+    </div>
     <!-- 생활관리사 추가 팝업 -->
     <div id="" class="popupLayer" v-if="popCheck4">
       <div class="popup_wrap">
@@ -296,6 +334,44 @@
           </div>
           <div class="popbtn_area">
             <button type="button" class="btn form2" @click="insertCareManager()">추가</button>
+              <button type="button" class="btn" @click="closeModal">취소</button>
+          </div>
+      </div>
+    </div>
+    <div id="" class="popupLayer" v-if="popCheck4_2">
+      <div class="popup_wrap">
+          <div class="title_wrap">
+              <div class="title">{{this.msg}} 수정</div>
+              <button type="button" class="btn_close" @click="closeModal">닫기</button>
+          </div>
+          <div class="popup_cnt">
+            <div class="input_wrap col3">
+              <div class="input_area">
+                  <p class="input_tit">생활관리사선택</p>
+                  <select v-model="selectedLi" @change="ifselectli($event.target.selectedIndex)">
+                    <option v-for="(li, index) in liData" :value="li.value" v-bind:key="index">{{li.label}}</option>
+                  </select> 
+                </div>
+                <div class="input_area" v-if="this.lidisable===false">
+                  <p class="input_tit">생활관리사명</p>
+                  <input type="text" v-model="managerName">
+                </div>
+                <div class="input_area" v-else>
+                  <p class="input_tit">생활관리사ID</p>
+                  <input type="text" v-model="managerId" disabled>
+                </div>
+                <div class="input_area" v-if="this.lidisable===false">
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text" v-model="managerPhone" minlength="3" maxlength="11">
+                </div>
+                <div class="input_area" v-else>
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text" v-model="managerPhone" minlength="3" disabled>
+                </div>
+            </div>
+          </div>
+          <div class="popbtn_area">
+            <button type="button" class="btn form2" @click="changeCareManager()">수정</button>
               <button type="button" class="btn" @click="closeModal">취소</button>
           </div>
       </div>
@@ -455,7 +531,7 @@ export default {
     return {
       pending:true,
       d_phone: '', d_sex: '', d_endcycle: '', d_part: '', d_status: '', d_zipCode: '', d_address: '', personinfo: '',
-      recipientId: '',taptoggle:1, bodyData : null,  menutoggle: 1,popCheck3:false,popCheck2:null,popCheck4:null,popCheck5:null,insertData:null,msg: null,
+      recipientId: '',taptoggle:1, bodyData : null,  menutoggle: 1,popCheck3:false,popCheck2:false,popCheck2_2:false,popCheck4:false,popCheck4_2:false,popCheck5:null,insertData:null,msg: null,
       managerName: null, managerId:null, managerPhone: null,managerRelationNm: null,managerRelationCd:null,emerManagerRelationCd:"TPE001", menu3Refresh:1,menu2Refresh:1,menu4Refresh:1,menu5Refresh:1,
       relationArr : [{value:'', text: '선택'},{value:'RL001', text: '남편'},{value:'RL002', text: '와이프'},{value:'RL003', text: '아들'},{value:'RL004', text: '딸'},{value:'RL005', text: '사위'},{value:'RL006', text: '며느리'},{value:'RL007', text: '손자'},{value:'RL008', text: '손녀'},{value:'RL009' , text:'기타'},],
       //emerRelationArr: [{value:'TPE001', text: '119번호'},{value:'TPE002', text: '센터번호'},{value:'TPE003', text: '중앙모니터링센터'},{value:'TPE004', text: 'IP-PBX화재'},{value:'TPE005', text: 'IP-PBX응급'}],
@@ -463,7 +539,10 @@ export default {
       menu5Data: null,
       emData:[], emorgId:null, selectedEm:null, emdisable:false,
       liData:[], liorgId:null, selectedLi:null, lidisable:false,
+      selectchangeEm:null, selectchangeEmdisable:false,
+      selectchangeLi:null, selectchangeLidisable:false,
       selectedIndex:0, TabletsData:null,
+      updateData:'', changeData:'', changeRegSn:'',
     }
   },
   components: {
@@ -489,17 +568,68 @@ export default {
     menu5,
   },
   methods: {
-    getFromMenuData(data) {console.log(data); if(this.menutoggle===5){this.menu5Data = data; console.log("get this.menu5Data"); console.log(this.menu5Data)} } ,
+    getFromMenuData(data) {
+      console.log(data); 
+      let changeEmNm=''
+      let changeLiNm=''
+      if(data.length !== 1){
+        if(this.menutoggle===2){  // 응급요원 등록
+          this.popCheck2 = true
+        }else if(this.menutoggle===4){  // 생활관리사 등록
+          this.popCheck4 = true
+        }
+        
+      }else{
+        if(this.menutoggle===2){  // 응급요원 수정
+          if(data[0].managerId === '' || data[0].managerId === null || data[0].managerId === undefined){
+            this.emdisable = false
+            this.managerName = data[0].relationNm
+            this.managerPhone = data[0].relationPhone
+            this.managerId = data[0].managerId
+          }else{
+            this.emdisable = true
+            changeEmNm = this.emData.filter(cd=>{
+            return cd.label === data[0].relationNm
+          })
+            this.selectedEm = changeEmNm[0].value
+            this.managerName = data[0].relationNm
+            this.managerPhone = data[0].relationPhone
+            this.managerId = data[0].managerId
+          }
+          this.changeRegSn = data[0].regSn
+          this.popCheck2_2 = true
+        }else if(this.menutoggle===4){  // 생활관리사 수정
+          if(data[0].managerId === '' || data[0].managerId === null || data[0].managerId === undefined){
+            this.lidisable = false
+            this.managerName = data[0].relationNm
+            this.managerPhone = data[0].relationPhone
+            this.managerId = data[0].managerId
+          }else{
+            this.lidisable = true
+            changeLiNm = this.liData.filter(cd=>{
+            return cd.label === data[0].relationNm
+          })
+            this.selectedLi = changeLiNm[0].value
+            this.managerName = data[0].relationNm
+            this.managerPhone = data[0].relationPhone
+            this.managerId = data[0].managerId
+          }
+          this.changeRegSn = data[0].regSn
+          this.popCheck4_2 = true
+        }
+      }
+      if(this.menutoggle===5){this.menu5Data = data; console.log("get this.menu5Data"); console.log(this.menu5Data)} 
+      } ,
     openModal5(data) {console.log("modal5open");this.popCheck5 = data},
-    openModal4(data) {console.log("modal4open");this.popCheck4 = data},
+    openModal4(data) {/*console.log("modal4open");this.popCheck4 = data*/},
     openModal3(data) {this.popCheck3 = data},
-    openModal2(data) {this.popCheck2 = data},
-    openModalMsg(data) {this.msg = data},
+    openModal2(data){},
+    openModalMsg(data) {console.log(data); this.msg = data},
     menu5Lending(data) {this.menu5Refresh = data},
     menu4Lending(data) {this.menu4Refresh = data},
     menu3Lending(data) {this.menu3Refresh = data},
     menu2Lending(data) {this.menu2Refresh = data},
-    closeModal() {this.managerId=null; this.managerPhone = null; this.managerName = null; this.popCheck3 = false;this.popCheck2 = false;this.popCheck4 = false;this.popCheck5 = false;  this.selectedEm=''; this.selectedLi='';
+    closeModal() {this.managerId=null; this.managerPhone = null; this.managerName = null; this.popCheck3 = false;this.popCheck2 = false;this.popCheck2_2 = false; this.popCheck4 = false; this.popCheck4_2= false; this.popCheck5 = false;  this.selectedEm=''; this.selectedLi='';
     this.emdisable=false; this.lidisable=false; this.managerRelationCd = null; this.managerRelationCd=''},
 
     // 대상자 정보
@@ -778,7 +908,42 @@ export default {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-          
+    },
+    changeEmergencyManager(){
+      console.log(this.selectedEm)
+      if(this.managerName === '' || this.managerName === null || this.managerName === undefined){
+        alert("응급요원명을 작성하여 주세요")
+        return false
+      }else if(this.managerPhone === '' || this.managerPhone === null || this.managerPhone === undefined){
+        alert("휴대폰번호를 작성하여 주세요")
+        return false  
+      }
+      if(this.selectedEm === '' || this.selectedEm === null | this.selectedEm === undefined){
+        this.managerId = ''
+      }
+      let data = {
+        recipientId: this.recipientId,
+        relationNm: this.managerName,
+        relationPhone: this.managerPhone,
+        //relationCd: this.managerRelationCd, 
+        //relationCdNm: this.managerRelationNm,
+        managerId: this.managerId,
+        typeCd: "TPE007"
+      }
+      console.log(data)
+      const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${this.changeRegSn}/update`
+        axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        .then(res => {
+        console.log(res.data.data)
+        this.$refs.menu2.sendMenu2Lending();
+        this.popCheck2_2 = false
+        alert("성공적으로 수정되었습니다")
+        this.managerPhone = null; this.managerName = null; this.managerId = null; this.selectedEm = ''; this.emdisable=false;
+        }).catch(error => {
+            console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+        });
     },
     insertCareManager(){
       if(this.managerName === '' || this.managerName === null || this.managerName === undefined){
@@ -820,7 +985,42 @@ export default {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-          
+    },
+    changeCareManager(){
+      console.log(this.selectedLi)
+      if(this.managerName === '' || this.managerName === null || this.managerName === undefined){
+        alert("생활관리사명을 작성하여 주세요")
+        return false
+      }else if(this.managerPhone === '' || this.managerPhone === null || this.managerPhone === undefined){
+        alert("휴대폰번호를 작성하여 주세요")
+        return false  
+      }
+      if(this.selectedLi === '' || this.selectedLi === null | this.selectedLi === undefined){
+        this.managerId = ''
+      }
+      let data = {
+        recipientId: this.recipientId,
+        relationNm: this.managerName,
+        relationPhone: this.managerPhone,
+        //relationCd: this.managerRelationCd, 
+        //relationCdNm: this.managerRelationNm,
+        managerId: this.managerId,
+        typeCd: "TPE006"
+      }
+      console.log(data)
+      const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${this.changeRegSn}/update`
+        axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        .then(res => {
+        console.log(res.data.data)
+        this.$refs.menu4.sendMenu4Lending();
+        this.popCheck4_2 = false
+        alert("성공적으로 수정되었습니다")
+        this.managerPhone = null; this.managerName = null; this.managerId = null; this.selectedLi = ''; this.lidisable=false;
+        }).catch(error => {
+            console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+        });
     },
     insertEmergency(){
       if(this.managerPhone === null || this.managerPhone === undefined || this.managerPhone === ''){

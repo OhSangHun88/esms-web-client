@@ -4,8 +4,8 @@
             <div class="tabcnt01">
                 <div class="list_top">
                     <div class="btn_area">
-                        <button v-if="this.relationPhoneData.length<1" type="button" class="btn form2" @click="sendParent">추가</button>
-                        <!-- <button type="button" class="btn form2" @click="modifyRelationPhoneData">수정</button> -->
+                        <button v-if="this.relationPhoneData.length<1" type="button" class="btn form2" @click="check(1)">추가</button>
+                        <button type="button" class="btn form2" @click="check(2)">수정</button>
                         <button type="button" class="btn form3" @click="deleteRelationPhoneData">삭제</button> 
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                                 <tr v-for="(item,index) in relationPhoneData" v-bind:key="index">
                                     <td>
                                         <div class="chk_area">
-                                            <input type="radio" name="chk" :id="`chk1_${index}`" v-model="selectIndex" :value="index">
+                                            <input type="radio" name="chk" :id="`chk1_${index}`" v-model="selectIndex" :value="index" @click="reset(index)">
                                             <label :for="`chk1_${index}`" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td>
@@ -82,7 +82,10 @@ export default {
             popCheck: false,
             lending : 0,
             msg : '',
+            checkPopup:'',
+            checkPop:'',
             selectIndex: null,
+            radioCheck:'',
         }
     },
     created(){
@@ -117,7 +120,8 @@ export default {
         //   = res.data.data.filter(pd =>{
         //       return pd.typeCd === "TPE008"
         //   })
-        
+        this.selectIndex = ''
+        this.radioCheck = ''
         console.log(this.relationPhoneData)
         this.$emit("lending4",this.lending)
         }).catch(error => {
@@ -126,13 +130,28 @@ export default {
             console.error("There was an error!", error);
         });
     },
+    reset(index){
+        this.radioCheck = this.relationPhoneData[index].regSn
+        if(this.radioCheck === this.relationPhoneData[index].regSn){
+            this.selectIndex = ''
+            this.radioCheck = ''
+        }
+    },
+    check(value){
+        switch(value){
+          case 1 : console.log("this"); this.checkPopup=0; this.sendParent(); break;
+          case 2 : console.log("this2"); this.checkPopup=1; if(this.selectIndex === null || this.selectIndex === undefined || this.selectIndex === ''){
+            alert("수정할 대상자를 선택하여 주세요.")
+            return false;
+        }; this.sendParent(); break;
+        }
+    },
     sendParent(){
         this.popCheck=true
         this.msg = '생활관리사'
         this.$emit("openPopMsg",this.msg) 
         this.$emit("sendData4",this.relationPhoneData)
         this.$emit("openPop",this.popCheck)
-        
     },
     modifyRelationPhoneData(){
         if(this.selectIndex === null || this.selectIndex === undefined || this.selectIndex === ''){
@@ -174,7 +193,8 @@ export default {
             axios.delete(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
             console.log(res.data.data)
-            
+            this.selectIndex = ''
+            this.radioCheck = ''
             this.sendMenu4Lending()
             
             }).catch(error => {

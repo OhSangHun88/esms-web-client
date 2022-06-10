@@ -99,6 +99,7 @@ export default {
             changerelation:null, changerelationNm:null, changerelationCd:null,
             relationNm:null, relationPhone:null,
             selectedIndex:0,
+            radioCheck:'',
         }
     },
     created(){
@@ -183,9 +184,9 @@ export default {
                 axios.delete(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
                 .then(res => {
                 console.log(res.data.data)
-                
                 this.sendMenu3Lending()
-                
+                this.selectIndex = ''
+                this.radioCheck = ''
                 }).catch(error => {
                     console.log("fail to load")
                     this.errorMessage = error.message;
@@ -199,8 +200,13 @@ export default {
         reset(index){
             console.log(this.relationPhoneData[index])
             this.selectrelation = ''
+            this.radioCheck = this.relationPhoneData[index].regSn
             this.relationNm = this.relationPhoneData[index].relationNm
             this.relationPhone = this.relationPhoneData[index].relationPhone
+            if(this.radioCheck === this.relationPhoneData[index].regSn){
+                this.selectIndex = ''
+                this.radioCheck = ''
+            }
 
         },
         modifyRelationPhoneData(){
@@ -237,7 +243,7 @@ export default {
             alert("성공적으로 수정되었습니다")
             this.sendMenu3Lending()
             this.selectIndex = ''
-            
+            this.radioCheck = ''
             }).catch(error => {
                 console.log("fail to load")
                 this.errorMessage = error.message;

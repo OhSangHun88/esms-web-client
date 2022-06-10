@@ -212,6 +212,7 @@ export default {
         errorpopup1: false, errorpopup2: false,
         saveChangeData: null,
         numberFire:null, numberEmg:null, firstZip:null, lastZip:null,
+        radioCheck:'' ,radioCount:0,
       }
     },
     created() {
@@ -379,13 +380,15 @@ export default {
     reset(index){
       console.log(index)
       console.log(this.recipientItems[index])
+      this.radioCheck = this.recipientItems[index].numberAreaString
       this.numberFire = this.recipientItems[index].numberFire
       this.numberEmg = this.recipientItems[index].numberEmg
       this.firstZip = this.recipientItems[index].firstZip
       this.lastZip = this.recipientItems[index].lastZip
-    },
-    resetRadio(){
-      this.saveChangeData = ''
+      if(this.recipientItems[index].numberAreaString === this.radioCheck){
+        this.saveChangeData = ''
+        this.radioCheck = ''
+      }
     },
     saveIPPBX(){
       if(this.saveChangeData===null||this.saveChangeData===undefined){
@@ -424,7 +427,8 @@ export default {
             if(resData){
                 alert("저장이 완료되었습니다.")
                 this.getRecipientData()
-                this.resetRadio()
+                this.saveChangeData = ''
+                this.radioCheck = ''
                 console.log(resData)
             }
             // this.getCSensorsData = res.data.data

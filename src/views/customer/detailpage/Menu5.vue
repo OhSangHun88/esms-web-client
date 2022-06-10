@@ -75,6 +75,7 @@ export default {
             msg : '',
             selectIndex: null,
             relationPhone:null,
+            radioCheck:'',
         }
     },
     created(){
@@ -139,6 +140,8 @@ export default {
     //동작후 갱신 메소드
     async sendMenu5Lending(){
         console.log("lending")
+        this.selectIndex = ''
+        this.radioCheck = ''
         const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers?typeCd=TPE001`
         const url2  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers?typeCd=TPE002`
         const url3  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers?typeCd=TPE003`
@@ -202,7 +205,12 @@ export default {
     reset(index){
         console.log(index)
         console.log(this.relationPhoneData[index])
+        this.radioCheck = this.relationPhoneData[index].regSn
         this.relationPhone = this.relationPhoneData[index].relationPhone
+        if(this.radioCheck === this.relationPhoneData[index].regSn){
+            this.selectIndex = ''
+            this.radioCheck = ''
+        }
     },
     modifyRelationPhoneData(){
         if(this.selectIndex === null || this.selectIndex === undefined || this.selectIndex === ''){
@@ -220,6 +228,7 @@ export default {
         console.log(res.data.data)
         alert("성공적으로 수정되었습니다")
         this.selectIndex = ''
+        this.radioCheck = ''
         this.sendMenu4Lending()
         }).catch(error => {
             console.log("fail to load")
@@ -241,7 +250,8 @@ export default {
             axios.delete(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
             console.log(res.data.data)
-            
+            this.selectIndex = ''
+            this.radioCheck = ''
             this.sendMenu4Lending()
             
             }).catch(error => {
