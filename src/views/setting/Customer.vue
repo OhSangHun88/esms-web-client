@@ -35,7 +35,7 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">생년월일</p>
-                            <input type="text" @keyup="getBirthdayMask(birthdayHyphen)" value="" v-model="selectedUpdateBirthday" >
+                            <input type="text" @keyup="getBirthdayMask(selectedUpdateBirthday)" value="" v-model="selectedUpdateBirthday" >
                           </div>
                           <div class="btn_area">
                               <p class="input_tit">성별</p>
@@ -1287,13 +1287,13 @@ export default {
       }
     },
     getMask(birthday){
+      let res = ''
       console.log("this ok")
       // if(!birthday){
       //   return birthday
       // } 
       birthday = birthday.replace(/[^0-9]/g, '')
       console.log(birthday)
-      let res=''
       if(birthday.length <5){
         res = birthday
         console.log("this ok 2")
@@ -1309,7 +1309,6 @@ export default {
     getBirthdayMask(input){
       let res = this.getMask(input)
       console.log(res)
-      console.log(input)
       this.birthdayHyphen = res
     },
     // inputBirthday(check){

@@ -280,7 +280,7 @@
                                     <td>{{item.sensorVersion}}</td>
                                     <td v-if="saveChangeData === index">
                                       <div class="input_area" style="margin-left:0px; margin-right:0px;">
-                                        <input type="text" name="" id="" v-model="changeIncomeNm" maxlength="6" @keydown ="checkChar(changeIncomeNm)" @keyup ="checkChar(changeIncomeNm)" >
+                                        <input type="text" name="" id="" v-model="changeIncomeNm" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
                                       </div>
                                     </td>
                                     <td v-else>{{!item.incomeNm? setIncomeNm(item.sensorId) : setIncomeNm(item.incomeNm)}}</td>
@@ -546,7 +546,7 @@ import axios from "axios";
       CbatteryValue:null,
       BbatteryValue:null,
       firmwarelist:[],
-      saveChangeData:'', changeIncomeNm:'', changeSensorId:'', changeSensorData:'', radiocheck:'', inputCheck:'',
+      saveChangeData:'', changeIncomeNm:'',changeIncomeNm2:'', changeSensorId:'', changeSensorData:'', radiocheck:'', inputCheck:'',
     }
    },
    created() {
@@ -1068,9 +1068,11 @@ import axios from "axios";
         }
         if(this.getCSensorsData[index].incomeNm){
             this.changeIncomeNm = this.getCSensorsData[index].incomeNm.padStart(6, 0)
+            this.changeIncomeNm2 = this.getCSensorsData[index].incomeNm.padStart(6, 0)
         }else if(!this.getCSensorsData[index].incomeNm){
             this.changeIncomeNm = String(this.getCSensorsData[index].sensorId)
             this.changeIncomeNm = this.changeIncomeNm.padStart(6, 0)
+            this.changeIncomeNm2 = this.changeIncomeNm.padStart(6, 0)
         }
         this.changeSensorData = {  
             sensorId: this.getCSensorsData[index].sensorId,
@@ -1113,6 +1115,9 @@ import axios from "axios";
     },
     async changeIncomeNmData(){
         let check
+        let check2
+        let check3
+        let arr=[]
         if(this.saveChangeData===null||this.saveChangeData===undefined||this.saveChangeData===''){
         alert("변경하시고자 하는 값을 선택해 주세요"); 
         return;
@@ -1131,10 +1136,24 @@ import axios from "axios";
             this.changeIncomeNm = this.changeIncomeNm.padStart(6,0)
         }
         check = this.getCSensorsData.filter(cd=>{
-            return String(cd.sensorId).padStart(6,0) === this.changeIncomeNm || String(cd.incomeNm).padStart(6,0) === this.changeIncomeNm
+            return String(cd.incomeNm).padStart(6,0) === this.changeIncomeNm
         })
-        if(check.length === 1){
+        check2 = this.getCSensorsData.filter(cd=>{
+            return cd.incomeNm === null || cd.incomeNm === '' || cd.incomeNm === undefined
+        })
+        for(let i =0; i<check2.length; i++){
+            if(String(check2[i].sensorId).padStart(6,0) === this.changeIncomeNm){
+                check3 = 1
+                break;
+            }else{
+                check3 = 0
+            }
+        }
+        console.log(check2)
+        console.log(check3)
+        if(check.length === 1 || check3 === 1){
             alert("이미 등록된 센서ID 입니다.")
+            this.changeIncomeNm = this.changeIncomeNm2
             return false
         }
         this.changeSensorData.incomeNm = this.changeIncomeNm
