@@ -1133,7 +1133,9 @@ import axios from "axios";
         if(this.changeIncomeNm.length === 6){
             this.changeIncomeNm
         }else if(this.changeIncomeNm.length < 6){
-            this.changeIncomeNm = this.changeIncomeNm.padStart(6,0)
+            alert("센서ID를 여섯자리까지 입력하여 주세요.")
+            this.changeIncomeNm = this.changeIncomeNm2
+            return false
         }
         check = this.getCSensorsData.filter(cd=>{
             return String(cd.incomeNm).padStart(6,0) === this.changeIncomeNm
