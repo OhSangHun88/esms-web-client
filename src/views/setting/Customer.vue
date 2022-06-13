@@ -35,7 +35,7 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">생년월일</p>
-                            <input type="text" @keydown="inputBirthday(check)" value="" v-model="selectedUpdateBirthday" >
+                            <input type="text" @keyup="getBirthdayMask(birthdayHyphen)" value="" v-model="selectedUpdateBirthday" >
                           </div>
                           <div class="btn_area">
                               <p class="input_tit">성별</p>
@@ -664,6 +664,7 @@ export default {
         saveChangeData: null,selectUserData: null,
         detailArr:[],
         check:'',
+        birthdayHyphen:'',
       }
     },
     created(){
@@ -1285,26 +1286,52 @@ export default {
         }
       }
     },
-    inputBirthday(check){
-      console.log("this. ====")
-      let birth = this.check.replace(/[^0-9]/g, '');
-      let birthday = ''
-      console.log(birth)
-      if(birth.length<5){
-        return birth
-      }else if(birth.length < 7){
-        birthday += birth.substring(0,4)
-        birthday += '-'
-        birthday += birth.substring(4)
+    getMask(birthday){
+      console.log("this ok")
+      // if(!birthday){
+      //   return birthday
+      // } 
+      birthday = birthday.replace(/[^0-9]/g, '')
+      console.log(birthday)
+      let res=''
+      if(birthday.length <5){
+        res = birthday
+        console.log("this ok 2")
       }else{
-        birthday += birth.substring(0,4)
-        birthday += '-'
-        birthday += birth.substring(4,6)
-        birthday += '-'
-        birthday += birth.substring(6)
+        if(birthday.length < 7){
+          res = birthday.substring(0,4) + '-' + birthday.substring(4)
+        }else if(birthday.length < 9){
+          res = birthday.substring(0,4) + '-' + birthday.substring(4,5) + '-' + birthday.substring(5)
+        }
       }
-      check.value = birthday
+      return res
     },
+    getBirthdayMask(input){
+      let res = this.getMask(input)
+      console.log(res)
+      console.log(input)
+      this.birthdayHyphen = res
+    },
+    // inputBirthday(check){
+    //   console.log("this. ====")
+    //   let birth = this.check.replace(/[^0-9]/g, '');
+    //   let birthday = ''
+    //   console.log(birth)
+    //   if(birth.length<5){
+    //     return birth
+    //   }else if(birth.length < 7){
+    //     birthday += birth.substring(0,4)
+    //     birthday += '-'
+    //     birthday += birth.substring(4)
+    //   }else{
+    //     birthday += birth.substring(0,4)
+    //     birthday += '-'
+    //     birthday += birth.substring(4,6)
+    //     birthday += '-'
+    //     birthday += birth.substring(6)
+    //   }
+    //   check.value = birthday
+    // },
     // 주소 검색
     search(){ 
     //여기

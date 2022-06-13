@@ -157,6 +157,9 @@
                             <button type="button" :class="sensorsTap===2? 'btn on':'btn'" @click="sensorsTogle(2)" >상세정보</button>
                         </div>
                     </div>
+                    <div class="btn_area" v-if="this.sensorsTap===2">
+                          <button type="button" style="margin-right:10px" class="btn" @click="changeIncomeNmData()">센서ID 변경</button>
+                    </div>
                 </div>
                 <div class="list" v-if="sensorsTap===1">
                     <table>
@@ -216,22 +219,24 @@
                 <div class="list" v-if="sensorsTap===2">
                     <table>
                         <colgroup>
+                            <col style="width:5%;">
+                            <col style="width:8%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
                             <col style="width:16%;">
                             <col style="width:16%;">
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
                                 <!-- 센서 상세정보 : 순번, 센서명, 센서이전버전, 센서설치버전 입고명, 입고일자, 등록일시 -->
+                                <th scope="col">선택</th>
                                 <th scope="col">순번</th>
                                 <th scope="col">센서명</th>
                                 <th scope="col">센서이전버전</th>
                                 <th scope="col">센서버전</th>
-                                <th scope="col">입고명</th>
+                                <th scope="col">센서ID</th>
                                 <th scope="col">등록일시</th>
                                 <th scope="col">수정일시</th>
                             </tr>
@@ -240,11 +245,12 @@
                     <div class="tbody htype-04">
                         <table>
                             <colgroup>
+                                <col style="width:5%;">
+                                <col style="width:8%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
-                                <col style="width:16%;">
-                                <col style="width:16%;">
-                                <col style="width:16%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
                                 <col style="width:16%;">
                                 <col style="width:16%;">
                             </colgroup>
@@ -257,15 +263,27 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                             <tbody v-else>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index,0)">
+                                    <td>
+                                      <div class="chk_area radio">
+                                        <input type="radio" name="saveChangeData" :id="`radio1_${index}`" v-model="saveChangeData" :value="index" @click="reset(index)">
+                                        <label :for="`radio1_${index}`" class="chk"><i class="ico_chk"></i></label>
+                                      </div>
+                                    </td>
                                     <td>{{index+1}}</td>
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{item.previousVersion}}</td>
                                     <td>{{item.sensorVersion}}</td>
-                                    <td>{{item.incomeNm}}</td>
+                                    <td v-if="saveChangeData === index">
+                                      <div class="input_area" style="margin-left:0px; margin-right:0px;">
+                                        <input type="text" name="" id="" v-model="changeIncomeNm" maxlength="6" @keydown ="checkChar(changeIncomeNm)" @keyup ="checkChar(changeIncomeNm)" >
+                                      </div>
+                                    </td>
+                                    <td v-else>{{!item.incomeNm? setIncomeNm(item.sensorId) : setIncomeNm(item.incomeNm)}}</td>
                                     <td>{{item.incomeDtime}}</td>
                                     <td>{{item.regDtime}}</td>
                                 </tr>
@@ -528,6 +546,7 @@ import axios from "axios";
       CbatteryValue:null,
       BbatteryValue:null,
       firmwarelist:[],
+      saveChangeData:'', changeIncomeNm:'', changeSensorId:'', changeSensorData:'', radiocheck:'', inputCheck:'',
     }
    },
    created() {
@@ -561,7 +580,7 @@ import axios from "axios";
             console.error("There was an error!", error);
           });
           this.getCSensorsData = tmpData
-          console.log(this.getBSensorsData)
+          console.log(this.getCSensorsData)
             
 
           setTimeout(this.delay, 2000)
@@ -1028,7 +1047,117 @@ import axios from "axios";
                 this.errorMessage = error.message;
                 console.error("There was an error!", error);
             });
-    }
+    },
+    setIncomeNm(incomeNm){
+        if(incomeNm){
+            let incomeNmOrId = String(incomeNm)
+            return incomeNmOrId = incomeNmOrId.padStart(6, 0)
+        }
+    },
+     checkChar(obj){
+         var regExp =  /[\{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+         if(regExp.test(obj)){
+            alert("특수문자는 입력하실 수 없습니다.")
+            this.changeIncomeNm = obj.substring( 0 , obj.length - 1 )
+         }
+     },
+    reset(index){
+        this.radiocheck = this.getCSensorsData[index]
+        if(this.radiocheck === this.getCSensorsData[index]){
+            this.saveChangeData = ''
+        }
+        if(this.getCSensorsData[index].incomeNm){
+            this.changeIncomeNm = this.getCSensorsData[index].incomeNm.padStart(6, 0)
+        }else if(!this.getCSensorsData[index].incomeNm){
+            this.changeIncomeNm = String(this.getCSensorsData[index].sensorId)
+            this.changeIncomeNm = this.changeIncomeNm.padStart(6, 0)
+        }
+        this.changeSensorData = {  
+            sensorId: this.getCSensorsData[index].sensorId,
+            orgId: this.getCSensorsData[index].orgId,
+            orgNm: this.getCSensorsData[index].orgNm,
+            gwId: this.getCSensorsData[index].gwId,
+            sensorTypeCd: this.getCSensorsData[index].sensorTypeCd,
+            sensorTypeNm: this.getCSensorsData[index].sensorTypeNm,
+            incomeNm: this.changeIncomeNm,
+            incomeDtime: this.getCSensorsData[index].incomeDtime,
+            sensorLocCd: this.getCSensorsData[index].sensorLocCd,
+            sensorLocNm: this.getCSensorsData[index].sensorLocNm,
+            sensorDetectCycle: this.getCSensorsData[index].sensorDetectCycle,
+            gwSendCycle: this.getCSensorsData[index].gwSendCycle,
+            svrSendCycle: this.getCSensorsData[index].svrSendCycle,
+            stateSvrSendCycle: this.getCSensorsData[index].stateSvrSendCycle,
+            stateGwSendCycle: this.getCSensorsData[index].stateGwSendCycle,
+            sensorStateCd:this.getCSensorsData[index].sensorStateCd,
+            sensorStateNm: this.getCSensorsData[index].sensorStateNm,
+            serialNo: this.getCSensorsData[index].serialNo,
+            macAddr: this.getCSensorsData[index].macAddr,
+            recipientId: this.getCSensorsData[index].recipientId,
+            recipientNm: this.getCSensorsData[index].recipientNm,
+            sensorVersion: this.getCSensorsData[index].sensorVersion,
+            previousVersion: this.getCSensorsData[index].previousVersion,
+            regDtime:this.getCSensorsData[index].regDtime,
+            sensorNickName: this.getCSensorsData[index].sensorNickName,
+            unapprovedYn: this.getCSensorsData[index].unapprovedYn,
+            comStateCd: this.getCSensorsData[index].comStateCd,
+            comStateNm: this.getCSensorsData[index].comStateNm,
+            faultYnCd:this.getCSensorsData[index].faultYnCd,
+            checkYnCd:this.getCSensorsData[index].checkYnCd,
+            rssi:this.getCSensorsData[index].rssi,
+            keepAliveRcvYn:this.getCSensorsData[index].keepAliveRcvYn,
+            faultYnNm: this.getCSensorsData[index].faultYnNm,
+            batteryValue: this.getCSensorsData[index].batteryValue,
+            stateMeasureDtime: this.getCSensorsData[index].stateMeasureDtime,
+            updDtime: this.getCSensorsData[index].updDtime,
+        }
+    },
+    async changeIncomeNmData(){
+        let check
+        if(this.saveChangeData===null||this.saveChangeData===undefined||this.saveChangeData===''){
+        alert("변경하시고자 하는 값을 선택해 주세요"); 
+        return;
+        }
+        if(!this.changeIncomeNm){
+            alert("센서ID를 입력하여 주세요.")
+            return false
+        }
+        if(this.changeIncomeNm.length > 6){
+            alert("센서ID는 여섯자리까지 입력 가능합니다.")
+            return false
+        }
+        if(this.changeIncomeNm.length === 6){
+            this.changeIncomeNm
+        }else if(this.changeIncomeNm.length < 6){
+            this.changeIncomeNm = this.changeIncomeNm.padStart(6,0)
+        }
+        check = this.getCSensorsData.filter(cd=>{
+            return String(cd.sensorId).padStart(6,0) === this.changeIncomeNm || String(cd.incomeNm).padStart(6,0) === this.changeIncomeNm
+        })
+        if(check.length === 1){
+            alert("이미 등록된 센서ID 입니다.")
+            return false
+        }
+        this.changeSensorData.incomeNm = this.changeIncomeNm
+        let url = this.$store.state.serverApi+`/admin//sensors/${this.changeSensorData.sensorId}`
+        console.log(this.changeSensorData)
+        console.log(url)
+        await axios.post(url,this.changeSensorData, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+              let resData = res.data.data
+              console.log(resData)
+              if(resData){
+                alert("성공적으로 변경되었습니다.")
+                this.saveChangeData = ''
+                this.radiocheck = ''
+                this.getCSensers()
+              }
+            })
+            .catch(error => {
+                console.log("fail to load")
+              this.errorMessage = error.message;
+              console.error("There was an error!", error);
+            });
+    },
     
     
 
