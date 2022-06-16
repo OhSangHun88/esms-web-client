@@ -533,7 +533,7 @@ export default {
       labels: [],
       labelsColor: 'rgba(17, 183, 1, 1)',
       datasets: [{
-        label: '장비가동률',
+        label: '지역 가동률',
         type: 'line',
         data: this.EuData,
         borderColor:'rgba(17, 183, 135, 1)',

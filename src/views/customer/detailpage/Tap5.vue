@@ -7,8 +7,8 @@
                         <div class="title_area">
                             <p class="tit">활동 미감지</p>
                         </div>
-                        <div v-if="!this.getCSensorsData"></div>
-                        <div class="btn_area" v-else>
+                        <div v-if="this.getCSensorsData.length === 0"></div>
+                        <div v-else class="btn_area" >
                             <button type="button" class="btn form2" @click="sendActiveUnsensingCycle">저장</button>
                         </div>
                     </div>
@@ -46,7 +46,8 @@
                         <div class="title_area">
                             <p class="tit">게이트웨이 상태 전송</p>
                         </div>
-                        <div class="btn_area">
+                        <div v-if="this.getCSensorsData.length === 0"></div>
+                        <div v-else class="btn_area">
                             <button type="button" class="btn form2" @click="sendCGateway">저장</button>
                         </div>
                     </div>
@@ -86,7 +87,8 @@
                     <div class="title_area">
                         <p class="tit">센서 감지 주기 및 전송 주기</p>
                     </div>
-                    <div class="btn_area">
+                    <div v-if="this.getCSensorsData.length === 0"></div>
+                    <div v-else class="btn_area">
                         <button type="button" class="btn form2" @click="saveSensorsDetectData">저장</button>
                     </div>
                 </div>
@@ -135,7 +137,7 @@
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index">
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="chk_area radio">
-                                            <input type="radio" name="sensorsDetect" :id="`radio1_${index}`" v-model="sensorsDetect" :value="index" >
+                                            <input type="radio" name="sensorsDetect" :id="`radio1_${index}`" v-model="sensorsDetect" :value="index" @click="check(index)">
                                             <label :for="`radio1_${index}`" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td>
@@ -171,8 +173,8 @@
                     <div class="title_area">
                         <p class="tit">센서 상태값 전송 주기</p>
                     </div>
-                    <div v-if="!this.getCSensorsData"></div>
-                    <div class="btn_area" v-else>
+                    <div v-if="this.getCSensorsData.length === 0"></div>
+                    <div v-else class="btn_area" >
                         <button type="button" class="btn form2" @click="saveSensorsStateData">저장</button>
                     </div>
                 </div>
@@ -268,6 +270,10 @@ import axios from "axios";
       sensorsState: null,
       resBodyData: null,
       setactiveUnsensingCycle:60,
+      svrsendCheck : '',
+      gwsendCheck : '',
+      resCheck1:'',
+      resCheck2:''
      }
    },
    created() {
@@ -425,8 +431,12 @@ import axios from "axios";
 
 
    },
+   check(index){
+    this.svrsendCheck = this.getCSensorsData[index].svrSendCycle
+    this.gwsendCheck = this.getCSensorsData[index].gwSendCycle
+   },
    //센서 감지 전송주기
-    saveSensorsDetectData(){
+    async saveSensorsDetectData(){
         if(this.sensorsDetect===null || this.sensorsDetect===undefined){
             alert('변경하시고자 하는 센서 종류를 선택해주세요')
             return false;
@@ -435,7 +445,6 @@ import axios from "axios";
         console.log(this.getCSensorsData[this.sensorsDetect])
         let sensorsDetectData = this.getCSensorsData[this.sensorsDetect]
         let sensorsId= this.getCSensorsData[this.sensorsDetect].sensorId
-        
         //sensorsDetectData.svrSendCycle = 
 
         if(sensorsDetectData.gwSendCycle !=60 && sensorsDetectData.gwSendCycle !=120 && sensorsDetectData.gwSendCycle !=180 && sensorsDetectData.gwSendCycle !=240){
@@ -452,19 +461,26 @@ import axios from "axios";
             return false;
 
         }
-
-        const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
-
-        axios.patch(url,sensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        console.log(this.svrsendCheck)
+        console.log(this.sensorsDetect.svrSendCycle)
+        console.log(this.gwsendCheck)
+        console.log(this.sensorsDetect.gwSendCycle)
+        const urlS  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
+        const urlG  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/gw-send-cycle`
+        
+         if(this.svrsendCheck != sensorsDetectData.svrSendCycle){
+        await axios.patch(urlS,sensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
             console.log(resData)
+            this.resCheck1 = resData
+            console.log(this.resCheck1)
             // this.getCSensorsData = res.data.data
             // console.log("sensors ")
             // console.log(this.getCSensorsData)
-            if(resData){
-                alert("저장이 완료되었습니다.")
-            }
+            // if(resData){
+            //     alert("저장이 완료되었습니다.")
+            // }
 
           })
           .catch(error => {
@@ -472,7 +488,39 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
+         }
+        if(this.gwsendCheck != sensorsDetectData.gwSendCycle){
+        await axios.patch(urlG,sensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            let resData = res.data.data
+            console.log(resData)
+            this.resCheck2 = resData
+            console.log(this.resCheck2)
+            // this.getCSensorsData = res.data.data
+            // console.log("sensors ")
+            // console.log(this.getCSensorsData)
+            // if(resData){
+            //     alert("저장이 완료되었습니다.")
+            // }
 
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+        }
+        console.log(this.resCheck1)
+        console.log(this.resCheck2)
+        if(this.resCheck1 === true && !this.resCheck2){
+            alert("저장이 완료되었습니다.")
+        }
+        if(!this.resCheck1 && this.resCheck2 === true){
+            alert("저장이 완료되었습니다.")
+        }
+        if(this.resCheck1 && this.resCheck2){
+            alert("저장이 완료되었습니다.")
+        }
 
     },
     //센서 상태값 전송주기

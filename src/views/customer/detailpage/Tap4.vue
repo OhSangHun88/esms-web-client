@@ -487,9 +487,9 @@
                             </colgroup>
                             <tbody v-if="this.getBSensorsData && connectTap===1 && beforeSensorToggle===0">
                                 <tr>
-                                    <td>{{!this.sensorTakeNm? '':this.getBSensorsData.comStateCd+"("+this.sensorTakeNm+")"}}</td>
+                                    <td>{{!this.sensorTakeNm? '': this.getBSensorsData.comStateCd===null? '':this.getBSensorsData.comStateCd+"("+this.sensorTakeNm+")"}}</td>
                                     <td>{{!this.getBSensorsData.batteryValue? '':this.getBSensorsData.batteryValue+"("+changeSensorBattery(this.getBSensorsData.batteryValue)+")"}}</td>
-                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.rssi+"("+changeRssi(this.getBSensorsData.rssi)+")"}}</td>
+                                    <td>{{!this.getBSensorsData? '': this.getBSensorsData.rssi===null? '' : this.getBSensorsData.rssi+"("+changeRssi(this.getBSensorsData.rssi)+")"}}</td>
                                     <td>{{this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
                                     <td>{{!this.getBSensorsData.keepAliveRcvYn? '':this.getBSensorsData.keepAliveRcvYn===1?'정상':this.getBSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
                                     <td>{{!this.getBSensorsData.stateMeasureDtime? '':this.getBSensorsData.stateMeasureDtime}}</td>
@@ -499,9 +499,9 @@
                             <tbody v-if="this.beforeVersionSensorsData && connectTap===1 && beforeSensorToggle===1">
                                 <!-- <tbody v-else> -->
                                 <tr>
-                                    <td>{{!this.beforeVersionSensorsData.comStateNm? '':this.beforeVersionSensorsData.comStateCd+"("+this.beforeVersionSensorsData.comStateNm+")"}}</td>
+                                    <td>{{!this.beforeVersionSensorsData.comStateNm? '': this.beforeVersionSensorsData.comStateNm===null? '':this.beforeVersionSensorsData.comStateCd+"("+this.beforeVersionSensorsData.comStateNm+")"}}</td>
                                     <td>{{!this.beforeVersionSensorsData.batteryValue? '': this.beforeVersionSensorsData.batteryValue+"("+changeSensorBattery(this.beforeVersionSensorsData.batteryValue)+")"}}</td>
-                                    <td>{{!this.beforeVersionSensorsData.rssi? '': this.beforeVersionSensorsData.rssi+"("+changeRssi(this.beforeVersionSensorsData.rssi)+")"}}</td>
+                                    <td>{{!this.beforeVersionSensorsData? '': this.beforeVersionSensorsData.rssi===null? '': this.beforeVersionSensorsData.rssi+"("+changeRssi(this.beforeVersionSensorsData.rssi)+")"}}</td>
                                     <td>{{this.beforeVersionSensorsData.checkYnCd ===null|| this.beforeVersionSensorsData.checkYnCd ===undefined ? '' : this.beforeVersionSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
                                     <td>{{!this.beforeVersionSensorsData.keepAliveRcvYn? '': this.beforeVersionSensorsData.keepAliveRcvYn===1?'정상':this.beforeVersionSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
                                     <td>{{!this.beforeVersionSensorsData.stateMeasureDtime? '': this.beforeVersionSensorsData.stateMeasureDtime}}</td>
@@ -627,7 +627,7 @@ import axios from "axios";
         if(this.getBSensorsData.comStateCd){
             this.getSensorTakeData();
         }
-        console.log(this.getBSensorsData.sensorId)
+        console.log(this.getBSensorsData)
         
     },
     // 게이트웨이 현재 통신 상태 함수
@@ -882,8 +882,8 @@ import axios from "axios";
     },
     // 테블릿, 게이트웨이 수치값
     changeTaGaBattery(input){
-        if(input === null || input === undefined){
-          return ''
+        if(input === null || input === undefined || input === ''){
+          return ' '
         }else if(input === 255){
             return '미수신'
         }else if(input >= 51 && input <= 100){
@@ -900,6 +900,8 @@ import axios from "axios";
         console.log(input)
         if(input === 255){
             return '미수신'
+        }else if(input === null || input === undefined || input === ''){
+            return ' '
         }else if(input <= 0 && input >= -80) {
 			return "양호";
 		}else if( input <-80  && input >= -99) {

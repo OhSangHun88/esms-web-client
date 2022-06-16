@@ -434,8 +434,8 @@ export default {
           let a =''
           // for(let i=1; i<this.pageCount+1; i++){
           //   a =30*i
-          //   tmpArr = this.recipientItems.slice(0, a)
-          //   tmpArr2 = tmpArr.slice(a, )
+          //   tmpArr = this.recipientItems.slice(30*(i-1), a)
+          //   // tmpArr2 = tmpArr.slice(a, )
           //   console.log(tmpArr)
           // }
         })

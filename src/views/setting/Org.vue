@@ -319,7 +319,7 @@
                     <table>
                         <colgroup>
                           <col style="width:5%;">
-                          <col style="width:7%;">
+                          
                           <col style="width:8%;">
                           <col style="width:8%;">
                           <col style="width:10%;">
@@ -333,7 +333,7 @@
                         <thead>
                             <tr>
                               <th scope="col">순번</th>
-                              <th scope="col">기관ID</th>
+                              
                               <th scope="col">시/도</th>
                               <th scope="col">시/군/구</th>
                               <th scope="col">관리기관명</th>
@@ -350,7 +350,7 @@
                         <table>
                             <colgroup>
                             <col style="width:5%;">
-                            <col style="width:7%;">
+                            
                             <col style="width:8%;">
                             <col style="width:8%;">
                             <col style="width:10%;">
@@ -364,7 +364,7 @@
                             <tbody >
                                 <tr v-for="(item,index) in TorgItems" v-bind:key="index" :ref="`target_${index}`">
                                   <td><a href="#" @click="detailOrgpopup(index)">{{index+1}}</a></td>
-                                  <td><a href="#" @click="detailOrgpopup(index)">{{item.orgId}}</a></td>
+                                  
                                   <td><a href="#" @click="detailOrgpopup(index)">{{item.sidoName}}</a></td>
                                   <td><a href="#" @click="detailOrgpopup(index)">{{item.sggName}}</a></td>
                                   <td><a href="#" @click="detailOrgpopup(index)">{{item.orgNm}}</a></td>
