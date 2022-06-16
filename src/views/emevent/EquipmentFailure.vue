@@ -276,6 +276,7 @@ export default {
 
     // 시/군/구 목록
     getSggData() {
+      this.selectedSggItems = ''
       let url =this.$store.state.serverApi + "/admin/address/sgg";
       if(this.sidoCd != ''){
         url += "?sidoCd="+this.sidoCd;
@@ -310,6 +311,7 @@ export default {
     // 관리 기관 목록
 
     getOrgmData() {
+      this.selectedOrgItems = ''
       let url =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
         let sggCode = this.sggCd.substring(0, 5);

@@ -240,7 +240,7 @@ export default {
         sensorItems:[], StatedItems: [],
         errorpopup1: false, errorpopup2: false,
         firstPage: 1, lastPage: 10,
-        code1:1,code2:2,code3:3,
+        code1:'',code2:'',code3:3,
       }
     },
     created() {
@@ -278,6 +278,7 @@ export default {
     },
     // 시/군/구 목록
     getSggData() {
+      this.selectedSggItems = ''
       let url =this.$store.state.serverApi + "/admin/address/sgg";
       if(this.sidoCd != ''){
         url += "?sidoCd="+this.sidoCd;
@@ -310,6 +311,7 @@ export default {
     },
     // 관리 기관 목록
     getOrgmData() {
+      this.selectedOrgItems = ''
       let url =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
         let sggCode = this.sggCd.substring(0, 5);
@@ -387,14 +389,18 @@ export default {
       return tmp2.diff(tmp1, 'years');
     },
      async manageInquiry(input,input2,input3) {  
-
+      console.log(input)
+      console.log(input2)
+      console.log(input3)
       let code = input ? input : input2 ? input2 : input3
       switch (code){
           case 1 : this.equipList2="gateway"; break;
           case 2 : this.equipList2="tablet"; break;
           case 3 : this.equipList2="sensor"; break;
       }
-
+      console.log(this.code1)
+      console.log(this.code2)
+      console.log(this.code3)
       let uri = '';
       let addrCode = '';
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
@@ -427,6 +433,7 @@ export default {
         +"&sensorTypeCd="+this.selectedTypeItems
         +"&stateCd="+this.selectedStatedItems
       }
+      console.log(uri)
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.recipientItems = response.data.data

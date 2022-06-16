@@ -203,9 +203,9 @@
             <div>
               <p style="float: left; width: 270px; margin-left: 40px">게이트웨이</p>
               <p style="float: left; width: 208px;">응급호출기</p>
+              <p style="float: left; width: 196px;">활동감지센서</p>
               <p style="float: left; width: 215px;">화재감지기</p>
               <p style="float: left; width: 195px;">도어센서</p>
-              <p style="float: left; width: 196px;">활동감지센서</p>
               <p style="float: left; width: 100px;">생활안심센서</p>
             </div>
             <div style="float: left; width: 160px; position: relative;">
@@ -220,6 +220,12 @@
               </div>
               <canvas height="100px" width="100px" ref="doughnutChart2"/>
             </div>
+            <div style="float: left; width: 160px; margin-left: 3.9%; position: relative;">
+              <div style="font-size:30px; font-weight: bold; width: 100%; height: 40px; position: absolute; top: 55%; left: 0; margin-top: -20px; line-height:19px; text-align: center; font">
+                {{this.finalPwAcData1[0]}}%
+              </div>
+              <canvas height="100px" width="100px" ref="doughnutChart5"/>
+            </div>
             <div style="float: left; width: 160px; margin-left: 3.7%; position: relative;">
               <div style="font-size:30px; font-weight: bold; width: 100%; height: 40px; position: absolute; top: 55%; left: 0; margin-top: -20px; line-height:19px; text-align: center; font">
                 {{this.finalPwFiData1[0]}}%
@@ -231,12 +237,6 @@
                 {{this.finalPwDoData1[0]}}%
               </div>
               <canvas height="100px" width="100px" ref="doughnutChart4"/>
-            </div>
-            <div style="float: left; width: 160px; margin-left: 3.9%; position: relative;">
-              <div style="font-size:30px; font-weight: bold; width: 100%; height: 40px; position: absolute; top: 55%; left: 0; margin-top: -20px; line-height:19px; text-align: center; font">
-                {{this.finalPwAcData1[0]}}%
-              </div>
-              <canvas height="100px" width="100px" ref="doughnutChart5"/>
             </div>
             <div style="float: left; width: 160px; margin-left: 3%; position: relative;">
               <div style="font-size:30px; font-weight: bold; width: 100%; height: 40px; position: absolute; top: 55%; left: 0; margin-top: -20px; line-height:19px; text-align: center; font">
@@ -279,7 +279,7 @@ export default {
     sidoItems:[], sggItems:[], orgmItems:[],
     selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'',
     // 날짜
-    s_date: null, e_date: null,
+    s_date: null, e_date: null, e_date1:null,
     errorpopup1: false, errorpopup2: false,
     // 설치 가구수, 응급관리요원, 생활 관리사
     setCount: 0, setEMCount: 0, setLMCount: 0,
@@ -296,12 +296,13 @@ export default {
     EvchartData1: null, EvchartOptions1: null, EvchartImage1: null,
     TodayEventData: null, TodayEventOptions: null, TodayEventImage: null,
     BtchartData: null, BtchartOptions: null, BtchartImage: null,
-    EuData: [ 82, 89, 23, 75, 42, 63, 87 ], TotalEuData: [ 88, 95, 85, 94, 82, 88, 98 ], EuChartItems:[],
+    EuData: [ 82, 89, 23, 75, 42, 63, 87 ], TotalEuData: [ 88, 95, 85, 94, 82, 88, 98 ], EuChartItems:[], EuTodayChartItems:[],
     EvFireData: [ 12, 19, 7, 5, 8, 13, 7 ], EvEmData: [10, 12, 11, 10, 10, 15, 9], EvSafeData:[5, 12, 10, 7, 7, 8, 17], EvChartItems:[],
     TodayFireData: [7], TodayEmData: [9], TodaySafeData:[17],
     BtFullData: [ 12, 19, 7, 5, 8, 13], BtLackData: [10, 12, 11, 10, 10, 15], BtChangeData:[5, 12, 10, 7, 7, 8],
-    newEuArr:[], 
+    newEuArr:[], newTotalEuArr:[],
     newEvChartArr:[], newEvFireArr:[],newEvEmArr:[],newEvSafeArr:[],
+    newTodayChartArr:[],newTodayFireData: [], newTodayEmData: [], newTodaySafeData:[],
     newBtFullArr:[], newBtLackArr:[], newBtChangeArr:[],
     newEuChartLabelArr:[], newEuChartMMLabelArr:[], newEuChartDDLabelArr:[],
     newEvChartLabelArr:[], newEvChartMMLabelArr:[], newEvChartDDLabelArr:[],
@@ -416,6 +417,7 @@ export default {
     },
     //--------------------------시/군/구--------------------------
     getSggData() {
+      this.selectedSggItems = ''
       let url =this.$store.state.serverApi + "/admin/address/sgg";
       if(this.sidoCd != ''){
         url += "?sidoCd="+this.sidoCd;
@@ -449,6 +451,7 @@ export default {
     },
     //--------------------------관리기관--------------------------
     getOrgmData() {
+      this.selectedOrgItems = ''
       let url =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
         let sggCode = this.sggCd.substring(0, 5);
@@ -622,7 +625,25 @@ export default {
         addrCd = ''
       }
       this.e_date =  moment(this.s_date).add(6,'days').format('YYYY-MM-DD')
+      let urlEuTodayChart = this.$store.state.serverApi + "/admin/organizations/stat/oper?startDate="+this.s_date+"&endDate="+this.e_date;
       let urlEuChart = this.$store.state.serverApi + "/admin/organizations/stat/oper?addrCd="+addrCd+"&orgId="+this.selectedOrgItems+"&startDate="+this.s_date+"&endDate="+this.e_date;
+      // 전체 가동률
+      await axios.get(urlEuTodayChart, {headers: {"Authorization": sessionStorage.getItem("token")}})
+        .then(response => {
+          this.EuTodayChartItems=[];     
+          for(let i=0; i<response.data.data.length; i++) {
+            this.EuTodayChartItems.push({
+              statDate: response.data.data[i].statDate,
+              installCnt: response.data.data[i].installCnt,
+              operCnt: response.data.data[i].operCnt,
+            });
+          }
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+      // 장비 가동률
       await axios.get(urlEuChart, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           this.EuChartItems=[];     
@@ -633,38 +654,64 @@ export default {
               operCnt: response.data.data[i].operCnt,
             });
           }
-          
         })
         .catch(error => {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
       let tmpArr1 = []
+      let tmpArr2 = []
+      let checkAll = ''
+      let checkAll2 = ''
       this.newEuArr=[]
+      this.newTotalEuArr = []
       this.newEuChartLabelArr=[]
       this.newEuChartMMLabelArr=[]
       this.newEuChartDDLabelArr=[]
-      for(let i=0; i<7; i++){
 
+      checkAll = this.EuChartItems.filter(cd=>{
+        return cd.statDate === "ALL"
+      })
+      checkAll2 = this.EuTodayChartItems.filter(cd=>{
+        return cd.statDate === "ALL"
+      })
+      for(let i=0; i<7; i++){
         tmpArr1.push({
           statDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
-          installCnt:1,
-          operCnt: 1,
+          installCnt:0,
+          operCnt: 0,
         })
-
+        tmpArr2.push({
+          statDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
+          installCnt:0,
+          operCnt: 0,
+        })
       }
-
+      if(checkAll.length !== 0){
+      tmpArr1.push({
+        statDate: checkAll[0].statDate,
+        installCnt: checkAll[0].installCnt,
+        operCnt: checkAll[0].operCnt
+      })
+      }
+      if(checkAll2.length !== 0){
+        tmpArr2.push({
+        statDate: checkAll2[0].statDate,
+        installCnt: checkAll2[0].installCnt,
+        operCnt: checkAll2[0].operCnt
+      })
+      }
       if(this.EuChartItems != ''){
       for(let i=0; i<this.EuChartItems.length; i++){
-        if(this.EuChartItems[i].installCnt != "0"){
+        if(this.EuChartItems[i].installCnt !== 0){
           let tmpidx = tmpArr1.findIndex(idx =>{
-            return idx.statDate == this.EuChartItems[i].statDate
+            return idx.statDate === this.EuChartItems[i].statDate
           })
           tmpArr1[tmpidx].installCnt = this.EuChartItems[i].installCnt
           tmpArr1[tmpidx].operCnt = this.EuChartItems[i].operCnt
         }else{
-          tmpArr1[i].installCnt = "1"
-          tmpArr1[i].operCnt = "1"
+          tmpArr1[i].installCnt = "0"
+          tmpArr1[i].operCnt = "0"
         }
       }}else{
         for(let i=0; i<7; i++){
@@ -674,12 +721,46 @@ export default {
           operCnt: 0,
         }
       }}
-      
+      if(this.EuTodayChartItems != ''){
+      for(let i=0; i<this.EuTodayChartItems.length; i++){
+        if(this.EuTodayChartItems[i].installCnt !== 0){
+          let tmpidx = tmpArr2.findIndex(idx =>{
+            return idx.statDate === this.EuTodayChartItems[i].statDate
+          })
+          tmpArr2[tmpidx].installCnt = this.EuTodayChartItems[i].installCnt
+          tmpArr2[tmpidx].operCnt = this.EuTodayChartItems[i].operCnt
+        }else{
+          tmpArr2[i].installCnt = "0"
+          tmpArr2[i].operCnt = "0"
+        }
+      }}else{
+        for(let i=0; i<7; i++){
+        tmpArr2[i] = {
+          statDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
+          installCnt:0,
+          operCnt: 0,
+        }
+      }}
+      console.log(tmpArr1)
+      console.log(checkAll2)
+      console.log(tmpArr2)
+      if(checkAll.length !== 0){
+      for(let i=0; i<tmpArr1.length-1; i++){
+        tmpArr1[i].installCnt = Number(tmpArr1[i].installCnt)+Number(checkAll[0].installCnt)
+      }
+      }
+      if(checkAll2.length !== 0){
+      for(let i=0; i<tmpArr2.length-1; i++){
+        tmpArr2[i].installCnt = Number(tmpArr2[i].installCnt)+Number(checkAll2[0].installCnt)
+      }
+      }
       if(this.EuChartItems != ''){
         for(let i=0; i<7; i++){
+          if(tmpArr1[i].installCnt !== 0){
           this.newEuArr[i] = (tmpArr1[i].operCnt/tmpArr1[i].installCnt*100)
-          if(this.newEuArr[i] == "0"){
-            this.newEuArr[i] = 100
+          this.newEuArr[i] = Math.round(this.newEuArr[i])
+          }else{
+            this.newEuArr[i] = 0
           }
           this.newEuChartMMLabelArr.push(tmpArr1[i].statDate.substring(4, 6))
           this.newEuChartDDLabelArr.push(tmpArr1[i].statDate.substring(6, 8))
@@ -693,9 +774,27 @@ export default {
             this.newEuChartLabelArr.push(this.newEuChartMMLabelArr[i] +"-"+ this.newEuChartDDLabelArr[i])
         }
       }
+      if(this.EuTodayChartItems != ''){
+        for(let i=0; i<7; i++){
+          if(tmpArr2[i].installCnt !== 0){
+          this.newTotalEuArr[i] = (tmpArr2[i].operCnt/tmpArr2[i].installCnt*100)
+          this.newTotalEuArr[i] = Math.round(this.newTotalEuArr[i])
+          }else{
+            this.newTotalEuArr[i] = 0
+          }
+        }
+      }else{
+        for(let i=0; i<7; i++){
+            this.newTotalEuArr[i] = 0
+        }
+      }
+      console.log(this.newEuArr)
+      console.log(this.newTotalEuArr)
+      console.log(tmpArr2)
       this.EuData = this.newEuArr
+      this.TotalEuData = this.newTotalEuArr
       this.EuchartData.datasets[0].data = this.EuData
-      this.EuchartData.datasets[1].data = this.EuData
+      this.EuchartData.datasets[1].data = this.newTotalEuArr
       this.EuchartData.labels = this.newEuChartLabelArr
       this.EuchartRedraw();
     },
@@ -855,6 +954,7 @@ export default {
     },
     async remakeEvData(){
       this.EvchartImage1.destroy();  
+      this.TodayEventImage.destroy();
       let addrCd = ''
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
@@ -864,6 +964,7 @@ export default {
         addrCd = ''
       }
       this.e_date = moment(this.s_date).add(6,'days').format('YYYY-MM-DD')
+      this.e_date1 = moment(this.s_date).add(7,'days').format('YYYY-MM-DD')
       let urlEventStatus = this.$store.state.serverApi + "/admin/organizations/stat/alarm?addrCd="+addrCd+"&orgId="+this.selectedOrgItems+"&startDate="+this.s_date+"&endDate="+this.e_date
       await axios.get(urlEventStatus, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
@@ -877,19 +978,24 @@ export default {
               });
             } 
             this.EvChartItems=EvtempArr;
+            console.log(urlEventStatus)
+            console.log(this.EvChartItems)
           })
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
 
+
       let tmpArr1 = []
       let tmpArr2 = []
       let tmpArr3 = []
+      let tmpArr4 = []
       this.newEvChartArr=[]
       this.newEvFireArr = []
       this.newEvEmArr = []
       this.newEvSafeArr = []
+      this.newTodayChartArr=[]
       this.newEvChartLabelArr=[]
       this.newEvChartMMLabelArr=[]
       this.newEvChartDDLabelArr=[]
@@ -900,65 +1006,120 @@ export default {
           eventCd: null,
           occurDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
         })
-            tmpArr2.push({
-              alarmCnt:0,
-              eventCd: null,
-              occurDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
-            })
-            tmpArr3.push({
-              alarmCnt:0,
-              eventCd: null,
-              occurDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
-            })
-          }
-          
-          for(let i=0; i<this.EvChartItems.length; i++){
-            if(this.EvChartItems[i].eventCd==="E1013"){
-              let tmpidx = tmpArr1.findIndex(idx =>{
-                return idx.occurDate == this.EvChartItems[i].occurDate
-              })
-              tmpArr1[tmpidx].alarmCnt = this.EvChartItems[i].alarmCnt
-              tmpArr1[tmpidx].eventCd = this.EvChartItems[i].eventCd
-            }
-            if(this.EvChartItems[i].eventCd==="E1014"){
-              let tmpidx = tmpArr2.findIndex(idx =>{
-                return idx.occurDate == this.EvChartItems[i].occurDate
-              })
-              tmpArr2[tmpidx].alarmCnt = this.EvChartItems[i].alarmCnt
-              tmpArr2[tmpidx].eventCd = this.EvChartItems[i].eventCd
-            }
-            if(this.EvChartItems[i].eventCd==="E1016"){
-              let tmpidx = tmpArr3.findIndex(idx =>{
-                return idx.occurDate == this.EvChartItems[i].occurDate
-              })
-              tmpArr3[tmpidx].alarmCnt = this.EvChartItems[i].alarmCnt
-              tmpArr3[tmpidx].eventCd = this.EvChartItems[i].eventCd
-            }
-          }
-          for(let i=0; i<7; i++){
-            this.newEvFireArr.push(tmpArr1[i].alarmCnt)
-            this.newEvEmArr.push(tmpArr2[i].alarmCnt)
-            this.newEvSafeArr.push(tmpArr3[i].alarmCnt)
-            this.newEvChartMMLabelArr.push(tmpArr1[i].occurDate.substring(4, 6))
-            this.newEvChartDDLabelArr.push(tmpArr1[i].occurDate.substring(6, 8))
-            this.newEvChartLabelArr.push(this.newEvChartMMLabelArr[i] +"-"+ this.newEvChartDDLabelArr[i])
-          }
-
+        tmpArr2.push({
+          alarmCnt:0,
+          eventCd: null,
+          occurDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
+        })
+        tmpArr3.push({
+          alarmCnt:0,
+          eventCd: null,
+          occurDate: moment(this.s_date).add(i,'days').format('YYYYMMDD'),
+        })
+      }
+      console.log(this.EvChartItems)
+      for(let i=0; i<this.EvChartItems.length; i++){
+        if(this.EvChartItems[i].eventCd==="E1013"){
+          let tmpidx = tmpArr1.findIndex(idx =>{
+            return idx.occurDate == this.EvChartItems[i].occurDate
+          })
+          console.log(tmpidx)
+          tmpArr1[tmpidx].alarmCnt = this.EvChartItems[i].alarmCnt
+          tmpArr1[tmpidx].eventCd = this.EvChartItems[i].eventCd
+        }
+        if(this.EvChartItems[i].eventCd==="E1016"){
+          let tmpidx = tmpArr2.findIndex(idx =>{
+            return idx.occurDate == this.EvChartItems[i].occurDate
+          })
+          tmpArr2[tmpidx].alarmCnt = this.EvChartItems[i].alarmCnt
+          tmpArr2[tmpidx].eventCd = this.EvChartItems[i].eventCd
+        }
+        if(this.EvChartItems[i].eventCd==="E1014"){
+          let tmpidx = tmpArr3.findIndex(idx =>{
+            return idx.occurDate == this.EvChartItems[i].occurDate
+          })
+          tmpArr3[tmpidx].alarmCnt = this.EvChartItems[i].alarmCnt
+          tmpArr3[tmpidx].eventCd = this.EvChartItems[i].eventCd
+        }
+      }
+      for(let i=0; i<7; i++){
+        this.newEvFireArr.push(tmpArr1[i].alarmCnt)
+        this.newEvEmArr.push(tmpArr2[i].alarmCnt)
+        this.newEvSafeArr.push(tmpArr3[i].alarmCnt)
+        this.newEvChartMMLabelArr.push(tmpArr1[i].occurDate.substring(4, 6))
+        this.newEvChartDDLabelArr.push(tmpArr1[i].occurDate.substring(6, 8))
+        this.newEvChartLabelArr.push(this.newEvChartMMLabelArr[i] +"-"+ this.newEvChartDDLabelArr[i])
+      }
+      let e_date1=''
+      let e_date2=''
+      let e_date3=''
+      let e_date4=''
+      e_date1 = this.e_date.substring(0,4)
+      e_date2 = this.e_date.substring(5,7)
+      e_date3 = this.e_date.substring(8,10)
+      e_date4 = e_date1 + e_date2 + e_date3
       
+      this.newTodayChartArr = this.EvChartItems.filter(cd=>{
+        return cd.occurDate === e_date4
+      })
+      console.log(this.newTodayChartArr)
+      let newFi = []
+      let newEm = []
+      let newSa = []
+      this.newTodayFireData = []
+      this.newTodayEmData = []
+      this.newTodaySafeData = []
+      newFi = this.newTodayChartArr.filter(cd=>{
+        return cd.eventCd === 'E1013'
+      })
+      newEm = this.newTodayChartArr.filter(cd=>{
+        return cd.eventCd === 'E1016'
+      })
+      newSa = this.newTodayChartArr.filter(cd=>{
+        return cd.eventCd === 'E1014'
+      })
+      console.log(newEm)
+      if(newFi.length !== 0){
+      this.newTodayFireData.push(newFi[0].alarmCnt)
+      }else{
+        this.newTodayFireData[0] = 0
+      }
+      if(newEm.length !== 0){
+      this.newTodayEmData.push(newEm[0].alarmCnt)
+      }else{
+        this.newTodayEmData[0] = 0
+      }
+      if(newSa.length !== 0){
+      this.newTodaySafeData.push(newSa[0].alarmCnt)
+      }else{
+        this.newTodaySafeData[0] = 0
+      }
+      console.log(this.newTodayFireData)
+
+
       this.EvFireData = this.newEvFireArr
       this.EvEmData = this.newEvEmArr
       this.EvSafeData = this.newEvSafeArr
+      this.TodayFireData = this.newTodayFireData
+      this.TodayEmData = this.newTodayEmData
+      this.TodaySafeData = this.newTodaySafeData
       this.EvchartData1.datasets[0].data = this.EvFireData
       this.EvchartData1.datasets[1].data = this.EvEmData
       this.EvchartData1.datasets[2].data = this.EvSafeData
       this.EvchartData1.labels = this.newEvChartLabelArr
+      this.TodayEventData.datasets[0].data = this.TodayFireData
+      this.TodayEventData.datasets[1].data = this.TodayEmData
+      this.TodayEventData.datasets[2].data = this.TodaySafeData
+      console.log(this.TodayEventData.datasets)
+      this.TodayEvchartRedraw();
       this.EvchartRedraw();
+      
     },
     //--------------------------배터리 상태 차트--------------------------
     createBtData(){
       let data = {
         type: 'bar',
-        labels: [ 'GW', '응급', '화재', '출입문', '활동', '생활'],
+        labels: [ 'GW', '응급', '활동', '화재', '출입문', '생활'],
         datasets: [{
         label: '양호',
         maxBarThickness: 12,  
@@ -1024,7 +1185,7 @@ export default {
         type:'bar',
         data:this.BtchartData,
         options:this.BtchartOptions
-      })
+      })      
       this.BtchartImage.update();
     },
     async remakeBtData(){
@@ -1086,7 +1247,7 @@ export default {
             })
           }
           if(this.BtChartItems != ''){
-            for(let i=0; i<7; i++){
+            for(let i=0; i<this.BtChartItems.length; i++){
               if(!this.BtChartItems[i]){
                 break;
               }else if(this.BtChartItems[i].statName==="충만"){
@@ -1123,7 +1284,6 @@ export default {
               this.newBtChangeArr.push(tmpArr3.statCnt)
             }
           }
-      
       this.BtFullData = this.newBtFullArr
       this.BtLackData = this.newBtLackArr
       this.BtChangeData = this.newBtChangeArr
@@ -1467,7 +1627,7 @@ export default {
         addrCd = ''
       }
       this.e_date =  moment(this.s_date).add(6,'days').format('YYYY-MM-DD')
-      let urlPower = this.$store.state.serverApi + "/admin/organizations/stat/rssi?addrCd="+addrCd+"&orgId="+this.selectedOrgItems+"&startDate="+this.s_date+"&endDate="+this.e_date
+      let urlPower = this.$store.state.serverApi + "/admin/organizations/stat/com?addrCd="+addrCd+"&orgId="+this.selectedOrgItems+"&startDate="+this.s_date+"&endDate="+this.e_date
       await axios.get(urlPower, {headers: {"Authorization": sessionStorage.getItem("token")}})
           .then(response => {
             const PwtempArr = [];
@@ -1485,13 +1645,134 @@ export default {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-
+          // 각 statName 별로 넣을 배열 초기화
           let tmpArr1 = []
+          let tmpArr1_1 = []
+          tmpArr1_1.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr1_2 = []
+          tmpArr1_2.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr1_1_1 = []
+          let tmpArr1_2_1 = []
           let tmpArr2 = []
+          let tmpArr2_1 = []
+          tmpArr2_1.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr2_2 = []
+          tmpArr2_2.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr2_3 = []
+          tmpArr2_3.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr2_1_1 = []
+          let tmpArr2_2_1 = []
+          let tmpArr2_3_1 = []
           let tmpArr3 = []
+          let tmpArr3_1 = []
+          tmpArr3_1.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr3_2 = []
+          tmpArr3_2.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr3_3 = []
+          tmpArr3_3.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr3_1_1 = []
+          let tmpArr3_2_1 = []
+          let tmpArr3_3_1 = []
           let tmpArr4 = []
+          let tmpArr4_1 = []
+          tmpArr4_1.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr4_2 = []
+          tmpArr4_2.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr4_3 = []
+          tmpArr4_3.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr4_1_1 = []
+          let tmpArr4_2_1 = []
+          let tmpArr4_3_1 = []
           let tmpArr5 = []
+          let tmpArr5_1 = []
+          tmpArr5_1.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr5_2 = []
+          tmpArr5_2.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr5_3 = []
+          tmpArr5_3.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr5_1_1 = []
+          let tmpArr5_2_1 = []
+          let tmpArr5_3_1 = []
           let tmpArr6 = []
+          let tmpArr6_1 = []
+          tmpArr6_1.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr6_2 = []
+          tmpArr6_2.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr6_3 = []
+          tmpArr6_3.push({
+                  sensorTypeCd: '',
+                  statCnt: '',
+                  statName: '',
+                })
+          let tmpArr6_1_1 = []
+          let tmpArr6_2_1 = []
+          let tmpArr6_3_1 = []
+
+
           this.newPwGwArr = []
           this.newPwEmArr = []
           this.newPwFiArr = []
@@ -1499,6 +1780,7 @@ export default {
           this.newPwAcArr = []
           this.newPwLiArr = []
 
+          // api로 불러온 데이터를 센서 타입 코드 별로 배열에 저장
           for(let i=0; i<this.PwChartItems.length; i++){
             if(!this.PwChartItems[i]){
               break;
@@ -1546,31 +1828,116 @@ export default {
               })
             }
           }
-          let makeArr1=[]
-          let makeArr2=[]
-          let makeArr3=[]
-          let makeArr4=[]
-          let makeArr5=[]
-          let makeArr6=[]
+          // 호출한 api에 센서 타입 코드와 statName이 같을 경우 변수에 저장
+          tmpArr1_1_1 = tmpArr1.filter(cd=>{
+                return cd.statName === '연결'
+              })
+          tmpArr1_2_1 = tmpArr1.filter(cd=>{
+            return cd.statName === '차단'
+          })
+          if(tmpArr1_1_1.length !== 0){
+            tmpArr1_1 = tmpArr1_1_1
+          }
+          if(tmpArr1_2_1.length !== 0){
+            tmpArr1_2 = tmpArr1_2_1
+          }
+          tmpArr2_1_1 = tmpArr2.filter(cd=>{
+            return cd.statName === 'TAK001'
+          })
+          tmpArr2_2_1 = tmpArr2.filter(cd=>{
+            return cd.statName === 'TAK002'
+          })
+          tmpArr2_3_1 = tmpArr2.filter(cd=>{
+            return cd.statName === 'TAK003'
+          })
+          if(tmpArr2_1_1.length !== 0){
+            tmpArr2_1 = tmpArr2_1_1
+          }
+          if(tmpArr2_2_1.length !== 0){
+            tmpArr2_2 = tmpArr2_2_1
+          }
+          if(tmpArr2_3_1.length !== 0){
+            tmpArr2_3 = tmpArr2_3_1
+          }
+          tmpArr3_1_1 = tmpArr3.filter(cd=>{
+            return cd.statName === 'TAK001'
+          })
+          tmpArr3_2_1 = tmpArr3.filter(cd=>{
+            return cd.statName === 'TAK002'
+          })
+          tmpArr3_3_1 = tmpArr3.filter(cd=>{
+            return cd.statName === 'TAK003'
+          })
+          if(tmpArr3_1_1.length !== 0){
+            tmpArr3_1 = tmpArr3_1_1
+          }
+          if(tmpArr3_2_1.length !== 0){
+            tmpArr3_2 = tmpArr3_2_1
+          }
+          if(tmpArr3_3_1.length !== 0){
+            tmpArr3_3 = tmpArr3_3_1
+          }
+          tmpArr4_1_1 = tmpArr4.filter(cd=>{
+            return cd.statName === 'TAK001'
+          })
+          tmpArr4_2_1 = tmpArr4.filter(cd=>{
+            return cd.statName === 'TAK002'
+          })
+          tmpArr4_3_1 = tmpArr4.filter(cd=>{
+            return cd.statName === 'TAK003'
+          })
+          if(tmpArr4_1_1.length !== 0){
+            tmpArr4_1 = tmpArr4_1_1
+          }
+          if(tmpArr4_2_1.length !== 0){
+            tmpArr4_2 = tmpArr4_2_1
+          }
+          if(tmpArr4_3_1.length !== 0){
+            tmpArr4_3 = tmpArr4_3_1
+          }
+          tmpArr5_1_1 = tmpArr5.filter(cd=>{
+            return cd.statName === 'TAK001'
+          })
+          tmpArr5_2_1 = tmpArr5.filter(cd=>{
+            return cd.statName === 'TAK002'
+          })
+          tmpArr5_3_1 = tmpArr5.filter(cd=>{
+            return cd.statName === 'TAK003'
+          })
+          console.log(tmpArr5_1_1)
+          console.log(tmpArr5_2_1)
+          console.log(tmpArr5_3_1)
+          if(tmpArr5_1_1.length !== 0){
+            tmpArr5_1 = tmpArr5_1_1
+          }
+          if(tmpArr5_2_1.length !== 0){
+            tmpArr5_2 = tmpArr5_2_1
+          }
+          if(tmpArr5_3_1.length !== 0){
+            tmpArr5_3 = tmpArr5_3_1
+          }
+          tmpArr6_1_1 = tmpArr6.filter(cd=>{
+            return cd.statName === 'TAK001'
+          })
+          tmpArr6_2_1 = tmpArr6.filter(cd=>{
+            return cd.statName === 'TAK002'
+          })
+          tmpArr6_3_1 = tmpArr6.filter(cd=>{
+            return cd.statName === 'TAK003'
+          })
+          if(tmpArr6_1_1.length !== 0){
+            tmpArr6_1 = tmpArr6_1_1
+          }
+          if(tmpArr6_2_1.length !== 0){
+            tmpArr6_2 = tmpArr6_2_1
+          }
+          if(tmpArr6_3_1.length !== 0){
+            tmpArr6_3 = tmpArr6_3_1
+          }
+          
+          
           //배열 전체 순환
-          tmpArr1.forEach(item=>{
-            makeArr1.push(item.statCnt)
-          })
-          tmpArr2.forEach(item=>{
-            makeArr2.push(item.statCnt)
-          })
-          tmpArr3.forEach(item=>{
-            makeArr3.push(item.statCnt)
-          })
-          tmpArr4.forEach(item=>{
-            makeArr4.push(item.statCnt)
-          })
-          tmpArr5.forEach(item=>{
-            makeArr5.push(item.statCnt)
-          })
-          tmpArr6.forEach(item=>{
-            makeArr6.push(item.statCnt)
-          })
+          
           this.newPwGwArr.push({
             sensorTypeCd: "TPE000",
             statName: null,
@@ -1587,17 +1954,17 @@ export default {
             statName: null,
             statCnt: 0,
           })
-          this.newPwFiArr.push({
+          this.newPwAcArr.push({
             sensorTypeCd: "TPE002",
             statName: null,
             statCnt: 0,
           })
-          this.newPwDoArr.push({
+          this.newPwFiArr.push({
             sensorTypeCd: "TPE003",
             statName: null,
             statCnt: 0,
           })
-          this.newPwAcArr.push({
+          this.newPwDoArr.push({
             sensorTypeCd: "TPE004",
             statName: null,
             statCnt: 0,
@@ -1607,22 +1974,38 @@ export default {
             statName: null,
             statCnt: 0,
           })}
-          this.newPwGwArr[0].statCnt = makeArr1[0]? makeArr1[0] : 0
-          this.newPwGwArr[1].statCnt = makeArr1[1]? makeArr1[1] : 0
-          for(let i=0; i<3; i++){
-            this.newPwEmArr[i].statCnt = makeArr2[i]? makeArr2[i] : 0
-            this.newPwFiArr[i].statCnt = makeArr3[i]? makeArr3[i] : 0
-            this.newPwDoArr[i].statCnt = makeArr4[i]? makeArr4[i] : 0
-            this.newPwAcArr[i].statCnt = makeArr5[i]? makeArr5[i] : 0
-            this.newPwLiArr[i].statCnt = makeArr6[i]? makeArr6[i] : 0
-          }
+        
+          this.newPwGwArr[0].statCnt = tmpArr1_1[0].statCnt? tmpArr1_1[0].statCnt : 0
+          this.newPwGwArr[1].statCnt = tmpArr1_2[0].statCnt? tmpArr1_2[0].statCnt : 0
+          
+          this.newPwEmArr[0].statCnt = tmpArr2_1[0].statCnt? tmpArr2_1[0].statCnt : 0
+          this.newPwEmArr[1].statCnt = tmpArr2_3[0].statCnt? tmpArr2_3[0].statCnt : 0
+          this.newPwEmArr[2].statCnt = tmpArr2_2[0].statCnt? tmpArr2_2[0].statCnt : 0
 
+          this.newPwAcArr[0].statCnt = tmpArr3_1[0].statCnt? tmpArr3_1[0].statCnt : 0
+          this.newPwAcArr[1].statCnt = tmpArr3_3[0].statCnt? tmpArr3_3[0].statCnt : 0
+          this.newPwAcArr[2].statCnt = tmpArr3_2[0].statCnt? tmpArr3_2[0].statCnt : 0
+
+          this.newPwFiArr[0].statCnt = tmpArr4_1[0].statCnt? tmpArr4_1[0].statCnt : 0
+          this.newPwFiArr[1].statCnt = tmpArr4_3[0].statCnt? tmpArr4_3[0].statCnt : 0
+          this.newPwFiArr[2].statCnt = tmpArr4_2[0].statCnt? tmpArr4_2[0].statCnt : 0
+
+          this.newPwDoArr[0].statCnt = tmpArr5_1[0].statCnt? tmpArr5_1[0].statCnt : 0
+          this.newPwDoArr[1].statCnt = tmpArr5_3[0].statCnt? tmpArr5_3[0].statCnt : 0
+          this.newPwDoArr[2].statCnt = tmpArr5_2[0].statCnt? tmpArr5_2[0].statCnt : 0
+
+          this.newPwLiArr[0].statCnt = tmpArr6_1[0].statCnt? tmpArr6_1[0].statCnt : 0
+          this.newPwLiArr[1].statCnt = tmpArr6_3[0].statCnt? tmpArr6_3[0].statCnt : 0
+          this.newPwLiArr[2].statCnt = tmpArr6_2[0].statCnt? tmpArr6_2[0].statCnt : 0
+          
+          console.log(this.PwChartItems)
+          console.log(this.newPwAcArr)
       this.PwGwData = this.newPwGwArr
       this.PwEmData = this.newPwEmArr
       this.PwFiData = this.newPwFiArr
       this.PwDoData = this.newPwDoArr
       this.PwAcData = this.newPwAcArr
-      this.PwLiData = this.newPwAcArr
+      this.PwLiData = this.newPwLiArr
 
       this.percentPwGwData = this.PwGwData[0].statCnt+this.PwGwData[1].statCnt
       this.finalPwGwData1 = [Math.round((this.PwGwData[0].statCnt/this.percentPwGwData)*100), Math.round((this.PwGwData[1].statCnt/this.percentPwGwData)*100)]
@@ -1710,17 +2093,18 @@ export default {
       this.PwchartData2.datasets[1].data = this.finalPwEmData2
       this.PwchartData2.datasets[2].data = this.finalPwEmData3
       this.PwchartData3.datasets[0].data = this.finalPwFiData1
-      this.PwchartData3.datasets[1].data = 0
-      this.PwchartData3.datasets[2].data = 0
+      this.PwchartData3.datasets[1].data = this.finalPwFiData2
+      this.PwchartData3.datasets[2].data = this.finalPwFiData3
       this.PwchartData4.datasets[0].data = this.finalPwDoData1
-      this.PwchartData4.datasets[1].data = 0
-      this.PwchartData4.datasets[2].data = 0
+      this.PwchartData4.datasets[1].data = this.finalPwDoData2
+      this.PwchartData4.datasets[2].data = this.finalPwDoData3
       this.PwchartData5.datasets[0].data = this.finalPwAcData1
-      this.PwchartData5.datasets[1].data = 0
-      this.PwchartData5.datasets[2].data = 0
+      this.PwchartData5.datasets[1].data = this.finalPwAcData2
+      this.PwchartData5.datasets[2].data = this.finalPwAcData3
       this.PwchartData6.datasets[0].data = this.finalPwLiData1
-      this.PwchartData6.datasets[1].data = 0
-      this.PwchartData6.datasets[2].data = 0
+      this.PwchartData6.datasets[1].data = this.finalPwLiData2
+      this.PwchartData6.datasets[2].data = this.finalPwLiData3
+      console.log(this.PwchartData5)
       this.PwchartRedraw();
     },
     //--------------------------A/S 현황--------------------------

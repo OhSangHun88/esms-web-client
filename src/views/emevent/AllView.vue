@@ -253,6 +253,7 @@ export default {
       cBirthday:'', cAddr: '', NCount : 0,
       errorpopup1: false, errorpopup2: false, errorpopup3: false,
       saveChangeData: null, updDtime:'',
+      pageCut:30,pageSet:'',pageCount:'',pageCount_first:'',pageCount_last:'',
     }
   },
   created() {
@@ -288,6 +289,7 @@ export default {
     },
     // 시/군/구 목록
     getSggData() {
+      this.selectedSggItems = ''
       let url =this.$store.state.serverApi + "/admin/address/sgg";
       if(this.sidoCd != ''){
         url += "?sidoCd="+this.sidoCd;
@@ -320,6 +322,7 @@ export default {
     },
     // 관리 기관 목록
     getOrgmData() {
+      this.selectedOrgItems = ''
       let url =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
         let sggCode = this.sggCd.substring(0, 5);
@@ -394,7 +397,7 @@ export default {
     getRecipientData() {
       let addrCd = ''
       let occurStartDate = this.s_date
-      let occurEndDate = this.e_date
+      let occurEndDate = this.e_date      
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
       }else if(this.selectedSggItems != ''){
@@ -418,6 +421,23 @@ export default {
         .then(response => {
           this.recipientItems = response.data.data
           this.NCount =this.recipientItems.length
+          this.pageCount = String(Math.ceil(this.NCount/this.pageCut))
+          this.pageCount = Number(this.pageCount)
+          this.pageCount_first = String(Math.floor(this.NCount/this.pageCut))
+          this.pageCount_last = String(this.NCount%this.pageCut)
+          
+          console.log(this.pageCount+1)
+          console.log(this.pageCount_first)
+          console.log(this.pageCount_last)
+          let tmpArr=[]
+          let tmpArr2=[]
+          let a =''
+          // for(let i=1; i<this.pageCount+1; i++){
+          //   a =30*i
+          //   tmpArr = this.recipientItems.slice(0, a)
+          //   tmpArr2 = tmpArr.slice(a, )
+          //   console.log(tmpArr)
+          // }
         })
         .catch(error => {
           this.errorMessage = error.message;

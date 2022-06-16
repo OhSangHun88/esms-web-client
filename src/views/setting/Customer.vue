@@ -25,7 +25,7 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">Password</p>
-                            <input type="password"  v-model="selectedUpdatePassword" />
+                            <input type="password" v-model="selectedUpdatePassword" />
                           </div>
                           <div class="input_area">
                             <p class="input_tit">Password 확인</p>
@@ -35,7 +35,7 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">생년월일</p>
-                            <input type="text" @keyup="getBirthdayMask(selectedUpdateBirthday)" value="" v-model="selectedUpdateBirthday" >
+                            <input type="text"  @keyup="getBirthdayMask(selectedUpdateBirthday)" value="" v-model="selectedUpdateBirthday" maxlength="10">
                           </div>
                           <div class="btn_area">
                               <p class="input_tit">성별</p>
@@ -55,7 +55,7 @@
                           </div>
                           <div class="input_area">
                             <p class="input_tit">휴대폰번호</p>
-                            <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="selectedUpdateMobileNumber" maxlength="11" >
+                            <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"  v-model="selectedUpdateMobileNumber" maxlength="11" >
                           </div>
                         </div>
                         <div class="input_wrap">
@@ -331,7 +331,7 @@
                         <div class="input_wrap">
                           <div class="input_area">
                             <p class="input_tit">생년월일</p>
-                            <input type="text" value="" v-model="selectedChangeBirthday" >
+                            <input type="text" @keyup="getBirthdayMask(selectedChangeBirthday)" value="" v-model="selectedChangeBirthday" maxlength="10">
                           </div>
                           <div class="btn_area">
                               <p class="input_tit">성별</p>
@@ -617,6 +617,7 @@
 <script>
 import HeaderComp from "../pages/HeaderComp.vue";
 import axios from "axios";
+import moment from "moment";
 
 
 export default {
@@ -664,10 +665,11 @@ export default {
         saveChangeData: null,selectUserData: null,
         detailArr:[],
         check:'',
-        birthdayHyphen:'',
+        birthdayHyphen:'', e_date: '',
       }
     },
     created(){
+      this.e_date=moment().format('YYYY-MM-DD');
       this.getSidoData();
       this.getSggData();
       this.getOrgmData();
@@ -696,6 +698,9 @@ export default {
     },
     // 시/군/구 목록
     getSggData() {
+      this.selectedSggItems = ''
+      this.selectedUpdateSggItems = ''
+      this.selectedChangeSggItems = ''
       let url =this.$store.state.serverApi + "/admin/address/sgg";
       if(this.sidoCd != ''){
         url += "?sidoCd="+this.sidoCd;
@@ -734,6 +739,9 @@ export default {
 
     // 관리 기관 목록
     getOrgmData() {
+      this.selectedOrgItems = ''
+      this.selectedUpdateOrgItems = ''
+      this.selectedChangeOrgItems = ''
       let url =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
         let sggCode = this.sggCd.substring(0, 5);
@@ -775,10 +783,6 @@ export default {
             console.error("There was an error!", error);
           });
       },
-      onChangeSido(event){
-      this.getSggData()
-      this.orgSido = event.target.value;
-    },
     getEmployState() {
       let uri = this.$store.state.serverApi + "/admin/codes?cmmnCdGroup=EMPLOY.STATECD";
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -798,8 +802,9 @@ export default {
         });
       },
       onChangeSido(event){
-      this.getSggData()
       this.orgSido = event.target.value;
+      this.getSggData()
+      
     },
     onChangeSgg(event){
       this.sidoCd = event.target.value
@@ -878,10 +883,14 @@ export default {
         alert("전화번호는 세자리 이상을 입력해 주세요")
         return false;
       }
-      if(this.selectedUpdateBirthday.length < 8){
-        alert("생년월일 여덟 자리를 모두 입력해 주세요")
+      console.log(this.selectedUpdateBirthday.length)
+      if(this.selectedUpdateBirthday.substring(0,4) < '1000' || this.selectedUpdateBirthday.substring(0,4) > this.e_date.substring(0,4) ||
+      this.selectedUpdateBirthday.substring(5,7) > '12' || this.selectedUpdateBirthday.substring(5,7) === '00' ||
+      this.selectedUpdateBirthday.substring(8,10) > '31' || this.selectedUpdateBirthday.substring(8,10) === '00' || this.selectedUpdateBirthday.length < 10){
+        alert("생년월일을 정확히 입력하여 주세요")
         return false
       }
+      //if(this.selectedUpdateBirthday)
       this.$store.state.userId = sessionStorage.getItem("userId")
       
       let data = {
@@ -1155,8 +1164,10 @@ export default {
         alert("전화번호는 세자리 이상을 입력해 주세요")
         return false;
       }
-      if(this.selectedChangeBirthday.length < 8){
-        alert("생년월일 여덟 자리를 모두 입력해 주세요")
+      if(this.selectedChangeBirthday.substring(0,4) < '1000' || this.selectedChangeBirthday.substring(0,4) > this.e_date.substring(0,4) ||
+      this.selectedChangeBirthday.substring(5,7) > '12' || this.selectedChangeBirthday.substring(5,7) === '00' ||
+      this.selectedChangeBirthday.substring(8,10) > '31' || this.selectedChangeBirthday.substring(8,10) === '00' || this.selectedChangeBirthday.length < 10){
+        alert("생년월일을 정확히 입력하여 주세요")
         return false
       }
       if(this.bodysex === 1){
@@ -1293,7 +1304,7 @@ export default {
       //   return birthday
       // } 
       birthday = birthday.replace(/[^0-9]/g, '')
-      console.log(birthday)
+      console.log(birthday[0])
       if(birthday.length <5){
         res = birthday
         console.log("this ok 2")
@@ -1301,7 +1312,7 @@ export default {
         if(birthday.length < 7){
           res = birthday.substring(0,4) + '-' + birthday.substring(4)
         }else if(birthday.length < 9){
-          res = birthday.substring(0,4) + '-' + birthday.substring(4,5) + '-' + birthday.substring(5)
+          res = birthday.substring(0,4) + '-' + birthday.substring(4,6) + '-' + birthday.substring(6)
         }
       }
       return res
@@ -1309,7 +1320,10 @@ export default {
     getBirthdayMask(input){
       let res = this.getMask(input)
       console.log(res)
-      this.birthdayHyphen = res
+      console.log(input)
+      this.selectedUpdateBirthday = res
+      console.log(this.selectedUpdateBirthday.substring(8,10))
+      this.selectedChangeBirthday = res
     },
     // inputBirthday(check){
     //   console.log("this. ====")

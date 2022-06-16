@@ -28,7 +28,7 @@
                   </div>
                   <div class="input_area half">
                     <p class="input_tit">생년월일</p>
-                    <input type="text" v-model="selectedUpdateBirthday" maxlength="8">
+                    <input type="text" @keyup="getBirthdayMask(selectedUpdateBirthday)" v-model="selectedUpdateBirthday" maxlength="10">
                   </div>
                   <div class="btn_area half">
                       <p class="input_tit">성별</p>
@@ -115,7 +115,7 @@
                   </div>
                   <div class="input_area half">
                     <p class="input_tit">생년월일</p>
-                    <input type="text" v-model="selectChangeBirthday" maxlength="8">
+                    <input type="text" @keyup="getBirthdayMask(selectChangeBirthday)" v-model="selectChangeBirthday" maxlength="10">
                   </div>
                   <div class="btn_area half">
                       <p class="input_tit">성별</p>
@@ -246,7 +246,6 @@
                     <tr>
                       <td>
                         <select v-model="selectedSidoItems" @change="onChangeSgg($event)">
-                          <option disabled value="">선택</option>
                           <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                         </select> 
                       </td>
@@ -646,9 +645,9 @@ export default {
       selectedSidoItems:null, selectedSggItems:null, selectedOrgItems:null, selectedUserSex:null, selectedUserType:null, selectedUserState:null,
 
       //대상자 등록
-      selectedUpdateZipCode:null, selectedUpdateAddr:null, selectedUpdateAddrDetail:null, selectedUpdateBirthday:null, selectedUpdateRecipient:null,
-      selectedUpdatePhoneNumber:null, selectedUpdateSidoItems:null, selectedUpdateSggItems:null, selectedUpdateOrgItems:null, selectedUpdateUserType:null,
-      selectedUpdateUserState:null, selectedUpdateOrgNm:null,
+      selectedUpdateZipCode:'', selectedUpdateAddr:'', selectedUpdateAddrDetail:'', selectedUpdateBirthday:'', selectedUpdateRecipient:'',
+      selectedUpdatePhoneNumber:'', selectedUpdateSidoItems:'', selectedUpdateSggItems:'', selectedUpdateOrgItems:'', selectedUpdateUserType:'',
+      selectedUpdateUserState:'', selectedUpdateOrgNm:'',
       //사용자 정보 변경
       selectChangeRecipient: null, selectChangeBirthday: null, selectChangeAddrDetail: null, selectChangeZipCode: null, selectChangeSex: null,
       selectChangePhoneNumber: null, selectChangeSido: null, selectChangeSgg: null, selectChangeOrg: null, selectChangeAddr: null,
@@ -706,6 +705,8 @@ export default {
 
     // 시/군/구 목록
     getSggData() {
+      this.selectedSggItems = ''
+      this.selectedUpdateSggItems = ''
       this.sggItems3=[];
       let url =this.$store.state.serverApi + "/admin/address/sgg";
       if(this.sidoCd != ''){
@@ -746,6 +747,8 @@ export default {
 
     // 관리 기관 목록
   getOrgmData() {
+    this.selectedOrgItems = ''
+    this.selectedUpdateOrgItems = ''
       let url =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
         let sggCode = this.sggCd.substring(0, 5);
@@ -841,7 +844,6 @@ export default {
      },
   onChangeSgg(event){
       this.sidoCd = event.target.value
-      
       this.getSggData()
       this.sggCd = ''
       this.getOrgmData()
@@ -954,18 +956,40 @@ export default {
     let tmp2 = this.$moment()
     return tmp2.diff(tmp1, 'years');
   },
+  getMask(birthday){
+      let res = ''
+      birthday = birthday.replace(/[^0-9]/g, '')
+      console.log(birthday.substring(0,4))
+      console.log(birthday.substring(5,7))
+      console.log(birthday.substring(8,10))
+      if(birthday.length <5){
+        res = birthday
+      }else{
+        if(birthday.length < 7){
+          res = birthday.substring(0,4) + '-' + birthday.substring(4)
+        }else if(birthday.length < 9){
+          res = birthday.substring(0,4) + '-' + birthday.substring(4,6) + '-' + birthday.substring(6)
+        }
+      }
+      return res
+    },
+  getBirthdayMask(input){
+      let res = this.getMask(input)
+      this.selectedUpdateBirthday = res
+      this.selectChangeBirthday = res
+  },
   goToDetailView(recipientId) {
     this.$router.push({
-              path : `/customer/DetailView/${recipientId}`
+      path : `/customer/DetailView/${recipientId}`
     })
   },
   createData(){
-    this.selectedUpdateZipCode = null
-    this.selectedUpdateAddr = null
-    this.selectedUpdateAddrDetail = null
-    this.selectedUpdateBirthday = null
-    this.selectedUpdateRecipient = null
-    this.selectedUpdatePhoneNumber = null
+    this.selectedUpdateZipCode = ''
+    this.selectedUpdateAddr = ''
+    this.selectedUpdateAddrDetail = ''
+    this.selectedUpdateBirthday = ''
+    this.selectedUpdateRecipient = ''
+    this.selectedUpdatePhoneNumber = ''
     this.selectedUpdateSidoItems = ''
     this.selectedUpdateSggItems = ''
     this.selectedUpdateOrgItems = ''
@@ -1116,8 +1140,11 @@ export default {
         alert("전화번호는 세자리 이상을 입력해 주세요")
         return false;
       }
-      if(this.selectedUpdateBirthday.length < 8){
-        alert("생년월일 여덟 자리를 모두 입력해 주세요")
+      console.log(this.selectedUpdateBirthday.length)
+      if(this.selectedUpdateBirthday.substring(0,4) < '1000' || this.selectedUpdateBirthday.substring(0,4) > this.e_date.substring(0,4) ||
+      this.selectedUpdateBirthday.substring(5,7) > '12' || this.selectedUpdateBirthday.substring(5,7) === '00' ||
+      this.selectedUpdateBirthday.substring(8,10) > '31' || this.selectedUpdateBirthday.substring(8,10) === '00' || this.selectedUpdateBirthday.length < 10){
+        alert("생년월일을 정확히 입력하여 주세요")
         return false
       }
       let data= {
@@ -1145,24 +1172,21 @@ export default {
       console.log(data)
        const url  = this.$store.state.serverApi + `/admin/recipients`
          ///sensors/{sensorId}/gw-send-cycle
-         await axios.post(url,data,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-           .then(res => {
-             let resData = res.data.data
-            // this.getCSensorsData = res.data.data
-             if(resData){
-                 alert("저장이 완료되었습니다.")
-             }
-             this.modalOpen = false
-             this.getRecipientData()
-           })
-           .catch(error => {
-               console.log("fail to load")
-             this.errorMessage = error.message;
-             console.error("There was an error!", error);
-           });
-    },
-    changeFormat(){
-
+        //  await axios.post(url,data,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        //    .then(res => {
+        //      let resData = res.data.data
+        //     // this.getCSensorsData = res.data.data
+        //      if(resData){
+        //          alert("저장이 완료되었습니다.")
+        //      }
+        //      this.modalOpen = false
+        //      this.getRecipientData()
+        //    })
+        //    .catch(error => {
+        //        console.log("fail to load")
+        //      this.errorMessage = error.message;
+        //      console.error("There was an error!", error);
+        //    });
     },
     changeUser(){
       //여기
@@ -1180,8 +1204,14 @@ export default {
         alert("전화번호는 세자리 이상을 입력해 주세요")
         return false;
       }
-      if(this.selectChangeBirthday.length < 8){
+      if(this.selectChangeBirthday.length < 10){
         alert("생년월일 여덟 자리를 모두 입력해 주세요")
+        return false
+      }
+      if(this.selectChangeBirthday.substring(0,4) < '1000' || this.selectChangeBirthday.substring(0,4) > this.e_date.substring(0,4) ||
+      this.selectChangeBirthday.substring(5,7) > '12' || this.selectChangeBirthday.substring(5,7) === '00' ||
+      this.selectChangeBirthday.substring(8,10) > '31' || this.selectChangeBirthday.substring(8,10) === '00' || this.selectChangeBirthday.length < 10){
+        alert("생년월일을 정확히 입력하여 주세요")
         return false
       }
       let data= {
