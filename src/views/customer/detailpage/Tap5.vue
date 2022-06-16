@@ -273,7 +273,8 @@ import axios from "axios";
       svrsendCheck : '',
       gwsendCheck : '',
       resCheck1:'',
-      resCheck2:''
+      resCheck2:'',
+      radioCheck:'',
      }
    },
    created() {
@@ -432,6 +433,7 @@ import axios from "axios";
 
    },
    check(index){
+    this.radioCheck = this.getCSensorsData[index].svrSendCycle
     this.svrsendCheck = this.getCSensorsData[index].svrSendCycle
     this.gwsendCheck = this.getCSensorsData[index].gwSendCycle
    },
@@ -468,7 +470,8 @@ import axios from "axios";
         const urlS  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
         const urlG  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/gw-send-cycle`
         
-         if(this.svrsendCheck != sensorsDetectData.svrSendCycle){
+        if(this.svrsendCheck != sensorsDetectData.svrSendCycle){
+            console.log("this 111 ok")
         await axios.patch(urlS,sensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
@@ -490,6 +493,7 @@ import axios from "axios";
           });
          }
         if(this.gwsendCheck != sensorsDetectData.gwSendCycle){
+            console.log("this 222 ok")
         await axios.patch(urlG,sensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
@@ -514,12 +518,18 @@ import axios from "axios";
         console.log(this.resCheck2)
         if(this.resCheck1 === true && !this.resCheck2){
             alert("저장이 완료되었습니다.")
+            this.sensorsDetect = ''
+            this.getCSensers()
         }
         if(!this.resCheck1 && this.resCheck2 === true){
             alert("저장이 완료되었습니다.")
+            this.sensorsDetect = ''
+            this.getCSensers()
         }
         if(this.resCheck1 && this.resCheck2){
             alert("저장이 완료되었습니다.")
+            this.sensorsDetect = ''
+            this.getCSensers()
         }
 
     },
