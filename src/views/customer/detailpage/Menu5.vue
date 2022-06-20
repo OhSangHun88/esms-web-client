@@ -205,6 +205,8 @@ export default {
     reset(index){
         console.log(index)
         console.log(this.relationPhoneData[index])
+        console.log(this.selectIndex)
+        console.log(this.relationPhone)
         this.radioCheck = this.relationPhoneData[index].regSn
         this.relationPhone = this.relationPhoneData[index].relationPhone
         if(this.radioCheck === this.relationPhoneData[index].regSn){

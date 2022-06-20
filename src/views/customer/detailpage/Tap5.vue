@@ -149,14 +149,14 @@
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="input_area" v-if="sensorsDetect===index">
-                                            <input type="text" name="" v-model="item.gwSendCycle">초
+                                            <input type="text" name="" v-model="gwSendCycle">초
                                         </div>
                                         <div v-else>{{item.gwSendCycle}}</div>
                                     </td>
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="input_area" v-if="sensorsDetect===index">
-                                            <input type="text" name=""  v-model="item.svrSendCycle">분
+                                            <input type="text" name=""  v-model="svrSendCycle">분
                                         </div>
                                         <div v-else>{{item.svrSendCycle}}</div>
                                     </td>
@@ -220,7 +220,7 @@
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index">
                                     <td>
                                         <div class="chk_area radio">
-                                            <input type="radio" name="sensorsState" :id="`radio2_${index}`" v-model="sensorsState" :value="index" >
+                                            <input type="radio" name="sensorsState" :id="`radio2_${index}`" v-model="sensorsState" :value="index" @click="check(index)">
                                             <label :for="`radio2_${index}`" class="chk"><i class="ico_chk"></i></label>
                                         </div>
                                     </td>
@@ -270,11 +270,13 @@ import axios from "axios";
       sensorsState: null,
       resBodyData: null,
       setactiveUnsensingCycle:60,
-      svrsendCheck : '',
-      gwsendCheck : '',
-      resCheck1:'',
-      resCheck2:'',
+      svrsendCheck : '', statesvrsendCheck:'',
+      gwsendCheck : '', stategwsendCheck:'',
+      resCheck1:'', stateresCheck1:'',
+      resCheck2:'', stateresCheck2:'',
       radioCheck:'',
+      formatG : '', formatS : '',
+      gwSendCycle: '', svrSendCycle:'',
      }
    },
    created() {
@@ -354,6 +356,7 @@ import axios from "axios";
         //     element.stateSvrSendCycle = Math.ceil(element.stateSvrSendCycle/3600)
         // })
         this.getCSensorsData = tmpData
+        this.gwSendCycle = this.getCSensorsData.gwSendCycle
         console.log("sensors ")
         console.log(this.getCSensorsData)
 
@@ -433,9 +436,19 @@ import axios from "axios";
 
    },
    check(index){
-    this.radioCheck = this.getCSensorsData[index].svrSendCycle
+    // this.sensorsDetect = this.getCSensorsData[index].
+    console.log(this.getCSensorsData[index])
+    this.gwSendCycle = this.getCSensorsData[index].gwSendCycle
+    this.svrSendCycle = this.getCSensorsData[index].svrSendCycle
     this.svrsendCheck = this.getCSensorsData[index].svrSendCycle
     this.gwsendCheck = this.getCSensorsData[index].gwSendCycle
+    this.statesvrsendCheck = this.getCSensorsData[index].stateSvrSendCycle
+    this.stateGwsendCheck = this.getCSensorsData[index].stateGwSendCycle
+    this.radioCheck = this.getCSensorsData[index].macAddr
+    if(this.radioCheck === this.getCSensorsData[index].macAddr){
+        this.sensorsDetect = ''
+        this.radioCheck = ''
+    }
    },
    //센서 감지 전송주기
     async saveSensorsDetectData(){
@@ -448,25 +461,22 @@ import axios from "axios";
         let sensorsDetectData = this.getCSensorsData[this.sensorsDetect]
         let sensorsId= this.getCSensorsData[this.sensorsDetect].sensorId
         //sensorsDetectData.svrSendCycle = 
-
-        if(sensorsDetectData.gwSendCycle !=60 && sensorsDetectData.gwSendCycle !=120 && sensorsDetectData.gwSendCycle !=180 && sensorsDetectData.gwSendCycle !=240){
+        
+        
+        if(this.gwSendCycle !=60 && this.gwSendCycle !=120 && this.gwSendCycle !=180 && this.gwSendCycle !=240){
             alert('60,120,180,240 중 값을 입력해 주세요')
             console.log("sensorsStateData.stateGwSendCycle")
             console.log(sensorsDetectData.gwSendCycle)
-            this.getCSensorsData[this.sensorsDetect].gwSendCycle = 60
+            this.gwSendCycle = this.gwsendCheck
             return false;
         }
 
-        if(sensorsDetectData.svrSendCycle !=60 && sensorsDetectData.svrSendCycle !=120 && sensorsDetectData.svrSendCycle !=180 && sensorsDetectData.svrSendCycle !=240){
+        if(this.svrSendCycle !=60 && this.svrSendCycle !=120 && this.svrSendCycle !=180 && this.svrSendCycle !=240){
             alert('60,120,180,240 중 값을 입력해 주세요')
-            this.getCSensorsData[this.sensorsDetect].svrSendCycle = 60
+            this.svrSendCycle = this.svrsendCheck
             return false;
 
         }
-        console.log(this.svrsendCheck)
-        console.log(this.sensorsDetect.svrSendCycle)
-        console.log(this.gwsendCheck)
-        console.log(this.sensorsDetect.gwSendCycle)
         const urlS  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
         const urlG  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/gw-send-cycle`
         
@@ -497,9 +507,7 @@ import axios from "axios";
         await axios.patch(urlG,sensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
-            console.log(resData)
             this.resCheck2 = resData
-            console.log(this.resCheck2)
             // this.getCSensorsData = res.data.data
             // console.log("sensors ")
             // console.log(this.getCSensorsData)
@@ -564,14 +572,17 @@ import axios from "axios";
 
         let sensorsData = sensorsStateData
         let sensorsId= this.getCSensorsData[this.sensorsState].sensorId
-        const url  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
+        const urlS  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/state-svr-send-cycle`
+        const urlG  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
 
-        axios.patch(url,sensorsData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        axios.patch(urlS,sensorsData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
             console.log(resData)
             if(resData){
+                console.log("this ok")
                 alert("저장이 완료되었습니다.")
+                this.sensorsState = ''
             }
             // this.getCSensorsData = res.data.data
             // console.log("sensors ")
