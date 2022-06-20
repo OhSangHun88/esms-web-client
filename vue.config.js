@@ -1,6 +1,6 @@
 module.exports = {
   devServer: {
-    proxy: this.$store.state.serverApi
+    // proxy: this.$store.state.serverApi
     //   {
     //    '/api':{
     //      target: 'http://210.122.45.62:8080',
