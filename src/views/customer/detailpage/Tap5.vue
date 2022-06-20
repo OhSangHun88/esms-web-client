@@ -149,14 +149,14 @@
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="input_area" v-if="sensorsDetect===index">
-                                            <input type="text" name="" v-model="gwSendCycle">초
+                                            <input type="text" name="" v-model="gwSendCycle" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">초
                                         </div>
                                         <div v-else>{{item.gwSendCycle}}</div>
                                     </td>
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="input_area" v-if="sensorsDetect===index">
-                                            <input type="text" name=""  v-model="svrSendCycle">분
+                                            <input type="text" name=""  v-model="svrSendCycle" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">분
                                         </div>
                                         <div v-else>{{item.svrSendCycle}}</div>
                                     </td>
@@ -228,7 +228,7 @@
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td >
                                         <div class="input_area" v-if="sensorsState === index">
-                                            <input type="text" :name="`stateGwSendCycle_${index}`" :id="`stateGwSendCycle_${index}`" v-model="item.stateGwSendCycle"
+                                            <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" :name="`stateGwSendCycle_${index}`" :id="`stateGwSendCycle_${index}`" v-model="stateGwSendCycle"
                                             >분
                                             <!-- oninput="this.value = this.value.replace(/[^1-4.]/g, '').replace(/(\..*)\./g, '$1');" -->
                                         </div>
@@ -236,7 +236,7 @@
                                     </td>
                                     <td >
                                         <div class="input_area" v-if="sensorsState === index">
-                                            <input type="text" :name="`stateSvrSendCycle_${index}`" :id="`stateSvrSendCycle_${index}`" v-model="item.stateSvrSendCycle"
+                                            <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" :name="`stateSvrSendCycle_${index}`" :id="`stateSvrSendCycle_${index}`" v-model="stateSvrSendCycle"
                                              >분
                                         </div>
                                         <div v-else>{{item.stateSvrSendCycle}}</div>
@@ -277,6 +277,7 @@ import axios from "axios";
       radioCheck:'',
       formatG : '', formatS : '',
       gwSendCycle: '', svrSendCycle:'',
+      stateGwSendCycle:'', stateSvrSendCycle:''
      }
    },
    created() {
@@ -438,15 +439,23 @@ import axios from "axios";
    check(index){
     // this.sensorsDetect = this.getCSensorsData[index].
     console.log(this.getCSensorsData[index])
+    //센서 감지 주기 model 값
     this.gwSendCycle = this.getCSensorsData[index].gwSendCycle
     this.svrSendCycle = this.getCSensorsData[index].svrSendCycle
+    //센서 상태값 전송 주기 model 값
+    this.stateGwSendCycle = this.getCSensorsData[index].stateGwSendCycle
+    this.stateSvrSendCycle = this.getCSensorsData[index].stateSvrSendCycle
+
     this.svrsendCheck = this.getCSensorsData[index].svrSendCycle
     this.gwsendCheck = this.getCSensorsData[index].gwSendCycle
     this.statesvrsendCheck = this.getCSensorsData[index].stateSvrSendCycle
-    this.stateGwsendCheck = this.getCSensorsData[index].stateGwSendCycle
+    this.stategwsendCheck = this.getCSensorsData[index].stateGwSendCycle
+
+
     this.radioCheck = this.getCSensorsData[index].macAddr
     if(this.radioCheck === this.getCSensorsData[index].macAddr){
         this.sensorsDetect = ''
+        this.sensorsState = ''
         this.radioCheck = ''
     }
    },
@@ -463,8 +472,22 @@ import axios from "axios";
         //sensorsDetectData.svrSendCycle = 
         
         
-        if(this.gwSendCycle !=60 && this.gwSendCycle !=120 && this.gwSendCycle !=180 && this.gwSendCycle !=240){
-            alert('60,120,180,240 중 값을 입력해 주세요')
+        if(this.gwSendCycle !=60 && this.gwSendCycle !=120 && this.gwSendCycle !=180 && this.gwSendCycle !=240 &&
+        this.gwSendCycle !=300 && this.gwSendCycle !=360 && this.gwSendCycle !=420 && this.gwSendCycle !=480 && 
+        this.gwSendCycle !=540 && this.gwSendCycle !=600 && this.gwSendCycle !=660 && this.gwSendCycle !=720 &&
+        this.gwSendCycle !=780 && this.gwSendCycle !=840 && this.gwSendCycle !=900 && this.gwSendCycle !=960 &&
+        this.gwSendCycle !=1020 && this.gwSendCycle !=1080 && this.gwSendCycle !=1140 && this.gwSendCycle !=1200 &&
+        this.gwSendCycle !=1260 && this.gwSendCycle !=1320 && this.gwSendCycle !=1380 && this.gwSendCycle !=1440 &&
+        this.gwSendCycle !=1500 && this.gwSendCycle !=1560 && this.gwSendCycle !=1620 && this.gwSendCycle !=1680 &&
+        this.gwSendCycle !=1740 && this.gwSendCycle !=1800 && this.gwSendCycle !=1860 && this.gwSendCycle !=1920 &&
+        this.gwSendCycle !=1980 && this.gwSendCycle !=2040 && this.gwSendCycle !=2100 && this.gwSendCycle !=2160 &&
+        this.gwSendCycle !=2220 && this.gwSendCycle !=2280 && this.gwSendCycle !=2340 && this.gwSendCycle !=2400 &&
+        this.gwSendCycle !=2460 && this.gwSendCycle !=2520 && this.gwSendCycle !=2580 && this.gwSendCycle !=2640 &&
+        this.gwSendCycle !=2700 && this.gwSendCycle !=2760 && this.gwSendCycle !=2820 && this.gwSendCycle !=2880 &&
+        this.gwSendCycle !=2940 && this.gwSendCycle !=3000 && this.gwSendCycle !=3060 && this.gwSendCycle !=3120 &&
+        this.gwSendCycle !=3180 && this.gwSendCycle !=3240 && this.gwSendCycle !=3300 && this.gwSendCycle !=3360 &&
+        this.gwSendCycle !=3420 && this.gwSendCycle !=3480 && this.gwSendCycle !=3540 && this.gwSendCycle !=3600 ){
+            alert('G/W 전송주기는 3600까지 60의 배수 중 선택 값을 입력해 주세요')
             console.log("sensorsStateData.stateGwSendCycle")
             console.log(sensorsDetectData.gwSendCycle)
             this.gwSendCycle = this.gwsendCheck
@@ -472,22 +495,22 @@ import axios from "axios";
         }
 
         if(this.svrSendCycle !=60 && this.svrSendCycle !=120 && this.svrSendCycle !=180 && this.svrSendCycle !=240){
-            alert('60,120,180,240 중 값을 입력해 주세요')
+            alert('서버 전송주기는 60,120,180,240 중 값을 입력해 주세요')
             this.svrSendCycle = this.svrsendCheck
             return false;
 
         }
         const urlS  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
         const urlG  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/gw-send-cycle`
+        sensorsDetectData.gwSendCycle = this.gwSendCycle
+        sensorsDetectData.svrSendCycle = this.svrSendCycle
         
         if(this.svrsendCheck != sensorsDetectData.svrSendCycle){
             console.log("this 111 ok")
         await axios.patch(urlS,sensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
-            console.log(resData)
             this.resCheck1 = resData
-            console.log(this.resCheck1)
             // this.getCSensorsData = res.data.data
             // console.log("sensors ")
             // console.log(this.getCSensorsData)
@@ -517,32 +540,36 @@ import axios from "axios";
 
           })
           .catch(error => {
-              console.log("fail to load")
+            console.log("fail to load")
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
         }
-        console.log(this.resCheck1)
-        console.log(this.resCheck2)
+        console.log("svr => "+this.resCheck1)
+        console.log('gw =>'+this.resCheck2)
         if(this.resCheck1 === true && !this.resCheck2){
             alert("저장이 완료되었습니다.")
             this.sensorsDetect = ''
+            this.resCheck1 = ''
             this.getCSensers()
         }
         if(!this.resCheck1 && this.resCheck2 === true){
             alert("저장이 완료되었습니다.")
             this.sensorsDetect = ''
+            this.resCheck2 = ''
             this.getCSensers()
         }
         if(this.resCheck1 && this.resCheck2){
             alert("저장이 완료되었습니다.")
             this.sensorsDetect = ''
+            this.resCheck1 = ''
+            this.resCheck2 = ''
             this.getCSensers()
         }
 
     },
     //센서 상태값 전송주기
-    saveSensorsStateData(){
+    async saveSensorsStateData(){
         //stateGwSendCycle, stateSvrSendCycle
         console.log(this.sensorsState)
 
@@ -552,20 +579,22 @@ import axios from "axios";
         }
         console.log(this.getCSensorsData[this.sensorsState])
         let sensorsStateData = this.getCSensorsData[this.sensorsState]
-        sensorsStateData.stateGwSendCycle = sensorsStateData.stateGwSendCycle
-        sensorsStateData.stateSvrSendCycle = sensorsStateData.stateSvrSendCycle
+        sensorsStateData.stateGwSendCycle = this.stateGwSendCycle
+        sensorsStateData.stateSvrSendCycle = this.stateSvrSendCycle
+        console.log(sensorsStateData)
+        console.log(this.stategwsendCheck)
 
-        if(sensorsStateData.stateGwSendCycle !=60 && sensorsStateData.stateGwSendCycle !=120 && sensorsStateData.stateGwSendCycle !=180 && sensorsStateData.stateGwSendCycle !=240){
+        if(this.stateGwSendCycle !=60 && this.stateGwSendCycle !=120 && this.stateGwSendCycle !=180 && this.stateGwSendCycle !=240){
             alert('60,120,180,240 중 값을 입력해 주세요')
             console.log("sensorsStateData.stateGwSendCycle")
             console.log(sensorsStateData.stateGwSendCycle)
-            this.getCSensorsData[this.sensorsState].stateGwSendCycle = 60
+            this.stateGwSendCycle = this.stategwsendCheck
             return false;
         }
 
-        if(sensorsStateData.stateSvrSendCycle !=60 && sensorsStateData.stateSvrSendCycle !=120 && sensorsStateData.stateSvrSendCycle !=180 && sensorsStateData.stateSvrSendCycle !=240){
+        if(this.stateSvrSendCycle !=60 && this.stateSvrSendCycle !=120 && this.stateSvrSendCycle !=180 && this.stateSvrSendCycle !=240){
             alert('60,120,180,240 중 값을 입력해 주세요')
-            this.getCSensorsData[this.sensorsState].stateSvrSendCycle = 60
+            this.stateSvrSendCycle = this.statesvrsendCheck
             return false;
         }
 
@@ -573,17 +602,16 @@ import axios from "axios";
         let sensorsData = sensorsStateData
         let sensorsId= this.getCSensorsData[this.sensorsState].sensorId
         const urlS  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/state-svr-send-cycle`
-        const urlG  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
+        const urlG  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/state-gw-send-cycle`
+        //this.getCSensorsData
 
-        axios.patch(urlS,sensorsData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        if(this.statesvrsendCheck != sensorsStateData.stateSvrSendCycle){
+            console.log("서버 전송주기 확인")
+        await axios.patch(urlS,sensorsData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let resData = res.data.data
             console.log(resData)
-            if(resData){
-                console.log("this ok")
-                alert("저장이 완료되었습니다.")
-                this.sensorsState = ''
-            }
+            this.statesvrsendCheck = resData
             // this.getCSensorsData = res.data.data
             // console.log("sensors ")
             // console.log(this.getCSensorsData)
@@ -594,6 +622,47 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
+        }
+        
+        if(this.stategwsendCheck != sensorsStateData.stateGwSendCycle){
+            console.log("게이트웨이 전송주기 확인")
+        await axios.patch(urlG,sensorsData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            let resData = res.data.data
+            console.log(resData)
+            this.stateresCheck2 = resData
+            // this.getCSensorsData = res.data.data
+            // console.log("sensors ")
+            // console.log(this.getCSensorsData)
+            
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+        }
+        console.log(this.stateresCheck1)
+        console.log(this.stateresCheck2)
+        if(this.statesvrsendCheck === true && !this.stateresCheck2){
+            alert("저장이 완료되었습니다.")
+            this.sensorsState = ''
+            this.statesvrsendCheck = ''
+            this.getCSensers()
+        }
+        if(!this.statesvrsendCheck && this.stateresCheck2 === true){
+            alert("저장이 완료되었습니다.")
+            this.sensorsState = ''
+            this.stateresCheck2 = ''
+            this.getCSensers()
+        }
+        if(this.statesvrsendCheck && this.stateresCheck2){
+            alert("저장이 완료되었습니다.")
+            this.sensorsState = ''
+            this.statesvrsendCheck = ''
+            this.stateresCheck2 = ''
+            this.getCSensers()
+        }
     },
 
    },

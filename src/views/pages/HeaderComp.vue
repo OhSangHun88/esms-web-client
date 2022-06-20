@@ -100,24 +100,24 @@ export default {
       console.log("this eventtoggle ==> "+this.eventtoggle)
       let uri = this.$store.state.serverApi+"/admin/emergencys/checkcnt";
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-       .then(response => {
-        this.newEmevent = response.data.totalCount
-        if(this.oldEmevent === this.newEmevent){
-          this.eventtoggle = 0
-        }else{
-          this.eventtoggle = 1
-        }
-       })
-       .catch(error => {
-         this.errorMessage = error.message;
-         console.error("There was an error!", error);
-       });
-       if(sessionStorage.getItem("token") != 'null' && this.$store.state.userId != 'null'){
-         console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
-         this.timerId=setTimeout(this.checkCount, 5000)
+      .then(response => {
+       this.newEmevent = response.data.totalCount
+       if(this.oldEmevent === this.newEmevent){
+         this.eventtoggle = 0
        }else{
-         clearTimeout(this.timerId);
+         this.eventtoggle = 1
        }
+      })
+      .catch(error => {
+        this.errorMessage = error.message;
+        console.error("There was an error!", error);
+      });
+      if(sessionStorage.getItem("token") != 'null' && this.$store.state.userId != 'null'){
+        console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
+        this.timerId=setTimeout(this.checkCount, 5000)
+      }else{
+        clearTimeout(this.timerId);
+      }
     },
     clickEmergency(){
       if(this.$route.path !==`/emevent/allView2`){
