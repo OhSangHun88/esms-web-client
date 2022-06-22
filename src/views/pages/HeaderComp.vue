@@ -21,6 +21,7 @@
             <li :class="getDetailPath==='/emevent/allView'? 'on':''"><a href="#"><router-link to ="/emevent/allView">응급알람</router-link></a></li>
             <li :class="getDetailPath==='/emevent/outingEvent'? 'on':''"><a href="#"><router-link to ="/emevent/outingEvent">외출이벤트</router-link></a></li>
             <li :class="getDetailPath==='/emevent/activityDetection'? 'on':''"><a href="#"><router-link to ="/emevent/activityDetection">활동 미감지</router-link></a></li>
+            <li :class="getDetailPath==='/emevent/equipmentEvent'? 'on':''"><a href="#"><router-link to ="/emevent/equipmentEvent">장비 이벤트</router-link></a></li>
             <li :class="getDetailPath==='/emevent/equipmentFailure'? 'on':''"><a href="#"><router-link to ="/emevent/equipmentFailure">장비 점검 대상</router-link></a></li>
           </ul>
         </li>
@@ -96,7 +97,6 @@ export default {
       this.$router.push({ name: 'Home' });
     },
     async checkCount(){
-      console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
       console.log("this eventtoggle ==> "+this.eventtoggle)
       let uri = this.$store.state.serverApi+"/admin/emergencys/checkcnt";
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})

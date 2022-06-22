@@ -426,17 +426,19 @@ export default {
           this.pageCount_first = String(Math.floor(this.NCount/this.pageCut))
           this.pageCount_last = String(this.NCount%this.pageCut)
           
-          console.log(this.pageCount+1)
+          console.log(this.pageCount)
           console.log(this.pageCount_first)
           console.log(this.pageCount_last)
-          let tmpArr=[]
-          let tmpArr2=[]
-          let a =''
-          // for(let i=1; i<this.pageCount+1; i++){
-          //   a =30*i
-          //   tmpArr = this.recipientItems.slice(30*(i-1), a)
-          //   // tmpArr2 = tmpArr.slice(a, )
-          //   console.log(tmpArr)
+          
+          // let tmpArr=[]
+          // for(let i=0; i<this.pageCount+1; i++){
+          //   console.log("this.pageCount = >" + i)
+          // }
+          // for(let i=1; i<this.pageCount+2; i++){
+          //   if(this.pageCount === i){
+          //     tmpArr = this.recipientItems.slice(30*(i-1), 30*i)
+          //     console.log(this.recipientItems)
+          //   }
           // }
         })
         .catch(error => {

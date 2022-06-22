@@ -69,6 +69,7 @@ const EmeventAllView2 = () => import('@/views/emevent/AllView2')
 const EmeventOutingEvent = () => import('@/views/emevent/OutingEvent')
 const EmeventActivityDetection = () => import('@/views/emevent/ActivityDetection')
 const EmeventEquipmentFailure = () => import('@/views/emevent/EquipmentFailure')
+const EmeventEquipmentEvent = () => import('@/views/emevent/EquipmentEvent')
 
 //Emergency
 const EmergencyAllView = () => import('@/views/emergency/AllView')
@@ -265,6 +266,11 @@ function configRoutes () {
               path: 'equipmentFailure',
               name: 'EquipmentFailure',
               component: EmeventEquipmentFailure
+            },
+            {
+              path: 'equipmentEvent',
+              name: 'EquipmentEvnet',
+              component: EmeventEquipmentEvent
             },
             {
               path: 'modals',
