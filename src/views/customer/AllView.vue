@@ -219,7 +219,7 @@
         <i class="ico_nav"></i>
         <span class="on">대상자조회</span>
       </div>
-      <div class="box_search_wrap add_btn box_style">
+      <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry()'>
         <div class="table_wrap">
             <table>
                 <colgroup>
@@ -275,7 +275,7 @@
                         </select>
                       </td>
                         <td>
-                            <input type="text" value=" " v-model="filterName" @keypress.enter="getFilteredRecipientData()">
+                            <input type="text" value=" " v-model="filterName" >
                         </td>
                         
                     </tr>
@@ -283,7 +283,7 @@
             </table>
         </div>
         <div class="btn_area">
-            <button type="button" class="btn" @click="getRecipientData()">조회</button>
+            <button type="button" class="btn" @click="manageInquiry()">조회</button>
         </div>
       </div>
     <div class="one_box box_style">
@@ -657,6 +657,8 @@ export default {
       selectedRecipeType: null, recipeType:[{value:'', text: '선택'},{value:'TPE001', text: '고령자'},{value:'TPE002', text: '장애인'},],
       userGender: 1 ,
       sortCount: 0,
+      searchCheck1:1,
+      searchCheck2:0,
     }
   },
   created() {
@@ -873,21 +875,21 @@ export default {
   //     this.modelPart="전체";
   //     this.modelStatus="전체";
   // },
-  getFilteredRecipientData(){
+  // getFilteredRecipientData(){
     
-    const regExp1 = this.selectedOrgItems !=='' ? new RegExp(this.selectedOrgItems, 'gi') : '';
-    const regExp2 = this.filterName !=='' ? new RegExp(this.filterName, 'gi') : '';
+  //   const regExp1 = this.selectedOrgItems !=='' ? new RegExp(this.selectedOrgItems, 'gi') : '';
+  //   const regExp2 = this.filterName !=='' ? new RegExp(this.filterName, 'gi') : '';
     
-    let tmpData = this.recipientItems
+  //   let tmpData = this.recipientItems
     
-    if( this.filterName || this.selectedOrgItems ){
+  //   if( this.filterName || this.selectedOrgItems ){
       
-      this.recipientItems = tmpData.filter(ri=>{
-      return ri.orgId.match(regExp1)&&ri.recipientNm.match(regExp2)
-    })
-    }else 
-      return this.recipientItems = this.recipientOrginItems
-  },
+  //     this.recipientItems = tmpData.filter(ri=>{
+  //     return ri.orgId.match(regExp1)&&ri.recipientNm.match(regExp2)
+  //   })
+  //   }else 
+  //     return this.recipientItems = this.recipientOrginItems
+  // },
   getRecipientData() {
     let uri = '';
     let addrCd = ''
@@ -936,6 +938,16 @@ export default {
           //     delete:''
           //   })
           // }
+          if(this.searchCheck1 === 1){
+            this.searchCheck1 = 0
+          }
+          if(this.recipientItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("성공적으로 조회 되었습니다.")
+            this.searchCheck2 = 0
+          }else if(this.recipientItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("조회 결과가 존재하지 않습니다.")
+            this.searchCheck2 = 0
+          }
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -1278,6 +1290,10 @@ export default {
         
       // }
       // sortArr.sort();
+    },
+    manageInquiry() {
+      this.searchCheck2 = 1
+      this.getRecipientData();
     },
     resetData(){
 

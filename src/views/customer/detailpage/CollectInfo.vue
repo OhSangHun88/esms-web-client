@@ -92,6 +92,7 @@ export default {
     },
     manageInquiry() {
       this.getMeasuresData();
+      alert("성공적으로 조회 되었습니다.")
     },
   },
   created() {

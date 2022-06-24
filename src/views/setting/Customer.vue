@@ -1,300 +1,297 @@
 <template>
-    <div class="wrap">
-        <!--<HeaderComp></HeaderComp>-->
-        <div class="container type-02">
-            <div id="" class="popupLayer" v-if="writeCus === true">
-                <div class="popup_wrap">
-                    <div class="title_wrap">
-                        <div class="title">사용자 등록</div>
-                        <button type="button" class="btn_close" @click="writeCus = false">닫기</button>
+  <div class="wrap">
+    <!--<HeaderComp></HeaderComp>-->
+    <div class="container type-02">
+      <div id="" class="popupLayer" v-if="writeCus === true">
+        <div class="popup_wrap">
+          <div class="title_wrap">
+            <div class="title">사용자 등록</div>
+            <button type="button" class="btn_close" @click="writeCus = false">닫기</button>
+          </div>
+          <div class="popup_cnt">
+            <div class="input_wrap">
+              <div class="input_area">
+                <p class="input_tit">사용자ID</p>
+                <div class="add_btn_input">
+                  <input type="text"  v-model="selectedUpdateUserId" />
+                  <button type="button" class="input_btn" @click="checkId()">ID 중복 체크</button>
+                </div>
+              </div>
+              <div class="input_area">
+                <p class="input_tit">이름</p>
+                <input type="text" value="" v-model="selectedUpdateUserNm">
+              </div>
+            </div>
+            <div class="input_wrap">
+              <div class="input_area">
+                <p class="input_tit">Password</p>
+                <input type="password" id="password" v-model="selectedUpdatePassword" />
+              </div>
+              <div class="input_area">
+                <p class="input_tit">Password 확인</p>
+                <input type="password" value="" v-model="selectedUpdatePasswordCheck" />
+              </div>
+            </div>
+            <div class="input_wrap">
+              <div class="input_area">
+                <p class="input_tit">생년월일</p>
+                <input type="text"  @keyup="getBirthdayMask(selectedUpdateBirthday)" value="" v-model="selectedUpdateBirthday" maxlength="10">
+              </div>
+              <div class="btn_area">
+                <p class="input_tit">성별</p>
+                <div class="toggle_btn">
+                  <button type="button" @click="sextoggle(1)" :class="bodysex===1? 'btn on' : 'btn'">남</button>
+                  <button type="button" @click="sextoggle(2)" :class="bodysex===2? 'btn on' : 'btn'">여</button>
+                </div>
+              </div>
+            </div>
+            <div class="input_wrap">
+              <div class="input_area">
+                <p class="input_tit">이메일</p>
+                <div class="add_btn_input">
+                  <input type="text" value="" v-model="selectedUpdateEmail">
+                  <button type="button" class="input_btn" @click="checkEmail()">중복 체크</button>
+                </div>
+              </div>
+              <div class="input_area">
+                <p class="input_tit">휴대폰번호</p>
+                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"  v-model="selectedUpdateMobileNumber" maxlength="11" >
+              </div>
+            </div>
+            <div class="input_wrap">
+              <div class="input_area">
+                <p class="input_tit">시/도</p>
+                <select v-model="selectedUpdateSidoItems" @change="onChangeSgg($event)">
+                  <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
+                </select>
+              </div>
+              <div class="input_area">
+                <p class="input_tit">시/군/구</p>
+                <select v-model="selectedUpdateSggItems" @change="onChangeOrg($event)">
+                  <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="input_wrap">
+              <div class="input_area">
+                <p class="input_tit">관리기관</p>
+                <select v-model="selectedUpdateOrgItems">
+                  <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                </select>
+              </div>
+              <!-- <div class="input_area">
+                <p class="input_tit">관리지역</p>
+                <select v-model="selectedUpdateChargeRegion">
+                  <option v-for="(charge, index) in chargeRegionItems" :value="charge.value" v-bind:key="index">{{charge.label}}</option>
+                </select>
+              </div> -->
+            </div>
+            <div class="input_wrap">
+              <div class="input_area">
+                <p class="input_tit">우편번호</p>
+                <div class="add_btn_input">
+                  <input type="text" value="" v-model="selectedUpdateZipcode">
+                  <button type="button" class="input_btn" @click="search">검색</button>
+                </div>
+              </div>
+              <div class="input_area">
+                <p class="input_tit">주소</p>
+                <input type="text" value="" v-model="selectedUpdateAddr">
+              </div>
+            </div>
+            <div class="input_wrap type-02">
+              <div class="input_area" >
+                <p class="input_tit">상세주소</p>
+                <input type="text" value="" v-model="selectedUpdateDetailAddr">
+              </div>
+            </div>            
+            <!-- <div class="input_wrap col3"> -->
+              <div class="input_wrap">
+                <div class="input_area">
+                  <p class="input_tit">사용자 구분</p>
+                  <select v-model="selectedUpdateUserType">
+                    <option v-for="(userType, index) in userTypeItems" :value="userType.value" v-bind:key="index">{{userType.label}}</option>
+                  </select>
+                </div>
+                <div class="input_area">
+                  <p class="input_tit">재직 상태</p>
+                  <select v-model="selectedUpdateEmployStateCd">
+                    <option v-for="(employ, index) in employStateItems" :value="employ.value" v-bind:key="index">{{employ.label}}</option>
+                  </select>
+                </div>
+              </div>
+              <!-- <div class="input_wrap col3"> -->
+                <div class="input_wrap">
+                  <div class="input_area">
+                    <p class="input_tit">부서명</p>
+                    <input type="text" value="" v-model="selectedUpdateDeptNm">
+                  </div>
+                  <div class="input_area">
+                    <p class="input_tit">사무실 전화번호</p>
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  value="" v-model="selectedUpdatePhoneNumber" maxlength="11">
+                  </div>
+                </div>
+                <!-- <div class="input_wrap">
+                    <div class="input_area">
+                        <p class="input_tit">등록자 ID</p>
+                        <select>
+                          <option value=""></option>
+                        </select>
                     </div>
-                    <div class="popup_cnt">
-                        <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">사용자ID</p>
-                            <div class="add_btn_input">
-                              <input type="text"  v-model="selectedUpdateUserId" />
-                              <button type="button" class="input_btn" @click="checkId()">ID 중복 체크</button>
-                            </div>
-                          </div>
-                          <div class="input_area">
-                            <p class="input_tit">이름</p>
-                            <input type="text" value="" v-model="selectedUpdateUserNm">
+                    <div class="input_area">
+                        <p class="input_tit">등록자 일시</p>
+                        <div class="date_warp">
+                            <input type="date">
+                        </div>
+                    </div>
+                </div> -->
+              </div>
+              <div class="popbtn_area">
+                <button type="button" class="btn form2" @click="uploadData()">등록</button>
+                <button type="button" class="btn" @click="writeCus = false">취소</button>
+              </div>
+            </div>
+          </div>
+          <div id="" class="popupLayer" v-if="detailCus === true">
+            <div class="popup_wrap">
+              <div class="title_wrap">
+                  <div class="title">사용자 상세 정보</div>
+                  <button type="button" class="btn_close" @click="detailCus = false">닫기</button>
+              </div>
+              <div class="popup_cnt">
+                <div class="input_wrap">
+                  <div class="input_area">
+                    <p class="input_tit">사용자ID</p>
+                    <div class="add_btn_input">
+                      <input type="text" value="" v-model="selectedDetailUserId" disabled>
+                      <!-- <button type="button" class="input_btn" @click="checkId()">ID 중복 체크</button> -->
+                    </div>
+                  </div>
+                  <div class="input_area">
+                    <p class="input_tit">이름</p>
+                    <input type="text" value="" v-model="selectedDetailUserNm" disabled>
+                  </div>
+                  <!-- <div class="input_area">
+                    <p class="input_tit">Password</p>
+                    <input type="password" value="" v-model="selectedUpdatePassword">
+                  </div> -->
+                </div>
+                <div class="input_wrap">
+                  <!-- <div class="input_area">
+                    <p class="input_tit">Password 확인</p>
+                    <input type="password" value="">
+                  </div> -->
+                  
+                </div>
+                <div class="input_wrap">
+                  <div class="input_area">
+                    <p class="input_tit">생년월일</p>
+                    <input type="text" value="" v-model="selectedDetailBirthday" disabled>
+                  </div>
+                  <div class="btn_area">
+                    <p class="input_tit">성별</p>
+                    <div class="toggle_btn">
+                        <button type="button"  :class="DetailBodysex===1? 'btn on' : 'btn'">남</button>
+                        <button type="button"  :class="DetailBodysex===2? 'btn on' : 'btn'">여</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="input_wrap">
+                  <div class="input_area">
+                    <p class="input_tit">이메일</p>
+                    <input type="text" value="" v-model="selectedDetailEmail" disabled>
+                  </div>
+                  <div class="input_area">
+                    <p class="input_tit">휴대폰번호</p>
+                    <input type="text"  value="" v-model="selectedDetailMobileNumber" disabled />
+                  </div>
+                </div>
+                <div class="input_wrap">
+                  <div class="input_area">
+                    <p class="input_tit">우편번호</p>
+                    <div class="add_btn_input">
+                      <input type="text" value="" v-model="selectedDetailAddrNumber" disabled>
+                      <!-- <button type="button" class="input_btn">검색</button> -->
+                    </div>
+                  </div>
+                  <div class="input_area">
+                    <p class="input_tit">주소</p>
+                    <input type="text" value="" v-model="selectedDetailAddr" disabled>
+                  </div>
+                </div>
+                <div class="input_wrap type-02">
+                  <div class="input_area" >
+                    <p class="input_tit">상세주소</p>
+                    <input type="text" value="" v-model="selectedDetailDetailAddr" disabled>
+                  </div>
+                </div>
+                <!-- <div class="input_wrap">
+                    <div class="input_area">
+                        <p class="input_tit">시/도</p>
+                        <input type="text" value="" v-model="selectedDetailSidoItems">
+                    </div>
+                    <div class="input_area">
+                        <p class="input_tit">시/군/구</p>
+                        <input type="text" value="" v-model="selectedDetailSggItems">
+                    </div>
+                </div> -->
+                <div class="input_wrap">
+                  <div class="input_area">
+                    <p class="input_tit">관리기관</p>
+                    <input type="text" value="" v-model="selectedDetailOrgItems" disabled>
+                  </div>
+                  <!-- <div class="input_area">
+                      <p class="input_tit">관리지역</p>
+                      <input type="text" value="" v-model="selectedDetailChargeRegion">
+                  </div> -->
+                </div>
+                <!-- <div class="input_wrap col3"> -->
+                  <div class="input_wrap">
+                    <div class="input_area">
+                      <p class="input_tit">사용자 구분</p>
+                      <input type="text" value="" v-model="selectedDetailUserType" disabled>
+                    </div>
+                    <div class="input_area">
+                      <p class="input_tit">재직 상태</p>
+                      <input type="text" value="" v-model="selectedDetailEmployStateCd" disabled>
+                    </div>
+                  </div>
+                  <!-- <div class="input_wrap col3"> -->
+                    <div class="input_wrap">
+                      <div class="input_area">
+                        <p class="input_tit">부서명</p>
+                        <input type="text" value="" v-model="selectedDetailDeptNm" disabled>
+                      </div>
+                      <div class="input_area">
+                        <p class="input_tit">사무실 전화번호</p>
+                        <input type="text" value="" v-model="selectedDetailPhoneNumber" disabled>
+                      </div>
+                    </div>
+                      <div class="input_wrap">
+                        <div class="input_area">
+                          <p class="input_tit">사용자 상태</p>
+                          <input type="text" value="" v-model="selectedDetailUseYn" disabled>
+                        </div>
+                      </div>
+                      <div class="input_wrap">
+                        <div class="input_area">
+                          <p class="input_tit">등록자 ID</p>
+                          <input type="text" value="" v-model="selectedDetailRegDUserNm" disabled>
+                        </div>
+                        <div class="input_area">
+                          <p class="input_tit">등록 일자</p>
+                          <div class="date_warp">
+                              <input type="date" v-model="selectedDetailRegDtime" disabled>
                           </div>
                         </div>
-                        <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">Password</p>
-                            <input type="password" v-model="selectedUpdatePassword" />
-                          </div>
-                          <div class="input_area">
-                            <p class="input_tit">Password 확인</p>
-                            <input type="password" value="" v-model="selectedUpdatePasswordCheck" />
-                          </div>
-                        </div>
-                        <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">생년월일</p>
-                            <input type="text"  @keyup="getBirthdayMask(selectedUpdateBirthday)" value="" v-model="selectedUpdateBirthday" maxlength="10">
-                          </div>
-                          <div class="btn_area">
-                              <p class="input_tit">성별</p>
-                              <div class="toggle_btn">
-                                  <button type="button" @click="sextoggle(1)" :class="bodysex===1? 'btn on' : 'btn'">남</button>
-                                  <button type="button" @click="sextoggle(2)" :class="bodysex===2? 'btn on' : 'btn'">여</button>
-                              </div>
-                          </div>
-                        </div>
-                        <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">이메일</p>
-                            <div class="add_btn_input">
-                            <input type="text" value="" v-model="selectedUpdateEmail">
-                            <button type="button" class="input_btn" @click="checkEmail()">중복 체크</button>
-                            </div>
-                          </div>
-                          <div class="input_area">
-                            <p class="input_tit">휴대폰번호</p>
-                            <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"  v-model="selectedUpdateMobileNumber" maxlength="11" >
-                          </div>
-                        </div>
-                        <div class="input_wrap">
-                            <div class="input_area">
-                                <p class="input_tit">시/도</p>
-                                <select v-model="selectedUpdateSidoItems" @change="onChangeSgg($event)">
-                                  <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
-                                </select>
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">시/군/구</p>
-                                <select v-model="selectedUpdateSggItems" @change="onChangeOrg($event)">
-                                  <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="input_wrap">
-                            <div class="input_area">
-                                <p class="input_tit">관리기관</p>
-                                <select v-model="selectedUpdateOrgItems">
-                                  <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
-                                </select>
-                            </div>
-                            <!-- <div class="input_area">
-                                <p class="input_tit">관리지역</p>
-                                <select v-model="selectedUpdateChargeRegion">
-                                  <option v-for="(charge, index) in chargeRegionItems" :value="charge.value" v-bind:key="index">{{charge.label}}</option>
-                                </select>
-                            </div> -->
-                        </div>
-                        <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">우편번호</p>
-                            <div class="add_btn_input">
-                              <input type="text" value="" v-model="selectedUpdateZipcode">
-                              <button type="button" class="input_btn" @click="search">검색</button>
-                            </div>
-                          </div>
-                          <div class="input_area">
-                            <p class="input_tit">주소</p>
-                            <input type="text" value="" v-model="selectedUpdateAddr">
-                          </div>
-                        </div>
-                        <div class="input_wrap type-02">
-                            <div class="input_area" >
-                                <p class="input_tit">상세주소</p>
-                                <input type="text" value="" v-model="selectedUpdateDetailAddr">
-                            </div>
-                        </div>
-                        
-                        <!-- <div class="input_wrap col3"> -->
-                          <div class="input_wrap">
-                            <div class="input_area">
-                                <p class="input_tit">사용자 구분</p>
-                                <select v-model="selectedUpdateUserType">
-                                  <option v-for="(userType, index) in userTypeItems" :value="userType.value" v-bind:key="index">{{userType.label}}</option>
-                                </select>
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">재직 상태</p>
-                                <select v-model="selectedUpdateEmployStateCd">
-                                  <option v-for="(employ, index) in employStateItems" :value="employ.value" v-bind:key="index">{{employ.label}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <!-- <div class="input_wrap col3"> -->
-                          <div class="input_wrap">
-                            <div class="input_area">
-                                <p class="input_tit">부서명</p>
-                                <input type="text" value="" v-model="selectedUpdateDeptNm">
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">사무실 전화번호</p>
-                                <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  value="" v-model="selectedUpdatePhoneNumber" maxlength="11">
-                            </div>
-                        </div>
-                        <!-- <div class="input_wrap">
-                            <div class="input_area">
-                                <p class="input_tit">등록자 ID</p>
-                                <select>
-                                  <option value=""></option>
-                                </select>
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">등록자 일시</p>
-                                <div class="date_warp">
-                                    <input type="date">
-                                </div>
-                            </div>
-                        </div> -->
+                      </div>
                     </div>
                     <div class="popbtn_area">
-                      <button type="button" class="btn form2" @click="uploadData()">등록</button>
-                      <button type="button" class="btn" @click="writeCus = false">취소</button>
+                      <button type="button" class="btn form2" @click="detailCus = false, changeFormat()">수정</button>
+                      <button type="button" class="btn form3" @click="deleteCus = true">삭제</button>
                     </div>
-                </div>
             </div>
-
-
-            <div id="" class="popupLayer" v-if="detailCus === true">
-                <div class="popup_wrap">
-                    <div class="title_wrap">
-                        <div class="title">사용자 상세 정보</div>
-                        <button type="button" class="btn_close" @click="detailCus = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">사용자ID</p>
-                            <div class="add_btn_input">
-                              <input type="text" value="" v-model="selectedDetailUserId" disabled>
-                              <!-- <button type="button" class="input_btn" @click="checkId()">ID 중복 체크</button> -->
-                            </div>
-                          </div>
-                          <div class="input_area">
-                            <p class="input_tit">이름</p>
-                            <input type="text" value="" v-model="selectedDetailUserNm" disabled>
-                          </div>
-                          <!-- <div class="input_area">
-                            <p class="input_tit">Password</p>
-                            <input type="password" value="" v-model="selectedUpdatePassword">
-                          </div> -->
-                        </div>
-                        <div class="input_wrap">
-                          <!-- <div class="input_area">
-                            <p class="input_tit">Password 확인</p>
-                            <input type="password" value="">
-                          </div> -->
-                          
-                        </div>
-                        <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">생년월일</p>
-                            <input type="text" value="" v-model="selectedDetailBirthday" disabled>
-                          </div>
-                          <div class="btn_area">
-                              <p class="input_tit">성별</p>
-                              <div class="toggle_btn">
-                                  <button type="button"  :class="DetailBodysex===1? 'btn on' : 'btn'">남</button>
-                                  <button type="button"  :class="DetailBodysex===2? 'btn on' : 'btn'">여</button>
-                              </div>
-                          </div>
-                        </div>
-                        <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">이메일</p>
-                            <input type="text" value="" v-model="selectedDetailEmail" disabled>
-                          </div>
-                          <div class="input_area">
-                            <p class="input_tit">휴대폰번호</p>
-                            <input type="text"  value="" v-model="selectedDetailMobileNumber" disabled />
-                          </div>
-                        </div>
-                        <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">우편번호</p>
-                            <div class="add_btn_input">
-                              <input type="text" value="" v-model="selectedDetailAddrNumber" disabled>
-                              <!-- <button type="button" class="input_btn">검색</button> -->
-                            </div>
-                          </div>
-                          <div class="input_area">
-                            <p class="input_tit">주소</p>
-                            <input type="text" value="" v-model="selectedDetailAddr" disabled>
-                          </div>
-                        </div>
-                        <div class="input_wrap type-02">
-                            <div class="input_area" >
-                                <p class="input_tit">상세주소</p>
-                                <input type="text" value="" v-model="selectedDetailDetailAddr" disabled>
-                            </div>
-                        </div>
-                        <!-- <div class="input_wrap">
-                            <div class="input_area">
-                                <p class="input_tit">시/도</p>
-                                <input type="text" value="" v-model="selectedDetailSidoItems">
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">시/군/구</p>
-                                <input type="text" value="" v-model="selectedDetailSggItems">
-                            </div>
-                        </div> -->
-                        <div class="input_wrap">
-                            <div class="input_area">
-                                <p class="input_tit">관리기관</p>
-                                <input type="text" value="" v-model="selectedDetailOrgItems" disabled>
-                            </div>
-                            <!-- <div class="input_area">
-                                <p class="input_tit">관리지역</p>
-                                <input type="text" value="" v-model="selectedDetailChargeRegion">
-                            </div> -->
-                        </div>
-                        <!-- <div class="input_wrap col3"> -->
-                          <div class="input_wrap">
-                            <div class="input_area">
-                                <p class="input_tit">사용자 구분</p>
-                                <input type="text" value="" v-model="selectedDetailUserType" disabled>
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">재직 상태</p>
-                                <input type="text" value="" v-model="selectedDetailEmployStateCd" disabled>
-                            </div>
-                        </div>
-                        <!-- <div class="input_wrap col3"> -->
-                          <div class="input_wrap">
-                            <div class="input_area">
-                                <p class="input_tit">부서명</p>
-                                <input type="text" value="" v-model="selectedDetailDeptNm" disabled>
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">사무실 전화번호</p>
-                                <input type="text" value="" v-model="selectedDetailPhoneNumber" disabled>
-                            </div>
-                        </div>
-                        <div class="input_wrap">
-                          <div class="input_area">
-                              <p class="input_tit">사용자 상태</p>
-                              <input type="text" value="" v-model="selectedDetailUseYn" disabled>
-                          </div>
-                        </div>
-                        <div class="input_wrap">
-                            <div class="input_area">
-                                <p class="input_tit">등록자 ID</p>
-                                <input type="text" value="" v-model="selectedDetailRegDUserNm" disabled>
-                            </div>
-                            <div class="input_area">
-                                <p class="input_tit">등록 일자</p>
-                                <div class="date_warp">
-                                    <input type="date" v-model="selectedDetailRegDtime" disabled>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="popbtn_area">
-                        <button type="button" class="btn form2" @click="detailCus = false, changeFormat()">수정</button>
-                        <button type="button" class="btn form3" @click="deleteCus = true">삭제</button>
-                    </div>
-                </div>
-            </div>
+          </div>
 
 
             <div id="" class="popupLayer" v-if="changeCus === true">
@@ -494,7 +491,7 @@
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
-                            <th scope="row">관리자</th>
+                            <th scope="row">사용자명</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -618,6 +615,7 @@
 import HeaderComp from "../pages/HeaderComp.vue";
 import axios from "axios";
 import moment from "moment";
+import { cilAlignCenter } from '@coreui/icons';
 
 
 export default {
@@ -666,6 +664,7 @@ export default {
         detailArr:[],
         check:'',
         birthdayHyphen:'', e_date: '',
+        searchCheck1 : 1, searchCheck2 : 0,
       }
     },
     created(){
@@ -773,10 +772,28 @@ export default {
         });
     },
       getUserData() {
-      let uri = this.$store.state.serverApi + "/admin/users?pageIndex=1&recordCountPerPage=100"+"&orgId="+this.selectedOrgItems+"&userNm="+this.selectedUserNm;
+        let addrCd = ''
+      if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
+        addrCd = this.sidoCd.substring(0,2)
+      }else if(this.selectedSggItems != ''){
+        addrCd = this.sggCd.substring(0,5)
+      }else{
+        addrCd = ''
+      }
+      let uri = this.$store.state.serverApi + "/admin/users?pageIndex=1&recordCountPerPage=100"+"&orgId="+this.selectedOrgItems+"&sggCd="+addrCd+"&userNm="+this.selectedUserNm;
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.userItems = response.data.data
+            if(this.searchCheck1 === 1){
+            this.searchCheck1 = 0
+        }
+        if(this.userItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("성공적으로 조회 되었습니다.")
+            this.searchCheck2 = 0
+        }else if(this.userItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("조회 결과가 존재하지 않습니다.")
+            this.searchCheck2 = 0
+        }
           })          
           .catch(error => {
             this.errorMessage = error.message;
@@ -846,6 +863,28 @@ export default {
     // 사용자 등록 내용 부분
     async uploadData(){
       this.$store.state.userId = sessionStorage.getItem("userId")
+      let num = this.selectedUpdatePassword.search(/[0-9]/g);
+      let eng = this.selectedUpdatePassword.search(/[a-z]/ig);
+      let spe = this.selectedUpdatePassword.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+      
+      if(this.selectedUpdatePassword.length < 8){
+        alert("비밀번호는 8자리 이상 입력하여 주세요")
+        return false
+      }else if(this.selectedUpdatePassword.search(/\s/) != -1){
+        alert("비밀번호는 공백 없이 입력하여 주세요")
+        return false
+      }else if(num < 0 || eng < 0 || spe < 0){
+        alert("비밀번호는 영문,숫자,특수문자를 혼합하여 주세요")
+        return false
+      }
+      if(this.selectedUpdateUserId === '' || this.selectedUpdatePassword === '' || this.selectedUpdatePasswordCheck === '' || this.selectedUpdateUserNm === '' || 
+      this.selectedUpdateBirthday === '' || this.selectedUpdateSex === '' || this.selectedUpdateEmail === '' || this.selectedUpdateMobileNumber === '' || this.selectedUpdateZipcode === '' ||
+      this.selectedUpdateAddr === '' || this.selectedUpdateDetailAddr === '' || this.selectedUpdateSidoItems === '' || this.selectedUpdateSggItems === '' ||
+      this.selectedUpdateOrgItems === '' || this.selectedUpdateUserType === '' || this.selectedUpdateEmployStateCd === '' || this.selectedUpdateDeptNm === '' ||
+      this.selectedUpdatePhoneNumber === ''){
+        alert("모든 항목을 작성하여 주세요")
+        return false
+      }
       if(this.checkUserId === 'None'){
         alert("아이디를 다시 확인하여 주세요")
         return false
@@ -854,10 +893,7 @@ export default {
         alert("이메일을 다시 확인하여 주세요")
         return false
       }
-      if(this.selectedUpdatePassword.length < 4){
-        alert("비밀번호는 4자리 이상 입력하여 주세요")
-        return false
-      }
+      
       if(this.selectedUpdatePassword !== this.selectedUpdatePasswordCheck){
         alert("비밀번호가 다릅니다. 다시 확인하여 주세요")
         return false
@@ -867,14 +903,7 @@ export default {
       }else{
         this.selectedUpdateSex = 'F'
       }
-      if(this.selectedUpdateUserId === '' || this.selectedUpdatePassword === '' || this.selectedUpdatePasswordCheck === '' || this.selectedUpdateUserNm === '' || 
-      this.selectedUpdateBirthday === '' || this.selectedUpdateSex === '' || this.selectedUpdateEmail === '' || this.selectedUpdateMobileNumber === '' || this.selectedUpdateZipcode === '' ||
-      this.selectedUpdateAddr === '' || this.selectedUpdateDetailAddr === '' || this.selectedUpdateSidoItems === '' || this.selectedUpdateSggItems === '' ||
-      this.selectedUpdateOrgItems === '' || this.selectedUpdateUserType === '' || this.selectedUpdateEmployStateCd === '' || this.selectedUpdateDeptNm === '' ||
-       this.selectedUpdatePhoneNumber === ''){
-        alert("모든 항목을 작성하여 주세요")
-        return false
-      }
+      
       if(this.selectedUpdatePhoneNumber.length < 3){
         alert("전화번호는 세자리 이상을 입력해 주세요")
         return false;
@@ -1233,7 +1262,6 @@ export default {
              this.errorMessage = error.message;
              console.error("There was an error!", error);
            });
-      
     },
     // 사용자 정보 삭제 취소
     deleteCusFail(){
@@ -1251,7 +1279,9 @@ export default {
     },
     // 검색
     manageInquiry() {
+      this.searchCheck2 = 1
         this.getUserData();
+        
     },
     // 성별 체크
     sextoggle(value){

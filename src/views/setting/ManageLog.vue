@@ -117,6 +117,7 @@ export default {
         logtoggle: 1, selectedtabletId: '', selectedrecipientId: '',
         NCount:0, ENCount:0,
         errorpopup1: false, errorpopup2: false, 
+        searchCheck1 : 1, searchCheck2 : 0,
       }
     },
     created(){
@@ -135,6 +136,16 @@ export default {
           .then(response => {
             this.logItems = response.data.data
             this.NCount =this.logItems.length
+            if(this.searchCheck1 === 1){
+            this.searchCheck1 = 0
+        }
+        if(this.logItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("성공적으로 조회 되었습니다.")
+            this.searchCheck2 = 0
+        }else if(this.logItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("조회 결과가 존재하지 않습니다.")
+            this.searchCheck2 = 0
+        }
           })          
           .catch(error => {
             this.errorMessage = error.message;
@@ -152,6 +163,16 @@ export default {
           .then(response => {
             this.comLogItems = response.data.data
             this.ENCount =this.comLogItems.length
+            if(this.searchCheck1 === 1){
+            this.searchCheck1 = 0
+        }
+        if(this.comLogItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("성공적으로 조회 되었습니다.")
+            this.searchCheck2 = 0
+        }else if(this.comLogItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("조회 결과가 존재하지 않습니다.")
+            this.searchCheck2 = 0
+        }
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -181,6 +202,7 @@ export default {
       }/*else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
       }*/else{
+        this.searchCheck2 = 1
       if(this.logtoggle===1){
         this.getLogData();
       } else {

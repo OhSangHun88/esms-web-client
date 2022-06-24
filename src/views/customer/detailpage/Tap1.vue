@@ -1,6 +1,34 @@
 <template>
     <div>
         <div class="tabcontent">
+            <div id="" class="popupLayer" v-if="errorpopup1 == true">
+        <div class="popup_wrap type-02">
+          <div class="title_wrap">
+            <div class="title">경고</div>
+            <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
+          </div>
+          <div class="popup_cnt">
+            <p class="alert_txt">조회 종료일자가 시작일자보다 빠릅니다<br/>일자를 다시 선택하여 주십시요</p>
+          </div>
+          <div class="popbtn_area type-02">
+            <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
+          </div>
+        </div>
+      </div>
+      <div id="" class="popupLayer" v-if="errorpopup2 == true">
+        <div class="popup_wrap type-02">
+          <div class="title_wrap">
+            <div class="title">경고</div>
+            <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
+          </div>
+          <div class="popup_cnt">
+            <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
+          </div>
+          <div class="popbtn_area type-02">
+            <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
+          </div>
+        </div>
+      </div>
             <div id="tab01" class="tabcnt01" style="display:block;">
                 <div class="list_top">
                     <i class="search_ico"></i>
@@ -52,8 +80,8 @@
                         <div class="customerBts" style="justify-content: flex-start;">
                             <input type="date" v-model="measureStartDate"  />
                             <span class="tilde">~</span>
-                            <input type="date" v-model="measureEndDate" />
-                            <button type="button" class="btn" @click="getSensorsData(code1,code2,code3,code4)">조회</button>
+                            <input type="date" v-model="measureEndDate" :max="this.$moment().format('YYYY-MM-DD')"/>
+                            <button type="button" class="btn" @click="manageInquiry(code1,code2,code3,code4)">조회</button>
                         </div>
                     </div>
                 </div>
@@ -156,6 +184,8 @@ import moment from "moment";
       sensorsTmp3Data: [],
       locCode: '',
       //{text: '전체', value: 1},{text: '전체', value: 5},
+      searchCheck1 : 1, searchCheck2 : 0,
+      errorpopup1: false, errorpopup2: false,
      }
    },
   methods: {
@@ -168,10 +198,18 @@ import moment from "moment";
         }
         
     },
-
-    async getSensorsData(input,input2,input3,input4){
+    manageInquiry(input,input2,input3,input4) {
+        if(this.measureStartDate > this.measureEndDate){
+        this.errorpopup1 = true
+      }/*else if(this.measureEndDate > moment(this.measureStartDate).add(6, 'days').format('YYYY-MM-DD')){
+        this.errorpopup2 = true
+      }*/else{
+        this.searchCheck2 = 1
+        this.getSensorsData(input,input2,input3,input4);
+      }
         
-
+    },
+    async getSensorsData(input,input2,input3,input4){
         let code = input ? input : input2 ? input2 : input3 ? input3 :  input4 
         //드롭다운 코드화 및 값 설정
         switch (code){
@@ -475,6 +513,16 @@ import moment from "moment";
             
             tmpArr2.from(new Set(tmpArr))
             console.log(tmpArr2)
+        }
+        if(this.searchCheck1 === 1){
+            this.searchCheck1 = 0
+        }
+        if(this.sensorsData.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("성공적으로 조회 되었습니다.")
+            this.searchCheck2 = 0
+        }else if(this.sensorsData.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("조회 결과가 존재하지 않습니다.")
+            this.searchCheck2 = 0
         }
     },
     getfilteringData(){

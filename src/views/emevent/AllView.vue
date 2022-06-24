@@ -254,6 +254,7 @@ export default {
       errorpopup1: false, errorpopup2: false, errorpopup3: false,
       saveChangeData: null, updDtime:'',
       pageCut:30,pageSet:'',pageCount:'',pageCount_first:'',pageCount_last:'',
+      searchCheck1 : 1, searchCheck2 : 0,
     }
   },
   created() {
@@ -421,6 +422,20 @@ export default {
         .then(response => {
           this.recipientItems = response.data.data
           this.NCount =this.recipientItems.length
+
+          if(this.searchCheck1 === 1){
+            this.searchCheck1 = 0
+        }
+        if(this.recipientItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("성공적으로 조회 되었습니다.")
+            this.searchCheck2 = 0
+        }else if(this.recipientItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("조회 결과가 존재하지 않습니다.")
+            this.searchCheck2 = 0
+        }
+
+
+
           this.pageCount = String(Math.ceil(this.NCount/this.pageCut))
           this.pageCount = Number(this.pageCount)
           this.pageCount_first = String(Math.floor(this.NCount/this.pageCut))
@@ -475,7 +490,8 @@ export default {
       }/*else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
       }*/else{
-        this.getRecipientData();
+        this.searchCheck2 = 1
+        this.getRecipientData();        
       }
     },
     checkSaveState(){

@@ -237,6 +237,7 @@ export default {
         sensorItems:[], checktypeItems: [],
         errorpopup1: false, errorpopup2: false,
         code1: 1, code2: 2, code3: 3,
+        searchCheck1 : 1, searchCheck2 : 0,
       }
     },
     created() {
@@ -246,7 +247,7 @@ export default {
     this.getTypeData();
     this.getsensorData();
     this.getcheckTypeData(1);
-    this.manageInquiry(1, '', '');
+    this.getEquipmentData(1, '', '');
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.cBirthday=moment().format('YYYY-MM-DD');
@@ -388,12 +389,17 @@ export default {
       let tmp2 = this.$moment()
       return tmp2.diff(tmp1, 'years');
     },
-     manageInquiry(input, input2, input3) {
+    manageInquiry(input, input2, input3){
       if(this.s_date > this.e_date){
         this.errorpopup1 = true
       }/*else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
       }*/else{
+        this.searchCheck2 = 1
+      this.getEquipmentData(input, input2, input3)
+      }
+    },
+     getEquipmentData(input, input2, input3) {
         let code = input? input : input2? input2 : input3
 
         let uri = '';
@@ -443,12 +449,22 @@ export default {
         .then(response => {
           this.recipientItems = response.data.data
           this.NCount =this.recipientItems.length
+          if(this.searchCheck1 === 1){
+            this.searchCheck1 = 0
+        }
+        if(this.recipientItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("성공적으로 조회 되었습니다.")
+            this.searchCheck2 = 0
+        }else if(this.recipientItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("조회 결과가 존재하지 않습니다.")
+            this.searchCheck2 = 0
+        }
         })
         .catch(error => {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
-      }
+      
     },
     getsensorData() {
     axios.get(this.$store.state.serverApi +"/admin/codes?cmmnCdGroup=SENSOR.TYPECD", {headers: {"Authorization": sessionStorage.getItem("token")}})

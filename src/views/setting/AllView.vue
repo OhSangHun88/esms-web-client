@@ -7,7 +7,7 @@
                 <i class="ico_nav"></i>
                 <span class="on">장비관리</span>
             </div>
-            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry'>
+            <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry(code1,code2,code3)'>
                 <div class="table_wrap">
                     <table>
                         <colgroup>
@@ -250,7 +250,7 @@ export default {
     this.getTypeData();
     this.getsensorData();
     this.getcheckTypeData(1);
-    this.manageInquiry('','',3);
+    this.getData('','',3);
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.cBirthday=moment().format('YYYY-MM-DD');
@@ -388,7 +388,11 @@ export default {
       let tmp2 = this.$moment()
       return tmp2.diff(tmp1, 'years');
     },
-     async manageInquiry(input,input2,input3) {  
+    manageInquiry(input,input2,input3){
+      this.getData(input,input2,input3)
+      alert("성공적으로 조회 되었습니다.")
+    },
+     async getData(input,input2,input3) {  
       console.log(input)
       console.log(input2)
       console.log(input3)

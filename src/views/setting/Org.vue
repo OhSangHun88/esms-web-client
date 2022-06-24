@@ -448,6 +448,7 @@ export default {
         detailArr: [],
 
         zipCode: null,selectedAddr: null, selectedAddrDetail: null, selectUserData: null,
+        searchCheck1 : 1, searchCheck2 : 0,
       }
     },
     created(){
@@ -665,6 +666,16 @@ export default {
             this.TorgItems = response.data.data
             console.log(this.TorgItems[0])
             console.log(this.orgId)
+            if(this.searchCheck1 === 1){
+            this.searchCheck1 = 0
+        }
+        if(this.TorgItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("성공적으로 조회 되었습니다.")
+            this.searchCheck2 = 0
+        }else if(this.TorgItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            alert("조회 결과가 존재하지 않습니다.")
+            this.searchCheck2 = 0
+        }
           })          
           .catch(error => {
             this.errorMessage = error.message;
@@ -686,6 +697,7 @@ export default {
       this.getOrgmData()
     },
     manageInquiry() {
+      this.searchCheck2 = 1
         this.getTorgData();
     },
     // 관리기관 등록 시 변수 초기화

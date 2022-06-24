@@ -132,6 +132,7 @@ export default {
     },
     manageInquiry() {
       this.getDisorderData();
+      alert("성공적으로 조회 되었습니다.")
     },
     initSet() {
       this.uName ='';
