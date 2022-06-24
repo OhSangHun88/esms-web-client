@@ -136,16 +136,16 @@ export default {
           .then(response => {
             this.logItems = response.data.data
             this.NCount =this.logItems.length
-            if(this.searchCheck1 === 1){
-            this.searchCheck1 = 0
-        }
-        if(this.logItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
-            alert("성공적으로 조회 되었습니다.")
-            this.searchCheck2 = 0
-        }else if(this.logItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
-            alert("조회 결과가 존재하지 않습니다.")
-            this.searchCheck2 = 0
-        }
+        //     if(this.searchCheck1 === 1){
+        //     this.searchCheck1 = 0
+        // }
+        // if(this.logItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+        //     alert("성공적으로 조회 되었습니다.")
+        //     this.searchCheck2 = 0
+        // }else if(this.logItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+        //     alert("조회 결과가 존재하지 않습니다.")
+        //     this.searchCheck2 = 0
+        // }
           })          
           .catch(error => {
             this.errorMessage = error.message;
@@ -163,16 +163,16 @@ export default {
           .then(response => {
             this.comLogItems = response.data.data
             this.ENCount =this.comLogItems.length
-            if(this.searchCheck1 === 1){
-            this.searchCheck1 = 0
-        }
-        if(this.comLogItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
-            alert("성공적으로 조회 되었습니다.")
-            this.searchCheck2 = 0
-        }else if(this.comLogItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
-            alert("조회 결과가 존재하지 않습니다.")
-            this.searchCheck2 = 0
-        }
+        //     if(this.searchCheck1 === 1){
+        //     this.searchCheck1 = 0
+        // }
+        // if(this.comLogItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+        //     alert("성공적으로 조회 되었습니다.")
+        //     this.searchCheck2 = 0
+        // }else if(this.comLogItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+        //     alert("조회 결과가 존재하지 않습니다.")
+        //     this.searchCheck2 = 0
+        // }
           })
           .catch(error => {
             this.errorMessage = error.message;

@@ -390,7 +390,6 @@ export default {
     },
     manageInquiry(input,input2,input3){
       this.getData(input,input2,input3)
-      alert("성공적으로 조회 되었습니다.")
     },
      async getData(input,input2,input3) {  
       console.log(input)

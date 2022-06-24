@@ -405,16 +405,16 @@ export default {
             this.recipientItems = response.data.data
             console.log(this.recipientItems.length)
             this.NCount =this.recipientItems.length
-            if(this.searchCheck1 === 1){
-            this.searchCheck1 = 0
-            }
-            if(this.recipientItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
-                alert("성공적으로 조회 되었습니다.")
-                this.searchCheck2 = 0
-            }else if(this.recipientItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
-                alert("조회 결과가 존재하지 않습니다.")
-                this.searchCheck2 = 0
-            }
+            // if(this.searchCheck1 === 1){
+            // this.searchCheck1 = 0
+            // }
+            // if(this.recipientItems.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            //     alert("성공적으로 조회 되었습니다.")
+            //     this.searchCheck2 = 0
+            // }else if(this.recipientItems.length === 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
+            //     alert("조회 결과가 존재하지 않습니다.")
+            //     this.searchCheck2 = 0
+            // }
           })
           .catch(error => {
             this.errorMessage = error.message;
