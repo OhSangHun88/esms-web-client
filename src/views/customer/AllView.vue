@@ -18,20 +18,25 @@
                 <button type="button" class="btn_close" @click="closeModal">닫기</button>
             </div>
             <div class="popup_cnt">
+              <div class="input_wrap type-02">
+                <div class="input_area">
+                  <p class="input_tit">아래의 항목을 작성하여 주세요.(* 필수항목)</p>
+                </div>
+              </div>
                 <div class="input_wrap">
                   <div class="input_area">
-                    <p class="input_tit">대상자명</p>
+                    <p class="input_tit">대상자명 *</p>
                     <div class="add_btn_input">
                       <input type="text" v-model="selectedUpdateRecipient">
                       <!-- <button type="button" class="input_btn">중복 확인</button> -->
                     </div>
                   </div>
                   <div class="input_area half">
-                    <p class="input_tit">생년월일</p>
+                    <p class="input_tit">생년월일 *</p>
                     <input type="text" @keyup="getBirthdayMask(selectedUpdateBirthday)" v-model="selectedUpdateBirthday" maxlength="10">
                   </div>
                   <div class="btn_area half">
-                      <p class="input_tit">성별</p>
+                      <p class="input_tit">성별 *</p>
                       <div class="toggle_btn">
                           <button type="button" :class="this.userGender ===1 ? 'btn on':'btn'" @click="selectGender(1)">남</button>
                           <button type="button" :class="this.userGender ===2 ? 'btn on':'btn'" @click="selectGender(2)">여</button>
@@ -40,30 +45,30 @@
                 </div>
                 <div class="input_wrap">
                   <div class="input_area">
-                    <p class="input_tit">우편번호</p>
+                    <p class="input_tit">우편번호 *</p>
                     <div class="add_btn_input">
                       <input type="text" value="" v-model="selectedUpdateZipCode">
                       <button type="button" class="input_btn" @click="search">검색</button>
                     </div>
                   </div>
                   <div class="input_area">
-                    <p class="input_tit">주소</p>
+                    <p class="input_tit">주소 *</p>
                     <input type="text" value="" v-model="selectedUpdateAddr">
                   </div>
                 </div>
                 <div class="input_wrap type-02">
                     <div class="input_area" >
-                        <p class="input_tit">상세주소</p>
+                        <p class="input_tit">상세주소 *</p>
                         <input type="text" value="" v-model="selectedUpdateAddrDetail">
                     </div>
                 </div>
                 <div class="input_wrap">
                   <div class="input_area">
-                    <p class="input_tit">휴대폰번호</p>
+                    <p class="input_tit">휴대폰번호 *</p>
                     <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="selectedUpdatePhoneNumber" maxlength="11">
                   </div>
                   <div class="input_area">
-                        <p class="input_tit">사용자 구분</p>
+                        <p class="input_tit">사용자 구분 *</p>
                         <select v-model="selectedUpdateUserType">
                           <option v-for="(recipetype, index) in TypeItems2" :value="recipetype.value" v-bind:key="index">{{recipetype.label}}</option>
                         </select>
@@ -71,13 +76,13 @@
                 </div>
                 <div class="input_wrap">
                     <div class="input_area">
-                        <p class="input_tit">시/도</p>
+                        <p class="input_tit">시/도 *</p>
                         <select v-model="selectedUpdateSidoItems" @change="onChangeSgg($event)">
                           <option v-for="(sido, index) in sidoItems2" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                         </select>
                     </div>
                     <div class="input_area">
-                        <p class="input_tit">시/군/구</p>
+                        <p class="input_tit">시/군/구 *</p>
                         <select v-model="selectedUpdateSggItems" @change="onChangeOrg($event)">
                           <option v-for="(sgg, index) in sggItems2" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                         </select>
@@ -85,7 +90,7 @@
                 </div>
                 <div class="input_wrap">  
                   <div class="input_area">
-                      <p class="input_tit">관리기관</p>
+                      <p class="input_tit">관리기관 *</p>
                         <select v-model="selectedUpdateOrgItems">
                           <option v-for="(orgm, index) in orgmItems2" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
                         </select>
@@ -105,20 +110,25 @@
                 <button type="button" class="btn_close" @click="changeOpen = false">닫기</button>
             </div>
             <div class="popup_cnt">
+              <div class="input_wrap type-02">
+                <div class="input_area">
+                  <p class="input_tit">아래의 항목을 작성하여 주세요.(* 필수항목)</p>
+                </div>
+              </div>
                 <div class="input_wrap">
                   <div class="input_area">
-                    <p class="input_tit">대상자명</p>
+                    <p class="input_tit">대상자명 *</p>
                     <div class="add_btn_input">
                       <input type="text" v-model="selectChangeRecipient">
                       <!-- <button type="button" class="input_btn">중복 확인</button> -->
                     </div>
                   </div>
                   <div class="input_area half">
-                    <p class="input_tit">생년월일</p>
+                    <p class="input_tit">생년월일 *</p>
                     <input type="text" @keyup="getBirthdayMask(selectChangeBirthday)" v-model="selectChangeBirthday" maxlength="10">
                   </div>
                   <div class="btn_area half">
-                      <p class="input_tit">성별</p>
+                      <p class="input_tit">성별 *</p>
                       <div class="toggle_btn">
                           <button type="button" :class="this.userGender ===1 ? 'btn on':'btn'" @click="selectGender(1)">남</button>
                           <button type="button" :class="this.userGender ===2 ? 'btn on':'btn'" @click="selectGender(2)">여</button>
@@ -127,30 +137,30 @@
                 </div>
                 <div class="input_wrap">
                   <div class="input_area">
-                    <p class="input_tit">우편번호</p>
+                    <p class="input_tit">우편번호 *</p>
                     <div class="add_btn_input">
                       <input type="text" value="" v-model="selectChangeZipCode">
                       <button type="button" class="input_btn" @click="search">검색</button>
                     </div>
                   </div>
                   <div class="input_area">
-                    <p class="input_tit">주소</p>
+                    <p class="input_tit">주소 *</p>
                     <input type="text" value="" v-model="selectChangeAddr">
                   </div>
                 </div>
                 <div class="input_wrap type-02">
                     <div class="input_area" >
-                        <p class="input_tit">상세주소</p>
+                        <p class="input_tit">상세주소 *</p>
                         <input type="text" value="" v-model="selectChangeAddrDetail">
                     </div>
                 </div>
                 <div class="input_wrap">
                   <div class="input_area">
-                    <p class="input_tit">휴대폰번호</p>
+                    <p class="input_tit">휴대폰번호 *</p>
                     <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="selectChangePhoneNumber" maxlength="11">
                   </div>
                   <div class="input_area">
-                        <p class="input_tit">사용자 구분</p>
+                        <p class="input_tit">사용자 구분 *</p>
                         <select v-model="selectChangeRecipeType">
                           <option v-for="(recipetype, index) in TypeItems2" :value="recipetype.value" v-bind:key="index">{{recipetype.label}}</option>
                         </select>
@@ -158,17 +168,17 @@
                 </div>
                 <div class="input_wrap">
                     <div class="input_area">
-                        <p class="input_tit">시/도</p>
+                        <p class="input_tit">시/도 *</p>
                         <input type="text" v-model="selectChangeSido" disabled>
                     </div>
                     <div class="input_area">
-                        <p class="input_tit">시/군/구</p>
+                        <p class="input_tit">시/군/구 *</p>
                         <input type="text" v-model="selectChangeSgg" disabled>
                     </div>
                 </div>
                 <div class="input_wrap">  
                   <div class="input_area">
-                      <p class="input_tit">관리기관</p>
+                      <p class="input_tit">관리기관 *</p>
                       <input type="text" v-model="selectChangeOrg" disabled>
                   </div>
                   <div class="input_area">
@@ -1141,13 +1151,39 @@ export default {
       }else{
         this.selectSex = 'F'
       }
-      if(this.selectedUpdateZipCode === '' || this.selectedUpdateAddr === '' || this.selectedUpdateAddrDetail === '' ||
-      this.selectedUpdateBirthday === '' || this.selectedUpdateRecipient === '' || this.selectedUpdatePhoneNumber === '' ||
-      this.selectedUpdateSidoItems === '' || this.selectedUpdateSggItems === '' || this.selectedUpdateOrgItems === '' ||
-      this.selectedUpdateUserType === ''){
-        alert("모든 항목을 작성하여 주세요");
-        return false;
+      
+      if(this.selectedUpdateRecipient === ''){
+        alert("대상자명 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateBirthday === ''){
+        alert("생년월일 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateZipCode === ''){
+        alert("우편번호 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateAddr === ''){
+        alert("주소 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateAddrDetail === ''){
+        alert("상세주소 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdatePhoneNumber === ''){
+        alert("휴대폰번호 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateUserType === ''){
+        alert("사용자 구분 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateSidoItems === ''){
+        alert("시/도 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateSggItems === ''){
+        alert("시/군/구 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateOrgItems === ''){
+        alert("관리리관명 항목을 작성하여 주세요")
+        return false
       }
+
       if(this.selectedUpdatePhoneNumber.length < 3){
         alert("전화번호는 세자리 이상을 입력해 주세요")
         return false;
@@ -1184,34 +1220,69 @@ export default {
       console.log(data)
        const url  = this.$store.state.serverApi + `/admin/recipients`
          ///sensors/{sensorId}/gw-send-cycle
-        //  await axios.post(url,data,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-        //    .then(res => {
-        //      let resData = res.data.data
-        //     // this.getCSensorsData = res.data.data
-        //      if(resData){
-        //          alert("저장이 완료되었습니다.")
-        //      }
-        //      this.modalOpen = false
-        //      this.getRecipientData()
-        //    })
-        //    .catch(error => {
-        //        console.log("fail to load")
-        //      this.errorMessage = error.message;
-        //      console.error("There was an error!", error);
-        //    });
+         await axios.post(url,data,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+           .then(res => {
+             let resData = res.data.data
+            // this.getCSensorsData = res.data.data
+             if(resData){
+                 alert("저장이 완료되었습니다.")
+             }
+             this.modalOpen = false
+             this.getRecipientData()
+           })
+           .catch(error => {
+               console.log("fail to load")
+             this.errorMessage = error.message;
+             console.error("There was an error!", error);
+           });
     },
     changeUser(){
       //여기
       this.selectChangeOrgNm = this.orgmItems2.filter(cd=>{
         return cd.value === this.selectChangeOrg
       })
-      if(this.selectChangeZipCode === '' || this.selectChangeAddr === '' || this.selectChangeAddrDetail === '' ||
-      this.selectChangeBirthday === '' || this.selectChangeRecipient === '' || this.selectChangePhoneNumber === '' ||
-      this.selectChangeSido === '' || this.selectChangeSgg === '' || this.selectChangeOrg === '' ||
-      this.selectChangeRecipeType === '' || this.selectChangeState === ''){
-        alert("모든 항목을 작성하여 주세요");
-        return false;
+      // if(this.selectChangeZipCode === '' || this.selectChangeAddr === '' || this.selectChangeAddrDetail === '' ||
+      // this.selectChangeBirthday === '' || this.selectChangeRecipient === '' || this.selectChangePhoneNumber === '' ||
+      // this.selectChangeSido === '' || this.selectChangeSgg === '' || this.selectChangeOrg === '' ||
+      // this.selectChangeRecipeType === '' || this.selectChangeState === ''){
+      //   alert("모든 항목을 작성하여 주세요");
+      //   return false;
+      // }
+      if(this.selectChangeRecipient === ''){
+        alert("대상자명 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectChangeBirthday === ''){
+        alert("생년월일 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectChangeZipCode === ''){
+        alert("우편번호 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectChangeAddr === ''){
+        alert("주소 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectChangeAddrDetail === ''){
+        alert("상세주소 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectChangePhoneNumber === ''){
+        alert("휴대폰번호 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectChangeRecipeType === ''){
+        alert("사용자 구분 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectChangeSido === ''){
+        alert("시/도 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectChangeSgg === ''){
+        alert("시/군/구 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectChangeOrg === ''){
+        alert("관리리관명 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectChangeState === ''){
+        alert("상태구분 항목을 작성하여 주세요")
+        return false
       }
+
       if(this.selectChangePhoneNumber.length < 3){
         alert("전화번호는 세자리 이상을 입력해 주세요")
         return false;

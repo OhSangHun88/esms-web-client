@@ -10,15 +10,20 @@
                         <button type="button" class="btn_close" @click="writeOrg = false">닫기</button>
                     </div>
                     <div class="popup_cnt">
+                      <div class="input_wrap type-02">
+                        <div class="input_area">
+                          <p class="input_tit">아래의 항목을 작성하여 주세요.(* 필수항목)</p>
+                        </div>
+                      </div>
                         <div class="input_wrap">
                             <div class="input_area">
-                                <p class="input_tit">시/도</p>
+                                <p class="input_tit">시/도 *</p>
                                 <select v-model="selectedUpdateSidoItems" @change="onChangeSgg($event)">
                                   <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                                 </select>
                             </div>
                             <div class="input_area">
-                                <p class="input_tit">시/군/구</p>
+                                <p class="input_tit">시/군/구 *</p>
                                 <select v-model="selectedUpdateSggItems" @change="onChangeOrg($event)">
                                   <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                                 </select>
@@ -26,23 +31,23 @@
                         </div>
                         <div class="input_wrap">
                             <div class="input_area">
-                                <p class="input_tit">관리기관명</p>
+                                <p class="input_tit">관리기관명 *</p>
                                 <input type="text" value="" v-model="selectedUpdateOrgItems">
                             </div>
                             <div class="input_area">
-                                <p class="input_tit">대표 전화번호</p>
+                                <p class="input_tit">대표 전화번호 *</p>
                                 <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  value="" v-model="selectedUpdatePhoneNumber" maxlength="11">
                             </div>
                         </div>
                         <div class="input_wrap">
                             <div class="input_area">
-                                <p class="input_tit">관리기관 구분</p>
+                                <p class="input_tit">관리기관 구분 *</p>
                                 <select v-model="selectedUpdateTypeCd">
                                   <option v-for="(orgType, index) in orgTypeItems" :value="orgType.value" v-bind:key="index">{{orgType.label}}</option>
                                 </select>
                             </div>
                             <div class="input_area">
-                                <p class="input_tit">상위기관</p>
+                                <p class="input_tit">상위기관 *</p>
                                 <select v-model="selectedUpdateUpperOrgId">
                                   <option v-for="(upperOrg, index) in upperOrgItems" :value="upperOrg.value" v-bind:key="index">{{upperOrg.label}}</option>
                                 </select>
@@ -50,7 +55,7 @@
                         </div>
                         <div class="input_wrap">
                           <div class="input_area">
-                            <p class="input_tit">우편번호</p>
+                            <p class="input_tit">우편번호 *</p>
                             <div class="add_btn_input">
                               <input type="text" value="" v-model="selectedUpdateZipcode">
                               <button type="button" class="input_btn" @click="search()">검색</button>
@@ -59,7 +64,7 @@
                         </div>
                         <div class="input_wrap type-02">
                             <div class="input_area">
-                            <p class="input_tit">주소</p>
+                            <p class="input_tit">주소 *</p>
                             <input type="text" value="" v-model="selectedUpdateAddr">
                           </div>
                         </div> 
@@ -169,15 +174,20 @@
                       <button type="button" class="btn_close" @click="changeOrg = false">닫기</button>
                   </div>
                   <div class="popup_cnt">
+                    <div class="input_wrap type-02">
+                        <div class="input_area">
+                          <p class="input_tit">아래의 항목을 작성하여 주세요.(* 필수항목)</p>
+                        </div>
+                      </div>
                       <div class="input_wrap">
                           <div class="input_area">
-                              <p class="input_tit">시/도</p>
+                              <p class="input_tit">시/도 *</p>
                               <select v-model="selectedChangeSidoItems" @change="onChangeSgg($event)">
                                   <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
                                 </select>
                           </div>
                           <div class="input_area">
-                              <p class="input_tit">시/군/구</p>
+                              <p class="input_tit">시/군/구 *</p>
                               <select v-model="selectedChangeSggItems" @change="onChangeOrg($event)">
                                   <option v-for="(sgg, index) in sggItems" :value="sgg.value" v-bind:key="index">{{sgg.label}}</option>
                                 </select>
@@ -185,23 +195,23 @@
                       </div>
                       <div class="input_wrap">
                           <div class="input_area">
-                              <p class="input_tit">관리기관명</p>
+                              <p class="input_tit">관리기관명 *</p>
                               <input type="text" value="" v-model="selectedChangeOrgItems">
                           </div>
                           <div class="input_area">
-                              <p class="input_tit">대표 전화번호</p>
+                              <p class="input_tit">대표 전화번호 *</p>
                               <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  value="" v-model="selectedChangePhoneNumber" maxlength="11">
                           </div>
                       </div>
                       <div class="input_wrap">
                         <div class="input_area">
-                          <p class="input_tit">관리기관 구분</p>
+                          <p class="input_tit">관리기관 구분 *</p>
                           <select v-model="selectedChangeTypeCd">
                             <option v-for="(orgType, index) in orgTypeItems" :value="orgType.value" v-bind:key="index">{{orgType.label}}</option>
                           </select>
                         </div>
                         <div class="input_area">
-                            <p class="input_tit">상위기관</p>
+                            <p class="input_tit">상위기관 *</p>
                             <select v-model="selectedChangeUpperOrgId">
                               <option v-for="(upperOrg, index) in upperOrgItems" :value="upperOrg.value" v-bind:key="index">{{upperOrg.label}}</option>
                             </select>
@@ -209,7 +219,7 @@
                       </div>
                       <div class="input_wrap">
                           <div class="input_area">
-                              <p class="input_tit">기관 상태</p>
+                              <p class="input_tit">기관 상태 *</p>
                               <select v-model="selectedChangeUseYn">
                               <option v-for="(useyn, index) in UseYnItems" :value="useyn.value" v-bind:key="index">{{useyn.label}}</option>
                             </select>
@@ -217,7 +227,7 @@
                       </div>
                       <div class="input_wrap">
                         <div class="input_area">
-                          <p class="input_tit">우편번호</p>
+                          <p class="input_tit">우편번호 *</p>
                           <div class="add_btn_input">
                             <input type="text" value="" v-model="selectedChangeZipcodeCd" @click="search">
                             <button type="button" class="input_btn" @click="search()">검색</button>
@@ -226,7 +236,7 @@
                       </div>
                       <div class="input_wrap type-02">
                           <div class="input_area">
-                          <p class="input_tit">주소</p>
+                          <p class="input_tit">주소 *</p>
                           <input type="text" value="" v-model="selectedChangeAddr">
                         </div>
                       </div> 
@@ -763,17 +773,18 @@ export default {
         });
 
         console.log(this.orgmItems2)
-      if(this.selectedUpdateOrgItems === ''){
-        this.orgNm = this.orgmItems2.filter(cd=>{
-          return cd.value === 'ORG0000001'
-        })
-        this.orgNm2 = this.orgmItems2.filter(cd=>{
-          return cd.value === 'ORG0000001'
-        })
-        this.selectedUpdateTypeCd = 'TPE001'
-        this.typeNm = '관리기관'
-        this.selectedUpdateOrgItems = ''
-      }else{
+      // if(this.selectedUpdateOrgItems === ''){
+      //   this.orgNm = this.orgmItems2.filter(cd=>{
+      //     return cd.value === 'ORG0000001'
+      //   })
+      //   this.orgNm2 = this.orgmItems2.filter(cd=>{
+      //     return cd.value === 'ORG0000001'
+      //   })
+      //   this.selectedUpdateTypeCd = 'TPE001'
+      //   this.typeNm = '관리기관'
+      //   this.selectedUpdateOrgItems = ''
+      // }
+      
         this.orgNm = this.orgmItems2.filter(cd=>{
           return cd.value === this.selectedUpdateOrgItems
         })
@@ -783,11 +794,11 @@ export default {
         this.checkUpdateAdrr = this.orgmItems2.filter(cd=>{
           return cd.value4 === this.selectedUpdateAddr
         })
-      }
+      
 
       console.log(this.checkUpdateAdrr)
       console.log(this.selectedUpdateTypeCd)
-      if(this.selectedUpdateTypeCd === 'TPE001' && this.orgNm2.length !== 0){
+      if(this.orgNm2.length !== 0){
         alert("이미 등록된 관리기관 입니다.")
         return false
       }
@@ -795,11 +806,33 @@ export default {
         alert("이미 등록된 실행기관 입니다.")
         return false
       }
-      if(this.selectedUpdateSidoItems === '' || this.selectedUpdateSggItems ==='' || this.selectedUpdateOrgItems === '' || this.selectedUpdatePhoneNumber === '' ||
-      this.selectedUpdateTypeCd === '' || this.selectedUpdateUpperOrgId === '' || this.selectedUpdateZipcode === '' || this.selectedUpdateAddr === '' || this.selectedUpdateDetailAddr === ''){
-        alert("모든 항목을 작성하여 주세요")
+      
+      if(this.selectedUpdateSidoItems === ''){
+        alert("시/도 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateSggItems === ''){
+        alert("시/군/구 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateOrgItems === '' ){
+        alert("관리리관명 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdatePhoneNumber === ''){
+        alert("대표전화번호 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateTypeCd === ''){
+        alert("관리기관 구분 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateUpperOrgId === ''){
+        alert("상위기관 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateZipcode === ''){
+        alert("우편번호 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedUpdateAddr === ''){
+        alert("주소 항목을 작성하여 주세요")
         return false
       }
+
       if(this.selectedUpdatePhoneNumber.length < 3){
         alert("전화번호는 세자리 이상을 입력해 주세요")
         return false;
@@ -896,6 +929,7 @@ export default {
       this.selectedChangeUseYn = this.selectUserData.useYn
       this.selectedChangeZipcodeCd = this.selectUserData.zipcodeCd
       this.changeOrg = true
+      
     },
     // 관리기관 수정
     async changeOrgSuccess(){
@@ -920,23 +954,23 @@ export default {
           console.error("There was an error!", error);
         });
 
-      if(this.selectedChangeOrgItems === ''){
-        this.sidoName = this.orgmItems2.filter(cd=>{
-          return cd.sidoName === '세종특별자치시'
-        })
-        this.sggName = this.orgmItems2.filter(cd=>{
-          return cd.sggName === '세종특별자치구'
-        })
-        this.orgNm = this.orgmItems2.filter(cd=>{
-          return cd.value === 'ORG0000001'
-        })
-        this.orgNm2 = this.orgmItems2.filter(cd=>{
-          return cd.value === 'ORG0000001'
-        })
-        this.selectedChangeTypeCd = 'TPE001'
-        this.selectedChangeOrgItems = ''
-        this.typeNm = '관리기관'
-      }else{
+      // if(this.selectedChangeOrgItems === ''){
+      //   this.sidoName = this.orgmItems2.filter(cd=>{
+      //     return cd.sidoName === '세종특별자치시'
+      //   })
+      //   this.sggName = this.orgmItems2.filter(cd=>{
+      //     return cd.sggName === '세종특별자치구'
+      //   })
+      //   this.orgNm = this.orgmItems2.filter(cd=>{
+      //     return cd.value === 'ORG0000001'
+      //   })
+      //   this.orgNm2 = this.orgmItems2.filter(cd=>{
+      //     return cd.value === 'ORG0000001'
+      //   })
+      //   this.selectedChangeTypeCd = 'TPE001'
+      //   this.selectedChangeOrgItems = ''
+      //   this.typeNm = '관리기관'
+      // }else{
         this.sidoName = this.sidoItems.filter(cd=>{
         return cd.value === this.selectedChangeSidoItems
         })
@@ -952,11 +986,34 @@ export default {
         this.typeNm = this.orgTypeItems.filter(cd=>{
         return cd.value === this.selectedChangeTypeCd
       })
-      }
-      if(this.selectedChangeSidoItems === '' || this.selectedChangeSggItems ==='' || this.selectedChangeOrgItems === '' || this.selectedChangePhoneNumber === '' ||
-      this.selectedChangeTypeCd === '' || this.selectedChangeUpperOrgId === '' || this.selectedChangeUseYn === '' || this.selectedChangeZipcodeCd === '' || this.selectedChangeAddr === '' ||
-      this.selectedChangeDetailAddr === ''){
-        alert("모든 항목을 작성하여 주세요")
+      // }
+      
+      if(this.selectedChangeSidoItems === ''){
+        alert("시/도 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedChangeSggItems === ''){
+        alert("시/군/구 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedChangeOrgItems === ''){
+        alert("관리리관명 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedChangePhoneNumber === ''){
+        alert("대표전화번호 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedChangeTypeCd === ''){
+        alert("관리기관 구분 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedChangeUpperOrgId === ''){
+        alert("상위기관 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedChangeUseYn === ''){
+        alert("기관상태 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedChangeZipcodeCd === ''){
+        alert("우편번호 항목을 작성하여 주세요")
+        return false
+      }else if(this.selectedChangeAddr === ''){
+        alert("주소 항목을 작성하여 주세요")
         return false
       }
       if(this.selectedChangeTypeCd === 'TPE001' && this.orgNm2.length !== 0){
@@ -1021,6 +1078,11 @@ export default {
       console.log(url)
       await axios.delete(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
            .then(res => {
+            alert("기관상태가 미사용으로 변경 되었습니다")
+              this.writeOrg = false
+              this.deleteOrg = false
+              this.detailOrg = false
+              this.getTorgData()
              console.log(res.data.data)
             let resData = res.data.data
             console.log(resData)
