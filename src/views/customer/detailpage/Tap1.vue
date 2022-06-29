@@ -123,8 +123,8 @@
                                 <col style="width:25%;">
                             </colgroup>
                             <tbody>
-                                <tr  v-for="(item,index) in sensorsData" v-bind:key="index">
-                                    <td>{{index+1}}</td>
+                                <tr  v-for="(item,index) in listData" v-bind:key="index">
+                                    <td>{{num(index+1)}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td>{{item.measureDtime}}</td>
                                     <td>{{item.regDtime}}</td>
@@ -134,20 +134,10 @@
                         </table>
                     </div>
                     <div class="pagination mt0">
-                        <a href="#" class="front">첫 페이지</a>
-                        <a href="#" class="prev">이전 페이지</a>
-                        <a href="#" class="on">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#">4</a>
-                        <a href="#">5</a>
-                        <a href="#">6</a>
-                        <a href="#">7</a>
-                        <a href="#">8</a>
-                        <a href="#">9</a>
-                        <a href="#">10</a>
-                        <a href="#" class="next">다음 페이지</a>
-                        <a href="#" class="back">마지막 페이지</a>
+                        <pagination
+                        :pageSetting="pageDataSetting(total, limit, block, this.page)"
+                        @paging="pagingMethod"
+                        />
                     </div>
                 </div>
             </div>           
@@ -157,38 +147,85 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import pagination from "../../pages/pagination.vue"
 
  export default {
    name: "Tap1",
+   components: {
+      pagination
+    },
    props:{
      recipientId: String
    },
    data () {
-     return {
-      sensorsData: [],
-      code1: '',
-      code2: '',
-      code3: '',
-      code4: '',
-      measureStartDate:moment().subtract(7,'days').format('YYYY-MM-DD'),
-      measureEndDate: moment().format('YYYY-MM-DD'),
-      labelText:'정보',
-      codeText:'°C',
-      envData:[{text: '환경 정보', value:''},{text: '온도', value: 2},{text: '조도', value: 3},{text: '습도', value: 4}, ],
-      bioData:[{text: '바이오 정보', value: ''},{text: '심장박동', value: 6},{text: '호흡', value: 7},{text: '활동량', value: 8}, ],
-      actPData:[{text: '활동감지기(P) 정보', value: ''},{text: '전체', value: 9},{text: '거실', value: 11},{text: '화장실', value: 10}, ],
-      doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 12},{text: '현관', value: 13},{text: '뒷문', value: 14}, ],
-      selectedValue : null,
-      sensorsTmp1Data: [],
-      sensorsTmp2Data: [],
-      sensorsTmp3Data: [],
-      locCode: '',
-      //{text: '전체', value: 1},{text: '전체', value: 5},
-      searchCheck1 : 1, searchCheck2 : 0,
-      errorpopup1: false, errorpopup2: false,
+        return {
+        sensorsData: [],
+        code1: '',
+        code2: '',
+        code3: '',
+        code4: '',
+        measureStartDate:moment().subtract(7,'days').format('YYYY-MM-DD'),
+        measureEndDate: moment().format('YYYY-MM-DD'),
+        labelText:'정보',
+        codeText:'°C',
+        envData:[{text: '환경 정보', value:''},{text: '온도', value: 2},{text: '조도', value: 3},{text: '습도', value: 4}, ],
+        bioData:[{text: '바이오 정보', value: ''},{text: '심장박동', value: 6},{text: '호흡', value: 7},{text: '활동량', value: 8}, ],
+        actPData:[{text: '활동감지기(P) 정보', value: ''},{text: '전체', value: 9},{text: '거실', value: 11},{text: '화장실', value: 10}, ],
+        doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 12},{text: '현관', value: 13},{text: '뒷문', value: 14}, ],
+        selectedValue : null,
+        sensorsTmp1Data: [],
+        sensorsTmp2Data: [],
+        sensorsTmp3Data: [],
+        locCode: '',
+        //{text: '전체', value: 1},{text: '전체', value: 5},
+        searchCheck1 : 1, searchCheck2 : 0,
+        errorpopup1: false, errorpopup2: false,
+
+        listData: [],
+        total: '',
+        page: 1,
+        limit: 30,
+        block: 10
      }
    },
   methods: {
+    pagingMethod(page) {
+        this.listData = this.sensorsData.slice(
+          (page - 1) * this.limit,
+          page * this.limit
+        )
+        console.log(this.listData)
+        this.page = page
+        this.pageDataSetting(this.total, this.limit, this.block, page)
+      },
+      pageDataSetting(total, limit, block, page) {
+        const totalPage = Math.ceil(total / limit)
+        console.log(totalPage)
+        let currentPage = page
+        const first =
+          currentPage > 1 ? parseInt(currentPage, 10) - parseInt(1, 10) : null
+        const end =
+          totalPage !== currentPage
+            ? parseInt(currentPage, 10) + parseInt(1, 10)
+            : null
+ 
+        let startIndex = (Math.ceil(currentPage / block) - 1) * block + 1
+        let endIndex =
+          startIndex + block > totalPage ? totalPage : startIndex + block - 1
+        let list = []
+        for (let index = startIndex; index <= endIndex; index++) {
+          list.push(index)
+        }
+        return { first, end, totalPage, list, currentPage }
+      },
+      num(index){
+      if(this.page !== 1){
+        for(let i=1; i<this.page; i++){
+        index=index+30
+        }
+      }
+      return index
+    },
     filterChange(input){
         switch (input){
           case 1 : this.code2='';this.code3='';this.code4=''; break;
@@ -517,6 +554,9 @@ import moment from "moment";
         if(this.searchCheck1 === 1){
             this.searchCheck1 = 0
         }
+        this.total = this.sensorsData.length
+          this.page = 1
+          this.pagingMethod(this.page)
         if(this.sensorsData.length !== 0 && this.searchCheck1 === 0 && this.searchCheck2 === 1){
             alert("성공적으로 조회 되었습니다.")
             this.searchCheck2 = 0

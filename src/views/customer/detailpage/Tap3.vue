@@ -72,8 +72,8 @@
                           <col style="width:20%;">
                         </colgroup>
                         <tbody class="">
-                          <tr v-for="(item,index) in call_historys" v-bind:key="index">
-                            <td>{{index+1}}</td>
+                          <tr v-for="(item,index) in listData" v-bind:key="index">
+                            <td>{{num(index+1)}}</td>
                             <td>{{item.callTypeNm}}</td>
                             <td>{{changeRecipientPhoneno(item.phoneNumber)}}</td>
                             <td>{{item.startTime}}</td>
@@ -84,20 +84,10 @@
                       </table>
                     </div>
                     <div class="pagination mt0">
-                        <a href="#" class="front">첫 페이지</a>
-                        <a href="#" class="prev">이전 페이지</a>
-                        <a href="#" class="on">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#">4</a>
-                        <a href="#">5</a>
-                        <a href="#">6</a>
-                        <a href="#">7</a>
-                        <a href="#">8</a>
-                        <a href="#">9</a>
-                        <a href="#">10</a>
-                        <a href="#" class="next">다음 페이지</a>
-                        <a href="#" class="back">마지막 페이지</a>
+                        <pagination
+                        :pageSetting="pageDataSetting(total, limit, block, this.page)"
+                        @paging="pagingMethod"
+                        />
                     </div>
                 </div>
             </div>
@@ -107,8 +97,13 @@
 <script>
 import axios from "axios";
 import moment from "moment";
- export default {
+import pagination from "../../pages/pagination.vue"
+
+export default {
    name: "Tap3",
+   components: {
+      pagination
+    },
    props:{
      recipientId: String
    },
@@ -119,9 +114,52 @@ import moment from "moment";
       callEndDate: moment().format('YYYY-MM-DD'),
       searchCheck1 : 1, searchCheck2 : 0,
       errorpopup1: false, errorpopup2: false,
+
+      listData: [],
+      total: '',
+      page: 1,
+      limit: 30,
+      block: 10
      }
    },
   methods: {
+    pagingMethod(page) {
+        this.listData = this.call_historys.slice(
+          (page - 1) * this.limit,
+          page * this.limit
+        )
+        console.log(this.listData)
+        this.page = page
+        this.pageDataSetting(this.total, this.limit, this.block, page)
+      },
+      pageDataSetting(total, limit, block, page) {
+        const totalPage = Math.ceil(total / limit)
+        console.log(totalPage)
+        let currentPage = page
+        const first =
+          currentPage > 1 ? parseInt(currentPage, 10) - parseInt(1, 10) : null
+        const end =
+          totalPage !== currentPage
+            ? parseInt(currentPage, 10) + parseInt(1, 10)
+            : null
+ 
+        let startIndex = (Math.ceil(currentPage / block) - 1) * block + 1
+        let endIndex =
+          startIndex + block > totalPage ? totalPage : startIndex + block - 1
+        let list = []
+        for (let index = startIndex; index <= endIndex; index++) {
+          list.push(index)
+        }
+        return { first, end, totalPage, list, currentPage }
+      },
+      num(index){
+      if(this.page !== 1){
+        for(let i=1; i<this.page; i++){
+        index=index+30
+        }
+      }
+      return index
+    },
     manageInquiry() {
       if(this.callStartDate > this.callEndDate){
         this.errorpopup1 = true
@@ -134,13 +172,16 @@ import moment from "moment";
       
     },
     async getCall_historysData(){
-        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/call-historys?pageIndex=1&recordCountPerPage=100&callStartDate=${this.callStartDate}&callEndDate=${this.callEndDate}`
+        const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/call-historys?pageIndex=1&recordCountPerPage=1000&callStartDate=${this.callStartDate}&callEndDate=${this.callEndDate}`
         console.log("call_historys is ")
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.call_historys = res.data.data
             console.log("aa")
             console.log(this.call_historys)
+            this.total = this.call_historys.length
+            this.page = 1
+            this.pagingMethod(this.page)
             if(this.searchCheck1 === 1){
             this.searchCheck1 = 0
         }

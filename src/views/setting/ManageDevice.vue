@@ -374,7 +374,7 @@ export default {
       }
       if(this.equipList == 'gateway' ){
         uri = this.$store.state.serverApi 
-        +"/admin/equipment/gateway-checklist?pageIndex=1&recordCountPerPage=100"
+        +"/admin/equipment/gateway-checklist?pageIndex=1&recordCountPerPage=1000"
         +"&addrCd="+addrCode
         +"&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
@@ -383,7 +383,7 @@ export default {
         +"&occurEndDate="+occurEndDate;
       }else if(this.equipList == 'tablet'){
         uri = this.$store.state.serverApi 
-        +"/admin/equipment/tablet-checklist?pageIndex=1&recordCountPerPage=100"
+        +"/admin/equipment/tablet-checklist?pageIndex=1&recordCountPerPage=1000"
         +"&addrCd="+addrCode
         +"&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
@@ -392,7 +392,7 @@ export default {
         +"&occurEndDate="+occurEndDate;
       }else{
         uri = this.$store.state.serverApi 
-        +"/admin/equipment/sensor-checklist?pageIndex=1&recordCountPerPage=100"
+        +"/admin/equipment/sensor-checklist?pageIndex=1&recordCountPerPage=1000"
         +"&addrCd="+addrCode
         +"&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm

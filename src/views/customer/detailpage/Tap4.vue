@@ -49,7 +49,7 @@
                                 <th scope="col">전화번호</th>
                                 <th scope="col">통신사</th>
                                 <th scope="col">모델</th>
-                                <th scope="col">앱버전</th>
+                                <th scope="col">앱버전/이전 앱버전</th>
                                 <th scope="col">OS버전</th>
                                 <th scope="col">mac address</th>
                             </tr>
@@ -80,7 +80,7 @@
                                     <td>{{changeRecipientPhoneno(this.getCTabletsData.phoneNumber)}}</td>
                                     <td>{{this.getCTabletsData.provider}}</td>
                                     <td>{{this.getCTabletsData.modelNm}}</td>
-                                    <td>{{this.getCTabletsData.appVersion}}</td>
+                                    <td>{{this.getCTabletsData.appVersion+'/'+tabletBv(this.getCTabletsData.appBversion)}}</td>
                                     <td>{{this.getCTabletsData.osVersion}}</td>
                                     <td>{{this.getCTabletsData.macAddr}}</td>
                                 </tr>
@@ -123,7 +123,7 @@
                             <tr>
                                 <th scope="col">시리얼번호(S/N)</th>
                                 <th scope="col">맥 어드레스</th>
-                                <th scope="col">FW버전 (설치/회신)</th>
+                                <th scope="col">FW버전/이전 FW버전</th>
                                 <th scope="col">HW버전 (설치/회신)</th>
                             </tr>
                         </thead>
@@ -140,7 +140,7 @@
                                 <tr >
                                     <td>{{!this.getCGatewayData?'':this.getCGatewayData.serialNo}}</td>
                                     <td>{{!this.getCGatewayData?'':this.getCGatewayData.macAddr}}</td>
-                                    <td>{{!this.getCGatewayData?'':this.getCGatewayData.firmwareVersion}}</td>
+                                    <td>{{!this.getCGatewayData?'':this.getCGatewayData.firmwareVersion+'/'+firmwareBv(this.getCGatewayData.firmwareBversion)}}</td>
                                     <td>{{!this.getCGatewayData?'':this.getCGatewayData.hardwareVersion}}</td>
                                 </tr>
                             </tbody>
@@ -1063,6 +1063,18 @@ import axios from "axios";
             alert("특수문자는 입력하실 수 없습니다.")
             this.changeIncomeNm = obj.substring( 0 , obj.length - 1 )
          }
+     },
+     firmwareBv(input){
+        if(input === null || input ===undefined || input === ''){
+            input = this.getCGatewayData.firmwareVersion
+        }
+        return input
+     },
+     tabletBv(input){
+        if(input === null || input ===undefined || input === ''){
+            input = this.getCTabletsData.appVersion
+        }
+        return input
      },
     reset(index){
         this.radiocheck = this.getCSensorsData[index]

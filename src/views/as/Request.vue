@@ -422,7 +422,7 @@ export default {
       }
       let uri = ''
         uri = this.$store.state.serverApi
-        +"/admin/emergencys/active-unsensing-events?pageIndex=1&recordCountPerPage=100"
+        +"/admin/emergencys/active-unsensing-events?pageIndex=1&recordCountPerPage=1000"
         +"&addrCd="+addrCd
         +"&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
@@ -513,7 +513,7 @@ export default {
         return result
     },
     async getAsRequestList(){
-        const url  = this.$store.state.serverApi + `/admin/as/list.do?asStateCd=STE005&pageIndex=0&recordCountPerPage=100`
+        const url  = this.$store.state.serverApi + `/admin/as/list.do?asStateCd=STE005&pageIndex=0&recordCountPerPage=1000`
             await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
                 this.asRequestData = res.data.data

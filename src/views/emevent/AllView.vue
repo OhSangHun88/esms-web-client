@@ -31,20 +31,20 @@
         </div>
       </div>
       <div id="" class="popupLayer" v-if="errorpopup3 == true">
-              <div class="popup_wrap type-02">
-                <div class="title_wrap">
-                  <div class="title">경고</div>
-                  <button type="button" class="btn_close" @click="errorpopup3 = false">닫기</button>
-                </div>
-                <div class="popup_cnt">
-                  <p class="alert_txt">선택하신 응급알람을 취소하시겠습니까?</p>
-                </div>
-                <div class="popbtn_area type-02">
-                  <button type="button" class="btn form3" @click="saveState()">확인</button>
-                  <button type="button" class="btn form2" @click="errorpopup3 = false">취소</button>
-                </div>
-              </div>
-            </div>
+        <div class="popup_wrap type-02">
+          <div class="title_wrap">
+            <div class="title">경고</div>
+            <button type="button" class="btn_close" @click="errorpopup3 = false">닫기</button>
+          </div>
+          <div class="popup_cnt">
+            <p class="alert_txt">선택하신 응급알람을 취소하시겠습니까?</p>
+          </div>
+          <div class="popbtn_area type-02">
+            <button type="button" class="btn form3" @click="saveState()">확인</button>
+            <button type="button" class="btn form2" @click="errorpopup3 = false">취소</button>
+          </div>
+        </div>
+      </div>
       <div class="list_title_wrap">
         <span>이벤트 리포트</span>
         <i class="ico_nav"></i>
@@ -177,7 +177,7 @@
                 <col style="width:8%;">
               </colgroup>
               <tbody >
-                <tr v-for="(item,index) in recipientItems" v-bind:key="index">
+                <tr v-for="(item,index) in listData" v-bind:key="index">
                   <td v-if="item.signalStateCd === 'STE001'">
                     <div class="chk_area radio">
                       <input type="radio" name="saveChangeData" :id="`radio_${index}`" v-model="saveChangeData" :value="index">
@@ -185,7 +185,7 @@
                     </div>
                   </td>
                   <td v-else></td>
-                  <td>{{index+1}}</td>
+                  <td>{{num(index+1)}}</td>
                   <td>{{item.orgNm}}</td>
                   <td>{{item.recipientNm}}</td>
                   <td>{{makeAge(item.birthday) }}</td>
@@ -209,20 +209,10 @@
           </div>
         </div>
         <div class="pagination mt0">
-			    <a href="#" class="front">첫 페이지</a>
-			    <a href="#" class="prev">이전 페이지</a>
-			    <a href="#" class="on">1</a>
-			    <a href="#">2</a>
-			    <a href="#">3</a>
-			    <a href="#">4</a>
-			    <a href="#">5</a>
-			    <a href="#">6</a>
-			    <a href="#">7</a>
-			    <a href="#">8</a>
-			    <a href="#">9</a>
-			    <a href="#">10</a>
-			    <a href="#" class="next">다음 페이지</a>
-			    <a href="#" class="back">마지막 페이지</a>
+          <pagination
+            :pageSetting="pageDataSetting(total, limit, block, this.page)"
+            @paging="pagingMethod"
+          />
 		    </div>
       </div>
     </div>
@@ -238,11 +228,13 @@
 import axios from "axios";
 import moment from "moment";
 import HeaderComp from "../pages/HeaderComp.vue";
+import pagination from "../pages/pagination.vue"
 
 export default {
   name: 'UserListComponent',
   components :{
-    HeaderComp
+    HeaderComp,
+    pagination
   },
   data() {
     return{
@@ -253,8 +245,13 @@ export default {
       cBirthday:'', cAddr: '', NCount : 0,
       errorpopup1: false, errorpopup2: false, errorpopup3: false,
       saveChangeData: null, updDtime:'',
-      pageCut:30,pageSet:'',pageCount:'',pageCount_first:'',pageCount_last:'',
       searchCheck1 : 1, searchCheck2 : 0,
+
+      listData: [],
+      total: '',
+      page: 1,
+      limit: 30,
+      block: 10,
     }
   },
   created() {
@@ -267,26 +264,66 @@ export default {
     this.getStateData();
     this.cBirthday=moment().format('YYYY-MM-DD');
     this.getRecipientData();
-    
   },
+
+    mounted() {
+      this.pagingMethod(this.page)
+    },
   methods:{
+    pagingMethod(page) {
+        this.listData = this.recipientItems.slice(
+          (page - 1) * this.limit,
+          page * this.limit
+        )
+        console.log(this.listData)
+        this.page = page
+        this.pageDataSetting(this.total, this.limit, this.block, page)
+      },
+      pageDataSetting(total, limit, block, page) {
+        const totalPage = Math.ceil(total / limit)
+        console.log(totalPage)
+        let currentPage = page
+        const first =
+          currentPage > 1 ? parseInt(currentPage, 10) - parseInt(1, 10) : null
+        const end =
+          totalPage !== currentPage
+            ? parseInt(currentPage, 10) + parseInt(1, 10)
+            : null
+ 
+        let startIndex = (Math.ceil(currentPage / block) - 1) * block + 1
+        let endIndex =
+          startIndex + block > totalPage ? totalPage : startIndex + block - 1
+        let list = []
+        for (let index = startIndex; index <= endIndex; index++) {
+          list.push(index)
+        }
+        return { first, end, totalPage, list, currentPage }
+      },
+      num(index){
+      if(this.page !== 1){
+        for(let i=1; i<this.page; i++){
+        index=index+30
+        }
+      }
+      return index
+    },
   // 시/도 목록
-  getSidoData() {
+    getSidoData() {
       axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
-        .then(response => {
-          this.sidoItems=[];
-          this.sidoItems.push({label: '전체', value: ''});
-          for(let i=0; i<response.data.data.length; i++) {
-            this.sidoItems.push({
-              label: response.data.data[i].sido,
-              value: response.data.data[i].sidoCd
-            });
-          }  
-        })
-        .catch(error => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
+      .then(response => {
+        this.sidoItems=[];
+        this.sidoItems.push({label: '전체', value: ''});
+        for(let i=0; i<response.data.data.length; i++) {
+          this.sidoItems.push({
+            label: response.data.data[i].sido,
+            value: response.data.data[i].sidoCd
+          });
+        }  
+      })
+      .catch(error => {
+        this.errorMessage = error.message;
+        console.error("There was an error!", error);
+      });
     },
     // 시/군/구 목록
     getSggData() {
@@ -406,10 +443,10 @@ export default {
       }else{
         addrCd = ''
       }
-      let uri = this.$store.state.serverApi+"/admin/emergencys?pageIndex=1&recordCountPerPage=100"+"&occurStartDate="+occurStartDate+"&occurEndDate="+occurEndDate;
+      let uri = this.$store.state.serverApi+"/admin/emergencys?pageIndex=1&recordCountPerPage=10000"+"&occurStartDate="+occurStartDate+"&occurEndDate="+occurEndDate;
       if(this.selectedSidoItems != '' || this.selectedRecipientNm != '' || this.selectedTypeItems != '' || this.selectedStateItems != ''){
         uri = this.$store.state.serverApi
-        +"/admin/emergencys?pageIndex=1&recordCountPerPage=100"
+        +"/admin/emergencys?pageIndex=1&recordCountPerPage=1000"
         +"&addrCd="+addrCd
         +"&orgId="+this.selectedOrgItems
         +"&typeCd="+this.selectedTypeItems
@@ -422,6 +459,9 @@ export default {
         .then(response => {
           this.recipientItems = response.data.data
           this.NCount =this.recipientItems.length
+          this.total = this.recipientItems.length
+          this.page = 1
+          this.pagingMethod(this.page)
 
         //   if(this.searchCheck1 === 1){
         //     this.searchCheck1 = 0
@@ -433,28 +473,6 @@ export default {
         //     alert("조회 결과가 존재하지 않습니다.")
         //     this.searchCheck2 = 0
         // }
-
-
-
-          this.pageCount = String(Math.ceil(this.NCount/this.pageCut))
-          this.pageCount = Number(this.pageCount)
-          this.pageCount_first = String(Math.floor(this.NCount/this.pageCut))
-          this.pageCount_last = String(this.NCount%this.pageCut)
-          
-          console.log(this.pageCount)
-          console.log(this.pageCount_first)
-          console.log(this.pageCount_last)
-          
-          // let tmpArr=[]
-          // for(let i=0; i<this.pageCount+1; i++){
-          //   console.log("this.pageCount = >" + i)
-          // }
-          // for(let i=1; i<this.pageCount+2; i++){
-          //   if(this.pageCount === i){
-          //     tmpArr = this.recipientItems.slice(30*(i-1), 30*i)
-          //     console.log(this.recipientItems)
-          //   }
-          // }
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -512,22 +530,23 @@ export default {
         updId:this.$store.state.userId
       }
       console.log(data)
-       axios.patch(url, data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-           .then(res => {
-             let resData = res.data.data
-             console.log(resData)
-             if(resData){
-               alert("응급알람이 취소되었습니다.")
-               this.errorpopup3 = false
-               this.getRecipientData()
-             }
-           })
-           .catch(error => {
-               console.log("fail to load")
-             this.errorMessage = error.message;
-             console.error("There was an error!", error);
-           });
+      axios.patch(url, data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      .then(res => {
+        let resData = res.data.data
+        console.log(resData)
+        if(resData){
+          alert("응급알람이 취소되었습니다.")
+          this.errorpopup3 = false
+          this.getRecipientData()
+        }
+      })
+      .catch(error => {
+          console.log("fail to load")
+        this.errorMessage = error.message;
+        console.error("There was an error!", error);
+      });
     },
+    
   },
 }
 </script>

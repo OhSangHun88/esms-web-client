@@ -129,7 +129,7 @@ export default {
     },
     methods:{
       getLogData() {
-      let uri = this.$store.state.serverApi + "/admin/logs/servers?pageIndex=1&recordCountPerPage=100"
+      let uri = this.$store.state.serverApi + "/admin/logs/servers?pageIndex=1&recordCountPerPage=1000"
       +"&startDate="+this.s_date
       +"&endDate="+this.e_date;;
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -153,7 +153,7 @@ export default {
           });
       },
       getEquLogData() {
-      let uri = this.$store.state.serverApi+"/admin/logs/equipments?pageIndex=1&recordCountPerPage=100"
+      let uri = this.$store.state.serverApi+"/admin/logs/equipments?pageIndex=1&recordCountPerPage=1000"
       +"&startDate="+this.s_date
       +"&endDate="+this.e_date
       +"&recipientId=" + this.selectedrecipientId

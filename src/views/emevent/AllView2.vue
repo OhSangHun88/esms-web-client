@@ -177,7 +177,7 @@
                 <col style="width:8%;">
               </colgroup>
               <tbody >
-                <tr v-for="(item,index) in recipientItems" v-bind:key="index">
+                <tr v-for="(item,index) in listData" v-bind:key="index">
                   <td v-if="item.signalStateCd === 'STE001'">
                     <div class="chk_area radio">
                       <input type="radio" name="saveChangeData" :id="`radio_${index}`" v-model="saveChangeData" :value="index">
@@ -185,7 +185,7 @@
                     </div>
                   </td>
                   <td v-else></td>
-                  <td>{{index+1}}</td>
+                  <td>{{num(index+1)}}</td>
                   <td>{{item.orgNm}}</td>
                   <td>{{item.recipientNm}}</td>
                   <td>{{makeAge(item.birthday) }}</td>
@@ -209,20 +209,10 @@
           </div>
         </div>
         <div class="pagination mt0">
-			    <a href="#" class="front">첫 페이지</a>
-			    <a href="#" class="prev">이전 페이지</a>
-			    <a href="#" class="on">1</a>
-			    <a href="#">2</a>
-			    <a href="#">3</a>
-			    <a href="#">4</a>
-			    <a href="#">5</a>
-			    <a href="#">6</a>
-			    <a href="#">7</a>
-			    <a href="#">8</a>
-			    <a href="#">9</a>
-			    <a href="#">10</a>
-			    <a href="#" class="next">다음 페이지</a>
-			    <a href="#" class="back">마지막 페이지</a>
+          <pagination
+          :pageSetting="pageDataSetting(total, limit, block, this.page)"
+          @paging="pagingMethod"
+          />
 		    </div>
       </div>
     </div>
@@ -238,11 +228,13 @@
 import axios from "axios";
 import moment from "moment";
 import HeaderComp from "../pages/HeaderComp.vue";
+import pagination from "../pages/pagination.vue"
 
 export default {
   name: 'UserListComponent',
   components :{
-    HeaderComp
+    HeaderComp,
+    pagination
   },
   data() {
     return{
@@ -254,6 +246,12 @@ export default {
       errorpopup1: false, errorpopup2: false, errorpopup3: false,
       saveChangeData: null, updDtime:'',
       searchCheck1 : 1, searchCheck2 : 0,
+
+      listData: [],
+      total: '',
+      page: 1,
+      limit: 30,
+      block: 10
     } 
   },
   created() {
@@ -268,6 +266,43 @@ export default {
     this.getRecipientData();
   },
   methods:{
+    pagingMethod(page) {
+        this.listData = this.recipientItems.slice(
+          (page - 1) * this.limit,
+          page * this.limit
+        )
+        console.log(this.listData)
+        this.page = page
+        this.pageDataSetting(this.total, this.limit, this.block, page)
+      },
+      pageDataSetting(total, limit, block, page) {
+        const totalPage = Math.ceil(total / limit)
+        console.log(totalPage)
+        let currentPage = page
+        const first =
+          currentPage > 1 ? parseInt(currentPage, 10) - parseInt(1, 10) : null
+        const end =
+          totalPage !== currentPage
+            ? parseInt(currentPage, 10) + parseInt(1, 10)
+            : null
+ 
+        let startIndex = (Math.ceil(currentPage / block) - 1) * block + 1
+        let endIndex =
+          startIndex + block > totalPage ? totalPage : startIndex + block - 1
+        let list = []
+        for (let index = startIndex; index <= endIndex; index++) {
+          list.push(index)
+        }
+        return { first, end, totalPage, list, currentPage }
+      },
+      num(index){
+      if(this.page !== 1){
+        for(let i=1; i<this.page; i++){
+        index=index+30
+        }
+      }
+      return index
+    },
   // 시/도 목록
   getSidoData() {
       axios.get(this.$store.state.serverApi + "/admin/address/sido", {headers: {"Authorization": sessionStorage.getItem("token")}})
@@ -405,10 +440,10 @@ export default {
       }else{
         addrCd = ''
       }
-      let uri = this.$store.state.serverApi+"/admin/emergencys?pageIndex=1&recordCountPerPage=100"+"&occurStartDate="+occurStartDate+"&occurEndDate="+occurEndDate;
+      let uri = this.$store.state.serverApi+"/admin/emergencys?pageIndex=1&recordCountPerPage=1000"+"&occurStartDate="+occurStartDate+"&occurEndDate="+occurEndDate;
       if(this.selectedSidoItems != '' || this.selectedRecipientNm != '' || this.selectedTypeItems != '' || this.selectedStateItems != ''){
         uri = this.$store.state.serverApi
-        +"/admin/emergencys?pageIndex=1&recordCountPerPage=100"
+        +"/admin/emergencys?pageIndex=1&recordCountPerPage=1000"
         +"&addrCd="+addrCd
         +"&orgId="+this.selectedOrgItems
         +"&typeCd="+this.selectedTypeItems
@@ -421,6 +456,9 @@ export default {
         .then(response => {
           this.recipientItems = response.data.data
           this.NCount =this.recipientItems.length
+          this.total = this.recipientItems.length
+          this.page = 1
+          this.pagingMethod(this.page)
         //   if(this.searchCheck1 === 1){
         //     this.searchCheck1 = 0
         // }
