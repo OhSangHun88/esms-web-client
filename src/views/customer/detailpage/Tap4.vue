@@ -49,7 +49,7 @@
                                 <th scope="col">전화번호</th>
                                 <th scope="col">통신사</th>
                                 <th scope="col">모델</th>
-                                <th scope="col">앱버전/이전 앱버전</th>
+                                <th scope="col">앱버전(현재/이전)</th>
                                 <th scope="col">OS버전</th>
                                 <th scope="col">mac address</th>
                             </tr>
@@ -123,8 +123,8 @@
                             <tr>
                                 <th scope="col">시리얼번호(S/N)</th>
                                 <th scope="col">맥 어드레스</th>
-                                <th scope="col">FW버전/이전 FW버전</th>
-                                <th scope="col">HW버전 (설치/회신)</th>
+                                <th scope="col">펌웨어버전(현재/이전)</th>
+                                <th scope="col">HW버전</th>
                             </tr>
                         </thead>
                     </table>
