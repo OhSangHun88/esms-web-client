@@ -407,6 +407,7 @@ export default {
     codeChange(code){
       let result = ''
       switch (code){
+          case "E0000" : result='공장초기화'; break;
           case "E1004" : result='상용전원 차단'; break;
           case "E1005" : result='상용전원 연결'; break;
           case "E1006" : result='GW 저전압'; break;
@@ -416,6 +417,8 @@ export default {
           case "E1010" : result='화재감지기 저전압'; break;
           case "E1011" : result='모니터 연결'; break;
           case "E1012" : result='모니터 분리'; break;
+          case "E1020" : result='테스트모드 활성화'; break;
+          case "E1021" : result='테스트모드 해제'; break;
         }
         return result
     },
