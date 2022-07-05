@@ -436,7 +436,7 @@ export default {
     },
      getEquipmentData(input, input2, input3) {
         let code = input? input : input2? input2 : input3
-
+        console.log("this okokokokok")
         let uri = '';
         let addrCode = '';
         let occurStartDate = this.s_date;

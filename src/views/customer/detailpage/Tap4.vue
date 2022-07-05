@@ -15,9 +15,9 @@
                 </div>
               </div>
             </div>
-        <div v-if="!this.pending" style="text-align: center;">
+        <!-- <div v-if="!this.pending" style="text-align: center;">
             <img src="../../../assets/images/loading.png"  />
-        </div>
+        </div> -->
         <div v-else class="tabcontent">
             <div class="toggle_btn2" style="margin-top : -25px">
                 <button type="button" :class="connectTap===3?'btn on':'btn'" @click="dataTogle(3)" style="font-size: 16px;">태블릿</button>
@@ -562,18 +562,20 @@ import axios from "axios";
   },
   methods: {
       delay(){
-          this.pending = true
+        //   this.pending = true
       },
       // 센서 현재 통신 상태 함수
        async getCSensers(){
-           this.pending = false;
-           let tmpData = null;
+        //    this.pending = false;
+        let tmpData = null;
         const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30` 
          await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             tmpData = res.data.data
             this.getCSensorsData = tmpData
             this.getBSensorsData = tmpData[0]
+            console.log(this.getCSensorsData)
+            console.log(this.getCSensorsData.length)
           })
           .catch(error => {
               console.log("fail to load")
@@ -581,10 +583,8 @@ import axios from "axios";
             console.error("There was an error!", error);
           });
           this.getCSensorsData = tmpData
-          console.log(this.getCSensorsData)
-            
-
-          setTimeout(this.delay, 2000)
+        
+        //    setTimeout(this.delay, 2000)
           if(this.getBSensorsData.comStateCd){
                 this.getSensorTakeData();
             }
@@ -593,11 +593,9 @@ import axios from "axios";
     // 센서 통신상태 이름 변경 함수
     async getSensorTakeData(){
         let url = this.$store.state.serverApi + `/admin/codes?cmmnCdGroup=SENSOR.TAKECD`
-        console.log(url)
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
             this.sensorTakeItems = res.data.data
-            console.log(this.sensorTakeItems)
         })
         .catch(error => {
           console.log("fail to load")
@@ -615,7 +613,6 @@ import axios from "axios";
         if(!time) time =0;
         if(time===0){
             this.getBSensorsData = this.getCSensorsData[input]
-            console.log(this.getCSensorsData[input])
             if(this.checkCorB === true){
             this.getBeforeVersionSensors();
         }
@@ -628,18 +625,15 @@ import axios from "axios";
         if(this.getBSensorsData.comStateCd){
             this.getSensorTakeData();
         }
-        console.log(this.getBSensorsData)
         
     },
     // 게이트웨이 현재 통신 상태 함수
      getCGateway(){
-         this.pending = false;
+        //  this.pending = false;
         const url  = this.$store.state.serverApi + `/admin/gateways/recipient/${this.recipientId}`
          axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.getCGatewayData = res.data.data
-            console.log("getCGatewayData ")
-            console.log(this.getCGatewayData)
             if(this.getCGatewayData.length===0){alert("연결된 게이트웨이가 존재하지 않습니다")}
             this.getCGatewayReal();
           })
@@ -649,7 +643,7 @@ import axios from "axios";
             console.error("There was an error!", error);
           });
           
-          setTimeout(this.delay, 1500)
+        //   setTimeout(this.delay, 1500)
     },
     async getCGatewayReal(){
         let gateway = ''
@@ -658,7 +652,6 @@ import axios from "axios";
             .then(res => {
                 gateway = res.data.data
                 this.getCGatewayData2 = gateway[0]
-                console.log(this.getCGatewayData2)
             })
             .catch(error => {
                 console.log("fail to load")
@@ -673,7 +666,6 @@ import axios from "axios";
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
             this.gatewayTakeItems = res.data.data
-            console.log(this.gatewayTakeItems)
         })
         .catch(error => {
             console.log("fail to load")
@@ -684,17 +676,14 @@ import axios from "axios";
             return cd.cmmnCd === this.getCGatewayData2.comStateCd
         })
         this.gatewayTakeNm = this.gatewayTake[0].cmmnCdNm
-        console.log(this.gatewayTakeNm)
     },
     // 테블릿 현재 통신 상태 함수
      getCTablets(){
-         this.pending = false;
+        //  this.pending = false;
         const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/tablets`
          axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.getCTabletsData = res.data.data
-            console.log("태블릿")
-            console.log(this.getCTabletsData)
             if(this.getCTabletsData.length===0){alert("연결된 태블릿이 존재하지 않습니다")}
             this.getCTablet()
           })
@@ -703,18 +692,15 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-          setTimeout(this.delay, 1500)
+        //   setTimeout(this.delay, 1500)
     },
     async getCTablet(){
         let tablet=''
         const url  = this.$store.state.serverApi + `/admin/recipients/tablet/statehistory?tabletId=${this.getCTabletsData.tabletId}`
-        console.log(url)
             await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
                 this.tablet = res.data.data
                 this.getCTabletsData2 = this.tablet[0]
-                console.log("=============")
-                console.log(this.getCTabletsData2)
             })
             .catch(error => {
                 console.log("fail to load")
@@ -738,7 +724,6 @@ import axios from "axios";
             return cd.cmmnCd === this.getCTabletsData2.comStateCd
         })
         this.tabletTakeNm = this.tabletTake[0].cmmnCdNm
-        console.log(this.tabletTakeNm)
     },
     // 현재버전 게이트웨이 호출
     getNowGatewayToggle(){
@@ -755,7 +740,6 @@ import axios from "axios";
     //이전버전 센서 호출
     async getBeforeVersionSensors(){
         this.checkCorB = true
-        console.log("aa")
         let beforeSensor = []
         this.beforeSensorToggle = 1
         this.tmpIdx = this.getCSensorsData[0];
@@ -764,20 +748,14 @@ import axios from "axios";
         let url  = this.$store.state.serverApi + `/admin/recipients/sensors/statehistory?sensorId=${this.getBSensorsData.sensorId}`
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
-              console.log(res)
             beforeSensor = res.data.data
             this.beforeVersionSensorsData = beforeSensor[1]
-            console.log("이전버전센서")
-            console.log(this.beforeVersionSensorsData)
         })
           .catch(error => {
               console.log("fail to load")
             this.errorMessage = error.message;
             console.error("There was an error!", error);
-        });
-        
-        console.log(this.beforeVersionSensorsData)
-        
+        });        
     },
     // 이전 버전 테블릿 호출
     async getBeforeVersionTablets(){
@@ -785,13 +763,10 @@ import axios from "axios";
         let beforetablet=[]
         //this.tmpIdx = this.getCSensorsData[0].sensorId;
         const url  = this.$store.state.serverApi + `/admin/recipients/tablet/statehistory?tabletId=${this.getCTabletsData.tabletId}`
-        console.log(url)
             await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
                 this.beforetablet = res.data.data
                 this.beforeVersionTabletsData = this.beforetablet[1]
-                console.log("이전버전태블릿")
-                console.log(this.beforeVersionTabletsData)
             })
             .catch(error => {
                 console.log("fail to load")
@@ -813,8 +788,6 @@ import axios from "axios";
             .then(res => {
                 beforegateway = res.data.data
                 this.beforeVersionGatewayData = beforegateway[1]
-                console.log("이전버전게이트웨이")
-                console.log(this.beforeVersionGatewayData)
             })
             .catch(error => {
                 console.log("fail to load")
@@ -897,8 +870,6 @@ import axios from "axios";
     },
     // Rssi 수치값
     changeRssi(input){
-        console.log("this")
-        console.log(input)
         if(input === 255){
             return '미수신'
         }else if(input === null || input === undefined || input === ''){
@@ -913,16 +884,13 @@ import axios from "axios";
     },
     reverseCheck(){
         let url = this.$store.state.serverApi + `/admin/revcheck/${this.recipientId}/send`
-        console.log(url)
         axios.patch(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
-            console.log(res)
             let revData = ''
             revData = res.data
             if(revData.data === true){
                 alert("성공적으로 요청 되었습니다")
             }
-            console.log(revData)
         })
         .catch(error => {
             console.log("fail to load")
@@ -932,21 +900,17 @@ import axios from "axios";
     },
     cmdA4post(){
         let url = this.$store.state.serverApi + `/admin/cmda4/${this.recipientId}/send`
-        console.log(url)
         let data ={
             recipientId:this.recipientId,
             cmd:"cmdA4"
         }
-        console.log(data)
         axios.patch(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
-            console.log(res)
-            let cmdData = ''
+          let cmdData = ''
           cmdData = res.data
           if(cmdData.data === true){
               alert("성공적으로 전송되었습니다")
           }
-          console.log(cmdData)
         })
         .catch(error => {
             console.log("fail to load")
@@ -988,9 +952,7 @@ import axios from "axios";
         let url  = this.$store.state.serverApi + `/admin/gateways/firmwarelist`
          axios.get(url,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
-                console.log(res)
                 this.firmwarelist = res.data.data
-                console.log(this.firmwarelist)
             })
             .catch(error => {
                 console.log("fail to load")
@@ -1001,8 +963,6 @@ import axios from "axios";
     firmwareUpgrade(){
         let url  = this.$store.state.serverApi + `/admin/gateways/${this.getCGatewayData.gwId}/firmware-version`
         let gwid = this.getCGatewayData.gwId
-        console.log(gwid)
-        console.log(this.getCGatewayData)
         // let data = {
         //     batteryValue: this.getCGatewayData.batteryValue,
         //     comStateCd: this.getCGatewayData.comStateCd,
@@ -1028,14 +988,12 @@ import axios from "axios";
         //     stateSendCycle: this.getCGatewayData.stateSendCycle,
         //     updDtime: this.getCGatewayData.updDtime
         // }
-        console.log(this.firmwarelist)
         let data = {
             firmwareVersion:this.firmwarelist[0].version,
             recipientId:this.getCGatewayData.recipientId,
             regId: this.$store.state.userId,
             regNo: this.firmwarelist[0].regNo
         }
-        console.log(data)
             axios.patch(url,data ,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
                 let firmware = res.data.data
@@ -1043,7 +1001,6 @@ import axios from "axios";
                     alert("성공적으로 업그레이드가 요청되었습니다")
                     this.firmwareUpgradeCheck = false
                 }
-                console.log(firmware)
             })
             .catch(error => {
                 console.log("fail to load")
@@ -1166,8 +1123,6 @@ import axios from "axios";
                 check3 = 0
             }
         }
-        console.log(check2)
-        console.log(check3)
         if(check.length === 1 || check3 === 1){
             alert("이미 등록된 센서ID 입니다.")
             this.changeIncomeNm = this.changeIncomeNm2
@@ -1175,12 +1130,9 @@ import axios from "axios";
         }
         this.changeSensorData.incomeNm = this.changeIncomeNm
         let url = this.$store.state.serverApi+`/admin//sensors/${this.changeSensorData.sensorId}`
-        console.log(this.changeSensorData)
-        console.log(url)
         await axios.post(url,this.changeSensorData, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
               let resData = res.data.data
-              console.log(resData)
               if(resData){
                 alert("성공적으로 변경되었습니다.")
                 this.saveChangeData = ''

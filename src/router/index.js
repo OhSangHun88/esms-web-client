@@ -83,6 +83,8 @@ const SettingFirmware = () => import('@/views/setting/Firmware')
 const SettingIppbx = () => import('@/views/setting/Ippbx')
 const SettingManageDevice = () => import('@/views/setting/ManageDevice')
 const SettingNotice = () => import('@/views/setting/Notice')
+const SettingDeviceRecord = () => import('@/views/setting/DeviceRecord')
+const SettingInstallCheck = () => import('@/views/setting/InstallCheck')
 
 //AS
 const AsAllView = () => import('@/views/as/AllView')
@@ -326,6 +328,16 @@ function configRoutes () {
               path: 'notice',
               name: 'Notice',
               component: SettingNotice
+            },
+            {
+              path: 'deviceRecord',
+              name: 'DeviceRecord',
+              component: SettingDeviceRecord
+            },
+            {
+              path: 'installCheck',
+              name: 'InstallCheck',
+              component: SettingInstallCheck
             },
           ]
         }

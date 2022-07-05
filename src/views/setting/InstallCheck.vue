@@ -225,9 +225,9 @@
         </div>
       </div>
       <div class="list_title_wrap">
-        <span>대상자 관리</span>
+        <span>시스템관리</span>
         <i class="ico_nav"></i>
-        <span class="on">대상자조회</span>
+        <span class="on">설치완료 확인서</span>
       </div>
       <div class="box_search_wrap add_btn box_style" @keypress.enter='manageInquiry()'>
         <div class="table_wrap">
@@ -298,10 +298,10 @@
       </div>
     <div class="one_box box_style">
         <div class="result_txt">
-            <p>조회결과 : {{ this.NCount ? this.NCount : 0}}건</p>
+            <p>조회결과 : 0건</p>
             <div class="btn_area">
-              <button type="button" style="margin-right:10px" class="btn" @click="changeData()">수정</button>
-              <button type="button" style="margin-right:10px" class="btn" @click="createData()">등록</button>
+              <!-- <button type="button" style="margin-right:10px" class="btn" @click="changeData()">수정</button>
+              <button type="button" style="margin-right:10px" class="btn" @click="createData()">등록</button> -->
             </div>
         </div>
         <div class="list result">
@@ -356,7 +356,7 @@
                         <col style="width:8%;">
                         <col style="width:8%;"><!--등록시간-->
                     </colgroup>
-                    <tbody>
+                    <!-- <tbody>
                         <tr v-for="(item,index) in recipientItems" v-bind:key="index" >
                             <td>
                               <div class="chk_area radio">
@@ -378,6 +378,9 @@
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.managerNm}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{$moment(item.regDtime).format('YYYY-MM-DD')}}</a></td>
                         </tr>
+                    </tbody> -->
+                    <tbody>
+
                     </tbody>
                 </table>
             </div>
@@ -387,7 +390,7 @@
           :pageSetting="pageDataSetting(total, limit, block, this.page)"
           @paging="pagingMethod"
           />
-				</div>
+		    </div>
       </div>
     </div>
     <!--<CRow>
@@ -693,7 +696,7 @@ export default {
         this.pageDataSetting(this.total, this.limit, this.block, page)
       },
       pageDataSetting(total, limit, block, page) {
-        const totalPage = Math.ceil(total / limit)
+        const totalPage = 1
         console.log(totalPage)
         let currentPage = page
         const first =

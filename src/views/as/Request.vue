@@ -90,7 +90,8 @@
             </div>
             <div class="one_box box_style">
                 <div class="result_txt">
-                    <p>조회결과 : <strong class = "num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
+                    <!-- <p>조회결과 : <strong class = "num">{{!this.NCount? 0 : this.NCount}}</strong>건</p> -->
+                    <p>조회결과 : <strong class = "num"></strong>1건</p>
                 </div>
                 <div class="list result">
                     <table>
@@ -176,15 +177,7 @@
                 <a href="#" class="front">첫 페이지</a>
                 <a href="#" class="prev">이전 페이지</a>
                 <a href="#" class="on">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">6</a>
-                <a href="#">7</a>
-                <a href="#">8</a>
-                <a href="#">9</a>
-                <a href="#">10</a>
+
                 <a href="#" class="next">다음 페이지</a>
                 <a href="#" class="back">마지막 페이지</a>
               </div>

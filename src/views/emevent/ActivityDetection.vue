@@ -136,7 +136,7 @@
                 <col style="width:11%;">
               </colgroup>
               <tbody >
-                <tr v-for="(item,index) in listData" v-bind:key="index">
+                <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                   <td>{{num(index+1)}}</td>
                   <td>{{item.recipientNm}}</td>
                   <td>{{makeAge(item.birthday) }}</td>
@@ -201,19 +201,15 @@ export default {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
-    this.getRecipientData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.cBirthday=moment().format('YYYY-MM-DD');
+    this.getRecipientData();
   },
   methods:{
     pagingMethod(page) {
-        this.listData = this.recipientItems.slice(
-          (page - 1) * this.limit,
-          page * this.limit
-        )
-        console.log(this.listData)
         this.page = page
+        this.getRecipientData()
         this.pageDataSetting(this.total, this.limit, this.block, page)
       },
       pageDataSetting(total, limit, block, page) {
@@ -341,19 +337,18 @@ export default {
       }
       let uri = ''
       uri = this.$store.state.serverApi
-      +"/admin/emergencys/active-unsensing-events?pageIndex=1&recordCountPerPage=1000"
+      +"/admin/emergencys/active-unsensing-events?pageIndex="+this.page+"&recordCountPerPage=30"
       +"&addrCd="+addrCd
       +"&orgId="+this.selectedOrgItems
       +"&recipientNm="+this.selectedRecipientNm
       +"&occurStartDate="+occurStartDate
       +"&occurEndDate="+occurEndDate;
+      console.log(uri)
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(response => {
           this.recipientItems = response.data.data
-          this.NCount = this.recipientItems.length
-          this.total = this.recipientItems.length
-          this.page = 1
-          this.pagingMethod(this.page)
+          this.NCount = response.data.totalCount
+          this.total = this.NCount
         //   if(this.searchCheck1 === 1){
         //     this.searchCheck1 = 0
         // }
@@ -404,6 +399,7 @@ export default {
         this.errorpopup2 = true
       }*/else{
         this.searchCheck2 = 1
+        this.page = 1
         this.getRecipientData();
       }
     },

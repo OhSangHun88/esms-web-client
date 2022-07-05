@@ -569,7 +569,6 @@ export default {
   },
   methods: {
     getFromMenuData(data) {
-      console.log(data); 
       let changeEmNm=''
       let changeLiNm=''
       if(data.length !== 1){
@@ -618,13 +617,13 @@ export default {
           this.popCheck4_2 = true
         }
       }
-      if(this.menutoggle===5){this.menu5Data = data; console.log("get this.menu5Data"); console.log(this.menu5Data)} 
+      if(this.menutoggle===5){this.menu5Data = data;} 
       } ,
-    openModal5(data) {console.log("modal5open");this.popCheck5 = data},
+    openModal5(data) {this.popCheck5 = data},
     openModal4(data) {/*console.log("modal4open");this.popCheck4 = data*/},
     openModal3(data) {this.popCheck3 = data},
     openModal2(data){},
-    openModalMsg(data) {console.log(data); this.msg = data},
+    openModalMsg(data) { this.msg = data},
     menu5Lending(data) {this.menu5Refresh = data},
     menu4Lending(data) {this.menu4Refresh = data},
     menu3Lending(data) {this.menu3Refresh = data},
@@ -638,16 +637,14 @@ export default {
       //this.$store.mutation.logout
       //let uri = this.$store.state.serverApi + "/recipients/" + sessionStorage.getItem("recipid");
       let uri = this.$store.state.serverApi + "/admin/recipients/" + this.recipientId
-      console.log(uri)
+      
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.bodyData = res.data.data
-            console.log("bodyData is ");
             console.log(this.bodyData)
             this.emorgId = this.bodyData.orgId
             this.getEmuserInfo()
             this.getLiuserInfo()
-            this.tabletCheck()
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -658,13 +655,11 @@ export default {
     async getEmuserInfo(){
       this.selectedEm = ''
       let uri = this.$store.state.serverApi + "/admin/users?orgId=" + this.emorgId + "&userTypeCd=TPE005"
-      console.log(uri)
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
           const emArr = [{label: '선택', value: '', value2:''}];
           // let tmpResult2 = [{label: '전체', value: ''}];
           this.emData=[];
-          console.log(res.data.data)
           for(let i=0; i<res.data.data.length; i++) {
           emArr.push({
             label: res.data.data[i].userNm,
@@ -673,7 +668,6 @@ export default {
           });
         } 
         this.emData = emArr
-        console.log(this.emData)
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -681,36 +675,26 @@ export default {
           });
     },
     ifselectem(selectedIndex){
-      console.log("this ok")
-      console.log(selectedIndex)
       if(selectedIndex === 0){
         this.emdisable = false
         this.managerName = ''
         this.managerId = ''
         this.managerPhone = ''
-        console.log("this ok")
       }else{
         this.emdisable = true
         this.managerName = this.emData[selectedIndex].label
         this.managerId = this.emData[selectedIndex].value
         this.managerPhone = this.emData[selectedIndex].value2
       }
-      
-      
-      console.log(this.managerName)
-      console.log(this.managerId)
-      console.log(this.managerPhone)
     },
     async getLiuserInfo(){
       this.selectedLi = ''
       let uri = this.$store.state.serverApi + "/admin/users?orgId=" + this.emorgId + "&userTypeCd=TPE004"
-      console.log(uri)
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
           const liArr = [{label: '선택', value: '', value2:''}];
           // let tmpResult2 = [{label: '전체', value: ''}];
           this.liData=[];
-          console.log(res.data.data)
           for(let i=0; i<res.data.data.length; i++) {
           liArr.push({
             label: res.data.data[i].userNm,
@@ -719,7 +703,6 @@ export default {
           });
         } 
         this.liData = liArr
-        console.log(this.liArr)
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -727,8 +710,6 @@ export default {
           });
     },
     ifselectli(selectedIndex){
-      console.log("this ok")
-      console.log(selectedIndex)
       if(selectedIndex === 0){
         this.lidisable = false
         this.managerName = ''
@@ -742,9 +723,6 @@ export default {
       }
       
       
-      console.log(this.managerName)
-      console.log(this.managerId)
-      console.log(this.managerPhone)
     },
     tap(value){
       switch (value){
@@ -788,8 +766,6 @@ export default {
         geocoder.addressSearch(addr, (result, status)=>{
           if(status === kakao.maps.services.Status.OK){
             let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-            console.log("coords")
-            console.log(coords)
             let marker = new kakao.maps.Marker({
                 map: map,
                 position: coords
@@ -817,7 +793,6 @@ export default {
       // /recipients/{recipientId}/phoneNumbers
       
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
-      console.log(this.managerRelationCd)
       if(this.managerName === null || this.managerName === undefined || this.managerName === ''){
         alert("이름을 작성하여 주세요.")
         return false
@@ -834,12 +809,6 @@ export default {
       
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
       if(this.managerPhone.length>11){ alert("전화번호는 최대 11자리까지 입력 가능합니다."); return false;}
-      console.log(this.TabletsData)
-      // if(this.TabletsData === '' || this.TabletsData === null || this.TabletsData === undefined || this.TabletsData.length === 0){
-      //   alert("연결된 태블릿이 존재하지 않습니다.")
-      //   return false
-      // }
-      console.log(this.managerRelationNm)
       let data = {
         recipientId: this.recipientId,
         relationNm: this.managerName,
@@ -848,14 +817,11 @@ export default {
         relationCdNm: this.managerRelationNm,
         typeCd: "TPE008"
       }
-      console.log(data)
       axios.post(uri,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.insertData = res.data.data
             this.$refs.menu3.sendMenu3Lending();
             this.popCheck3 = false
-            console.log("insertData is ");
-            console.log(this.insertData)
             
             alert("성공적으로 등록되었습니다.")
             this.managerPhone = null; this.managerName = null; this.managerRelationCd = '';
@@ -878,10 +844,6 @@ export default {
 
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
-      // if(this.TabletsData === '' || this.TabletsData === null || this.TabletsData === undefined || this.TabletsData.length === 0){
-      //   alert("연결된 태블릿이 존재하지 않습니다.")
-      //   return false
-      // }
       let data = {
         recipientId: this.recipientId,
         relationNm: this.managerName,
@@ -891,15 +853,12 @@ export default {
         managerId: this.managerId,
         typeCd: "TPE007"
       }
-      console.log(data)
 
       axios.post(uri,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.insertData = res.data.data
             this.$refs.menu2.sendMenu2Lending();
             this.popCheck2 = false
-            console.log("insertData is ");
-            console.log(this.insertData)
             
             alert("성공적으로 등록되었습니다.")
             this.managerPhone = null; this.managerName = null; this.managerId = null; this.selectedEm = ''; this.emdisable=false;
@@ -910,7 +869,6 @@ export default {
           });
     },
     changeEmergencyManager(){
-      console.log(this.selectedEm)
       if(this.managerName === '' || this.managerName === null || this.managerName === undefined){
         alert("응급요원명을 작성하여 주세요")
         return false
@@ -930,11 +888,9 @@ export default {
         managerId: this.managerId,
         typeCd: "TPE007"
       }
-      console.log(data)
       const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${this.changeRegSn}/update`
         axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
-        console.log(res.data.data)
         this.$refs.menu2.sendMenu2Lending();
         this.popCheck2_2 = false
         alert("성공적으로 수정되었습니다")
@@ -956,10 +912,6 @@ export default {
       // /recipients/{recipientId}/phoneNumbers
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
-      // if(this.TabletsData === '' || this.TabletsData === null || this.TabletsData === undefined || this.TabletsData.length === 0){
-      //   alert("연결된 태블릿이 존재하지 않습니다.")
-      //   return false
-      // }
       let data = {
         recipientId: this.recipientId,
         relationNm: this.managerName,
@@ -969,14 +921,11 @@ export default {
         managerId: this.managerId,
         typeCd: "TPE006"
       }
-      console.log(data)
       axios.post(uri,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.insertData = res.data.data
             this.$refs.menu4.sendMenu4Lending();
             this.popCheck4 = false
-            console.log("insertData is ");
-            console.log(this.insertData)
             
             alert("성공적으로 등록되었습니다.")
             this.managerPhone = null; this.managerName = null; this.managerId = null; this.selectedLi = ''; this.lidisable=false;
@@ -987,7 +936,6 @@ export default {
           });
     },
     changeCareManager(){
-      console.log(this.selectedLi)
       if(this.managerName === '' || this.managerName === null || this.managerName === undefined){
         alert("생활관리사명을 작성하여 주세요")
         return false
@@ -1007,11 +955,9 @@ export default {
         managerId: this.managerId,
         typeCd: "TPE006"
       }
-      console.log(data)
       const url  = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/${this.changeRegSn}/update`
         axios.post(url,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(res => {
-        console.log(res.data.data)
         this.$refs.menu4.sendMenu4Lending();
         this.popCheck4_2 = false
         alert("성공적으로 수정되었습니다")
@@ -1029,14 +975,8 @@ export default {
       }
       // /recipients/{recipientId}/phoneNumbers
       //this.menu5Data
-      console.log("this.menu5Data")
-      console.log(this.menu5Data)
       let uri = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/phoneNumbers/save`
       if(this.managerPhone.length<3){ alert("전화번호는 세자리 이상을 입력해 주세요"); return false;}
-      // if(this.TabletsData === '' || this.TabletsData === null || this.TabletsData === undefined || this.TabletsData.length === 0){
-      //   alert("연결된 태블릿이 존재하지 않습니다.")
-      //   return false
-      // }
       let data = {
         recipientId: this.recipientId,
         relationNm: this.emerCodeLabel(this.emerManagerRelationCd),
@@ -1045,20 +985,16 @@ export default {
         relationCdNm: this.managerRelationNm,
         typeCd: this.emerManagerRelationCd
       }
-      console.log(data)
       let chkData = []
       chkData = this.menu5Data.filter(cd=>{
           return cd.typeCd == this.emerManagerRelationCd
         })
-      console.log(chkData)
       if(chkData.length === 0 ){
         axios.post(uri,data, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             this.insertData = res.data.data
             this.$refs.menu5.sendMenu5Lending();
             this.popCheck5 = false
-            console.log("insertData is ");
-            console.log(this.insertData)
             
             alert("성공적으로 등록되었습니다.")
             this.managerPhone = null; this.managerName = null;
@@ -1085,24 +1021,6 @@ export default {
       }
       return result
     },
-    async tabletCheck(){
-      console.log(this.bodyData)
-        const url  = this.$store.state.serverApi + `/admin/tablets?recipientNm=${this.bodyData.recipientNm}`
-        console.log(url)
-         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(res => {
-            this.TabletsData = res.data.data
-            console.log("태블릿")
-            console.log(this.TabletsData)
-          })
-          .catch(error => {
-            console.log("fail to load")
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-    },
-    
-
   },
   created() {
     this.pending = false;
@@ -1110,7 +1028,6 @@ export default {
     this.getRecipientInfo();
     this.getEmuserInfo();
     this.getLiuserInfo();
-    this.tabletCheck();
     this.pending = true;
   },
   mounted(){

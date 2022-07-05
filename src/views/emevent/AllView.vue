@@ -177,7 +177,7 @@
                 <col style="width:8%;">
               </colgroup>
               <tbody >
-                <tr v-for="(item,index) in listData" v-bind:key="index">
+                <tr v-for="(item,index) in recipientItems" v-bind:key="index">
                   <td v-if="item.signalStateCd === 'STE001'">
                     <div class="chk_area radio">
                       <input type="radio" name="saveChangeData" :id="`radio_${index}`" v-model="saveChangeData" :value="index">
@@ -271,12 +271,13 @@ export default {
     },
   methods:{
     pagingMethod(page) {
-        this.listData = this.recipientItems.slice(
-          (page - 1) * this.limit,
-          page * this.limit
-        )
+        // this.listData = this.recipientItems.slice(
+        //   (page - 1) * this.limit,
+        //   page * this.limit
+        // )
         console.log(this.listData)
         this.page = page
+        this.getRecipientData()
         this.pageDataSetting(this.total, this.limit, this.block, page)
       },
       pageDataSetting(total, limit, block, page) {
@@ -443,10 +444,10 @@ export default {
       }else{
         addrCd = ''
       }
-      let uri = this.$store.state.serverApi+"/admin/emergencys?pageIndex=1&recordCountPerPage=10000"+"&occurStartDate="+occurStartDate+"&occurEndDate="+occurEndDate;
+      let uri = this.$store.state.serverApi+"/admin/emergencys?pageIndex="+this.page+"&recordCountPerPage=30"+"&occurStartDate="+occurStartDate+"&occurEndDate="+occurEndDate;
       if(this.selectedSidoItems != '' || this.selectedRecipientNm != '' || this.selectedTypeItems != '' || this.selectedStateItems != ''){
         uri = this.$store.state.serverApi
-        +"/admin/emergencys?pageIndex=1&recordCountPerPage=1000"
+        +"/admin/emergencys?pageIndex="+this.page+"&recordCountPerPage=30"
         +"&addrCd="+addrCd
         +"&orgId="+this.selectedOrgItems
         +"&typeCd="+this.selectedTypeItems
@@ -458,11 +459,8 @@ export default {
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
         .then(response => {
           this.recipientItems = response.data.data
-          this.NCount =this.recipientItems.length
-          this.total = this.recipientItems.length
-          this.page = 1
-          this.pagingMethod(this.page)
-
+          this.NCount = response.data.totalCount
+          this.total = this.NCount
         //   if(this.searchCheck1 === 1){
         //     this.searchCheck1 = 0
         // }
@@ -509,7 +507,10 @@ export default {
         this.errorpopup2 = true
       }*/else{
         this.searchCheck2 = 1
-        this.getRecipientData();        
+        // this.pagingMethod(this.page)
+        this.page = 1
+        this.getRecipientData();   
+        
       }
     },
     checkSaveState(){
