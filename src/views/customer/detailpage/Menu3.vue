@@ -4,7 +4,7 @@
             <div class="tabcnt01">
                 <div class="list_top">
                     <div class="btn_area">
-                        <button type="button" class="btn form2" @click="sendParent">추가</button>
+                        <button type="button" class="btn form2" v-if="this.relationPhoneData.length < 8" @click="sendParent">추가</button>
                         <button type="button" class="btn form2" @click="modifyRelationPhoneData">수정</button>
                         <button type="button" class="btn form3" @click="deleteRelationPhoneData">삭제</button> 
                     </div>

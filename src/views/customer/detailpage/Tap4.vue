@@ -642,7 +642,6 @@ import axios from "axios";
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-          
         //   setTimeout(this.delay, 1500)
     },
     async getCGatewayReal(){

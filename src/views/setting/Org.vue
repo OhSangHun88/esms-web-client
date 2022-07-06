@@ -563,9 +563,14 @@ export default {
     // 관리 기관 목록
     getOrgmData() {
       this.selectedOrgItems = ''
+      let sggCode = ''
       let url =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
-        let sggCode = this.sggCd.substring(0, 5);
+        if(this.sggCd.startsWith('0', 4) === true){
+          sggCode = this.sggCd.substring(0,4)
+        }else{
+          sggCode = this.sggCd.substring(0, 5)
+        }
         url += "?sggCd="+sggCode;
       }else{
         this.selectedOrgItems = ''
@@ -699,7 +704,11 @@ export default {
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         sgg = this.sidoCd.substring(0,2)
       }else if(this.selectedSggItems != ''){
-        sgg = this.sggCd.substring(0,5)
+          if(this.sggCd.startsWith('0', 4) === true){
+          sgg = this.sggCd.substring(0,4)
+        }else{
+          sgg = this.sggCd.substring(0,5)
+        }
       }else{
         sgg = ''
       }
@@ -768,7 +777,15 @@ export default {
       if(this.selectedUpdateSidoItems != '' && this.selectedUpdateSggItems == ''){
         sgg = this.sidoCd.substring(0,2)
       }else if(this.selectedSggItems != ''){
-        sgg = this.sggCd.substring(0,5)
+        if(this.sggCd.startsWith('0', 4) === true){
+          sgg = this.sggCd.substring(0,4)
+        }else{
+          if(this.sggCd.startsWith('0', 4) === true){
+          sgg = this.sggCd.substring(0,4)
+        }else{
+          sgg = this.sggCd.substring(0,5)
+        }
+        }
       }else{
         sgg = ''
       }

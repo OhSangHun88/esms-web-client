@@ -452,9 +452,14 @@ export default {
     //--------------------------관리기관--------------------------
     getOrgmData() {
       this.selectedOrgItems = ''
+      let sggCode = ''
       let url =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
-        let sggCode = this.sggCd.substring(0, 5);
+        if(this.sggCd.startsWith('0', 4) === true){
+          sggCode = this.sggCd.substring(0,4)
+        }else{
+          sggCode = this.sggCd.substring(0, 5)
+        }
         url += "?sggCd="+sggCode;
       }else{
         this.selectedOrgItems = ''
@@ -498,7 +503,11 @@ export default {
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
       }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
+        if(this.sggCd.startsWith('0', 4) === true){
+          addrCd = this.sggCd.substring(0,4)
+        }else{
+          addrCd = this.sggCd.substring(0,5)
+        }
       }else{
         addrCd = ''
       }
@@ -620,7 +629,11 @@ export default {
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
       }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
+        if(this.sggCd.startsWith('0', 4) === true){
+          addrCd = this.sggCd.substring(0,4)
+        }else{
+          addrCd = this.sggCd.substring(0,5)
+        }
       }else{
         addrCd = ''
       }
@@ -959,7 +972,11 @@ export default {
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
       }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
+        if(this.sggCd.startsWith('0', 4) === true){
+          addrCd = this.sggCd.substring(0,4)
+        }else{
+          addrCd = this.sggCd.substring(0,5)
+        }
       }else{
         addrCd = ''
       }
@@ -1194,7 +1211,11 @@ export default {
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
       }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
+        if(this.sggCd.startsWith('0', 4) === true){
+          addrCd = this.sggCd.substring(0,4)
+        }else{
+          addrCd = this.sggCd.substring(0,5)
+        }
       }else{
         addrCd = ''
       }
@@ -1622,7 +1643,11 @@ export default {
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
       }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
+        if(this.sggCd.startsWith('0', 4) === true){
+          addrCd = this.sggCd.substring(0,4)
+        }else{
+          addrCd = this.sggCd.substring(0,5)
+        }
       }else{
         addrCd = ''
       }
@@ -2114,7 +2139,11 @@ export default {
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
       }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
+        if(this.sggCd.startsWith('0', 4) === true){
+          addrCd = this.sggCd.substring(0,4)
+        }else{
+          addrCd = this.sggCd.substring(0,5)
+        }
       }else{
         addrCd = ''
       }

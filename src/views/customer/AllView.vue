@@ -793,9 +793,14 @@ export default {
   getOrgmData() {
     this.selectedOrgItems = ''
     this.selectedUpdateOrgItems = ''
+    let sggCode = ''
       let url =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
-        let sggCode = this.sggCd.substring(0, 5);
+        if(this.sggCd.startsWith('0', 4) === true){
+          sggCode = this.sggCd.substring(0,4)
+        }else{
+          sggCode = this.sggCd.substring(0, 5)
+        }
         url += "?sggCd="+sggCode;
       }else{
         this.selectedOrgItems = ''
@@ -935,13 +940,19 @@ export default {
   getRecipientData() {
     let uri = '';
     let addrCd = ''
+    console.log(this.sggCd.startsWith('0', 4))
     if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
-      }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
+      }else if(this.selectedSggItems != ''){ 
+          if(this.sggCd.startsWith('0', 4) === true){
+          addrCd = this.sggCd.substring(0,4)
+        }else{
+          addrCd = this.sggCd.substring(0,5)
+        }
       }else{
         addrCd = ''
       }
+      console.log(this.sggCd)
     if(this.selectedOrgItems == '' && this.filterName == ''&& this.selectedSidoItems == ''&& this.selectedSggItems == '' && this.selectedUserType =='' && this.selectedUserState =='' && this.selectedUserSex ==''){
       uri = this.$store.state.serverApi + "/admin/recipients?pageIndex="+this.page+"&recordCountPerPage=30"
     } else {

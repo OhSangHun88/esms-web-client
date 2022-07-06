@@ -347,9 +347,14 @@ export default {
     // 관리 기관 목록
     getOrgmData() {
       this.selectedOrgItems = ''
+      let sggCode = ''
       let url =this.$store.state.serverApi + "/admin/organizations";
       if(this.sggCd != ''){
-        let sggCode = this.sggCd.substring(0, 5);
+        if(this.sggCd.startsWith('0', 4) === true){
+          sggCode = this.sggCd.substring(0,4)
+        }else{
+          sggCode = this.sggCd.substring(0, 5)
+        }
         url += "?sggCd="+sggCode;
       }else{
         this.selectedOrgItems = ''
@@ -444,7 +449,11 @@ export default {
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCode = this.sidoCd.substring(0, 2);
       }else if(this.selectedSggItems != ''){
-        addrCode = this.sggCd.substring(0, 5);
+        if(this.sggCd.startsWith('0', 4) === true){
+          addrCode = this.sggCd.substring(0,4)
+        }else{
+          addrCode = this.sggCd.substring(0,5)
+        }
       }else{
         addrCode = '';
       }

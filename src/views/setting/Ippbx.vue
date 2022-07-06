@@ -320,7 +320,11 @@ export default {
       if(this.selectedSidoItems != '' && this.selectedSggItems == ''){
         addrCd = this.sidoCd.substring(0,2)
       }else if(this.selectedSggItems != ''){
-        addrCd = this.sggCd.substring(0,5)
+        if(this.sggCd.startsWith('0', 4) === true){
+          addrCd = this.sggCd.substring(0,4)
+        }else{
+          addrCd = this.sggCd.substring(0,5)
+        }
       }else{
         addrCd = ''
       }
