@@ -53,7 +53,7 @@
                 <li>
                     <i class="ico04"></i>
                     <div class="txt">
-                        <strong>연결</strong>
+                        <strong>{{gwPowerChange(this.gwPower.powerLinkYn)}}</strong>
                         <p>전원연결</p>
                     </div>
                 </li> 
@@ -85,13 +85,34 @@ export default {
                 TPE008:0,
                 TPE007:0,
                 TPE012:0,
-            }
+            },
+            gwPower:'',
         }
     },
     created(){
         this.getMeasuresData();
+        this.getGatewayPowerLink();
+        
     },
     methods:{
+        async getGatewayPowerLink(){
+            const uri = this.$store.state.serverApi + `/admin/gateways/recipient/${this.recipientId}`
+            await axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
+            .then(response => {
+              this.gwPower = response.data.data
+            })
+            .catch(error => {
+              this.errorMessage = error.message;
+              console.error("There was an error!", error);
+            });
+            },
+        gwPowerChange(input){
+            if(input === 1){
+                return '연결'
+            }else{
+                return '차단'
+            }
+        },
       async getMeasuresData(){
         
       //여기
