@@ -123,7 +123,7 @@
                             <tr>
                                 <th scope="col">시리얼번호(S/N)</th>
                                 <th scope="col">맥 어드레스</th>
-                                <th scope="col">펌웨어버전(현재/이전)</th>
+                                <th scope="col">펌웨어버전(현재/최신)</th>
                                 <th scope="col">HW버전</th>
                             </tr>
                         </thead>
@@ -140,7 +140,7 @@
                                 <tr >
                                     <td>{{!this.getCGatewayData?'':this.getCGatewayData.serialNo}}</td>
                                     <td>{{!this.getCGatewayData?'':this.getCGatewayData.macAddr}}</td>
-                                    <td>{{!this.getCGatewayData?'':this.getCGatewayData.firmwareVersion+'/'+firmwareBv(this.getCGatewayData.firmwareBversion)}}</td>
+                                    <td>{{!this.getCGatewayData?'':this.getCGatewayData.firmwareVersion+'/'+this.firmwareCData}}</td>
                                     <td>{{!this.getCGatewayData?'':this.getCGatewayData.hardwareVersion}}</td>
                                 </tr>
                             </tbody>
@@ -235,8 +235,8 @@
                                 <th scope="col">선택</th>
                                 <th scope="col">순번</th>
                                 <th scope="col">센서명</th>
-                                <th scope="col">센서이전버전</th>
                                 <th scope="col">센서버전</th>
+                                <th scope="col">최신버전</th>
                                 <th scope="col">센서ID</th>
                                 <th scope="col">등록일시</th>
                                 <th scope="col">수정일시</th>
@@ -277,8 +277,8 @@
                                     </td>
                                     <td>{{index+1}}</td>
                                     <td>{{item.sensorTypeNm}}</td>
-                                    <td>{{item.previousVersion}}</td>
                                     <td>{{item.sensorVersion}}</td>
+                                    <td>{{item.previousVersion}}</td>
                                     <td v-if="saveChangeData === index">
                                       <div class="input_area" style="margin-left:0px; margin-right:0px;">
                                         <input type="text" name="" id="" v-model="changeIncomeNm" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
@@ -547,6 +547,7 @@ import axios from "axios";
       CbatteryValue:null,
       BbatteryValue:null,
       firmwarelist:[],
+      firmwareCData:'',
       saveChangeData:'', changeIncomeNm:'',changeIncomeNm2:'', changeSensorId:'', changeSensorData:'', radiocheck:'', inputCheck:'',
     }
    },
@@ -952,6 +953,8 @@ import axios from "axios";
          axios.get(url,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
                 this.firmwarelist = res.data.data
+                this.firmwareCData = this.firmwarelist[0].version
+                console.log(this.firmwarelist)
             })
             .catch(error => {
                 console.log("fail to load")

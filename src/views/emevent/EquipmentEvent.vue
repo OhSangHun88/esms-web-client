@@ -39,16 +39,18 @@
                 <div class="table_wrap" >
                     <table>
                         <colgroup>
-                            <col style="width:20%;">
-                            <col style="width:20%;">
-                            <col style="width:20%">
-                            <col style="width:15%;">
+                            <col style="width:17%;">
+                            <col style="width:17%;">
+                            <col style="width:17%">
+                            <col style="width:13%;">
+                            <col style="width:13%;">
                             <col style="width:auto;">
                         </colgroup>
                         <thead>
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
+                            <th scope="row">구분</th>
                             <th scope="row">대상자명</th>
                         </thead>
                         <tbody>
@@ -66,6 +68,11 @@
                                 <td>
                                     <select v-model="selectedOrgItems">
                                       <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select v-model="selectedEventItems">
+                                      <option v-for="(event, index) in eventList" :value="event.value" v-bind:key="index">{{event.label}}</option>
                                     </select>
                                 </td>
                                 <td>
@@ -192,6 +199,11 @@ export default {
         cBirthday:'', cAddr: '', NCount : 0,
         errorpopup1: false, errorpopup2: false,
         searchCheck1 : 1, searchCheck2 : 0,
+        eventList:[{label:'전체', value:''},{label:'공장초기화', value:'E0000'}, {label:'상용전원 차단', value:'E1004'}, {label:'상용전원 연결', value:'E1005'}, {label:'GW 저전압', value:'E1006'}, 
+        {label:'출입감지기 저전압', value:'E1007'}, {label:'활동감지기 저전압', value:'E1008'}, {label:'응급버튼 저전압', value:'E1009'}, {label:'화재감지기 저전압', value:'E1010'}, 
+        {label:'모니터 연결', value:'E1011'}, {label:'모니터 분리', value:'E1012'}, {label:'테스트모드 활성화', value:'E1020'}, {label:'테스트모드 해제', value:'E1021'}, 
+        {label:'G/W Battery CutOff', value:'E1023'}],
+        selectedEventItems:'',
 
         listData: [],
         total: '',
@@ -355,11 +367,13 @@ export default {
       +"/admin/emergencys/gateway-events?pageIndex="+this.page+"&recordCountPerPage=30"
       +"&addrCd="+addrCd
       +"&orgId="+this.selectedOrgItems
+      +"&eventCd="+this.selectedEventItems
       +"&recipientNm="+this.selectedRecipientNm
       +"&occurStartDate="+occurStartDate
       +"&occurEndDate="+occurEndDate;
       }
       console.log(uri)
+      console.log(this.selectedEventItems)
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.recipientItems = response.data.data
@@ -424,6 +438,7 @@ export default {
           case "E1012" : result='모니터 분리'; break;
           case "E1020" : result='테스트모드 활성화'; break;
           case "E1021" : result='테스트모드 해제'; break;
+          case "E1023" : result='G/W Battery CutOff'; break;
         }
         return result
     },
