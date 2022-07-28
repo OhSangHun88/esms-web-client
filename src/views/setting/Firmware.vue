@@ -117,7 +117,7 @@
                   <button type="button" class="btn_close" @click="upgradepopup = false">닫기</button>
                 </div>
                 <div class="popup_cnt">
-                  <p class="alert_txt">펌웨어 업그레이드를 진행하시겠습니까?</p>
+                  <p class="alert_txt">대상자 {{this.saveChangeData2.length}}명의 펌웨어 변경을 진행하시겠습니까?</p>
                 </div>
                 <div class="popbtn_area type-02">
                   <button type="button" class="btn form2" @click="upgradeFirmware2()">확인</button>
@@ -131,7 +131,7 @@
             <div id="" class="popupLayer" v-if="upgradeRecordpopup === true">
               <div class="popup_wrap">
                 <div class="title_wrap">
-                  <div class="title">배포 이력</div>
+                  <div class="title">변경 이력</div>
                   <button type="button" class="btn_close" @click="upgradeRecordpopup = false">닫기</button>
                 </div>
                 <div class="popbtn_wrap" style="margin-bottom:20px">
@@ -149,8 +149,8 @@
                           <th scope="col">대상자명</th>
                           <th scope="col">버전</th>
                           <th scope="col">상태</th>
-                          <th scope="col">등록자 ID</th>
-                          <th scope="col">배포일시</th>
+                          <th scope="col">작업자 ID</th>
+                          <th scope="col">변경일시</th>
                         </tr>
                       </thead>
                     </table>
@@ -277,9 +277,9 @@
                     <table>
                         <colgroup>
                             <col style="width:4%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
+                            <col style="width:5%;">
+                            <col style="width:14%;">
+                            <col style="width:4%;">
                             <col style="width:auto;">
                             <col style="width:13%;">
                             <col style="width:13%;">
@@ -302,8 +302,8 @@
                                 <th scope="col">시리얼번호</th>
                                 <th scope="col">MAC Address</th>
                                 <th scope="col">현재적용버전</th>
-                                <th scope="col">업데이트일시</th>
-                                <th scope="col">배포이력</th>
+                                <th scope="col">변경일시</th>
+                                <th scope="col">변경이력</th>
                             </tr>
                         </thead>
                     </table>
@@ -311,9 +311,9 @@
                         <table>
                             <colgroup>
                                 <col style="width:4%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
+                                <col style="width:5%;">
+                                <col style="width:14%;">
+                                <col style="width:4%;">
                                 <col style="width:auto;">
                                 <col style="width:13%;">
                                 <col style="width:13%;">
@@ -340,7 +340,7 @@
                                     <td>{{item.updDtime}}</td>
                                     <td>
                                       <div class="btn_area">
-                                        <button type="button" style="margin-right:10px;" class="btn" @click="upgradeRecord(index)">배포이력</button>
+                                        <button type="button" style="margin-right:10px;" class="btn" @click="upgradeRecord(index)">변경이력</button>
                                       </div>
                                     </td>
                                 </tr>                                
@@ -397,7 +397,6 @@ export default {
         limit: 30,
         block: 10,
 
-        selectList: [],
       }
     },
     created() {
@@ -405,6 +404,7 @@ export default {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
+    this.allSelectSet();
     //this.getRecipientData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
@@ -412,16 +412,19 @@ export default {
     },
     computed: {
       allSelected: {
-        get: function() {
+        get: function(){
           return this.listData.length === this.saveChangeData2.length;
         },
-        set: function(e) {
+        set: function(e){
           this.saveChangeData2 = e ? this.listData : [];
         },
       },
     },
 
     methods:{
+      allSelectSet(){
+        console.log(this.allSelected)
+      },
       handleFileChange(e) {
         let fileLength = e.target.files[0].name.length
         let fileDot = e.target.files[0].name.indexOf('.')
@@ -747,7 +750,7 @@ export default {
     },
     upgradeFirmware(){
       if(this.saveChangeData2.length === 0){
-        alert("변경하시고자 하는 값을 선택해 주세요"); 
+        alert("변경하시고자 하는 대상자를 선택해 주세요"); 
         return;
         }
       this.upgradepopup = true
@@ -756,6 +759,10 @@ export default {
       console.log("pending... ")
       clearTimeout(this.timerId)
       this.pending = false
+    },
+    sleep(ms) {
+      const wakeUpTime = Date.now() + ms;
+      while (Date.now() < wakeUpTime) {}
     },
     async upgradeFirmware2(){
         let tmpArr = []
@@ -779,6 +786,13 @@ export default {
         console.log(regNo)
         console.log(this.saveChangeData2.length)
         for(let i=0; i<this.saveChangeData2.length; i++){
+          if(this.upgradeCount === 100){
+            this.upgradeCount = 0
+            console.log(this.upgradeCount)
+            console.log("setTimeout...")
+            this.sleep(5000)
+            console.log("sleep")
+          }
           console.log("keep going...")
           let url  = this.$store.state.serverApi + `/admin/gateways/${this.saveChangeData2[i].gwId}/firmware-version`
           let data = {
@@ -804,15 +818,10 @@ export default {
             });
             this.upgradeCount = this.upgradeCount+1
             console.log(this.upgradeCount)
-          if(this.upgradeCount === 1){
-            this.upgradeCount = 0
-            console.log(this.upgradeCount)
-            console.log("setTimeout...")
-            setTimeout(function () {console.log("wait")},5000);
-          }
+          
         }
         if(this.upgradeCheck === this.saveChangeData2.length){
-            alert("성공적으로 업그레이드가 요청되었습니다")
+            alert("성공적으로 변경을 요청하였습니다")
             this.upgradepopup = false
             this.getRecipientData()
         }
