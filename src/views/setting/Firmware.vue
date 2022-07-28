@@ -39,7 +39,7 @@
                     <div class="popup_cnt">
                       <div class="input_wrap">
                           <div class="input_area">
-                            <p class="input_tit">버전명</p>
+                            <p class="input_tit">펌웨어 버전</p>
                             <input type="text" style="width:200px" v-model="this.file_name3" disabled>
                           </div>
                       </div>
@@ -124,6 +124,9 @@
                   <button type="button" class="btn form" @click="upgradepopup = false">취소</button>
                 </div>
               </div>
+              <div v-if="this.pending === true" style="text-align: center;">
+                  <img src="../../assets/images/loading.png"  />
+              </div>
             </div>
             <div id="" class="popupLayer" v-if="upgradeRecordpopup === true">
               <div class="popup_wrap">
@@ -147,7 +150,7 @@
                           <th scope="col">버전</th>
                           <th scope="col">상태</th>
                           <th scope="col">등록자 ID</th>
-                          <th scope="col">등록일시</th>
+                          <th scope="col">배포일시</th>
                         </tr>
                       </thead>
                     </table>
@@ -189,7 +192,7 @@
                                 <col style="width:100%;">
                             </colgroup>
                             <thead>
-                                <th scope="row">현재 업로드 버전</th>
+                                <th scope="row">최종 업로드 버전</th>
                             </thead>
                             <tbody>
                                 <tr >
@@ -227,7 +230,7 @@
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
                             <th scope="row">대상자명</th>
-                            <th scope="row">펌웨어버전</th>
+                            <th scope="row">조회버전</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -267,7 +270,7 @@
                 <div class="result_txt">
                     <p>조회결과 : <strong class = "num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
                     <div class="btn_area">
-                      <button type="button" style="margin-right:10px; width:120px;" class="btn" @click="upgradeFirmware()">펌웨어 업그레이드</button>
+                      <button type="button" style="margin-right:10px; width:120px;" class="btn" @click="upgradeFirmware()">펌웨어 변경</button>
                     </div>
                 </div>
                 <div class="list result">
@@ -287,7 +290,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">
-                                  <div class="chk_area radio">
+                                  <div class="chk_area">
                                     <input type="checkbox" id="allCheck" value="all" v-model="allSelected">
                                     <label for="allCheck" class="chk"><i class="ico_chk"></i></label>
                                   </div>
@@ -322,7 +325,7 @@
                               
                                 <tr v-for="(item,index) in listData" v-bind:key="index">
                                     <td>
-                                      <div class="chk_area radio">
+                                      <div class="chk_area">
                                         <input type="checkbox" name="chk" :id="`check_${index}`" v-model="saveChangeData2" :value="item" @click="reset(index)">
                                         <label :for="`check_${index}`" class="chk"><i class="ico_chk"></i></label>
                                       </div>
@@ -385,7 +388,8 @@ export default {
         uploadpopup: false, saveChangeData:'', saveChangeData2:[], saveChangeData3:false, upgradepopup:false, recordpopup:false,
         firmwareItmes:'', firmwareFile:'',file_name: '', file_name2: '', file_name2_1:'', file_name2_2:'', file_name3:'',
         versionDesc:'', firmwarelist:'', firmwareCData:[], file_size:'', firmwareCheck:'', firmwareRecord:[], upgradeRecordpopup:false, upgradeRecordArr:[],
-        upgradeRecordId:'', upgradeRecordItems:[], upgradeCheck:'',
+        upgradeRecordId:'', upgradeRecordItems:[], upgradeCheck:0, upgradeCount:0,
+        pending:false, timerId:'',
 
         listData: [],
         total: '',
@@ -401,7 +405,7 @@ export default {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
-    this.getRecipientData();
+    //this.getRecipientData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.cBirthday=moment().format('YYYY-MM-DD');
@@ -419,6 +423,18 @@ export default {
 
     methods:{
       handleFileChange(e) {
+        let fileLength = e.target.files[0].name.length
+        let fileDot = e.target.files[0].name.indexOf('.')
+        let fileType = e.target.files[0].name.substring(fileDot+1,fileLength).toLowerCase()
+        if(fileType !== 'bin'){
+          alert("펌웨어 파일을 다시 확인하여 주세요")
+          return false
+        }
+        console.log(fileLength)
+        console.log(fileDot)
+        console.log(fileType)
+        console.log(e.target.files[0])
+        if(e.target.files[0])
       this.firmwareFile = e.target.files[0]
       this.file_name = e.target.files[0].name;
       this.file_size = e.target.files[0].size
@@ -427,6 +443,11 @@ export default {
       this.file_name2_1 = this.file_name2.substr(0, 2)
       this.file_name2_2 = this.file_name2.substr(2)
       this.file_name3 = this.file_name2_1+'.'+this.file_name2_2
+      console.log(this.file_name3)
+      if(this.file_name3.length < 5){
+        alert("펌웨어 파일을 다시 확인하여 주세요")
+        return false
+      }
     },
     uploadReset(){
       this.file_name = ''
@@ -584,12 +605,15 @@ export default {
       let count=''
       let uri = ''
       this.recipientItems = []
+      console.log("2" + this.selectedFirmwareVersion2)
         uri = this.$store.state.serverApi
         +"/admin/gateways/firmware/targetlist?pageIndex=1&recordCountPerPage=500"
         +"&addrCd="+addrCd
         +"&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
         +"&firmwareVersion="+this.selectedFirmwareVersion
+        +"&updateVersion="+this.selectedFirmwareVersion2
+        console.log(uri)
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             tmpArr = response.data.data
@@ -639,6 +663,7 @@ export default {
                 });
               } 
               this.selectedFirmwareVersion2 = this.firmwareCData[0].value
+              console.log("1" + this.selectedFirmwareVersion2)
               this.firmwareItmes = tmpArr
               this.firmwarelist = res.data.data
             })
@@ -647,6 +672,7 @@ export default {
                 this.errorMessage = error.message;
                 console.error("There was an error!", error);
             });
+            this.getRecipientData()
     },
     async uploadFirmware(){
       this.$store.state.userId = sessionStorage.getItem("userId")
@@ -726,6 +752,11 @@ export default {
         }
       this.upgradepopup = true
     },
+    delay(){
+      console.log("pending... ")
+      clearTimeout(this.timerId)
+      this.pending = false
+    },
     async upgradeFirmware2(){
         let tmpArr = []
         let regNo = []
@@ -746,7 +777,9 @@ export default {
           return cd.version === this.selectedFirmwareVersion2
         })
         console.log(regNo)
+        console.log(this.saveChangeData2.length)
         for(let i=0; i<this.saveChangeData2.length; i++){
+          console.log("keep going...")
           let url  = this.$store.state.serverApi + `/admin/gateways/${this.saveChangeData2[i].gwId}/firmware-version`
           let data = {
             firmwareVersion:this.selectedFirmwareVersion2,
@@ -760,19 +793,28 @@ export default {
                 firmware = res.data.data
                 console.log(firmware)
                 if(firmware === true){
-                  this.up
+                  this.upgradeCheck = this.upgradeCheck+1
                 }
+                console.log(this.upgradeCheck)
             })
             .catch(error => {
                 console.log("fail to load")
                 this.errorMessage = error.message;
                 console.error("There was an error!", error);
             });
+            this.upgradeCount = this.upgradeCount+1
+            console.log(this.upgradeCount)
+          if(this.upgradeCount === 1){
+            this.upgradeCount = 0
+            console.log(this.upgradeCount)
+            console.log("setTimeout...")
+            setTimeout(function () {console.log("wait")},5000);
+          }
         }
-        console.log("this")
-        if(firmware === true){
+        if(this.upgradeCheck === this.saveChangeData2.length){
             alert("성공적으로 업그레이드가 요청되었습니다")
             this.upgradepopup = false
+            this.getRecipientData()
         }
         
             /*axios.patch(urlU,data ,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -823,15 +865,9 @@ export default {
     changeStateCd(input){
       let result = ''
       switch (input){
-          case "STE001" : result='입고대기'; break;
-          case "STE002" : result='사용가능'; break;
-          case "STE003" : result='설치중'; break;
-          case "STE004" : result='사용중'; break;
-          case "STE005" : result='AS요청'; break;
-          case "STE006" : result='AS접수'; break;
-          case "STE007" : result='AS완료'; break;
-          case "STE008" : result='AS취소'; break;
-          case "STE009" : result='고장'; break;
+          case "STE001" : result='변경요청중'; break;
+          case "STE002" : result='변경완료'; break;
+          case "STE003" : result='변경실패'; break;
         }
         return result
     },
