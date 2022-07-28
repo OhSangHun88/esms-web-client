@@ -102,11 +102,12 @@
                 <div class="list result">
                     <table>
                         <colgroup>
-                            <col style="width:6%;">
-                            <col style="width:8%;">
-                            <col style="width:8%;">
+                            <col style="width:3%;">
+                            <col style="width:5%;">
+                            <col style="width:5%;">
                             <col style="width:auto;">
                             <col style="width:10%;">
+                            <col style="width:5%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
@@ -123,6 +124,7 @@
                                 <th scope="col">대상자 전화번호</th>
                                 <th scope="col">응급요원명</th>
                                 <th scope="col">응급요원 전화번호</th>
+                                <th scope="col">macAddr</th>
                                 <th scope="col">구분</th>
                                 <th scope="col">발생일시</th>
                                 <th scope="col">서버전송일시</th>
@@ -133,17 +135,17 @@
                     <div class="tbody">
                         <table>
                             <colgroup>
-                                <col style="width:6%;">
-                                <col style="width:8%;">
-                                <col style="width:8%;">
+                                <col style="width:3%;">
+                                <col style="width:5%;">
+                                <col style="width:5%;">
                                 <col style="width:auto;">
                                 <col style="width:10%;">
+                                <col style="width:5%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
                                 <col style="width:11%;">
-                                
                             </colgroup>
                             <tbody>  
                                 <tr v-for="(item,index) in recipientItems" v-bind:key="index">
@@ -154,6 +156,7 @@
                                     <td>{{changeRecipientPhoneno(item.recipientPhoneno)}}</td>
                                     <td>{{item.managerNm}}</td>
                                     <td>{{changeRecipientPhoneno(item.managerMobileNumber)}}</td>
+                                    <td>{{item.macAddr}}</td>
                                     <td>{{codeChange(item.eventCd)}}</td>
                                     <td>{{item.occurDtime}}</td>
                                     <td>{{item.regDtime}}</td>
@@ -202,7 +205,7 @@ export default {
         eventList:[{label:'전체', value:''},{label:'공장초기화', value:'E0000'}, {label:'상용전원 차단', value:'E1004'}, {label:'상용전원 연결', value:'E1005'}, {label:'GW 저전압', value:'E1006'}, 
         {label:'출입감지기 저전압', value:'E1007'}, {label:'활동감지기 저전압', value:'E1008'}, {label:'응급버튼 저전압', value:'E1009'}, {label:'화재감지기 저전압', value:'E1010'}, 
         {label:'모니터 연결', value:'E1011'}, {label:'모니터 분리', value:'E1012'}, {label:'테스트모드 활성화', value:'E1020'}, {label:'테스트모드 해제', value:'E1021'}, 
-        {label:'G/W Battery CutOff', value:'E1023'}],
+        {label:'G/W Battery CutOff', value:'E1023'}, {label:'Sensor Rejoin', value:'E1024'}],
         selectedEventItems:'',
 
         listData: [],
@@ -439,6 +442,7 @@ export default {
           case "E1020" : result='테스트모드 활성화'; break;
           case "E1021" : result='테스트모드 해제'; break;
           case "E1023" : result='G/W Battery CutOff'; break;
+          case "E1024" : result='Sensor Rejoin'; break;
         }
         return result
     },

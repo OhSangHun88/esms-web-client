@@ -346,7 +346,7 @@
                             <tbody v-if="connectTap===2 && beforeGatewayToggle===0" >
                                 <tr>
                                     <td>{{!this.getCGatewayData? '':!this.gatewayTakeNm? '':this.getCGatewayData2.comStateCd+"("+this.gatewayTakeNm+")"}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.powerLinkYn===undefined||this.getCGatewayData2.powerLinkYn===null ? '' : this.getCGatewayData2.powerLinkYn===1?'연결':'차단'}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.powerLinkYn===undefined||this.getCGatewayData2.powerLinkYn===null||this.getCGatewayData2.powerLinkYn==='' ? '' : this.getCGatewayData2.powerLinkYn===1?'연결':'차단'}}</td>
                                     <td>{{!this.getCGatewayData? '':this.getCGatewayData2.checkYnCd===null||this.getCGatewayData2.checkYnCd===undefined||this.getCGatewayData2.checkYnCd===''? '': this.getCGatewayData2.checkYnCd===0? '정상':'점검대상'}}</td>
                                     <td>{{!this.getCGatewayData? '':this.getCGatewayData2.batteryValue+"("+changeTaGaBattery(getCGatewayData2.batteryValue)+")"}}</td>
                                     <td>{{!this.getCGatewayData? '':this.getCGatewayData2.keepAliveRcvYn===1?'정상':this.getCGatewayData2.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
@@ -358,7 +358,7 @@
                             <tbody v-if="this.beforeVersionGatewayData && connectTap===2 && beforeGatewayToggle===1" >
                                 <tr>
                                     <td>{{!this.getCGatewayData? '':!this.beforeGatewayTakeNm? '': this.beforeVersionGatewayData.comStateCd+"("+this.beforeGatewayTakeNm+")"}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.powerLinkYn===undefined||this.beforeVersionGatewayData.powerLinkYn===null ? '' : this.beforeVersionGatewayData.powerLinkYn===1?'연결':'차단'}}</td>
+                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.powerLinkYn===undefined||this.beforeVersionGatewayData.powerLinkYn===null||this.beforeVersionGatewayData.powerLinkYn==='' ? '' : this.beforeVersionGatewayData.powerLinkYn===1?'연결':'차단'}}</td>
                                     <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.checkYnCd===null||this.beforeVersionGatewayData.checkYnCd===undefined||this.beforeVersionGatewayData.checkYnCd===''? '': this.beforeVersionGatewayData.checkYnCd===0? '정상':'점검대상'}}</td>
                                     <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.batteryValue+"("+changeTaGaBattery(this.beforeVersionGatewayData.batteryValue)+")"}}</td>
                                     <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.keepAliveRcvYn===1?'정상':this.beforeVersionGatewayData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
@@ -417,7 +417,7 @@
                             </colgroup>
                             <tbody v-if="this.getCTabletsData2 && connectTap===3 && beforeTabletToggle===0">
                                 <tr>
-                                    <td>{{!this.getCTabletsData? '':this.getCTabletsData2.comStateCd+"("+this.tabletTakeNm+")"}}</td>
+                                    <td>{{!this.getCTabletsData? '':changeTabletCd(this.getCTabletsData2.comStateCd)+"("+changeTabletCd2(this.getCTabletsData2.comStateCd)+")"}}</td>
                                     <td>{{!this.getCTabletsData? '':this.getCTabletsData2.checkYnCd===null||this.getCTabletsData2.checkYnCd===undefined||this.getCTabletsData2.checkYnCd===''? '': this.getCTabletsData2.checkYnCd===0? '정상':'점검대상'}}</td>
                                     <td>{{!this.getCTabletsData? '':this.getCTabletsData2.batteryValue+"("+changeTaGaBattery(this.getCTabletsData2.batteryValue)+")"}}</td>
                                     <td>{{!this.getCTabletsData? '':this.getCTabletsData2.gwLinkYnNm}}</td>
@@ -427,7 +427,7 @@
                             </tbody>
                             <tbody v-if="this.beforeVersionTabletsData && connectTap===3 && beforeTabletToggle===1">
                                 <tr>
-                                    <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.comStateCd+"("+this.beforeTabletTakeNm+")"}}</td>
+                                    <td>{{!this.getCTabletsData? '':changeTabletCd(this.beforeVersionTabletsData.comStateCd)+"("+changeTabletCd2(this.beforeVersionTabletsData.comStateCd)+")"}}</td>
                                     <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.checkYnCd===null||this.beforeVersionTabletsData.checkYnCd===undefined||this.beforeVersionTabletsData.checkYnCd===''? '': this.beforeVersionTabletsData.checkYnCd===0? '정상':'점검대상'}}</td>
                                     <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.batteryValue+"("+changeTaGaBattery(this.beforeVersionTabletsData.batteryValue)+")"}}</td>
                                     <td>{{!this.getCTabletsData? '':this.beforeVersionTabletsData.gwLinkYnNm}}</td>
@@ -696,6 +696,7 @@ import axios from "axios";
     },
     async getCTablet(){
         let tablet=''
+        console.log(this.getCTabletsData.tabletId)
         const url  = this.$store.state.serverApi + `/admin/recipients/tablet/statehistory?tabletId=${this.getCTabletsData.tabletId}`
             await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
@@ -723,7 +724,6 @@ import axios from "axios";
         this.tabletTake = this.tabletTakeItems.filter(cd=>{
             return cd.cmmnCd === this.getCTabletsData2.comStateCd
         })
-        this.tabletTakeNm = this.tabletTake[0].cmmnCdNm
     },
     // 현재버전 게이트웨이 호출
     getNowGatewayToggle(){
@@ -776,7 +776,7 @@ import axios from "axios";
             this.beforeTabletTake = this.tabletTakeItems.filter(cd=>{
                 return cd.cmmnCd === this.beforeVersionTabletsData.comStateCd
             })
-            this.beforeTabletTakeNm = this.beforeTabletTake[0].cmmnCdNm
+            
     },
     // 이전 버전 게이트웨이 호출
     async getBeforeVersionGateway(){
@@ -1028,6 +1028,22 @@ import axios from "axios";
             input = this.getCGatewayData.firmwareVersion
         }
         return input
+     },
+     changeTabletCd(input){
+        if(input >= -111 && input <= -85){
+            return '보통'
+        }else if(input < -111){
+            return '나쁨'
+        }else{
+            return '양호'
+        }
+     },
+     changeTabletCd2(input){
+        if(input === 'TAK001' || input === 'TAK002' || input === 'TAK003'){
+            return ''
+        }else{
+            return input
+        }
      },
      tabletBv(input){
         if(input === null || input ===undefined || input === ''){

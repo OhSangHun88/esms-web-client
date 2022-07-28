@@ -33,7 +33,7 @@
             <div id="" class="popupLayer" v-if="uploadpopup === true">
                 <div class="popup_wrap">
                     <div class="title_wrap">
-                        <div class="title" @click="uploadFirmware()">펌웨어 업로드</div>
+                        <div class="title">펌웨어 업로드</div>
                         <button type="button" class="btn_close" @click="uploadpopup = false">닫기</button>
                     </div>
                     <div class="popup_cnt">
@@ -67,7 +67,7 @@
             <div id="" class="popupLayer" v-if="recordpopup === true">
               <div class="popup_wrap">
                 <div class="title_wrap">
-                  <div class="title" @click="uploadFirmware()">업로드 이력</div>
+                  <div class="title">업로드 이력</div>
                   <button type="button" class="btn_close" @click="recordpopup = false">닫기</button>
                 </div>
                 <div class="popbtn_wrap" style="margin-bottom:20px">
@@ -123,6 +123,56 @@
                   <button type="button" class="btn form2" @click="upgradeFirmware2()">확인</button>
                   <button type="button" class="btn form" @click="upgradepopup = false">취소</button>
                 </div>
+              </div>
+            </div>
+            <div id="" class="popupLayer" v-if="upgradeRecordpopup === true">
+              <div class="popup_wrap">
+                <div class="title_wrap">
+                  <div class="title">배포 이력</div>
+                  <button type="button" class="btn_close" @click="upgradeRecordpopup = false">닫기</button>
+                </div>
+                <div class="popbtn_wrap" style="margin-bottom:20px">
+                  <div class="list result" style="margin-left:-20px; width:107%">
+                    <table>
+                      <colgroup>
+                        <col style="width:15%;">
+                        <col style="width:15%;">
+                        <col style="width:20%;">
+                        <col style="width:20%;">
+                        <col style="width:30%;">
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th scope="col">대상자명</th>
+                          <th scope="col">버전</th>
+                          <th scope="col">상태</th>
+                          <th scope="col">등록자 ID</th>
+                          <th scope="col">등록일시</th>
+                        </tr>
+                      </thead>
+                    </table>
+                    <div class="tbody">
+                      <table>
+                        <colgroup>
+                          <col style="width:15%;">
+                          <col style="width:15%;">
+                          <col style="width:20%;">
+                          <col style="width:20%;">
+                          <col style="width:30%;">
+                        </colgroup>
+                        <tbody >    
+                          <tr v-for="(item,index) in upgradeRecordItems" v-bind:key="index">
+                            <td>{{item.recipientNm}}</td>
+                            <td>{{item.firmwareVersion}}</td>
+                            <td>{{changeStateCd(item.stateCd)}}</td>
+                            <td>{{item.updId}}</td>
+                            <td>{{item.updDtime}}</td>
+                          </tr>                                   
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div> 
               </div>
             </div>
             <div class="list_title_wrap">
@@ -217,7 +267,6 @@
                 <div class="result_txt">
                     <p>조회결과 : <strong class = "num">{{!this.NCount? 0 : this.NCount}}</strong>건</p>
                     <div class="btn_area">
-                      <button type="button" style="margin-right:10px" class="btn">배포이력</button>
                       <button type="button" style="margin-right:10px; width:120px;" class="btn" @click="upgradeFirmware()">펌웨어 업그레이드</button>
                     </div>
                 </div>
@@ -225,8 +274,6 @@
                     <table>
                         <colgroup>
                             <col style="width:4%;">
-                            <col style="width:4%;">
-                            <col style="width:8%;">
                             <col style="width:8%;">
                             <col style="width:8%;">
                             <col style="width:8%;">
@@ -234,8 +281,8 @@
                             <col style="width:13%;">
                             <col style="width:13%;">
                             <col style="width:6%;">
-                            <col style="width:5%;">
                             <col style="width:10%;">
+                            <col style="width:7%;">
                         </colgroup>
                         <thead>
                             <tr>
@@ -244,19 +291,16 @@
                                     <input type="checkbox" id="allCheck" value="all" v-model="allSelected">
                                     <label for="allCheck" class="chk"><i class="ico_chk"></i></label>
                                   </div>
-                                </th>
-                              
+                                </th>         
                                 <th scope="col">순번</th>
-                                <th scope="col">시도</th>
-                                <th scope="col">시군구</th>
                                 <th scope="col">관리기관</th>
                                 <th scope="col">대상자명</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">시리얼번호</th>
                                 <th scope="col">MAC Address</th>
                                 <th scope="col">현재적용버전</th>
-                                <th scope="col">상태</th>
                                 <th scope="col">업데이트일시</th>
+                                <th scope="col">배포이력</th>
                             </tr>
                         </thead>
                     </table>
@@ -264,8 +308,6 @@
                         <table>
                             <colgroup>
                                 <col style="width:4%;">
-                                <col style="width:4%;">
-                                <col style="width:8%;">
                                 <col style="width:8%;">
                                 <col style="width:8%;">
                                 <col style="width:8%;">
@@ -273,8 +315,8 @@
                                 <col style="width:13%;">
                                 <col style="width:13%;">
                                 <col style="width:6%;">
-                                <col style="width:5%;">
                                 <col style="width:10%;">
+                                <col style="width:7%;">
                             </colgroup>
                             <tbody >
                               
@@ -286,20 +328,20 @@
                                       </div>
                                     </td>
                                     <td>{{num(index+1)}}</td>
-                                    <td></td>
-                                    <td></td>
                                     <td>{{item.orgNm}}</td>
                                     <td>{{item.recipientNm}}</td>
-                                    <td></td>
+                                    <td>{{item.addr}}</td>
                                     <td>{{item.serialNo}}</td>
                                     <td>{{item.macAddr}}</td>
                                     <td>{{item.firmwareVersion}}</td>
-                                    <td>{{item.gwStateNm}}</td>
                                     <td>{{item.updDtime}}</td>
+                                    <td>
+                                      <div class="btn_area">
+                                        <button type="button" style="margin-right:10px;" class="btn" @click="upgradeRecord(index)">배포이력</button>
+                                      </div>
+                                    </td>
                                 </tr>                                
-                               
                             </tbody>
-                  
                         </table>
                     </div>
                 </div>
@@ -342,7 +384,8 @@ export default {
         searchCheck1 : 1, searchCheck2 : 0,
         uploadpopup: false, saveChangeData:'', saveChangeData2:[], saveChangeData3:false, upgradepopup:false, recordpopup:false,
         firmwareItmes:'', firmwareFile:'',file_name: '', file_name2: '', file_name2_1:'', file_name2_2:'', file_name3:'',
-        versionDesc:'', firmwarelist:'', firmwareCData:[], file_size:'', firmwareCheck:'', firmwareRecord:[],
+        versionDesc:'', firmwarelist:'', firmwareCData:[], file_size:'', firmwareCheck:'', firmwareRecord:[], upgradeRecordpopup:false, upgradeRecordArr:[],
+        upgradeRecordId:'', upgradeRecordItems:[],
 
         listData: [],
         total: '',
@@ -366,8 +409,6 @@ export default {
     computed: {
       allSelected: {
         get: function() {
-          console.log(this.listData.length)
-          console.log(this.saveChangeData2.length)
           return this.listData.length === this.saveChangeData2.length;
         },
         set: function(e) {
@@ -399,7 +440,6 @@ export default {
           (page - 1) * this.limit,
           page * this.limit
         )
-        console.log(this.listData)
         this.page = page
         this.pageDataSetting(this.total, this.limit, this.block, page)
       },
@@ -545,22 +585,19 @@ export default {
       let uri = ''
       this.recipientItems = []
         uri = this.$store.state.serverApi
-        +"/admin//gateways?pageIndex=1&recordCountPerPage=1000"
+        +"/admin/gateways/firmware/targetlist?pageIndex=1&recordCountPerPage=500"
         +"&addrCd="+addrCd
         +"&orgId="+this.selectedOrgItems
         +"&recipientNm="+this.selectedRecipientNm
+        +"&firmwareVersion="+this.selectedFirmwareVersion
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             tmpArr = response.data.data
             for(let i=0; i<tmpArr.length; i++){
               if(tmpArr[i].recipientNm !== null){
                 this.recipientItems.push(tmpArr[i])
-                console.log(tmpArr[i])
-                console.log(tmpArr2)
               }
             }
-            
-            console.log(this.recipientItems)
             this.NCount = this.recipientItems.length
             this.total = this.recipientItems.length
             this.page = 1
@@ -602,8 +639,6 @@ export default {
                 });
               } 
               this.selectedFirmwareVersion2 = this.firmwareCData[0].value
-              console.log(this.selectedFirmwareVersion2)
-              console.log(this.firmwareCData)
               this.firmwareItmes = tmpArr
               this.firmwarelist = res.data.data
             })
@@ -622,11 +657,9 @@ export default {
         firmwareVersion : this.file_name3,
         regId : this.$store.state.userId
       }
-      console.log(data)
       this.firmwareCheck = this.firmwarelist.filter(cd=>{
         return cd.version === this.file_name3
       })
-      console.log(this.firmwareCheck)
       if(!this.file_name3){
         alert("업로드 할 파일을 선택하여 주세요")
         return false
@@ -643,7 +676,6 @@ export default {
       form.append('firmwareVersion', this.file_name3)
       form.append('regId', this.$store.state.userId)
       form.append('fileName', this.firmwareFile)
-      console.log(form)
 
      await axios.post(url, form, {
        headers: {
@@ -653,7 +685,6 @@ export default {
        }
      })
        .then(response => {
-         console.log(response.data.data)
          if(response.data.data === true){
            alert("성공적으로 업로드 되었습니다.")
            this.uploadpopup = false
@@ -671,6 +702,23 @@ export default {
     uploadRecord(){
       this.recordpopup = true
     },
+    async upgradeRecord(index){
+      this.upgradeRecordArr = this.recipientItems[index]
+      this.upgradeRecordId = this.upgradeRecordArr.recipientId
+      this.upgradeRecordItems = []
+      let url  = this.$store.state.serverApi + `/admin/gateways/firmware/distlist?recipientId=${this.upgradeRecordId}`
+         await axios.get(url,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+              this.upgradeRecordItems = res.data.data
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+
+      this.upgradeRecordpopup = true
+    },
     upgradeFirmware(){
       if(this.saveChangeData2.length === 0){
         alert("변경하시고자 하는 값을 선택해 주세요"); 
@@ -678,24 +726,53 @@ export default {
         }
       this.upgradepopup = true
     },
-    upgradeFirmware2(){
-      console.log(this.saveChangeData2)
-      if(this.saveChangeData2.length === 0){
-        alert("변경하시고자 하는 값을 선택해 주세요"); 
-        return;
-        }
+    async upgradeFirmware2(){
+        let tmpArr = []
+        let regNo = []
+        let firmware = ''
         console.log(this.saveChangeData2)
-        console.log(this.firmwareCData)
-        console.log(this.recipientItems[this.saveChangeData2])
-        console.log(this.$store.state.userId)
-        let url  = this.$store.state.serverApi + `/admin/gateways/${this.recipientItems[this.saveChangeData].gwId}/firmware-version`
-        let data = {
-            firmwareVersion:this.selectedFirmwareVersion,
-            recipientId:this.recipientItems[this.saveChangeData].recipientId,
+        let urlF = this.$store.state.serverApi + `/admin/gateways/firmwarelist`
+        await axios.get(urlF, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                tmpArr = res.data.data
+                console.log(tmpArr)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+        regNo = tmpArr.filter(cd=>{
+          return cd.version === this.selectedFirmwareVersion2
+        })
+        console.log(regNo)
+        for(let i=0; i<this.saveChangeData2.length; i++){
+          let url  = this.$store.state.serverApi + `/admin/gateways/${this.saveChangeData2[i].gwId}/firmware-version`
+          let data = {
+            firmwareVersion:this.selectedFirmwareVersion2,
+            recipientId:this.saveChangeData2[i].recipientId,
             regId: this.$store.state.userId,
-            regNo: this.firmwarelist[0].regNo
+            regNo: regNo[0].regNo
         }
-            /*axios.patch(url,data ,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        console.log(data)
+        await axios.patch(url,data ,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+            .then(res => {
+                firmware = res.data.data
+                console.log(firmware)
+            })
+            .catch(error => {
+                console.log("fail to load")
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+        }
+        console.log("this")
+        if(firmware === true){
+            alert("성공적으로 업그레이드가 요청되었습니다")
+            this.upgradepopup = false
+        }
+        
+            /*axios.patch(urlU,data ,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
                 let firmware = res.data.data
                 if(firmware){
@@ -719,18 +796,12 @@ export default {
       }
     },
     handleInputLength(el, max) {
-      console.log(el)
-      console.log(el.length)
-      console.log(max)
       if(el.length > max) {
-        console.log("this ok")
         el = el.substr(0, max);
       }
       this.versionDesc = el
     },
     reset(input){
-      console.log(input)
-      console.log(this.saveChangeData2)
     },
     onChangeSido(event){
       this.getSggData()
@@ -745,6 +816,21 @@ export default {
     onChangeOrg(event) {
       this.sggCd = event.target.value
       this.getOrgmData()
+    },
+    changeStateCd(input){
+      let result = ''
+      switch (input){
+          case "STE001" : result='입고대기'; break;
+          case "STE002" : result='사용가능'; break;
+          case "STE003" : result='설치중'; break;
+          case "STE004" : result='사용중'; break;
+          case "STE005" : result='AS요청'; break;
+          case "STE006" : result='AS접수'; break;
+          case "STE007" : result='AS완료'; break;
+          case "STE008" : result='AS취소'; break;
+          case "STE009" : result='고장'; break;
+        }
+        return result
     },
     makeAge(birthDay){
       let tmp1 = this.$moment(birthDay).format('YYYY')
