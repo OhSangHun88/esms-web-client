@@ -205,7 +205,7 @@ export default {
         eventList:[{label:'전체', value:''},{label:'공장초기화', value:'E0000'}, {label:'상용전원 차단', value:'E1004'}, {label:'상용전원 연결', value:'E1005'}, {label:'GW 저전압', value:'E1006'}, 
         {label:'출입감지기 저전압', value:'E1007'}, {label:'활동감지기 저전압', value:'E1008'}, {label:'응급버튼 저전압', value:'E1009'}, {label:'화재감지기 저전압', value:'E1010'}, 
         {label:'모니터 연결', value:'E1011'}, {label:'모니터 분리', value:'E1012'}, {label:'테스트모드 활성화', value:'E1020'}, {label:'테스트모드 해제', value:'E1021'}, 
-        {label:'G/W Battery CutOff', value:'E1023'}, {label:'Sensor Rejoin', value:'E1024'}],
+        {label:'GW CutOff', value:'E1023'}, {label:'Sensor Rejoin', value:'E1024'}],
         selectedEventItems:'',
 
         listData: [],
@@ -365,7 +365,7 @@ export default {
       }
       let uri = ''
       uri = this.$store.state.serverApi+"/admin/emergencys/gateway-events?pageIndex="+this.page+"&recordCountPerPage=30"+"&occurStartDate="+occurStartDate+"&occurEndDate="+occurEndDate;
-      if(this.selectedSidoItems !== '' || this.selectedRecipientNm !== '' || this.selectedOrgItems !== ''){
+      if(this.selectedSidoItems !== '' || this.selectedRecipientNm !== '' || this.selectedOrgItems !== '' || this.selectedEventItems !== ''){
       uri = this.$store.state.serverApi
       +"/admin/emergencys/gateway-events?pageIndex="+this.page+"&recordCountPerPage=30"
       +"&addrCd="+addrCd
@@ -441,7 +441,7 @@ export default {
           case "E1012" : result='모니터 분리'; break;
           case "E1020" : result='테스트모드 활성화'; break;
           case "E1021" : result='테스트모드 해제'; break;
-          case "E1023" : result='G/W Battery CutOff'; break;
+          case "E1023" : result='GW CutOff'; break;
           case "E1024" : result='Sensor Rejoin'; break;
         }
         return result

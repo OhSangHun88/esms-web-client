@@ -385,7 +385,7 @@ export default {
         uploadpopup: false, saveChangeData:'', saveChangeData2:[], saveChangeData3:false, upgradepopup:false, recordpopup:false,
         firmwareItmes:'', firmwareFile:'',file_name: '', file_name2: '', file_name2_1:'', file_name2_2:'', file_name3:'',
         versionDesc:'', firmwarelist:'', firmwareCData:[], file_size:'', firmwareCheck:'', firmwareRecord:[], upgradeRecordpopup:false, upgradeRecordArr:[],
-        upgradeRecordId:'', upgradeRecordItems:[],
+        upgradeRecordId:'', upgradeRecordItems:[], upgradeCheck:'',
 
         listData: [],
         total: '',
@@ -759,6 +759,9 @@ export default {
             .then(res => {
                 firmware = res.data.data
                 console.log(firmware)
+                if(firmware === true){
+                  this.up
+                }
             })
             .catch(error => {
                 console.log("fail to load")
