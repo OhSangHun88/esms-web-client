@@ -388,7 +388,7 @@ export default {
         uploadpopup: false, saveChangeData:'', saveChangeData2:[], saveChangeData3:false, upgradepopup:false, recordpopup:false,
         firmwareItmes:'', firmwareFile:'',file_name: '', file_name2: '', file_name2_1:'', file_name2_2:'', file_name3:'',
         versionDesc:'', firmwarelist:'', firmwareCData:[], file_size:'', firmwareCheck:'', firmwareRecord:[], upgradeRecordpopup:false, upgradeRecordArr:[],
-        upgradeRecordId:'', upgradeRecordItems:[], upgradeCheck:0, upgradeCount:0,
+        upgradeRecordId:'', upgradeRecordItems:[], upgradeCheck:0, 
         pending:false, timerId:'',
 
         listData: [],
@@ -404,7 +404,6 @@ export default {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
-    this.allSelectSet();
     //this.getRecipientData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
@@ -422,9 +421,7 @@ export default {
     },
 
     methods:{
-      allSelectSet(){
-        console.log(this.allSelected)
-      },
+      
       handleFileChange(e) {
         let fileLength = e.target.files[0].name.length
         let fileDot = e.target.files[0].name.indexOf('.')
@@ -433,10 +430,6 @@ export default {
           alert("펌웨어 파일을 다시 확인하여 주세요")
           return false
         }
-        console.log(fileLength)
-        console.log(fileDot)
-        console.log(fileType)
-        console.log(e.target.files[0])
         if(e.target.files[0])
       this.firmwareFile = e.target.files[0]
       this.file_name = e.target.files[0].name;
@@ -446,7 +439,6 @@ export default {
       this.file_name2_1 = this.file_name2.substr(0, 2)
       this.file_name2_2 = this.file_name2.substr(2)
       this.file_name3 = this.file_name2_1+'.'+this.file_name2_2
-      console.log(this.file_name3)
       if(this.file_name3.length < 5){
         alert("펌웨어 파일을 다시 확인하여 주세요")
         return false
@@ -464,6 +456,7 @@ export default {
           (page - 1) * this.limit,
           page * this.limit
         )
+        this.saveChangeData2 = this.listData
         this.page = page
         this.pageDataSetting(this.total, this.limit, this.block, page)
       },
@@ -608,7 +601,6 @@ export default {
       let count=''
       let uri = ''
       this.recipientItems = []
-      console.log("2" + this.selectedFirmwareVersion2)
         uri = this.$store.state.serverApi
         +"/admin/gateways/firmware/targetlist?pageIndex=1&recordCountPerPage=500"
         +"&addrCd="+addrCd
@@ -616,7 +608,6 @@ export default {
         +"&recipientNm="+this.selectedRecipientNm
         +"&firmwareVersion="+this.selectedFirmwareVersion
         +"&updateVersion="+this.selectedFirmwareVersion2
-        console.log(uri)
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             tmpArr = response.data.data
@@ -666,7 +657,6 @@ export default {
                 });
               } 
               this.selectedFirmwareVersion2 = this.firmwareCData[0].value
-              console.log("1" + this.selectedFirmwareVersion2)
               this.firmwareItmes = tmpArr
               this.firmwarelist = res.data.data
             })
@@ -756,7 +746,6 @@ export default {
       this.upgradepopup = true
     },
     delay(){
-      console.log("pending... ")
       clearTimeout(this.timerId)
       this.pending = false
     },
@@ -768,12 +757,10 @@ export default {
         let tmpArr = []
         let regNo = []
         let firmware = ''
-        console.log(this.saveChangeData2)
         let urlF = this.$store.state.serverApi + `/admin/gateways/firmwarelist`
         await axios.get(urlF, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
                 tmpArr = res.data.data
-                console.log(tmpArr)
             })
             .catch(error => {
                 console.log("fail to load")
@@ -783,14 +770,9 @@ export default {
         regNo = tmpArr.filter(cd=>{
           return cd.version === this.selectedFirmwareVersion2
         })
-        console.log(regNo)
-        console.log(this.saveChangeData2.length)
         for(let i=0; i<this.saveChangeData2.length; i++){
-          if(this.upgradeCount === 100){
-            this.upgradeCount = 0
-            console.log(this.upgradeCount)
-            console.log("setTimeout...")
-            this.sleep(5000)
+          if(this.upgradeCheck % 100 === 0 && this.upgradeCheck !== 1 && this.upgradeCheck !== 0){
+            this.sleep(3000)
             console.log("sleep")
           }
           console.log("keep going...")
@@ -805,20 +787,15 @@ export default {
         await axios.patch(url,data ,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
                 firmware = res.data.data
-                console.log(firmware)
                 if(firmware === true){
                   this.upgradeCheck = this.upgradeCheck+1
                 }
-                console.log(this.upgradeCheck)
             })
             .catch(error => {
                 console.log("fail to load")
                 this.errorMessage = error.message;
                 console.error("There was an error!", error);
             });
-            this.upgradeCount = this.upgradeCount+1
-            console.log(this.upgradeCount)
-          
         }
         if(this.upgradeCheck === this.saveChangeData2.length){
             alert("성공적으로 변경을 요청하였습니다")
@@ -856,6 +833,7 @@ export default {
       this.versionDesc = el
     },
     reset(input){
+      console.log(this.saveChangeData2)
     },
     onChangeSido(event){
       this.getSggData()
