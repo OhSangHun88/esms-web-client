@@ -1,35 +1,35 @@
 <template>
-    <div class="wrap">
-        <!--<HeaderComp></HeaderComp>-->
-        <div class="container type-02">
-          <div id="" class="popupLayer" v-if="errorpopup1 == true">
-                <div class="popup_wrap type-02">
-                    <div class="title_wrap">
-                        <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <p class="alert_txt">조회 종료일자가 시작일자보다 빠릅니다<br/>일자를 다시 선택하여 주십시요</p>
-                    </div>
-                    <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
-                    </div>
-                </div>
-            </div>
-            <div id="" class="popupLayer" v-if="errorpopup2 == true">
-                <div class="popup_wrap type-02">
-                    <div class="title_wrap">
-                        <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
-                    </div>
-                    <div class="popup_cnt">
-                        <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
-                   </div>
-                    <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
-                    </div>
-                </div>
-            </div>
+  <div class="wrap">
+    <!--<HeaderComp></HeaderComp>-->
+    <div class="container type-02">
+      <div id="" class="popupLayer" v-if="errorpopup1 == true">
+        <div class="popup_wrap type-02">
+          <div class="title_wrap">
+            <div class="title">경고</div>
+            <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
+          </div>
+          <div class="popup_cnt">
+            <p class="alert_txt">조회 종료일자가 시작일자보다 빠릅니다<br/>일자를 다시 선택하여 주십시요</p>
+          </div>
+          <div class="popbtn_area type-02">
+            <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
+          </div>
+        </div>
+      </div>
+      <div id="" class="popupLayer" v-if="errorpopup2 == true">
+        <div class="popup_wrap type-02">
+          <div class="title_wrap">
+            <div class="title">경고</div>
+            <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
+          </div>
+          <div class="popup_cnt">
+            <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
+          </div>
+          <div class="popbtn_area type-02">
+            <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
+          </div>
+        </div>
+      </div>
             <div id="" class="popupLayer" v-if="uploadpopup === true">
                 <div class="popup_wrap">
                     <div class="title_wrap">
@@ -339,8 +339,10 @@
                                     <td>{{item.firmwareVersion}}</td>
                                     <td>{{item.updDtime}}</td>
                                     <td>
-                                      <div class="btn_area">
-                                        <button type="button" style="margin-right:10px;" class="btn" @click="upgradeRecord(index)">변경이력</button>
+                                      <div class="result_txt">
+                                        <div class="btn_area">
+                                          <button type="button" style="margin-right:10px;" class="btn" @click="upgradeRecord(index)">변경이력</button>
+                                        </div>
                                       </div>
                                     </td>
                                 </tr>                                
@@ -611,6 +613,7 @@ export default {
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             tmpArr = response.data.data
+            console.log(uri)
             for(let i=0; i<tmpArr.length; i++){
               if(tmpArr[i].recipientNm !== null){
                 this.recipientItems.push(tmpArr[i])
@@ -857,6 +860,24 @@ export default {
           case "STE003" : result='변경실패'; break;
         }
         return result
+    },
+    sort(input){       
+      let arr = []
+      let test = [{name:'이용' ,birthday:"14", test:'3'},{name:'현준' ,birthday:"17", test:'22'}, {name:'길동' ,birthday:"2", test:'1'},]
+      console.log(test.slice())
+       arr = test.slice().sort(function(a, b){
+         return a.birthday - b.birthday
+       })
+       console.log(test)
+      console.log(input[0])
+      arr = input.slice().sort(function(a,b){
+        return b.regId - a.regId
+      })
+      console.log(arr)
+      for(let i=0; i<input.length; i++){
+        console.log(arr[i].updDtime)
+      }
+      return input
     },
     makeAge(birthDay){
       let tmp1 = this.$moment(birthDay).format('YYYY')
