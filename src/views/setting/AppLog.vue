@@ -30,7 +30,7 @@
                           <th scope="col">상태</th>
                           <th scope="col">요청일시</th>
                           <th scope="col">요청자ID</th>
-                          <th scope="col">처리일시</th>
+                          <th scope="col">처리완료일시</th>
                         </tr>
                       </thead>
                     </table>
@@ -658,9 +658,9 @@ export default {
   changeStateCd(input){
     let result = ''
     switch(input){
-        case "STE001" : result='로그수집요청중'; break;
-        case "STE002" : result='로그수집완료'; break;
-        case "STE003" : result='로그수집실패'; break;
+        case "STE001" : result='수집요청중'; break;
+        case "STE002" : result='수집완료'; break;
+        case "STE003" : result='수집실패'; break;
     }
     return result
   },
