@@ -164,7 +164,7 @@
                           <col style="width:30%;">
                         </colgroup>
                         <tbody >    
-                          <tr v-for="(item,index) in upgradeRecordItems" v-bind:key="index">
+                          <tr v-for="(item,index) in sort(upgradeRecordItems)" v-bind:key="index">
                             <td>{{item.recipientNm}}</td>
                             <td>{{item.firmwareVersion}}</td>
                             <td>{{changeStateCd(item.stateCd)}}</td>
@@ -868,7 +868,7 @@ export default {
        arr = test.slice().sort(function(a, b){
          return a.birthday - b.birthday
        })
-       console.log(test)
+      console.log(test)
       console.log(input[0])
       arr = input.slice().sort(function(a,b){
         return b.regId - a.regId

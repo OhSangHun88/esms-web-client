@@ -345,26 +345,26 @@
                             </colgroup>
                             <tbody v-if="connectTap===2 && beforeGatewayToggle===0" >
                                 <tr>
-                                    <td>{{!this.getCGatewayData? '':!this.gatewayTakeNm? '':this.getCGatewayData2.comStateCd+"("+this.gatewayTakeNm+")"}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.powerLinkYn===undefined||this.getCGatewayData2.powerLinkYn===null||this.getCGatewayData2.powerLinkYn==='' ? '' : this.getCGatewayData2.powerLinkYn===1?'연결':'차단'}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.checkYnCd===null||this.getCGatewayData2.checkYnCd===undefined||this.getCGatewayData2.checkYnCd===''? '': this.getCGatewayData2.checkYnCd===0? '정상':'점검대상'}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.batteryValue+"("+changeTaGaBattery(getCGatewayData2.batteryValue)+")"}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.keepAliveRcvYn===1?'정상':this.getCGatewayData2.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.rssi+"("+changeRssi(this.getCGatewayData2.rssi)+")"}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.stateMeasureDtime}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.getCGatewayData2.reportDtime}}</td>
+                                    <td>{{!this.getCGatewayData2? '':!this.gatewayTakeNm? '':this.getCGatewayData2.comStateCd+"("+this.gatewayTakeNm+")"}}</td>
+                                    <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.powerLinkYn===undefined||this.getCGatewayData2.powerLinkYn===null||this.getCGatewayData2.powerLinkYn==='' ? '' : this.getCGatewayData2.powerLinkYn===1?'연결':'차단'}}</td>
+                                    <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.checkYnCd===null||this.getCGatewayData2.checkYnCd===undefined||this.getCGatewayData2.checkYnCd===''? '': this.getCGatewayData2.checkYnCd===0? '정상':'점검대상'}}</td>
+                                    <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.batteryValue+"("+changeTaGaBattery(getCGatewayData2.batteryValue)+")"}}</td>
+                                    <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.keepAliveRcvYn===1?'정상':this.getCGatewayData2.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.rssi+"("+changeRssi(this.getCGatewayData2.rssi)+")"}}</td>
+                                    <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.stateMeasureDtime}}</td>
+                                    <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.reportDtime}}</td>
                                 </tr>
                             </tbody>
                             <tbody v-if="this.beforeVersionGatewayData && connectTap===2 && beforeGatewayToggle===1" >
                                 <tr>
-                                    <td>{{!this.getCGatewayData? '':!this.beforeGatewayTakeNm? '': this.beforeVersionGatewayData.comStateCd+"("+this.beforeGatewayTakeNm+")"}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.powerLinkYn===undefined||this.beforeVersionGatewayData.powerLinkYn===null||this.beforeVersionGatewayData.powerLinkYn==='' ? '' : this.beforeVersionGatewayData.powerLinkYn===1?'연결':'차단'}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.checkYnCd===null||this.beforeVersionGatewayData.checkYnCd===undefined||this.beforeVersionGatewayData.checkYnCd===''? '': this.beforeVersionGatewayData.checkYnCd===0? '정상':'점검대상'}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.batteryValue+"("+changeTaGaBattery(this.beforeVersionGatewayData.batteryValue)+")"}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.keepAliveRcvYn===1?'정상':this.beforeVersionGatewayData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.rssi+"("+changeRssi(this.beforeVersionGatewayData.rssi)+")"}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.stateMeasureDtime}}</td>
-                                    <td>{{!this.getCGatewayData? '':this.beforeVersionGatewayData.reportDtime}}</td>
+                                    <td>{{!this.beforeVersionGatewayData? '':!this.beforeGatewayTakeNm? '': this.beforeVersionGatewayData.comStateCd+"("+this.beforeGatewayTakeNm+")"}}</td>
+                                    <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.powerLinkYn===undefined||this.beforeVersionGatewayData.powerLinkYn===null||this.beforeVersionGatewayData.powerLinkYn==='' ? '' : this.beforeVersionGatewayData.powerLinkYn===1?'연결':'차단'}}</td>
+                                    <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.checkYnCd===null||this.beforeVersionGatewayData.checkYnCd===undefined||this.beforeVersionGatewayData.checkYnCd===''? '': this.beforeVersionGatewayData.checkYnCd===0? '정상':'점검대상'}}</td>
+                                    <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.batteryValue+"("+changeTaGaBattery(this.beforeVersionGatewayData.batteryValue)+")"}}</td>
+                                    <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.keepAliveRcvYn===1?'정상':this.beforeVersionGatewayData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.rssi+"("+changeRssi(this.beforeVersionGatewayData.rssi)+")"}}</td>
+                                    <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.stateMeasureDtime}}</td>
+                                    <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.reportDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -652,6 +652,7 @@ import axios from "axios";
             .then(res => {
                 gateway = res.data.data
                 this.getCGatewayData2 = gateway[0]
+                console.log(gateway)
             })
             .catch(error => {
                 console.log("fail to load")

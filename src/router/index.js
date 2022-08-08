@@ -79,6 +79,7 @@ const SettingAllView = () => import('@/views/setting/AllView')
 const SettingCustomer = () => import('@/views/setting/Customer')
 const SettingOrg = () => import('@/views/setting/Org')
 const SettingManageLog = () => import('@/views/setting/ManageLog')
+const SettingAppLog = () => import('@/views/setting/AppLog')
 const SettingFirmware = () => import('@/views/setting/Firmware')
 const SettingIppbx = () => import('@/views/setting/Ippbx')
 const SettingManageDevice = () => import('@/views/setting/ManageDevice')
@@ -323,6 +324,11 @@ function configRoutes () {
               path: 'manageDevice',
               name: 'ManageDevice',
               component: SettingManageDevice
+            },
+            {
+              path: 'appLog',
+              name: 'AppLog',
+              component: SettingAppLog
             },
             {
               path: 'notice',

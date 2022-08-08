@@ -34,6 +34,7 @@
             <li :class="getDetailPath==='/setting/firmware'? 'on':''"><a href="#"><router-link to ="/setting/firmware">펌웨어 관리</router-link></a></li>
             <li :class="getDetailPath==='/setting/notice'? 'on':''"><a href="#"><router-link to ="/setting/notice">공지사항</router-link></a></li>
             <li :class="getDetailPath==='/setting/manageLog'? 'on':''"><a href="#"><router-link to ="/setting/manageLog">로그관리</router-link></a></li>
+            <li :class="getDetailPath==='/setting/appLog'? 'on':''"><a href="#"><router-link to ="/setting/appLog">앱로그수집</router-link></a></li>
             <li :class="getDetailPath==='/setting/deviceRecord'? 'on':''"><a href="#"><router-link to ="/setting/deviceRecord">장비이력관리</router-link></a></li>
             <li :class="getDetailPath==='/setting/installCheck'? 'on':''"><a href="#"><router-link to ="/setting/installCheck">설치완료확인서</router-link></a></li>
           </ul>
