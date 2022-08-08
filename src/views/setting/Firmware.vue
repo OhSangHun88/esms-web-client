@@ -757,6 +757,11 @@ export default {
       while (Date.now() < wakeUpTime) {}
     },
     async upgradeFirmware2(){
+      if(this.$store.state.userId !== 'admin'){
+      alert("펌웨어 변경은 admin 계정만 가능합니다")
+      this.upgradepopup = false      
+      return false
+    }
         let tmpArr = []
         let regNo = []
         let firmware = ''

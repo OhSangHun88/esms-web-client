@@ -5,7 +5,7 @@
       <div id="" class="popupLayer" v-if="requestRecordpopup === true">
         <div class="popup_wrap" style="width:100%">
           <div class="title_wrap">
-            <div class="title">수집 이력</div>
+            <div class="title">로그 수집 이력</div>
             <button type="button" class="btn_close" @click="requestRecordpopup = false">닫기</button>
           </div>
           <div class="popbtn_wrap" style="margin-bottom:20px;">
@@ -28,9 +28,9 @@
                           <th scope="col">로그파일명</th>
                           <th scope="col">파일사이즈</th>
                           <th scope="col">상태</th>
-                          <th scope="col">수집요청일시</th>
+                          <th scope="col">요청일시</th>
                           <th scope="col">요청자ID</th>
-                          <th scope="col">수집완료일시</th>
+                          <th scope="col">처리일시</th>
                         </tr>
                       </thead>
                     </table>
@@ -56,7 +56,8 @@
                             <td>{{changeStateCd(item.stateCd)}}</td>
                             <td>{{item.regDtime}}</td>
                             <td>{{item.regId}}</td>
-                            <td>{{item.updDtime}}</td>
+                            <td v-if="item.stateCd === 'STE001'"></td>
+                            <td v-else>{{item.updDtime}}</td>
                           </tr>                                   
                         </tbody>
                       </table>
@@ -139,13 +140,12 @@
             <table>
                 <colgroup>
                     <col style="width:8%;">
-                    <col style="width:13%;">
+                    <col style="width:15%;">
                     <col style="width:8%;">
-                    <col style="width:13%;">
-                    <col style="width:13%;">
-                    <col style="width:8%;">
+                    <col style="width:15%;">
+                    <col style="width:15%;">
                     <col style="width:auto;">
-                    <col style="width:8%;">
+                    <col style="width:7%;">
                 </colgroup>
                 <thead>
                     <tr>
@@ -154,9 +154,8 @@
                         <th scope="col">대상자명</th>
                         <th scope="col">시리얼번호</th>
                         <th scope="col">Mac Address</th>
-                        <th scope="col">펌웨어 버전</th>
                         <th scope="col">주소</th>
-                        <th scope="col">수집이력</th>
+                        <th scope="col">이력조회</th>
                     </tr>
                 </thead>
             </table>
@@ -164,13 +163,12 @@
                 <table>
                     <colgroup>
                         <col style="width:8%;">
-                        <col style="width:13%;">
+                        <col style="width:15%;">
                         <col style="width:8%;">
-                        <col style="width:13%;">
-                        <col style="width:13%;">
-                        <col style="width:8%;">
+                        <col style="width:15%;">
+                        <col style="width:15%;">
                         <col style="width:auto;">
-                        <col style="width:8%;">
+                        <col style="width:7%;">
                     </colgroup>
                     <tbody>
                         <tr v-for="(item,index) in recipientItems" v-bind:key="index">
@@ -184,12 +182,11 @@
                             <td>{{item.recipientNm}}</td>
                             <td>{{item.serialNo}}</td>
                             <td>{{item.macAddr}}</td>
-                            <td>{{item.firmwareVersion}}</td>
                             <td>{{item.addr}}</td>
                             <td>
                                 <div class="result_txt">
                                   <div class="btn_area">
-                                    <button type="button" style="margin-right:10px;" class="btn" @click="requestRecordReset(index)">수집이력</button>
+                                    <button type="button" style="margin-right:10px;" class="btn" @click="requestRecordReset(index)">이력조회</button>
                                   </div>
                                 </div>
                             </td>
@@ -552,6 +549,12 @@ export default {
         });
   },
   async equestAppLog(){
+    if(this.$store.state.userId !== 'admin'){
+      alert("앱 로그 수집 요청은 admin 계정만 가능합니다")
+      this.requestpopup = false
+      this.saveChangeData = ''
+      return false
+    }
     console.log(this.recipientItems[this.saveChangeData])
     let uri = this.$store.state.serverApi+`/admin/logs/applog/requestAppLog?recipientId=${this.recipientItems[this.saveChangeData].recipientId}&userId=${this.$store.state.userId}`
     console.log(uri)
