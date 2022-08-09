@@ -583,7 +583,7 @@ export default {
   async equestAppLogPopup(){
     console.log(this.saveChangeData)
     if(this.saveChangeData === '' || this.saveChangeData === null || this.saveChangeData === undefined){
-      alert("요청하시고자 하는 대상자를 선택해 주세요")
+      alert("로그수집 대상자를 선택해 주세요")
       return false
     }
     this.requestpopup = true
