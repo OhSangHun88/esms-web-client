@@ -30,7 +30,7 @@
                           <th scope="col">상태</th>
                           <th scope="col">요청일시</th>
                           <th scope="col">요청자ID</th>
-                          <th scope="col">처리일시</th>
+                          <th scope="col">처리완료일시</th>
                         </tr>
                       </thead>
                     </table>
@@ -133,7 +133,7 @@
         <div class="result_txt">
             <p>조회결과 : {{ this.NCount ? this.NCount : 0}}건</p>
             <div class="btn_area">
-              <button type="button" class="btn" @click="equestAppLogPopup()">앱로그수집요청</button>
+              <button type="button" class="btn" @click="equestAppLogPopup()">로그수집요청</button>
             </div>
         </div>
         <div class="list result">
@@ -142,9 +142,9 @@
                     <col style="width:8%;">
                     <col style="width:15%;">
                     <col style="width:8%;">
-                    <col style="width:15%;">
-                    <col style="width:15%;">
                     <col style="width:auto;">
+                    <col style="width:15%;">
+                    <col style="width:15%;">
                     <col style="width:7%;">
                 </colgroup>
                 <thead>
@@ -152,10 +152,10 @@
                         <th scope="col">선택</th>
                         <th scope="col">관리기관</th>
                         <th scope="col">대상자명</th>
-                        <th scope="col">시리얼번호</th>
-                        <th scope="col">Mac Address</th>
                         <th scope="col">주소</th>
-                        <th scope="col">이력조회</th>
+                        <th scope="col">Mac Address</th>
+                        <th scope="col">시리얼번호</th>
+                        <th scope="col">수집이력조회</th>
                     </tr>
                 </thead>
             </table>
@@ -165,9 +165,10 @@
                         <col style="width:8%;">
                         <col style="width:15%;">
                         <col style="width:8%;">
+                         <col style="width:auto;">
                         <col style="width:15%;">
                         <col style="width:15%;">
-                        <col style="width:auto;">
+                       
                         <col style="width:7%;">
                     </colgroup>
                     <tbody>
@@ -180,9 +181,9 @@
                             </td>
                             <td>{{item.orgNm}}</td>
                             <td>{{item.recipientNm}}</td>
-                            <td>{{item.serialNo}}</td>
-                            <td>{{item.macAddr}}</td>
                             <td>{{item.addr}}</td>
+                            <td>{{item.macAddr}}</td>
+                            <td>{{item.serialNo}}</td>
                             <td>
                                 <div class="result_txt">
                                   <div class="btn_area">
@@ -582,7 +583,7 @@ export default {
   async equestAppLogPopup(){
     console.log(this.saveChangeData)
     if(this.saveChangeData === '' || this.saveChangeData === null || this.saveChangeData === undefined){
-      alert("요청하시고자 하는 대상자를 선택해 주세요")
+      alert("로그수집 대상자를 선택해 주세요")
       return false
     }
     this.requestpopup = true
@@ -658,9 +659,9 @@ export default {
   changeStateCd(input){
     let result = ''
     switch(input){
-        case "STE001" : result='로그수집요청중'; break;
-        case "STE002" : result='로그수집완료'; break;
-        case "STE003" : result='로그수집실패'; break;
+        case "STE001" : result='수집요청중'; break;
+        case "STE002" : result='수집완료'; break;
+        case "STE003" : result='수집실패'; break;
     }
     return result
   },
