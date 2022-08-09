@@ -127,9 +127,9 @@
         <div class="list result">
           <table>
             <colgroup>
+              <col style="width:2%;">
               <col style="width:3%;">
-              <col style="width:3%;">
-              <col style="width:5%;">
+              <col style="width:8%;">
               <col style="width:5%;">
               <col style="width:3%;">
               <col style="width:18%;">
@@ -137,6 +137,7 @@
               <col style="width:5%;">
               <col style="width:7%;">
               <col style="width:5%;">
+              <col style="width:4%;">
               <col style="width:5%;">
               <col style="width:8%;">
               <col style="width:8%;">
@@ -154,6 +155,7 @@
                 <th scope="col">응급요원 전화번호</th>
                 <th scope="col">응급구분</th>
                 <th scope="col">응급상태</th>
+                <th scope="col">테스트구분</th>
                 <th scope="col">발생일시</th>
                 <th scope="col">종료일시</th>
               </tr>
@@ -162,9 +164,9 @@
           <div class="tbody">
             <table>
               <colgroup>
+                <col style="width:2%;">
                 <col style="width:3%;">
-                <col style="width:3%;">
-                <col style="width:5%;">
+                <col style="width:8%;">
                 <col style="width:5%;">
                 <col style="width:3%;">
                 <col style="width:18%;">
@@ -172,6 +174,7 @@
                 <col style="width:5%;">
                 <col style="width:7%;">
                 <col style="width:5%;">
+                <col style="width:4%;">
                 <col style="width:5%;">
                 <col style="width:8%;">
                 <col style="width:8%;">
@@ -196,6 +199,7 @@
                   <td>{{changeRecipientPhoneno(item.managerMobileNumber)}}</td>
                   <td>{{item.typeNm}}</td>
                   <td>{{item.signalStateNm}}</td>
+                  <td>{{!item.testYn? '실제상황':'테스트'}}</td>
                   <td>{{item.occurDtime}}</td>
                   <td>{{item.closeDtime}}</td>
                 </tr>                                
