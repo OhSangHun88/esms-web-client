@@ -204,10 +204,11 @@ export default {
     this.getSidoData();
     this.getSggData();
     this.getOrgmData();
+    this.getRecipientData();
     this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
     this.e_date=moment().format('YYYY-MM-DD');
     this.cBirthday=moment().format('YYYY-MM-DD');
-    this.getRecipientData();
+    
     },
     methods:{
       pagingMethod(page) {
@@ -356,9 +357,11 @@ export default {
       +"&addrCd="+addrCd
       +"&orgId="+this.selectedOrgItems
       +"&recipientNm="+this.selectedRecipientNm
-      // +"&occurStartDate="+occurStartDate
-      // +"&occurEndDate="+occurEndDate;
+      +"&occurStartDate="+occurStartDate
+      +"&occurEndDate="+occurEndDate;
       // }
+      console.log(this.page)
+      console.log(uri)
       axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(response => {
             this.recipientItems = response.data.data
