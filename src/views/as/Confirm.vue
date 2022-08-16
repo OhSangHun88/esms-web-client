@@ -39,9 +39,10 @@
                 <div class="table_wrap">
                     <table>
                         <colgroup>
-                            <col style="width:20%;">
-                            <col style="width:20%;">
-                            <col style="width:20%">
+                            <col style="width:18%;">
+                            <col style="width:18%;">
+                            <col style="width:18%">
+                            <col style="width:10%;">
                             <col style="width:15%;">
                             <col style="width:auto;">
                         </colgroup>
@@ -49,6 +50,7 @@
                             <th scope="row">시/도</th>
                             <th scope="row">시/군/구</th>
                             <th scope="row">관리기관</th>
+                            <th scope="row">장비구분</th>
                             <th scope="row">대상자명</th>
                         </thead>
                         <tbody>
@@ -66,6 +68,11 @@
                                 <td>
                                     <select v-model="selectedOrgItems">
                                       <option v-for="(orgm, index) in orgmItems" :value="orgm.value" v-bind:key="index">{{orgm.label}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select v-model="selectedEquipType">
+                                      <option v-for="(equipType, index) in equipTypeList" :value="equipType.value" v-bind:key="index">{{equipType.label}}</option>
                                     </select>
                                 </td>
                                 <td>
@@ -298,6 +305,7 @@ export default {
         cBirthday:'', cAddr: '', NCount: 0,
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
         errorpopup1: false, errorpopup2: false, asRequestData: null,popCheck:false,
+        equipTypeList:[{value:'', label:'전체'},{value:'EQP001', label:'게이트웨이'},{value:'EQP002', label:'태블릿'},{value:'EQP003', label:'센서'}], selectedEquipType:'',
       }
     },
     created() {

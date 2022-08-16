@@ -728,7 +728,7 @@ export default {
       this.upgradeRecordArr = this.recipientItems[index]
       this.upgradeRecordId = this.upgradeRecordArr.recipientId
       this.upgradeRecordItems = []
-      let url  = this.$store.state.serverApi + `/admin/gateways/firmware/distlist?recipientId=${this.upgradeRecordId}`
+      let url  = this.$store.state.serverApi + `/admin/gateways/firmware/distlist?pageIndex=1&recordCountPerPage=500&recipientId=${this.upgradeRecordId}`
          await axios.get(url,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
               this.upgradeRecordItems = res.data.data
@@ -866,23 +866,29 @@ export default {
         }
         return result
     },
-    sort(input){       
+    sort(input){
+      if(input.length === 0){
+        return input
+      }else{
       let arr = []
       let test = [{name:'이용' ,birthday:"14", test:'3'},{name:'현준' ,birthday:"17", test:'22'}, {name:'길동' ,birthday:"2", test:'1'},]
-      console.log(test.slice())
-       arr = test.slice().sort(function(a, b){
-         return a.birthday - b.birthday
-       })
-      console.log(test)
-      console.log(input[0])
+      //  arr = test.slice().sort(function(a, b){
+      //    return b.birthday - a.birthday
+      //  })
+      //  console.log(arr[0].birthday)
+      //  console.log(arr[2].birthday)
+      input = input.slice()
+      console.log(input)
       arr = input.slice().sort(function(a,b){
-        return b.regId - a.regId
+        return new Date(b.updDtime) - new Date(a.updDtime)
       })
-      console.log(arr)
-      for(let i=0; i<input.length; i++){
-        console.log(arr[i].updDtime)
+      console.log(arr[0].updDtime)
+      console.log(arr[5].updDtime)
+      // for(let i=0; i<input.length; i++){
+      //   console.log(arr[i].updDtime)
+      // }
+      return arr
       }
-      return input
     },
     makeAge(birthDay){
       let tmp1 = this.$moment(birthDay).format('YYYY')

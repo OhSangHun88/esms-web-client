@@ -324,18 +324,18 @@
                 <thead>
                     <tr>
                         <th scope="col">선택</th>
-                        <th scope="col">대상자명</th>
-                        <th scope="col">대상자ID</th>
-                        <th scope="col">생년월일</th>
-                        <th scope="col">나이</th>
-                        <th scope="col">성별</th>
-                        <th scope="col">전화번호</th>
-                        <th scope="col">구분</th>
-                        <th scope="col">상태</th>
-                        <th scope="col">주소</th>
-                        <th scope="col">관리기관</th>
-                        <th scope="col">생활관리사</th>
-                        <th scope="col">등록일자</th>
+                        <th scope="col">대상자명<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                        <th scope="col">대상자ID<a href="#"><img @click="sortList(2)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                        <th scope="col">생년월일<a href="#"><img @click="sortList(3)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                        <th scope="col">나이<a href="#"><img @click="sortList(4)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                        <th scope="col">성별<a href="#"><img @click="sortList(5)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                        <th scope="col">전화번호<a href="#"><img @click="sortList(6)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                        <th scope="col">구분<a href="#"><img @click="sortList(7)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                        <th scope="col">상태<a href="#"><img @click="sortList(8)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                        <th scope="col">주소<a href="#"><img @click="sortList(9)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                        <th scope="col">관리기관<a href="#"><img @click="sortList(10)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                        <th scope="col">생활관리사<a href="#"><img @click="sortList(11)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                        <th scope="col">등록일자<a href="#"><img @click="sortList(12)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
                     </tr>
                 </thead>
             </table>
@@ -662,6 +662,7 @@ export default {
       searchCheck1:1,
       searchCheck2:0,
       NCount:'',
+      sortCount:0, sortNmCount:0, sortIdCount:0,
       
       listData: [],
       total: '',
@@ -1406,6 +1407,42 @@ export default {
         
       // }
       // sortArr.sort();
+    },
+    sortList(input){
+      let result
+      let arr = []
+      if(this.sortCount !== 1){
+        if(input === 1){
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.recipientNm<b.recipientNm?-1:a.recipientNm>b.recipientNm?1:0;
+          })
+          this.sortCount = 1
+          this.sortNmCount = 1
+          //this.recipientItems = arr
+        }else if(input === 2){
+          arr = this.recipientItems.slice().sort(function(a,b){
+            return a.recipientId - b.recipientId
+          })
+          this.sortCount = 1
+          //this.recipientItems = arr
+        }
+      }else{
+        this.sortCount = 0
+        if(input === 1){
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.recipientNm>b.recipientNm?-1:a.recipientNm<b.recipientNm?1:0;
+          })
+          this.sortCount = 0
+          //this.recipientItems = arr
+        }else if(input === 2){
+          arr = this.recipientItems.slice().sort(function(a,b){
+            return b.recipientId - a.recipientId
+          })
+          this.sortCount = 0
+          //this.recipientItems = arr
+        }
+      }
+      console.log(this.sortCount)
     },
     manageInquiry() {
       this.searchCheck2 = 1

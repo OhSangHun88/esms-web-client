@@ -51,7 +51,7 @@
                             <!--<td>{{item.recipientId}}</td>-->
                             <td>{{recordNm}}</td>
                             <td><a v-bind:href="fileUrl(item.fileName)" >{{item.fileName}}</a></td>
-                            <td v-if="item.fileSize">{{item.fileSize}} Byte</td>
+                            <td v-if="item.fileSize">{{fileSizeChange(item.fileSize)}} kb</td>
                             <td v-else>{{item.fileSize}}</td>
                             <td>{{changeStateCd(item.stateCd)}}</td>
                             <td>{{item.regDtime}}</td>
@@ -625,6 +625,11 @@ export default {
     let FilesUrl = this.$store.state.serverApi+'/files/applogs/'+index
     console.log(FilesUrl)
     return FilesUrl
+  },
+  fileSizeChange(input){
+    let result = ''
+    result = Math.round(input/1024)
+    return result
   },
   getMask(birthday){
       let res = ''
