@@ -51,7 +51,7 @@
                             <!--<td>{{item.recipientId}}</td>-->
                             <td>{{recordNm}}</td>
                             <td><a v-bind:href="fileUrl(item.fileName)" >{{item.fileName}}</a></td>
-                            <td v-if="item.fileSize">{{fileSizeChange(item.fileSize)}} kb</td>
+                            <td v-if="item.fileSize">{{fileSizeChange(item.fileSize)}} KB</td>
                             <td v-else>{{item.fileSize}}</td>
                             <td>{{changeStateCd(item.stateCd)}}</td>
                             <td>{{item.regDtime}}</td>
