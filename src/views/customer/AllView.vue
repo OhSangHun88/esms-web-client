@@ -662,7 +662,7 @@ export default {
       searchCheck1:1,
       searchCheck2:0,
       NCount:'',
-      sortCount:0, sortNmCount:0, sortIdCount:0,
+      sortCount:0, sortNmCount:0,
       
       listData: [],
       total: '',
@@ -1384,62 +1384,160 @@ export default {
              console.error("There was an error!", error);
            });
     },
-    sort(){
-      // let test = [{name:'이용' ,birthday:"14", test:'3'},{name:'현준' ,birthday:"17", test:'22'}, {name:'길동' ,birthday:"2", test:'1'},]
-      // test.sort(function(a, b){
-      //   return b.test - a.test
-      // })
-      this.sortCount++
-      if(this.sortCount === 1){
-        this.recipientItems.sort(function(a, b){      
-         return makeAge(a.birthday) - makeAge(b.birthday)
-        })
-      }else if(this.sortCount === 2){
-        this.recipientItems.sort(function(a, b){
-          return b.recipientId - a.recipientId
-        })
-        this.sortCount = 0
-      }
-      // this.recipientItems.sort()
-      // let sortArr = []
-      // for(let i=0; i<this.recipientItems.length; i++){
-      //   sortArr[i]=this.makeAge(this.recipientItems[i].birthday)
-        
-      // }
-      // sortArr.sort();
-    },
     sortList(input){
-      let result
       let arr = []
       if(this.sortCount !== 1){
-        if(input === 1){
+        if(input === 1){  // 대상자명 오름차순
+        console.log(arr)
+        console.log(this.recipientItems)
           arr = this.recipientItems.slice().sort(function ascending(a,b){
             return a.recipientNm<b.recipientNm?-1:a.recipientNm>b.recipientNm?1:0;
           })
+          console.log(arr)
           this.sortCount = 1
           this.sortNmCount = 1
-          //this.recipientItems = arr
-        }else if(input === 2){
+          this.recipientItems = arr
+        }else if(input === 2){  // 대상자ID 오름차순
           arr = this.recipientItems.slice().sort(function(a,b){
             return a.recipientId - b.recipientId
           })
           this.sortCount = 1
-          //this.recipientItems = arr
+          this.recipientItems = arr
+        }else if(input === 3){  // 생년월일 오름차순
+          arr = this.recipientItems.slice().sort(function(a,b){
+            return new Date(a.birthday) - new Date(b.birthday)
+          })
+          this.sortCount = 1
+          this.recipientItems = arr
+        }else if(input === 4){  // 나이 오름차순
+          arr = this.recipientItems.slice().sort(function(a,b){
+            return new Date(a.birthday) - new Date(b.birthday)
+          })
+          this.sortCount = 1
+          this.recipientItems = arr
+        }else if(input === 5){  // 성별 오름차순
+          arr = this.recipientItems.slice().sort(function(a,b){
+            return a.sex<b.sex?-1:a.sex>b.sex?1:0;
+          })
+          this.sortCount = 1
+          this.recipientItems = arr
+        }else if(input === 6){  // 전화번호 오름차순
+          arr = this.recipientItems.slice().sort(function(a,b){
+            return a.recipientPhoneno - b.recipientPhoneno
+          })
+          this.sortCount = 1
+          this.recipientItems = arr
+        }else if(input === 7){  // 구분 오름차순
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.typeNm<b.typeNm?-1:a.typeNm>b.typeNm?1:0;
+          })
+          this.sortCount = 1
+          this.recipientItems = arr
+        }else if(input === 8){  // 상태 오름차순
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.stateNm<b.stateNm?-1:a.stateNm>b.stateNm?1:0;
+          })
+          this.sortCount = 1
+          this.recipientItems = arr
+        }else if(input === 9){  // 주소 오름차순
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.addr<b.addr?-1:a.addr>b.addr?1:0;
+          })
+          this.sortCount = 1
+          this.recipientItems = arr
+        }else if(input === 10){  // 관리기관 오름차순
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.orgNm<b.orgNm?-1:a.orgNm>b.orgNm?1:0;
+          })
+          this.sortCount = 1
+          this.recipientItems = arr
+        }else if(input === 11){  // 생활관리사 오름차순
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.managerNm<b.managerNm?-1:a.managerNm>b.managerNm?1:0;
+          })
+          this.sortCount = 1
+          this.recipientItems = arr
+        }else if(input === 12){  // 등록일자 오름차순
+          arr = this.recipientItems.slice().sort(function(a,b){
+            return new Date(a.regDtime) - new Date(b.regDtime)
+          })
+          this.sortCount = 1
+          this.recipientItems = arr
         }
       }else{
         this.sortCount = 0
-        if(input === 1){
+        if(input === 1){  // 대상자명 내림차순
           arr = this.recipientItems.slice().sort(function ascending(a,b){
             return a.recipientNm>b.recipientNm?-1:a.recipientNm<b.recipientNm?1:0;
           })
           this.sortCount = 0
-          //this.recipientItems = arr
-        }else if(input === 2){
+          this.recipientItems = arr
+        }else if(input === 2){  // 대상자ID 내림차순
           arr = this.recipientItems.slice().sort(function(a,b){
             return b.recipientId - a.recipientId
           })
           this.sortCount = 0
-          //this.recipientItems = arr
+          this.recipientItems = arr
+        }else if(input === 3){  // 생년월일 내림차순
+          arr = this.recipientItems.slice().sort(function(a,b){
+            return new Date(b.birthday) - new Date(a.birthday)
+          })
+          this.sortCount = 0
+          this.recipientItems = arr
+        }else if(input === 4){  // 나이 내림차순
+          arr = this.recipientItems.slice().sort(function(a,b){
+            return new Date(b.birthday) - new Date(a.birthday)
+          })
+          this.sortCount = 0
+          this.recipientItems = arr
+        }else if(input === 5){  // 성별 내림차순
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.sex>b.sex?-1:a.sex<b.sex?1:0;
+          })
+          this.sortCount = 0
+          this.recipientItems = arr
+        }else if(input === 6){  // 전화번호 내림차순
+          arr = this.recipientItems.slice().sort(function (a,b){
+            return b.recipientPhoneno - a.recipientPhoneno
+          })
+          this.sortCount = 0
+          this.recipientItems = arr
+        }else if(input === 7){  // 구분 내림차순
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.typeNm>b.typeNm?-1:a.typeNm<b.typeNm?1:0;
+          })
+          this.sortCount = 0
+          this.recipientItems = arr
+        }else if(input === 8){  // 상태 내림차순
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.stateNm>b.stateNm?-1:a.stateNm<b.stateNm?1:0;
+          })
+          this.sortCount = 0
+          this.recipientItems = arr
+        }else if(input === 9){  // 주소 내림차순
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.addr>b.addr?-1:a.addr<b.addr?1:0;
+          })
+          this.sortCount = 0
+          this.recipientItems = arr
+        }else if(input === 10){  // 관리기관 내림차순
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.orgNm>b.orgNm?-1:a.orgNm<b.orgNm?1:0;
+          })
+          this.sortCount = 0
+          this.recipientItems = arr
+        }else if(input === 11){  // 생활관리사 내림차순
+          arr = this.recipientItems.slice().sort(function ascending(a,b){
+            return a.managerNm>b.managerNm?-1:a.managerNm<b.managerNm?1:0;
+          })
+          this.sortCount = 0
+          this.recipientItems = arr
+        }else if(input === 12){  // 등록일자 내림차순
+          arr = this.recipientItems.slice().sort(function(a,b){
+            return new Date(b.regDtime) - new Date(a.regDtime)
+          })
+          this.sortCount = 0
+          this.recipientItems = arr
         }
       }
       console.log(this.sortCount)
@@ -1449,10 +1547,6 @@ export default {
       this.page = 1
       this.getRecipientData();
     },
-    resetData(){
-
-    },
-
     // getPartData() {
     //   axios.get(this.$store.state.serverApi + "/codes?cmmnCdGroup=RECIPIENT.TYPECD", {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
     //       .then(response => {

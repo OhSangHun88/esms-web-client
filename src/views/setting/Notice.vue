@@ -226,7 +226,7 @@ export default {
     data(){
       return{
         sido:'', sidoCd:'', sgg:'', sggCd:'', s_date: '', e_date: '',
-        sidoItems:[], sggItems:[], orgmItems:[], orgmItems2:'', noticItems:[], 
+        sidoItems:[], sggItems:[], orgmItems:[], orgmItems2:[], noticItems:[], 
         orgSido:'', orgSgg:'', orgCode:'',selectedOrgItems:'', selectedSidoItems:'', selectedSggItems:'', selectedTitle: '', selectedTitle: '', selectedDetail: '',
         selectedUpdateSidoItems:'', selectedUpdateSggItems:'', selectedUpdateOrgItems:'', selectedUpdateTitle:'', selectedUpdateDetails:'',
         NCount: 0,
@@ -471,7 +471,7 @@ export default {
       }
       this.$store.state.userId = sessionStorage.getItem("userId")
 
-      let uri =this.$store.state.serverApi + "/admin/organizations/all";
+      let uri =this.$store.state.serverApi + "/admin/organizations/all?recordCountPerPage=999";
       await axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           this.orgmItems2=[];
@@ -498,6 +498,7 @@ export default {
           return cd.value === this.selectedUpdateOrgItems
         })
       }
+      console.log(this.orgmItems2)
       console.log(this.orgdata)
       console.log(this.$store.state.userId)
 

@@ -146,18 +146,18 @@
               <tr>
                 <th scope="col">선택</th>
                 <th scope="col">순번</th>
-                <th scope="col">관리기관</th>
-                <th scope="col">대상자명</th>
-                <th scope="col">나이</th>
-                <th scope="col">주소</th>
-                <th scope="col">대상자 전화번호</th>
-                <th scope="col">응급요원명</th>
-                <th scope="col">응급요원 전화번호</th>
-                <th scope="col">응급구분</th>
-                <th scope="col">응급상태</th>
-                <th scope="col">테스트구분</th>
-                <th scope="col">발생일시</th>
-                <th scope="col">종료일시</th>
+                <th scope="col">관리기관<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                <th scope="col">대상자명<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                <th scope="col">나이<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                <th scope="col">주소<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                <th scope="col">대상자 전화번호<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                <th scope="col">응급요원명<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                <th scope="col">응급요원 전화번호<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                <th scope="col">응급구분<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                <th scope="col">응급상태<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                <th scope="col">테스트구분<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                <th scope="col">발생일시<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
+                <th scope="col">종료일시<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
               </tr>
             </thead>
           </table>
@@ -250,6 +250,7 @@ export default {
       errorpopup1: false, errorpopup2: false, errorpopup3: false,
       saveChangeData: null, updDtime:'',
       searchCheck1 : 1, searchCheck2 : 0,
+      sortCount:0, sortNmCount:0,
 
       listData: [],
       total: '',
