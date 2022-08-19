@@ -441,8 +441,16 @@ export default {
       this.file_name2_1 = this.file_name2.substr(0, 2)
       this.file_name2_2 = this.file_name2.substr(2)
       this.file_name3 = this.file_name2_1+'.'+this.file_name2_2
+      console.log(this.file_name)
+      console.log(this.file_name2)
+      console.log(this.file_name2_1)
+      console.log(this.file_name2_2)
+      console.log(this.file_name3)
       if(this.file_name3.length < 5){
         alert("펌웨어 파일을 다시 확인하여 주세요")
+        this.file_name3 = ''
+        this.file_name2 = ''
+        this.file_name = ''
         return false
       }
     },

@@ -49,7 +49,7 @@
                                 <th scope="col">전화번호</th>
                                 <th scope="col">통신사</th>
                                 <th scope="col">모델</th>
-                                <th scope="col">앱버전(현재/이전)</th>
+                                <th scope="col">앱버전(설치/최신)</th>
                                 <th scope="col">OS버전</th>
                                 <th scope="col">mac address</th>
                             </tr>
@@ -178,7 +178,7 @@
                                 <th scope="col">순번</th>
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
-                                <th scope="col">센서버전</th>
+                                <th scope="col">설치버전</th>
                                 <th scope="col">시리얼번호</th>
                                 <th scope="col">MAC Addr</th>
                             </tr>
@@ -235,7 +235,7 @@
                                 <th scope="col">선택</th>
                                 <th scope="col">순번</th>
                                 <th scope="col">센서명</th>
-                                <th scope="col">센서버전</th>
+                                <th scope="col">설치버전</th>
                                 <th scope="col">최신버전</th>
                                 <th scope="col">센서ID</th>
                                 <th scope="col">등록일시</th>
@@ -285,8 +285,8 @@
                                       </div>
                                     </td>
                                     <td v-else>{{!item.incomeNm? setIncomeNm(item.sensorId) : setIncomeNm(item.incomeNm)}}</td>
-                                    <td>{{item.incomeDtime}}</td>
                                     <td>{{item.regDtime}}</td>
+                                    <td>{{item.updDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>

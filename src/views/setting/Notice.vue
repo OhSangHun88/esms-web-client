@@ -471,7 +471,7 @@ export default {
       }
       this.$store.state.userId = sessionStorage.getItem("userId")
 
-      let uri =this.$store.state.serverApi + "/admin/organizations/all?recordCountPerPage=999";
+      let uri =this.$store.state.serverApi + "/admin/organizations?recordCountPerPage=99999";
       await axios.get(uri, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           this.orgmItems2=[];
