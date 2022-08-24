@@ -1,6 +1,12 @@
 <template>
     <div >
-        <div id="" class="popupLayer" v-if="firmwareUpgradeCheck === true">
+        
+            
+        <!-- <div v-if="!this.pending" style="text-align: center;">
+            <img src="../../../assets/images/loading.png"  />
+        </div> -->
+        <div class="tabcontent">
+            <div id="" class="popupLayer" v-if="firmwareUpgradeCheck === true">
               <div class="popup_wrap type-02">
                 <div class="title_wrap">
                   <div class="title">경고</div>
@@ -15,10 +21,72 @@
                 </div>
               </div>
             </div>
-        <!-- <div v-if="!this.pending" style="text-align: center;">
-            <img src="../../../assets/images/loading.png"  />
-        </div> -->
-        <div v-else class="tabcontent">
+            <div id="" class="popupLayer" v-if="beforeGWpopup === true">
+        <div class="popup_wrap" style="width:100%">
+          <div class="title_wrap">
+            <div class="title">이전이력 더보기</div>
+            <button type="button" class="btn_close" @click="beforeGWpopup = false">닫기</button>
+          </div>
+          <div class="popbtn_wrap" style="margin-bottom:20px;">
+                  <div class="list result" style="margin-left:-30px; width:107%">
+                    <table>
+                      <colgroup>
+                        <!--<col style="width:10%;">-->
+                        <col style="width:10%;">
+                        <col style="width:10%;">
+                        <col style="width:12%;">
+                        <col style="width:10%;">
+                        <col style="width:12%;">
+                        <col style="width:12%;">
+                        <col style="width:14%;">
+                        <col style="width:14%;">
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <!-- <th scope="col">대상자ID</th> -->
+                          <th scope="col">통신상태</th>
+                          <th scope="col">전원연결상태</th>
+                          <th scope="col">점검대상여부</th>
+                          <th scope="col">배터리</th>
+                          <th scope="col">Keep-Alive</th>
+                          <th scope="col">신호세기</th>
+                          <th scope="col">상태측정일시</th>
+                          <th scope="col">서버보고일시</th>
+                        </tr>
+                      </thead>
+                    </table>
+                    <div class="tbody">
+                      <table>
+                        <colgroup>
+                          <!--<col style="width:10%;">-->
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:12%;">
+                            <col style="width:10%;">
+                            <col style="width:12%;">
+                            <col style="width:12%;">
+                            <col style="width:14%;">
+                            <col style="width:14%;">
+                        </colgroup>
+                        <tbody >    
+                          <tr v-for="(item,index) in beforeGWItems" v-bind:key="index">
+                            <!--<td>{{item.recipientId}}</td>-->
+                            <td>{{item.comStateCd+'('+changecomStateCd(item.comStateCd)+')'}}</td>
+                            <td>{{item.powerLinkYn===1?'연결':'차단'}}</td>
+                            <td>{{item.checkYnCd===0? '정상':'점검대상'}}</td>
+                            <td>{{item.batteryValue+'('+changeTaGaBattery(item.batteryValue)+')'}}</td>
+                            <td>{{item.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                            <td>{{item.rssi+'('+changeRssi(item.rssi)+')'}}</td>
+                            <td>{{item.stateMeasureDtime}}</td>
+                            <td>{{item.reportDtime}}</td>
+                          </tr>                                   
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div> 
+            </div>
+          </div>
             <div class="toggle_btn2" style="margin-top : -25px">
                 <button type="button" :class="connectTap===3?'btn on':'btn'" @click="dataTogle(3)" style="font-size: 16px;">태블릿</button>
                 <button type="button" :class="connectTap===2?'btn on':'btn'" @click="dataTogle(2)" style="font-size: 16px;">게이트웨이</button>
@@ -302,8 +370,11 @@
                         </div>
                         <div class="toggle_btn">
                             <button type="button" :class="beforeGatewayToggle===0 ? 'btn on': 'btn'" @click="getNowGatewayToggle">최신정보</button>
-                            <button type="button" :class="beforeGatewayToggle===1 ? 'btn on': 'btn'" @click="getBeforeVersionGateway">직전정보</button>
+                            <button type="button" :class="beforeGatewayToggle===1 ? 'btn on': 'btn'" @click="getBeforeVersionGateway">이전이력</button>
                         </div>
+                    </div>
+                    <div class="btn_area" style="float:right" v-if="connectTap===2 && beforeGatewayToggle===1">
+                      <button type="button" style="margin-right:10px" class="btn form2" @click="beforepopup()">더보기</button>
                     </div>
                 </div>
                 <div class="list">
@@ -489,7 +560,7 @@
                             <tbody v-if="this.getBSensorsData && connectTap===1 && beforeSensorToggle===0">
                                 <tr>
                                     <td>{{!this.sensorTakeNm? '': this.getBSensorsData.comStateCd===null? '':this.getBSensorsData.comStateCd+"("+this.sensorTakeNm+")"}}</td>
-                                    <td>{{!this.getBSensorsData.batteryValue? '':this.getBSensorsData.batteryValue+"("+changeSensorBattery(this.getBSensorsData.batteryValue)+")"}}</td>
+                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.batteryValue+"("+changeSensorBattery(this.getBSensorsData.batteryValue)+")"}}</td>
                                     <td>{{!this.getBSensorsData? '': this.getBSensorsData.rssi===null? '' : this.getBSensorsData.rssi+"("+changeRssi(this.getBSensorsData.rssi)+")"}}</td>
                                     <td>{{this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
                                     <td>{{!this.getBSensorsData.keepAliveRcvYn? '':this.getBSensorsData.keepAliveRcvYn===1?'정상':this.getBSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
@@ -501,7 +572,7 @@
                                 <!-- <tbody v-else> -->
                                 <tr>
                                     <td>{{!this.beforeVersionSensorsData.comStateNm? '': this.beforeVersionSensorsData.comStateNm===null? '':this.beforeVersionSensorsData.comStateCd+"("+this.beforeVersionSensorsData.comStateNm+")"}}</td>
-                                    <td>{{!this.beforeVersionSensorsData.batteryValue? '': this.beforeVersionSensorsData.batteryValue+"("+changeSensorBattery(this.beforeVersionSensorsData.batteryValue)+")"}}</td>
+                                    <td>{{!this.beforeVersionSensorsData.batteryValue? '':this.beforeVersionSensorsData.batteryValue==='0'?'0': this.beforeVersionSensorsData.batteryValue+"("+changeSensorBattery(this.beforeVersionSensorsData.batteryValue)+")"}}</td>
                                     <td>{{!this.beforeVersionSensorsData? '': this.beforeVersionSensorsData.rssi===null? '': this.beforeVersionSensorsData.rssi+"("+changeRssi(this.beforeVersionSensorsData.rssi)+")"}}</td>
                                     <td>{{this.beforeVersionSensorsData.checkYnCd ===null|| this.beforeVersionSensorsData.checkYnCd ===undefined ? '' : this.beforeVersionSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
                                     <td>{{!this.beforeVersionSensorsData.keepAliveRcvYn? '': this.beforeVersionSensorsData.keepAliveRcvYn===1?'정상':this.beforeVersionSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
@@ -547,7 +618,7 @@ import axios from "axios";
       CbatteryValue:null,
       BbatteryValue:null,
       firmwarelist:[],
-      firmwareCData:'',
+      firmwareCData:'', beforeGWpopup:false, beforeGWItems:[],
       saveChangeData:'', changeIncomeNm:'',changeIncomeNm2:'', changeSensorId:'', changeSensorData:'', radiocheck:'', inputCheck:'',
     }
    },
@@ -784,17 +855,22 @@ import axios from "axios";
         this.beforeGatewayToggle = 1
         //this.tmpIdx = this.getCSensorsData[0].sensorId;
         let beforegateway=[]
-        const url  = this.$store.state.serverApi + `/admin/recipients/gateway/statehistory?gwId=${this.getCGatewayData.gwId}`
+        this.beforeGWItems = []
+        const url  = this.$store.state.serverApi + `/admin/recipients/gateway/statehistory?recordCountPerPage=12&gwId=${this.getCGatewayData.gwId}`
             await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
                 beforegateway = res.data.data
                 this.beforeVersionGatewayData = beforegateway[1]
+                for(let i=2; i<beforegateway.length; i++){
+                    this.beforeGWItems.push(beforegateway[i])
+                }
             })
             .catch(error => {
                 console.log("fail to load")
                 this.errorMessage = error.message;
                 console.error("There was an error!", error);
             });
+            console.log(this.beforeGWItems)
             this.beforeGatewayTake = this.gatewayTakeItems.filter(cd=>{
             return cd.cmmnCd === this.beforeVersionGatewayData.comStateCd
         })
@@ -882,6 +958,9 @@ import axios from "axios";
 		}else {
 			return "나쁨";
 		}
+    },
+    beforepopup(){
+        this.beforeGWpopup = true
     },
     reverseCheck(){
         let url = this.$store.state.serverApi + `/admin/revcheck/${this.recipientId}/send`
@@ -1051,6 +1130,16 @@ import axios from "axios";
             input = this.getCTabletsData.appVersion
         }
         return input
+     },
+     changecomStateCd(input){
+        console.log(input)
+        let result = ''
+        switch(input){
+            case "TAK001" : result='정상'; break;
+            case "TAK002" : result='비정상'; break;
+            case "TAK003" : result='미수신'; break;
+        }
+        return result
      },
     reset(index){
         this.radiocheck = this.getCSensorsData[index]

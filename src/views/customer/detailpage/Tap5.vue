@@ -99,8 +99,9 @@
                             <col style="width:13%;">
                             <col style="width:13%;">
                             <col style="width:13%;">
-                            <col style="width:24%;">
-                            <col style="width:24%;">
+                            <col style="width:20%;">
+                            <col style="width:20%;">
+                            <col style="width:20%;">
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
@@ -109,6 +110,7 @@
                                 <th scope="col">설치장소</th>
                                 <th scope="col">감지 주기(초)</th>
                                 <th scope="col">G/W 전송주기(초)</th>
+                                <th scope="col">APP 전송주기(초)</th>
                                 <th scope="col">서버 전송주기(분)</th>               
                             </tr>
                         </thead>
@@ -120,8 +122,9 @@
                                 <col style="width:13%;">
                                 <col style="width:13%;">
                                 <col style="width:13%;">
-                                <col style="width:24%;">
-                                <col style="width:24%;">
+                                <col style="width:20%;">
+                                <col style="width:20%;">
+                                <col style="width:20%;">
                             </colgroup>
                             <tbody v-if="!getCSensorsData">
                                 <tr>
@@ -145,13 +148,19 @@
                                     <td>{{item.sensorTypeNm}}</td>
                                     <!-- {{getCSensorsData[sensorsDetect]}} 이렇게 뽑아서 쓰면 된단말 -->
                                     <td> {{locationCode(item.sensorLocCd)}}</td>
-                                    <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">{{item.sensorDetectCycle}}</td>
+                                    <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
+                                        {{item.sensorDetectCycle}}
+                                    </td>
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="input_area" v-if="sensorsDetect===index">
                                             <input type="text" name="" v-model="gwSendCycle" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">초
                                         </div>
                                         <div v-else>{{item.gwSendCycle}}</div>
+                                    </td>
+                                    <td v-else>실시간</td>
+                                    <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
+                                        {{item.gwAppSendCycle}}
                                     </td>
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">

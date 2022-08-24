@@ -95,7 +95,7 @@
               <div class="input_area">
                 <p class="input_tit">우편번호 *</p>
                 <div class="add_btn_input">
-                  <input type="text" value="" v-model="selectedUpdateZipcode">
+                  <input type="text" value=""  v-model="selectedUpdateZipcode">
                   <button type="button" class="input_btn" @click="search">검색</button>
                 </div>
               </div>
@@ -883,6 +883,7 @@ export default {
       
     },
     onChangeSgg(event){
+      console.log(this.selectedUpdateSidoItems)
       this.sidoCd = event.target.value
       this.getSggData()
       this.sggCd = ''
@@ -890,6 +891,7 @@ export default {
     },
     onChangeOrg(event) {
       this.sggCd = event.target.value
+      console.log(this.sggCd)
       this.getOrgmData()
     },
     // 등록 시 등록 변수 초기화
@@ -1448,6 +1450,10 @@ export default {
         }
       }
     },
+    autoAddr(event){
+      let addr = event.target.value
+      console.log(addr)
+    },
     getMask(birthday){
       let res = ''
       console.log("this ok")
@@ -1529,6 +1535,41 @@ export default {
         this.selectedChangeZipcode = data.zonecode;
         this.selectedUpdateAddr = data.roadAddress;
         this.selectedChangeAddr = data.roadAddress;
+        console.log(this.selectedUpdateAddr)
+        let addr = []
+        let addr1 = ''
+        let addr2 = ''
+        addr = this.selectedUpdateAddr.split(' ')
+        addr1 = addr[0]
+        addr2 = addr[1]
+        if(addr1 === '서울'){
+          addr1 = addr1 + '특별시'
+        }else if(addr1 === '부산' || addr1 === '대구' || addr1 === '인천' || addr1 === '광주' || addr1 === '대전' || addr1 === '울산'){
+          addr1 = addr1 + '광역시'
+        }else if(addr1 === '경기' || addr1 === '강원'){
+          addr1 = addr1 + '도'
+        }else if(addr1 === '충북'){
+          addr1 = '충청북도'
+        }else if(addr1 === '충남'){
+          addr1 = '충청남도'
+        }else if(addr1 === '전북'){
+          addr1 = '전라북도'
+        }else if(addr1 === '전남'){
+          addr1 = '전라남도'
+        }else if(addr1 === '경북'){
+          addr1 = '경상북도'
+        }else if(addr1 === '경남'){
+          addr1 = '경상남도'
+        }
+        let autoSido = []
+        autoSido = this.sidoItems.filter(cd=>{
+          return cd.label === addr1
+        })
+        //this.selectedUpdateSidoItems = autoSido[0].value
+        console.log(addr)
+        console.log(addr1)
+        console.log(addr2)
+        console.log(this.selectedUpdateSidoItems)
 //        this.selectedAddr = data.jibunAddress;
         
         // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.

@@ -50,7 +50,8 @@
         </li>
       </ul>
       <div class="emerg_area">
-        <button type="button" :class="eventtoggle===0 ? 'btn': 'btn on' " @click="clickEmergency()"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
+        <button type="button" style="margin-right:10px;" :class="Emeventtoggle===0 ? 'btn': 'btn on' " @click="clickEmergency()"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
+        <button type="button" :class="Eqeventtoggle===0 ? 'btn': 'btn on' " @click="clickEquipmentEvent()"><i></i>장비 이벤트</button> <!--응급상황일때 on 클래스 추가-->
       </div>
     </nav>
   </header>
@@ -67,14 +68,23 @@ export default {
   },
   data: () => ({
     userId: null,
+    s_date: '',
+    e_date: '',
     oldEmevent : 0,
     newEmevent : 0,
-    eventtoggle:0,
-    timerId:''
+    Emeventtoggle:0,
+    oldEqevent : 0,
+    newEqevent : 0,
+    Eqeventtoggle:0,
+    timerId:'',
+    EqtimerId:'',
   }),
   created(){
+    this.s_date=moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+    this.e_date=moment().format('YYYY-MM-DD HH:mm:ss');
     this.getUserId();
     this.checkCount();
+    this.checkEqCount();
   },
   methods:{
     getUserId(){
@@ -99,15 +109,16 @@ export default {
       this.$router.push({ name: 'Home' });
     },
     async checkCount(){
-      console.log("this eventtoggle ==> "+this.eventtoggle)
+      console.log("this Emeventtoggle ==> "+this.Emeventtoggle)
+      console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
       let uri = this.$store.state.serverApi+"/admin/emergencys/checkcnt";
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
       .then(response => {
        this.newEmevent = response.data.totalCount
        if(this.oldEmevent === this.newEmevent){
-         this.eventtoggle = 0
+         this.Emeventtoggle = 0
        }else{
-         this.eventtoggle = 1
+         this.Emeventtoggle = 1
        }
       })
       .catch(error => {
@@ -115,16 +126,50 @@ export default {
         console.error("There was an error!", error);
       });
       if(sessionStorage.getItem("token") != 'null' && this.$store.state.userId != 'null'){
-        console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
         this.timerId=setTimeout(this.checkCount, 5000)
       }else{
         clearTimeout(this.timerId);
+      }
+    },
+    async checkEqCount(){
+      this.s_date = moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm:ss')
+      this.e_date = moment().format('YYYY-MM-DD HH:mm:ss')
+      console.log("this Eqeventtoggle ==> "+this.Eqeventtoggle)
+      console.log(this.s_date)
+      console.log(this.e_date)
+
+      let uri = this.$store.state.serverApi+`/admin/emergencys/gateway-events?recordCountPerPage=2&occurStartDate=${this.s_date}&occurEndDate=${this.e_date}`;
+      await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      .then(response => {
+       this.newEqevent = response.data.data.length
+       console.log(this.newEqevent)
+       if(this.oldEqevent === this.newEqevent){
+         this.Eqeventtoggle = 0
+       }else{
+         this.Eqeventtoggle = 1
+       }
+      })
+      .catch(error => {
+        this.errorMessage = error.message;
+        console.error("There was an error!", error);
+      });
+      if(sessionStorage.getItem("token") != 'null' && this.$store.state.userId != 'null'){
+        this.EqtimerId=setTimeout(this.checkEqCount, 5000)
+      }else{
+        clearTimeout(this.EqtimerId);
       }
     },
     clickEmergency(){
       if(this.$route.path !==`/emevent/allView2`){
         this.$router.push({
         path : `/emevent/allView2`
+      })
+      } 
+    },
+    clickEquipmentEvent(){
+      if(this.$route.path !==`/emevent/EquipmentEvent2`){
+        this.$router.push({
+        path : `/emevent/EquipmentEvent2`
       })
       } 
     },
