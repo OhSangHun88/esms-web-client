@@ -24,7 +24,7 @@
             <div id="" class="popupLayer" v-if="beforeGWpopup === true">
         <div class="popup_wrap" style="width:100%">
           <div class="title_wrap">
-            <div class="title">이전이력 더보기</div>
+            <div class="title">상태이력</div>
             <button type="button" class="btn_close" @click="beforeGWpopup = false">닫기</button>
           </div>
           <div class="popbtn_wrap" style="margin-bottom:20px;">
@@ -370,7 +370,7 @@
                         </div>
                         <div class="toggle_btn">
                             <button type="button" :class="beforeGatewayToggle===0 ? 'btn on': 'btn'" @click="getNowGatewayToggle">최신정보</button>
-                            <button type="button" :class="beforeGatewayToggle===1 ? 'btn on': 'btn'" @click="getBeforeVersionGateway">이전이력</button>
+                            <button type="button" :class="beforeGatewayToggle===1 ? 'btn on': 'btn'" @click="getBeforeVersionGateway">직전정보</button>
                         </div>
                     </div>
                     <div class="btn_area" style="float:right" v-if="connectTap===2 && beforeGatewayToggle===1">
