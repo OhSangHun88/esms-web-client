@@ -89,6 +89,7 @@
                     <table>
                         <colgroup>
                             <col style="width:10%;">
+                            <col v-if="code3 || code4" style="width:15%;">
                             <col style="width:15%;">
                             <col style="width:25%;">
                             <col style="width:25%;">
@@ -97,6 +98,7 @@
                         <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">순번</th>
+                                <th v-if="code3 || code4" scope="col">센서ID</th>
                                 <th scope="col">설치장소</th>
                                 <th scope="col">측정일시</th>
                                 <th scope="col">보고일시</th>
@@ -117,6 +119,7 @@
                         <table>
                             <colgroup>
                                 <col style="width:10%;">
+                                <col v-if="code3 || code4" style="width:15%;">
                                 <col style="width:15%;">
                                 <col style="width:25%;">
                                 <col style="width:25%;">
@@ -125,6 +128,7 @@
                             <tbody>
                                 <tr  v-for="(item,index) in listData" v-bind:key="index">
                                     <td>{{num(index+1)}}</td>
+                                    <td v-if="code3 || code4">{{item.sensorId}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td>{{item.measureDtime}}</td>
                                     <td>{{item.regDtime}}</td>

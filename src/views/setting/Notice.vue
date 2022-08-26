@@ -67,12 +67,20 @@
                             <div class="input_area">
                                 <div class="tit_area">
                                     <p class="input_tit">공지내용</p>
+                                    <p class="file_txt">Add a file: <i class="ico_file"></i><em>{{file_name}}</em></p><!--em태그 안에 업로드한 파일 이름 입력-->
                                 </div>
                                 <textarea name="" id="" v-model="selectedUpdateDetails">1.공지내용</textarea>
                             </div>
                         </div>
                     </div>
                     <div class="popbtn_wrap">
+                      <div class="popbtn_area left">
+                            <button type="button" class="btn" @click="deleteVoice()">삭제</button>
+                            <div class="input_area file">
+                                <input type="file" name="FileBtn" id="FileBtn" @change="handleFileChange">
+                                <label for="FileBtn" class="btn form2">파일 업로드</label>
+                            </div>
+                        </div>
                         <div class="popbtn_area right">
                             <button type="button" class="btn" @click="writeNotice = false">취소</button>
                             <button type="button" class="btn form2" @click="UploadData()">저장</button>
@@ -137,7 +145,7 @@
                 </div>
                 <div class="btn_area">
                     <button type="button" class="btn" v-on:click="manageInquiry">조회</button>
-                    <button type="button" class="btn form2" @click="writeNotice = true">작성</button>
+                    <button type="button" class="btn form2" @click="writeNoticeReset()">작성</button>
                 </div>
             </div>
             <div class="one_box box_style">
@@ -233,6 +241,7 @@ export default {
         errorpopup1: false, errorpopup2: false, writeNotice: false,
         noticeId:'', orgdata:'', orgNm:'',
         searchCheck1 : 1, searchCheck2 : 0,
+        file_name:'', file_size:'', voiceFile:'',
 
         listData: [],
         total: '',
@@ -289,6 +298,39 @@ export default {
         }
       }
       return index
+    },
+    handleFileChange(e){
+      console.log(e.target.files)
+      if(e.target.files[0].type !== 'audio/midi' && e.target.files[0].type !== 'audio/mpeg' && e.target.files[0].type !== 'audio/x-m4a' 
+      && e.target.files[0].type !== 'audio/webm' && e.target.files[0].type !== 'audio/ogg' && e.target.files[0].type !== 'audio/wav'){
+          alert("음성 파일을 다시 확인하여 주세요")
+          return false
+      }
+      
+      let fileLength = e.target.files[0].name.length
+      let fileDot = e.target.files[0].name.indexOf('.')
+      let fileType = e.target.files[0].name.substring(fileDot+1,fileLength).toLowerCase()
+      
+      if(e.target.files[0]){
+        this.voiceFile = e.target.files[0]
+        this.file_name = e.target.files[0].name;
+        this.file_size = e.target.files[0].size
+      }
+    },
+    deleteVoice(){
+        this.voiceFile = ''
+        this.file_name = ''
+        this.file_size = ''
+    },
+    writeNoticeReset(){
+      this.voiceFile = ''
+      this.file_name = ''
+      this.selectedUpdateSidoItems = ''
+      this.selectedUpdateSggItems = ''
+      this.selectedUpdateOrgItems = ''
+      this.selectedUpdateTitle = ''
+      this.selectedUpdateDetails = ''
+      this.writeNotice = true
     },
     // 시/도 목록
     getSidoData() {
@@ -512,10 +554,25 @@ export default {
         regId: this.$store.state.userId
       }
       console.log(objectData)
-      
-      uri =this.$store.state.serverApi + "/admin/notices";
+      let form = new FormData()
+      form.append('details', this.selectedUpdateDetails)
+      form.append('orgId', this.orgdata[0].value)
+      form.append('title', this.selectedUpdateTitle)
+      form.append('typeCd', this.orgdata[0].value2)
+      form.append('regId', this.$store.state.userId)
+      form.append('filename', this.voiceFile)
+      form.append('exeOrgId', this.orgdata[0].value)
+
+
+      console.log(form)
+      uri =this.$store.state.serverApi + "/admin/noticesnew";
       console.log(uri)
-      axios.post(uri,objectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+      axios.post(uri,form,{
+        headers: {
+        'Content-Type': 'multipart/form-data',
+        'Accept':'application/json',
+        "Authorization": "Bearer " + sessionStorage.getItem("token")}
+        })
         .then(res => {
           let resData = res.data.data
           if(resData){

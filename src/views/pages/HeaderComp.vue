@@ -138,10 +138,12 @@ export default {
       console.log(this.s_date)
       console.log(this.e_date)
 
-      let uri = this.$store.state.serverApi+`/admin/emergencys/gateway-events?recordCountPerPage=2&occurStartDate=${this.s_date}&occurEndDate=${this.e_date}`;
+      let uri = this.$store.state.serverApi+`/admin/gwevent/checkcnt`;
       await axios.get(uri, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
       .then(response => {
-       this.newEqevent = response.data.data.length
+        console.log(response.data.totalCount)
+       this.newEqevent = response.data.totalCount
+       console.log(this.oldEqevent)
        console.log(this.newEqevent)
        if(this.oldEqevent === this.newEqevent){
          this.Eqeventtoggle = 0

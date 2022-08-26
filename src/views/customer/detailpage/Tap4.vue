@@ -32,12 +32,13 @@
                     <table>
                       <colgroup>
                         <!--<col style="width:10%;">-->
-                        <col style="width:10%;">
-                        <col style="width:10%;">
-                        <col style="width:12%;">
+                        <col style="width:13%;">
                         <col style="width:10%;">
                         <col style="width:12%;">
+                        <col style="width:10%;">
                         <col style="width:12%;">
+                        <col style="width:12%;">
+                        <col style="width:10%;">
                         <col style="width:14%;">
                         <col style="width:14%;">
                       </colgroup>
@@ -50,6 +51,7 @@
                           <th scope="col">배터리</th>
                           <th scope="col">Keep-Alive</th>
                           <th scope="col">신호세기</th>
+                          <th scope="col">구분</th>
                           <th scope="col">상태측정일시</th>
                           <th scope="col">서버보고일시</th>
                         </tr>
@@ -59,12 +61,13 @@
                       <table>
                         <colgroup>
                           <!--<col style="width:10%;">-->
-                            <col style="width:10%;">
-                            <col style="width:10%;">
-                            <col style="width:12%;">
+                            <col style="width:13%;">
                             <col style="width:10%;">
                             <col style="width:12%;">
+                            <col style="width:10%;">
                             <col style="width:12%;">
+                            <col style="width:12%;">
+                            <col style="width:10%;">
                             <col style="width:14%;">
                             <col style="width:14%;">
                         </colgroup>
@@ -77,6 +80,7 @@
                             <td>{{item.batteryValue+'('+changeTaGaBattery(item.batteryValue)+')'}}</td>
                             <td>{{item.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
                             <td>{{item.rssi+'('+changeRssi(item.rssi)+')'}}</td>
+                            <td>{{item.typeCd==='1'?'주기' : '기타'}}</td>
                             <td>{{item.stateMeasureDtime}}</td>
                             <td>{{item.reportDtime}}</td>
                           </tr>                                   
@@ -226,9 +230,9 @@
                             <button type="button" :class="sensorsTap===2? 'btn on':'btn'" @click="sensorsTogle(2)" >상세정보</button>
                         </div>
                     </div>
-                    <div class="btn_area" v-if="this.sensorsTap===2">
+                    <!-- <div class="btn_area" v-if="this.sensorsTap===2">
                           <button type="button" style="margin-right:10px" class="btn" @click="changeIncomeNmData()">센서ID 변경</button>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="list" v-if="sensorsTap===1">
                     <table>
@@ -288,7 +292,7 @@
                 <div class="list" v-if="sensorsTap===2">
                     <table>
                         <colgroup>
-                            <col style="width:5%;">
+                            <!-- <col style="width:5%;"> -->beforeGWItems
                             <col style="width:8%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
@@ -300,7 +304,7 @@
                         <thead class="thead htype-01">
                             <tr>
                                 <!-- 센서 상세정보 : 순번, 센서명, 센서이전버전, 센서설치버전 입고명, 입고일자, 등록일시 -->
-                                <th scope="col">선택</th>
+                                <!-- <th scope="col">선택</th> -->
                                 <th scope="col">순번</th>
                                 <th scope="col">센서명</th>
                                 <th scope="col">설치버전</th>
@@ -314,7 +318,7 @@
                     <div class="tbody htype-04">
                         <table>
                             <colgroup>
-                                <col style="width:5%;">
+                                <!-- <col style="width:5%;"> -->
                                 <col style="width:8%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
@@ -325,7 +329,7 @@
                             </colgroup>
                             <tbody v-if="!this.getCSensorsData">
                                 <tr >
-                                    <td></td>
+                                    <!-- <td></td> -->
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -337,22 +341,22 @@
                             </tbody>
                             <tbody v-else>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index,0)">
-                                    <td>
+                                    <!-- <td>
                                       <div class="chk_area radio">
                                         <input type="radio" name="saveChangeData" :id="`radio1_${index}`" v-model="saveChangeData" :value="index" @click="reset(index)">
                                         <label :for="`radio1_${index}`" class="chk"><i class="ico_chk"></i></label>
                                       </div>
-                                    </td>
+                                    </td> -->
                                     <td>{{index+1}}</td>
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{item.sensorVersion}}</td>
                                     <td>{{item.previousVersion}}</td>
-                                    <td v-if="saveChangeData === index">
+                                    <!-- <td v-if="saveChangeData === index">
                                       <div class="input_area" style="margin-left:0px; margin-right:0px;">
                                         <input type="text" name="" id="" v-model="changeIncomeNm" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
                                       </div>
-                                    </td>
-                                    <td v-else>{{!item.incomeNm? setIncomeNm(item.sensorId) : setIncomeNm(item.incomeNm)}}</td>
+                                    </td> -->
+                                    <td>{{!item.incomeNm? '' : setIncomeNm(item.incomeNm)}}</td>
                                     <td>{{item.regDtime}}</td>
                                     <td>{{item.updDtime}}</td>
                                 </tr>
@@ -383,11 +387,12 @@
                             <col style="width:10%;">
                             <col style="width:10%;">
                             <col style="width:12%;">
-                            <col style="width:12%;">
-                            <col style="width:12%;">
-                            <col style="width:12%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
+                            <col style="width:8%;">
                             <col style="width:14%;">
-                            <col style="width:auto;">
+                            <col style="width:14%;">
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
@@ -397,6 +402,7 @@
                                 <th scope="col">배터리</th>
                                 <th scope="col">Keep-Alive</th>
                                 <th scope="col">{{connectTap===3?'사용여부':"신호세기"}}</th>
+                                <th scope="col">구분</th>
                                 <th scope="col">상태측정일시</th>
                                 <th scope="col">서버보고일시</th>
                             </tr>
@@ -408,11 +414,12 @@
                                 <col style="width:10%;">
                                 <col style="width:10%;">
                                 <col style="width:12%;">
-                                <col style="width:12%;">
-                                <col style="width:12%;">
-                                <col style="width:12%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
+                                <col style="width:8%;">
                                 <col style="width:14%;">
-                                <col style="width:auto;">
+                                <col style="width:14%;">
                             </colgroup>
                             <tbody v-if="connectTap===2 && beforeGatewayToggle===0" >
                                 <tr>
@@ -422,6 +429,7 @@
                                     <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.batteryValue+"("+changeTaGaBattery(getCGatewayData2.batteryValue)+")"}}</td>
                                     <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.keepAliveRcvYn===1?'정상':this.getCGatewayData2.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
                                     <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.rssi+"("+changeRssi(this.getCGatewayData2.rssi)+")"}}</td>
+                                    <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.typeCd==='1'?'주기':'기타'}}</td>
                                     <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.stateMeasureDtime}}</td>
                                     <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.reportDtime}}</td>
                                 </tr>
@@ -434,6 +442,7 @@
                                     <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.batteryValue+"("+changeTaGaBattery(this.beforeVersionGatewayData.batteryValue)+")"}}</td>
                                     <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.keepAliveRcvYn===1?'정상':this.beforeVersionGatewayData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
                                     <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.rssi+"("+changeRssi(this.beforeVersionGatewayData.rssi)+")"}}</td>
+                                    <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.typeCd==='1'?'주기':'기타'}}</td>
                                     <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.stateMeasureDtime}}</td>
                                     <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.reportDtime}}</td>
                                 </tr>
@@ -597,7 +606,7 @@ import axios from "axios";
    },
    data () {
     return {
-      getCSensorsData: null,
+      getCSensorsData: null, getCSensorsData2:null,
       getCGatewayData: null, getCGatewayData2:null,
       getCTabletsData: null, getCTabletsData2:null,
       getBSensorsData: null,
@@ -655,6 +664,32 @@ import axios from "axios";
             console.error("There was an error!", error);
           });
           this.getCSensorsData = tmpData
+
+          const urlC  = this.$store.state.serverApi + `/admin/recipients/sensors/statehistory?sensorId=${this.getBSensorsData.sensorId}`
+          console.log(urlC)
+          await axios.get(urlC, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+          .then(res => {
+            tmpData = res.data.data
+            let arr = []
+            arr = tmpData.slice().sort(function(a,b){
+                return new Date(b.stateMeasureDtime) - new Date(a.stateMeasureDtime)
+            })
+            console.log(arr)
+            if(tmpData[0].reportDtime === tmpData[1].reportDtime){
+                this.getCSensorsData2 = tmpData.slice().sort(function(a,b){
+                return new Date(b.stateMeasureDtime) - new Date(a.stateMeasureDtime)
+                })
+            }else{
+                this.getCSensorsData2 = tmpData
+            }
+            console.log(tmpData)
+            // console.log(this.getCSensorsData2)
+          })
+          .catch(error => {
+              console.log("fail to load")
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
         
         //    setTimeout(this.delay, 2000)
           if(this.getBSensorsData.comStateCd){
@@ -815,12 +850,13 @@ import axios from "axios";
         let beforeSensor = []
         this.beforeSensorToggle = 1
         this.tmpIdx = this.getCSensorsData[0];
-        
+        this.getCSensorsData2 = ''
 
         let url  = this.$store.state.serverApi + `/admin/recipients/sensors/statehistory?sensorId=${this.getBSensorsData.sensorId}`
         await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             beforeSensor = res.data.data
+            console.log(beforeSensor)
             this.beforeVersionSensorsData = beforeSensor[1]
         })
           .catch(error => {
@@ -864,6 +900,9 @@ import axios from "axios";
                 for(let i=2; i<beforegateway.length; i++){
                     this.beforeGWItems.push(beforegateway[i])
                 }
+                this.beforeGWItems = this.beforeGWItems.slice().sort(function(a,b){
+                    return new Date(b.reportDtime) - new Date(a.reportDtime)
+                })
             })
             .catch(error => {
                 console.log("fail to load")
