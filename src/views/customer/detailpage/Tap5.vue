@@ -7,10 +7,7 @@
                         <div class="title_area">
                             <p class="tit">활동 미감지</p>
                         </div>
-                        <div v-if="this.getCSensorsData.length === 0"></div>
-                        <div v-else class="btn_area" >
-                            <button type="button" class="btn form2" @click="sendActiveUnsensingCycle">저장</button>
-                        </div>
+                        
                     </div>
                     <div class="list">
                         <div class="tbody">
@@ -18,21 +15,22 @@
                                 <colgroup>
                                     <col style="width:25%;">
                                     <col style="width:25%;">
-                                    <col style="width:25%;">
-                                    <col style="width:25%;">
+                                    <col style="width:35%;">
                                 </colgroup>
                                 <tbody>
                                     <tr class="m_input">
                                         <td >설정 값(분)</td>
                                         <td>
                                             <div class="input_area">
-                                                <input type="text" name="activeUnsensingCycle" id="activeUnsensingCycle" :value="!this.resBodyData.activeUnsensingCycle?0:this.resBodyData.activeUnsensingCycle">
+                                                <input type="text" name="activeUnsensingCycle" id="activeUnsensingCycle" v-model="setactiveUnsensingCycle">
                                             </div>
                                         </td>
-                                        <td >변경 값(분)</td>
                                         <td>
-                                            <div class="input_area">
-                                                <input type="text" name="setactiveUnsensingCycle" id="setactiveUnsensingCycle" v-model="setactiveUnsensingCycle">
+                                            <div class="list_top">
+                                                <div v-if="this.getCSensorsData.length === 0"></div>
+                                                <div v-else class="btn_area" >
+                                                    <button type="button" class="btn form2" @click="sendActiveUnsensingCycle">저장</button>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -46,10 +44,7 @@
                         <div class="title_area">
                             <p class="tit">게이트웨이 상태 전송</p>
                         </div>
-                        <div v-if="this.getCSensorsData.length === 0"></div>
-                        <div v-else class="btn_area">
-                            <button type="button" class="btn form2" @click="sendCGateway">저장</button>
-                        </div>
+                        
                     </div>
                     <div class="list">
                         <div class="tbody">
@@ -57,21 +52,22 @@
                                 <colgroup>
                                     <col style="width:25%;">
                                     <col style="width:25%;">
-                                    <col style="width:25%;">
-                                    <col style="width:25%;">
+                                    <col style="width:35%;">
                                 </colgroup>
                                 <tbody>
                                     <tr class="m_input">
                                         <td >설정 값(분)</td>
                                         <td>
                                             <div class="input_area">
-                                                <input type="text" name="gatewaySendTime" id="gatewaySendTime" :value="!this.getCGatewayData? 0: this.getCGatewayData.stateSendCycle">
+                                                <input type="text" name="gatewaySendTime" id="gatewaySendTime" v-model="setGatewayStateSendCycle">
                                             </div>
                                         </td>
-                                        <td >변경 값(분)</td>
                                         <td>
-                                            <div class="input_area">
-                                                <input type="text" name="setGatewayStateSendCycle" id="setGatewayStateSendCycle" v-model="setGatewayStateSendCycle">
+                                            <div class="list_top">
+                                                <div v-if="this.getCSensorsData.length === 0"></div>
+                                                <div v-else class="btn_area">
+                                                    <button type="button" class="btn form2" @click="sendCGateway">저장</button>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -82,7 +78,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tablist" style="margin-top : -5px">
+            <div class="tablist" style="margin-top : 10px">
                 <div class="list_top">
                     <div class="title_area">
                         <p class="tit">센서 감지 주기 및 전송 주기</p>
@@ -281,10 +277,10 @@ import axios from "axios";
       sensorsDetect:null,
       newGwSendCycle: null,
       getCGatewayData: null,
-      setGatewayStateSendCycle: 60,
+      setGatewayStateSendCycle: '',
       sensorsState: null,
       resBodyData: null,
-      setactiveUnsensingCycle:60,
+      setactiveUnsensingCycle:'',
       svrsendCheck : '', statesvrsendCheck:'',
       gwsendCheck : '', stategwsendCheck:'', 
       detsendCheck : '', statedetsendCheck:'',
@@ -357,7 +353,11 @@ import axios from "axios";
                 this.resBodyData = res.data.data
                 console.log("resbodyData is ");
                 console.log(this.resBodyData)
-                
+                if(this.resBodyData.activeUnsensingCycle){
+                    this.setactiveUnsensingCycle = this.resBodyData.activeUnsensingCycle
+                }else{
+                    this.setactiveUnsensingCycle = 0
+                }
             })
             .catch(error => {
                 this.errorMessage = error.message;
@@ -400,8 +400,12 @@ import axios from "axios";
         axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             let tmpData= res.data.data
-            
             this.getCGatewayData = tmpData
+            if(this.getCGatewayData.stateSendCycle){
+                this.setGatewayStateSendCycle = this.getCGatewayData.stateSendCycle
+            }else{
+                this.setGatewayStateSendCycle = 0
+            }
             
           })
           .catch(error => {
@@ -426,7 +430,7 @@ import axios from "axios";
             // console.log("sensors ")
             // console.log(this.getCSensorsData)
             if(resData){
-                alert("저장이 완료되었습니다.")
+                alert("성공적으로 저장되었습니다.")
             }
           })
           .catch(error => {
@@ -448,7 +452,7 @@ import axios from "axios";
             let resData = res.data.data
             console.log(resData)
             if(resData){
-                alert("저장이 완료되었습니다.")
+                alert("성공적으로 저장되었습니다.")
             }
             
           })
@@ -679,7 +683,7 @@ import axios from "axios";
         //     this.getCSensers()
         // }
         if(this.resCheck1 || this.resCheck2 || this.resCheck3 || this.resCheck4){
-            alert("저장이 완료되었습니다.")
+            alert("성공적으로 저장되었습니다.")
             this.sensorsDetect = ''
             this.resCheck1 = ''
             this.resCheck2 = ''
@@ -766,19 +770,19 @@ import axios from "axios";
         console.log(this.stateresCheck1)
         console.log(this.stateresCheck2)
         if(this.statesvrsendCheck === true && !this.stateresCheck2){
-            alert("저장이 완료되었습니다.")
+            alert("성공적으로 저장되었습니다.")
             this.sensorsState = ''
             this.statesvrsendCheck = ''
             this.getCSensers()
         }
         if(!this.statesvrsendCheck && this.stateresCheck2 === true){
-            alert("저장이 완료되었습니다.")
+            alert("성공적으로 저장되었습니다.")
             this.sensorsState = ''
             this.stateresCheck2 = ''
             this.getCSensers()
         }
         if(this.statesvrsendCheck && this.stateresCheck2){
-            alert("저장이 완료되었습니다.")
+            alert("성공적으로 저장되었습니다.")
             this.sensorsState = ''
             this.statesvrsendCheck = ''
             this.stateresCheck2 = ''

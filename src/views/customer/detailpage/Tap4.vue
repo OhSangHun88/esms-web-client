@@ -21,6 +21,36 @@
                 </div>
               </div>
             </div>
+            <div id="" class="popupLayer" v-if="reverseCheckpopup === true">
+              <div class="popup_wrap type-02">
+                <div class="title_wrap">
+                  <div class="title">경고</div>
+                  <button type="button" class="btn_close" @click="reverseCheckpopup = false">닫기</button>
+                </div>
+                <div class="popup_cnt">
+                  <p class="alert_txt">역점검 요청을 진행하시겠습니까?</p>
+                </div>
+                <div class="popbtn_area type-02">
+                  <button type="button" class="btn form2" @click="reverseCheck()">확인</button>
+                  <button type="button" class="btn" @click="reverseCheckpopup = false">취소</button>
+                </div>
+              </div>
+            </div>
+            <div id="" class="popupLayer" v-if="cmdA4postpopup === true">
+              <div class="popup_wrap type-02">
+                <div class="title_wrap">
+                  <div class="title">경고</div>
+                  <button type="button" class="btn_close" @click="cmdA4postpopup = false">닫기</button>
+                </div>
+                <div class="popup_cnt">
+                  <p class="alert_txt">cmdA4 전송을 진행하시겠습니까?</p>
+                </div>
+                <div class="popbtn_area type-02">
+                  <button type="button" class="btn form2" @click="cmdA4post()">확인</button>
+                  <button type="button" class="btn" @click="cmdA4postpopup = false">취소</button>
+                </div>
+              </div>
+            </div>
             <div id="" class="popupLayer" v-if="beforeGWpopup === true">
         <div class="popup_wrap" style="width:100%">
           <div class="title_wrap">
@@ -176,8 +206,8 @@
                     <div v-if="!this.getCGatewayData"></div>
                     <div class="btn_area" v-else>
                         <button type="button" class="btn form2" @click="firmwareUpgradeCheck = true">펌웨어 업그레이드</button>
-                        <button type="button" class="btn form2" @click="cmdA4post()">cmdA4전송</button>
-                        <button type="button" class="btn form2" @click="reverseCheck()">역점검요청</button>
+                        <button type="button" class="btn form2" @click="cmdA4popup()">cmdA4전송</button>
+                        <button type="button" class="btn form2" @click="reversepopup()">역점검요청</button>
                         <!-- <button type="button" class="btn form2">문열림멘트-ON</button>
                         <button type="button" class="btn form2">자동착신-OFF</button> -->
                     </div>
@@ -309,7 +339,7 @@
                                 <th scope="col">센서명</th>
                                 <th scope="col">설치버전</th>
                                 <th scope="col">최신버전</th>
-                                <th scope="col">센서ID</th>
+                                <th scope="col">관리번호</th>
                                 <th scope="col">등록일시</th>
                                 <th scope="col">수정일시</th>
                             </tr>
@@ -356,7 +386,7 @@
                                         <input type="text" name="" id="" v-model="changeIncomeNm" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
                                       </div>
                                     </td> -->
-                                    <td>{{!item.incomeNm? '' : setIncomeNm(item.incomeNm)}}</td>
+                                    <td>{{!item.incomeNm? '' : item.incomeNm}}</td>
                                     <td>{{item.regDtime}}</td>
                                     <td>{{item.updDtime}}</td>
                                 </tr>
@@ -626,8 +656,8 @@ import axios from "axios";
       tabletTake:null, tabletTakeNm:null, beforeTabletTake:null, beforeTabletTakeNm:null,
       CbatteryValue:null,
       BbatteryValue:null,
-      firmwarelist:[],
-      firmwareCData:'', beforeGWpopup:false, beforeGWItems:[],
+      firmwarelist:[], reverseCheckpopup:false, cmdA4postpopup:false,
+      firmwareCData:'', beforeGWpopup:false, beforeGWItems:[], 
       saveChangeData:'', changeIncomeNm:'',changeIncomeNm2:'', changeSensorId:'', changeSensorData:'', radiocheck:'', inputCheck:'',
     }
    },
@@ -1001,6 +1031,9 @@ import axios from "axios";
     beforepopup(){
         this.beforeGWpopup = true
     },
+    reversepopup(){
+        this.reverseCheckpopup = true
+    },
     reverseCheck(){
         let url = this.$store.state.serverApi + `/admin/revcheck/${this.recipientId}/send`
         axios.patch(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -1016,6 +1049,9 @@ import axios from "axios";
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
+    },
+    cmdA4popup(){
+        this.cmdA4postpopup = true
     },
     cmdA4post(){
         let url = this.$store.state.serverApi + `/admin/cmda4/${this.recipientId}/send`

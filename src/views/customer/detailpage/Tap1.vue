@@ -98,7 +98,7 @@
                         <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">순번</th>
-                                <th v-if="code3 || code4" scope="col">센서ID</th>
+                                <th v-if="code3 || code4" scope="col">관리번호</th>
                                 <th scope="col">설치장소</th>
                                 <th scope="col">측정일시</th>
                                 <th scope="col">보고일시</th>
@@ -128,7 +128,7 @@
                             <tbody>
                                 <tr  v-for="(item,index) in listData" v-bind:key="index">
                                     <td>{{num(index+1)}}</td>
-                                    <td v-if="code3 || code4">{{item.sensorId}}</td>
+                                    <td v-if="code3 || code4">{{item.sensorIndex}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
                                     <td>{{item.measureDtime}}</td>
                                     <td>{{item.regDtime}}</td>
@@ -379,6 +379,7 @@ import pagination from "../../pages/pagination.vue"
                         tmp = res.data.data[i].measureValue.split(',')
                         for(let j=tmp.length-1; j >=0 ;j-- ){
                             this.sensorsData.push({
+                                sensorIndex: tmpData.sensorIndex,
                             sensorId: tmpData.sensorId,
                             sensorTypeCd: tmpData.sensorTypeCd,
                             measureValue: tmp[j] + this.codeText,
@@ -397,6 +398,7 @@ import pagination from "../../pages/pagination.vue"
                         tmp = res.data.data[i].measureValue.split(',')
                         for(let j=tmp.length-1; j >=0 ;j-- ){
                             this.sensorsData.push({
+                                sensorIndex: tmpData.sensorIndex,
                                 sensorId: tmpData.sensorId,
                                 sensorTypeCd: tmpData.sensorTypeCd,
                                 measureValue: tmp[j]==='0'?'닫힘': '열림',
