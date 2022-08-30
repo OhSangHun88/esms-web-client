@@ -91,19 +91,21 @@
                 <div class="list bd_btm">
                     <table>
                         <colgroup>
-                            <col style="width:10%;">
+                            <col style="width:5%;">
+                            <col style="width:11%;">
+                            <col style="width:11%;">
                             <col style="width:13%;">
-                            <col style="width:13%;">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
-                            <col style="width:20%;">
+                            <col style="width:15%;">
+                            <col style="width:15%;">
+                            <col style="width:15%;">
+                            <col style="width:15%;">
                         </colgroup>
                         <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">선택</th>
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
+                                <th scope="col">MAC Addr</th>
                                 <th scope="col">감지 주기(초)</th>
                                 <th scope="col">G/W 전송주기(초)</th>
                                 <th scope="col">APP 전송주기(초)</th>
@@ -114,13 +116,14 @@
                     <div class="tbody htype-03">
                         <table>
                             <colgroup>
-                                <col style="width:10%;">
+                                <col style="width:5%;">
+                                <col style="width:11%;">
+                                <col style="width:11%;">
                                 <col style="width:13%;">
-                                <col style="width:13%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
-                                <col style="width:20%;">
+                                <col style="width:15%;">
+                                <col style="width:15%;">
+                                <col style="width:15%;">
+                                <col style="width:15%;">
                             </colgroup>
                             <tbody v-if="!getCSensorsData">
                                 <tr>
@@ -144,6 +147,7 @@
                                     <td>{{item.sensorTypeNm}}</td>
                                     <!-- {{getCSensorsData[sensorsDetect]}} 이렇게 뽑아서 쓰면 된단말 -->
                                     <td> {{locationCode(item.sensorLocCd)}}</td>
+                                    <td>{{item.macAddr}}</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
                                         <div class="input_area" v-if="sensorsDetect===index">
                                             <input type="text" name="" v-model="sensorDetectCycle" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">초
@@ -192,7 +196,8 @@
                 <div class="list bd_btm">
                     <table>
                         <colgroup>
-                            <col style="width:15%;">
+                            <col style="width:10%;">
+                            <col style="width:10%;">
                             <col style="width:15%;">
                             <col style="width:15%;">
                             <col style="width:26%;">
@@ -203,6 +208,7 @@
                                 <th scope="col">선택</th>
                                 <th scope="col">센서종류</th>
                                 <th scope="col">설치장소</th>
+                                <th scope="col">MAC Addr</th>
                                 <th scope="col">G/W 전송주기(분)</th>
                                 <th scope="col">서버 전송주기(분)</th>                                                
                             </tr>
@@ -211,7 +217,8 @@
                     <div class="tbody htype-03">
                         <table>
                             <colgroup>
-                                <col style="width:15%;">
+                                <col style="width:10%;">
+                                <col style="width:10%;">
                                 <col style="width:15%;">
                                 <col style="width:15%;">
                                 <col style="width:26%;">
@@ -219,6 +226,7 @@
                             </colgroup>
                             <tbody v-if="!getCSensorsData">
                                 <tr>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -237,6 +245,7 @@
                                     </td>
                                     <td>{{item.sensorTypeNm}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
+                                    <td>{{item.macAddr}}</td>
                                     <td >
                                         <div class="input_area" v-if="sensorsState === index">
                                             <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" :name="`stateGwSendCycle_${index}`" :id="`stateGwSendCycle_${index}`" v-model="stateGwSendCycle"

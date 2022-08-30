@@ -89,8 +89,8 @@
                     <table>
                         <colgroup>
                             <col style="width:10%;">
-                            <col v-if="code3 || code4" style="width:15%;">
                             <col style="width:15%;">
+                            <col v-if="sensorList === 'act' || sensorList === 'door'" style="width:15%;">
                             <col style="width:25%;">
                             <col style="width:25%;">
                             <col style="width:25%;">
@@ -98,8 +98,8 @@
                         <thead class="thead htype-01">
                             <tr>
                                 <th scope="col">순번</th>
-                                <th v-if="code3 || code4" scope="col">관리번호</th>
                                 <th scope="col">설치장소</th>
+                                <th v-if="sensorList === 'act' || sensorList === 'door'" scope="col">관리번호</th>
                                 <th scope="col">측정일시</th>
                                 <th scope="col">보고일시</th>
                                 <!-- <th scope="col">{{
@@ -119,8 +119,8 @@
                         <table>
                             <colgroup>
                                 <col style="width:10%;">
-                                <col v-if="code3 || code4" style="width:15%;">
                                 <col style="width:15%;">
+                                <col v-if="sensorList === 'act' || sensorList === 'door'" style="width:15%;">
                                 <col style="width:25%;">
                                 <col style="width:25%;">
                                 <col style="width:25%;">
@@ -128,8 +128,8 @@
                             <tbody>
                                 <tr  v-for="(item,index) in listData" v-bind:key="index">
                                     <td>{{num(index+1)}}</td>
-                                    <td v-if="code3 || code4">{{item.sensorIndex}}</td>
                                     <td>{{locationCode(item.sensorLocCd)}}</td>
+                                    <td v-if="sensorList === 'act' || sensorList === 'door'">{{item.sensorIndex}}</td>
                                     <td>{{item.measureDtime}}</td>
                                     <td>{{item.regDtime}}</td>
                                     <td>{{item.measureValue}}</td>
@@ -182,7 +182,7 @@ import pagination from "../../pages/pagination.vue"
         sensorsTmp3Data: [],
         locCode: '',
         //{text: '전체', value: 1},{text: '전체', value: 5},
-        searchCheck1 : 1, searchCheck2 : 0,
+        searchCheck1 : 1, searchCheck2 : 0, sensorList:'',
         errorpopup1: false, errorpopup2: false,
 
         listData: [],
@@ -335,7 +335,7 @@ import pagination from "../../pages/pagination.vue"
                             measureDtime: moment(tmpData.measureDtime).subtract(tmpData.intervalTime*(tmp.length-1), 's').add(tmpData.intervalTime*j, 's').format('YYYY-MM-DD HH:mm:ss'),
                             regDtime : tmpData.regDtime,
                         })
-                        
+                        this.sensorList = ''
                         }
                         
                     }
@@ -354,6 +354,7 @@ import pagination from "../../pages/pagination.vue"
                                 regDtime : tmpData.regDtime,
                             })
                         }
+                        this.sensorList = ''
                     }
                 }else if(this.selectedValue==="TPE012"){
                     for(let i=0; i <lengthTmp.totalCount ;i++ ){
@@ -371,6 +372,7 @@ import pagination from "../../pages/pagination.vue"
                             })
                         
                         }
+                        this.sensorList = ''
                         
                     }
                 }else if(this.selectedValue==="TPE002"){
@@ -388,9 +390,8 @@ import pagination from "../../pages/pagination.vue"
                             measureDtime: moment(tmpData.measureDtime).subtract(tmpData.intervalTime*(tmp.length-1), 's').add(tmpData.intervalTime*j, 's').format('YYYY-MM-DD HH:mm:ss'),
                             regDtime : tmpData.regDtime,
                         })
-                        
                         }
-                        
+                        this.sensorList = 'act'
                     }
                 }else if(this.selectedValue==="TPE004"){
                     for(let i=0; i <lengthTmp.totalCount ;i++ ){
@@ -408,6 +409,7 @@ import pagination from "../../pages/pagination.vue"
                                 regDtime : tmpData.regDtime,
                             })     
                         }
+                        this.sensorList = 'door'
                     }
                 }
                 console.log("sensorsData is ")
@@ -445,6 +447,7 @@ import pagination from "../../pages/pagination.vue"
                     }
                 }
                 console.log(this.sensorsTmp1Data)
+                this.sensorList = ''
             })
             .catch(error => {
                 console.log("fail to load")
@@ -477,6 +480,7 @@ import pagination from "../../pages/pagination.vue"
                     
                     }
                 }
+                this.sensorList = ''
                 console.log(this.sensorsTmp2Data)
             })
             .catch(error => {
@@ -510,6 +514,7 @@ import pagination from "../../pages/pagination.vue"
                     
                     }
                 }
+                this.sensorList = ''
                 console.log(this.sensorsTmp3Data)
             })
             .catch(error => {
@@ -604,6 +609,7 @@ import pagination from "../../pages/pagination.vue"
       }
         return result
     },
+
     makeTime(){
         //measureStartDate, measureEndDate
     },
