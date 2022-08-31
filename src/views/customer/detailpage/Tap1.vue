@@ -5,13 +5,13 @@
         <div class="popup_wrap type-02">
           <div class="title_wrap">
             <div class="title">경고</div>
-            <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
+            <button type="button" class="btn_close" @click="errorpopupClose(1)">닫기</button>
           </div>
           <div class="popup_cnt">
             <p class="alert_txt">조회 종료일자가 시작일자보다 빠릅니다<br/>일자를 다시 선택하여 주십시요</p>
           </div>
           <div class="popbtn_area type-02">
-            <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
+            <button type="button" class="btn form2" @click="errorpopupClose(1)">확인</button>
           </div>
         </div>
       </div>
@@ -19,13 +19,13 @@
         <div class="popup_wrap type-02">
           <div class="title_wrap">
             <div class="title">경고</div>
-            <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
+            <button type="button" class="btn_close" @click="errorpopupClose(2)">닫기</button>
           </div>
           <div class="popup_cnt">
             <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
           </div>
           <div class="popbtn_area type-02">
-            <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
+            <button type="button" class="btn form2" @click="errorpopupClose(2)">확인</button>
           </div>
         </div>
       </div>
@@ -168,8 +168,10 @@ import pagination from "../../pages/pagination.vue"
         code2: '',
         code3: '',
         code4: '',
-        measureStartDate:moment().subtract(7,'days').format('YYYY-MM-DD'),
+        measureStartDate:moment().subtract(6,'days').format('YYYY-MM-DD'),
         measureEndDate: moment().format('YYYY-MM-DD'),
+        checkStartDate:moment().subtract(6,'days').format('YYYY-MM-DD'),
+        checkEndDate:moment().format('YYYY-MM-DD'),
         labelText:'정보',
         codeText:'°C',
         envData:[{text: '환경 정보', value:''},{text: '온도', value: 2},{text: '조도', value: 3},{text: '습도', value: 4}, ],
@@ -230,6 +232,13 @@ import pagination from "../../pages/pagination.vue"
       }
       return index
     },
+    errorpopupClose(input){
+        console.log(input)
+        switch(input){
+            case 1 : this.errorpopup1 = false; this.measureStartDate=this.checkStartDate; this.measureEndDate=this.checkEndDate; break;
+            case 2 : this.errorpopup2 = false; this.measureStartDate=this.checkStartDate; this.measureEndDate=this.checkEndDate; break;
+        }
+    },
     filterChange(input){
         switch (input){
           case 1 : this.code2='';this.code3='';this.code4=''; break;
@@ -242,10 +251,12 @@ import pagination from "../../pages/pagination.vue"
     manageInquiry(input,input2,input3,input4) {
         if(this.measureStartDate > this.measureEndDate){
         this.errorpopup1 = true
-      }/*else if(this.measureEndDate > moment(this.measureStartDate).add(6, 'days').format('YYYY-MM-DD')){
+      }else if(this.measureEndDate > moment(this.measureStartDate).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
-      }*/else{
+      }else{
         this.searchCheck2 = 1
+        this.checkStartDate = this.measureStartDate
+        this.checkEndDate = this.measureEndDate
         this.getSensorsData(input,input2,input3,input4);
       }
         

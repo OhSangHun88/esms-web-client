@@ -6,13 +6,13 @@
                 <div class="popup_wrap type-02">
                     <div class="title_wrap">
                         <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
+                        <button type="button" class="btn_close" @click="errorpopupClose(1)">닫기</button>
                     </div>
                     <div class="popup_cnt">
                         <p class="alert_txt">조회 종료일자가 시작일자보다 빠릅니다<br/>일자를 다시 선택하여 주십시요</p>
                     </div>
                     <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
+                        <button type="button" class="btn form2" @click="errorpopupClose(1)">확인</button>
                     </div>
                 </div>
             </div>
@@ -20,13 +20,13 @@
                 <div class="popup_wrap type-02">
                     <div class="title_wrap">
                         <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
+                        <button type="button" class="btn_close" @click="errorpopupClose(2)">닫기</button>
                     </div>
                     <div class="popup_cnt">
                         <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
                    </div>
                     <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
+                        <button type="button" class="btn form2" @click="errorpopupClose(2)">확인</button>
                     </div>
                 </div>
             </div>
@@ -304,7 +304,9 @@ export default {
         orgSido:'', orgSgg:'', orgCode:'',
         cBirthday:'', cAddr: '', NCount: 0,
         selectedSidoItems:'', selectedSggItems:'', selectedOrgItems:'', selectedRecipientNm: '',
-        errorpopup1: false, errorpopup2: false, asRequestData: null,popCheck: false
+        errorpopup1: false, errorpopup2: false, asRequestData: null,popCheck: false,
+        checkStartDate:moment().subtract(6,'days').format('YYYY-MM-DD'),
+        checkEndDate:moment().format('YYYY-MM-DD'),
       }
     },
     created() {
@@ -337,6 +339,13 @@ export default {
         console.error("There was an error!", error);
       });
 
+    },
+    errorpopupClose(input){
+        console.log(input)
+        switch(input){
+            case 1 : this.errorpopup1 = false; this.s_date=this.checkStartDate; this.e_date=this.checkEndDate; break;
+            case 2 : this.errorpopup2 = false; this.s_date=this.checkStartDate; this.e_date=this.checkEndDate; break;
+        }
     },
 
     // 시/군/구 목록
@@ -480,6 +489,8 @@ export default {
       }/*else if(this.e_date > moment(this.s_date).add(6, 'days').format('YYYY-MM-DD')){
         this.errorpopup2 = true
       }*/else{
+        this.checkStartDate = this.s_date
+        this.checkEndDate = this.e_date
         this.getRecipientData();
         
       }

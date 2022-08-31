@@ -6,13 +6,13 @@
                 <div class="popup_wrap type-02">
                     <div class="title_wrap">
                         <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
+                        <button type="button" class="btn_close" @click="errorpopupClose(1)">닫기</button>
                     </div>
                     <div class="popup_cnt">
                         <p class="alert_txt">조회 종료일자가 시작일자보다 빠릅니다<br/>일자를 다시 선택하여 주십시요</p>
                     </div>
                     <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
+                        <button type="button" class="btn form2" @click="errorpopupClose(1)">확인</button>
                     </div>
                 </div>
             </div>
@@ -20,13 +20,13 @@
                 <div class="popup_wrap type-02">
                     <div class="title_wrap">
                         <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
+                        <button type="button" class="btn_close" @click="errorpopupClose(2)">닫기</button>
                     </div>
                     <div class="popup_cnt">
                         <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
                    </div>
                     <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
+                        <button type="button" class="btn form2" @click="errorpopupClose(2)">확인</button>
                     </div>
                 </div>
             </div>
@@ -242,6 +242,8 @@ export default {
         noticeId:'', orgdata:'', orgNm:'',
         searchCheck1 : 1, searchCheck2 : 0,
         file_name:'', file_size:'', voiceFile:'',
+        checkStartDate:moment().subtract(6,'days').format('YYYY-MM-DD'),
+        checkEndDate:moment().format('YYYY-MM-DD'),
 
         listData: [],
         total: '',
@@ -493,6 +495,13 @@ export default {
       this.s_date=moment().subtract(6, 'days').format('YYYY-MM-DD');
       this.e_date=moment().format('YYYY-MM-DD');
     },
+    errorpopupClose(input){
+        console.log(input)
+        switch(input){
+            case 1 : this.errorpopup1 = false; this.s_date=this.checkStartDate; this.e_date=this.checkEndDate; break;
+            case 2 : this.errorpopup2 = false; this.s_date=this.checkStartDate; this.e_date=this.checkEndDate; break;
+        }
+    },
     manageInquiry() {
       if(this.s_date > this.e_date){
         this.errorpopup1 = true
@@ -500,6 +509,8 @@ export default {
         this.errorpopup2 = true
       }*/else{
         this.searchCheck2 = 1
+        this.checkStartDate = this.s_date
+        this.checkEndDate = this.e_date
         this.getnoticeData();
       }
     },

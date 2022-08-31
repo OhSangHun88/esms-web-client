@@ -40,7 +40,7 @@
           </ul>
         </li>
         <li :class="getPath==='/as'? 'drop on':'drop'">
-          <a href="#"><router-link to="/as/allView" ><i class="ico-5"></i>A/S관리</router-link></a>
+          <a href="#"><router-link to="/as/Request" ><i class="ico-5"></i>A/S관리</router-link></a>
           <ul class="sub_menu">
             <li :class="getDetailPath==='/as/Request'? 'on':''"><a href="#"><router-link to ="/as/Request">A/S 요청</router-link></a></li>
             <li :class="getDetailPath==='/as/Confirm'? 'on':''"><a href="#"><router-link to ="/as/Confirm">A/S 접수</router-link></a></li>

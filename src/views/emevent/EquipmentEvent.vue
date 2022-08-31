@@ -6,13 +6,13 @@
                 <div class="popup_wrap type-02">
                     <div class="title_wrap">
                         <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup1 = false">닫기</button>
+                        <button type="button" class="btn_close" @click="errorpopupClose(1)">닫기</button>
                     </div>
                     <div class="popup_cnt">
                         <p class="alert_txt">조회 종료일자가 시작일자보다 빠릅니다<br/>일자를 다시 선택하여 주십시요</p>
                     </div>
                     <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup1 = false">확인</button>
+                        <button type="button" class="btn form2" @click="errorpopupClose(1)">확인</button>
                     </div>
                 </div>
             </div>
@@ -20,13 +20,13 @@
                 <div class="popup_wrap type-02">
                     <div class="title_wrap">
                         <div class="title">경고</div>
-                        <button type="button" class="btn_close" @click="errorpopup2 = false">닫기</button>
+                        <button type="button" class="btn_close" @click="errorpopupClose(2)">닫기</button>
                     </div>
                     <div class="popup_cnt">
                         <p class="alert_txt">일주일단위로 조회 가능합니다<br/>일자를 다시 선택하여 주십시요</p>
                    </div>
                     <div class="popbtn_area type-02">
-                        <button type="button" class="btn form2" @click="errorpopup2 = false">확인</button>
+                        <button type="button" class="btn form2" @click="errorpopupClose(2)">확인</button>
                     </div>
                 </div>
             </div>
@@ -207,6 +207,8 @@ export default {
         {label:'모니터 연결', value:'E1011'}, {label:'모니터 분리', value:'E1012'}, {label:'테스트모드 활성화', value:'E1020'}, {label:'테스트모드 해제', value:'E1021'}, 
         {label:'GW CutOff', value:'E1023'}, {label:'Sensor Rejoin', value:'E1024'}],
         selectedEventItems:'',
+        checkStartDate:moment().subtract(6,'days').format('YYYY-MM-DD'),
+        checkEndDate:moment().format('YYYY-MM-DD'),
 
         listData: [],
         total: '',
@@ -446,6 +448,13 @@ export default {
         }
         return result
     },
+    errorpopupClose(input){
+        console.log(input)
+        switch(input){
+            case 1 : this.errorpopup1 = false; this.s_date=this.checkStartDate; this.e_date=this.checkEndDate; break;
+            case 2 : this.errorpopup2 = false; this.s_date=this.checkStartDate; this.e_date=this.checkEndDate; break;
+        }
+    },
     manageInquiry() {
       if(this.s_date > this.e_date){
         this.errorpopup1 = true
@@ -454,6 +463,8 @@ export default {
       }*/else{
         this.searchCheck2 =1 
         this.page = 1
+        this.checkStartDate = this.s_date
+        this.checkEndDate = this.e_date
         this.getRecipientData();
       }
     },
