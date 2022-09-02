@@ -108,7 +108,7 @@
                             <td>{{item.powerLinkYn===1?'연결':'차단'}}</td>
                             <td>{{item.checkYnCd===0? '정상':'점검대상'}}</td>
                             <td>{{item.batteryValue+'('+changeTaGaBattery(item.batteryValue)+')'}}</td>
-                            <td>{{item.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                            <td>{{item.keepAliveRcvYn===0?'정상':item.keepAliveRcvYn===1?'비정상':'미수신'}}</td>
                             <td>{{item.rssi+'('+changeRssi(item.rssi)+')'}}</td>
                             <td>{{item.typeCd==='1'?'주기' : '기타'}}</td>
                             <td>{{item.stateMeasureDtime}}</td>
@@ -260,9 +260,9 @@
                             <button type="button" :class="sensorsTap===2? 'btn on':'btn'" @click="sensorsTogle(2)" >상세정보</button>
                         </div>
                     </div>
-                    <!-- <div class="btn_area" v-if="this.sensorsTap===2">
+                    <div class="btn_area" v-if="this.sensorsTap===2">
                           <button type="button" style="margin-right:10px" class="btn" @click="changeIncomeNmData()">센서ID 변경</button>
-                    </div> -->
+                    </div>
                 </div>
                 <div class="list" v-if="sensorsTap===1">
                     <table>
@@ -308,12 +308,18 @@
                             </tbody>
                             <tbody v-else>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index,0)">
-                                    <td>{{index+1}}</td>
-                                    <td>{{item.sensorTypeNm}}</td>
-                                    <td>{{locationCode(item.sensorLocCd)}}</td>
-                                    <td>{{item.sensorVersion}}</td>
-                                    <td>{{item.serialNo}}</td>
-                                    <td>{{item.macAddr}}</td>
+                                    <td v-if="index===emphasisValue" style="font-weight: bolder">{{index+1}}</td>
+                                    <td v-else>{{index+1}}</td>
+                                    <td v-if="index===emphasisValue" style="font-weight: bolder">{{item.sensorTypeNm}}</td>
+                                    <td v-else>{{item.sensorTypeNm}}</td>
+                                    <td v-if="index===emphasisValue" style="font-weight: bolder">{{locationCode(item.sensorLocCd)}}</td>
+                                    <td v-else>{{locationCode(item.sensorLocCd)}}</td>
+                                    <td v-if="index===emphasisValue" style="font-weight: bolder">{{item.sensorVersion}}</td>
+                                    <td v-else>{{item.sensorVersion}}</td>
+                                    <td v-if="index===emphasisValue" style="font-weight: bolder">{{item.serialNo}}</td>
+                                    <td v-else>{{item.serialNo}}</td>
+                                    <td v-if="index===emphasisValue" style="font-weight: bolder">{{item.macAddr}}</td>
+                                    <td v-else>{{item.macAddr}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -322,7 +328,7 @@
                 <div class="list" v-if="sensorsTap===2">
                     <table>
                         <colgroup>
-                            <!-- <col style="width:5%;"> -->beforeGWItems
+                            <col style="width:5%;">beforeGWItems
                             <col style="width:8%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
@@ -334,7 +340,7 @@
                         <thead class="thead htype-01">
                             <tr>
                                 <!-- 센서 상세정보 : 순번, 센서명, 센서이전버전, 센서설치버전 입고명, 입고일자, 등록일시 -->
-                                <!-- <th scope="col">선택</th> -->
+                                <th scope="col">선택</th>
                                 <th scope="col">순번</th>
                                 <th scope="col">센서명</th>
                                 <th scope="col">설치버전</th>
@@ -348,7 +354,7 @@
                     <div class="tbody htype-04">
                         <table>
                             <colgroup>
-                                <!-- <col style="width:5%;"> -->
+                                <col style="width:5%;">
                                 <col style="width:8%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
@@ -359,7 +365,7 @@
                             </colgroup>
                             <tbody v-if="!this.getCSensorsData">
                                 <tr >
-                                    <!-- <td></td> -->
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -371,24 +377,31 @@
                             </tbody>
                             <tbody v-else>
                                 <tr v-for="(item,index) in getCSensorsData" v-bind:key="index" @click="getBSensers(index,0)">
-                                    <!-- <td>
+                                    <td>
                                       <div class="chk_area radio">
                                         <input type="radio" name="saveChangeData" :id="`radio1_${index}`" v-model="saveChangeData" :value="index" @click="reset(index)">
                                         <label :for="`radio1_${index}`" class="chk"><i class="ico_chk"></i></label>
                                       </div>
-                                    </td> -->
-                                    <td>{{index+1}}</td>
-                                    <td>{{item.sensorTypeNm}}</td>
-                                    <td>{{item.sensorVersion}}</td>
-                                    <td>{{item.previousVersion}}</td>
-                                    <!-- <td v-if="saveChangeData === index">
+                                    </td>
+                                    <td v-if="index===emphasisValue" style="font-weight: bolder">{{index+1}}</td>
+                                    <td v-else>{{index+1}}</td>
+                                    <td v-if="index===emphasisValue" style="font-weight: bolder">{{item.sensorTypeNm}}</td>
+                                    <td v-else>{{item.sensorTypeNm}}</td>
+                                    <td v-if="index===emphasisValue" style="font-weight: bolder">{{item.sensorVersion}}</td>
+                                    <td v-else>{{item.sensorVersion}}</td>
+                                    <td v-if="index===emphasisValue" style="font-weight: bolder">{{item.previousVersion}}</td>
+                                    <td v-else>{{item.previousVersion}}</td>
+                                    <td v-if="saveChangeData === index">
                                       <div class="input_area" style="margin-left:0px; margin-right:0px;">
                                         <input type="text" name="" id="" v-model="changeIncomeNm" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
                                       </div>
-                                    </td> -->
-                                    <td>{{!item.incomeNm? '' : item.incomeNm}}</td>
-                                    <td>{{item.regDtime}}</td>
-                                    <td>{{item.updDtime}}</td>
+                                    </td>
+                                    <td v-else-if="index===emphasisValue" style="font-weight: bolder">{{!item.incomeNm? '' : item.incomeNm}}</td>
+                                    <td v-else>{{!item.incomeNm? '' : item.incomeNm}}</td>
+                                    <td v-if="index===emphasisValue" style="font-weight: bolder">{{item.regDtime}}</td>
+                                    <td v-else>{{item.regDtime}}</td>
+                                    <td v-if="index===emphasisValue" style="font-weight: bolder">{{item.updDtime}}</td>
+                                    <td v-else>{{item.updDtime}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -457,7 +470,7 @@
                                     <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.powerLinkYn===undefined||this.getCGatewayData2.powerLinkYn===null||this.getCGatewayData2.powerLinkYn==='' ? '' : this.getCGatewayData2.powerLinkYn===1?'연결':'차단'}}</td>
                                     <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.checkYnCd===null||this.getCGatewayData2.checkYnCd===undefined||this.getCGatewayData2.checkYnCd===''? '': this.getCGatewayData2.checkYnCd===0? '정상':'점검대상'}}</td>
                                     <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.batteryValue+"("+changeTaGaBattery(getCGatewayData2.batteryValue)+")"}}</td>
-                                    <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.keepAliveRcvYn===1?'정상':this.getCGatewayData2.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.keepAliveRcvYn===0?'정상':this.getCGatewayData2.keepAliveRcvYn===1?'비정상':'미수신'}}</td>
                                     <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.rssi+"("+changeRssi(this.getCGatewayData2.rssi)+")"}}</td>
                                     <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.typeCd==='1'?'주기':'기타'}}</td>
                                     <td>{{!this.getCGatewayData2? '':this.getCGatewayData2.stateMeasureDtime}}</td>
@@ -470,7 +483,7 @@
                                     <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.powerLinkYn===undefined||this.beforeVersionGatewayData.powerLinkYn===null||this.beforeVersionGatewayData.powerLinkYn==='' ? '' : this.beforeVersionGatewayData.powerLinkYn===1?'연결':'차단'}}</td>
                                     <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.checkYnCd===null||this.beforeVersionGatewayData.checkYnCd===undefined||this.beforeVersionGatewayData.checkYnCd===''? '': this.beforeVersionGatewayData.checkYnCd===0? '정상':'점검대상'}}</td>
                                     <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.batteryValue+"("+changeTaGaBattery(this.beforeVersionGatewayData.batteryValue)+")"}}</td>
-                                    <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.keepAliveRcvYn===1?'정상':this.beforeVersionGatewayData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.keepAliveRcvYn===0?'정상':this.beforeVersionGatewayData.keepAliveRcvYn===1?'비정상':'미수신'}}</td>
                                     <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.rssi+"("+changeRssi(this.beforeVersionGatewayData.rssi)+")"}}</td>
                                     <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.typeCd==='1'?'주기':'기타'}}</td>
                                     <td>{{!this.beforeVersionGatewayData? '':this.beforeVersionGatewayData.stateMeasureDtime}}</td>
@@ -602,7 +615,7 @@
                                     <td>{{!this.getBSensorsData? '':this.getBSensorsData.batteryValue+"("+changeSensorBattery(this.getBSensorsData.batteryValue)+")"}}</td>
                                     <td>{{!this.getBSensorsData? '': this.getBSensorsData.rssi===null? '' : this.getBSensorsData.rssi+"("+changeRssi(this.getBSensorsData.rssi)+")"}}</td>
                                     <td>{{this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
-                                    <td>{{!this.getBSensorsData.keepAliveRcvYn? '':this.getBSensorsData.keepAliveRcvYn===1?'정상':this.getBSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.getBSensorsData.keepAliveRcvYn? '':this.getBSensorsData.keepAliveRcvYn===0?'정상':this.getBSensorsData.keepAliveRcvYn===1?'비정상':'미수신'}}</td>
                                     <td>{{!this.getBSensorsData.stateMeasureDtime? '':this.getBSensorsData.stateMeasureDtime}}</td>
                                     <td>{{!this.getBSensorsData.updDtime? '':this.getBSensorsData.updDtime}}</td>
                                 </tr>
@@ -614,7 +627,7 @@
                                     <td>{{!this.beforeVersionSensorsData.batteryValue? '':this.beforeVersionSensorsData.batteryValue==='0'?'0': this.beforeVersionSensorsData.batteryValue+"("+changeSensorBattery(this.beforeVersionSensorsData.batteryValue)+")"}}</td>
                                     <td>{{!this.beforeVersionSensorsData? '': this.beforeVersionSensorsData.rssi===null? '': this.beforeVersionSensorsData.rssi+"("+changeRssi(this.beforeVersionSensorsData.rssi)+")"}}</td>
                                     <td>{{this.beforeVersionSensorsData.checkYnCd ===null|| this.beforeVersionSensorsData.checkYnCd ===undefined ? '' : this.beforeVersionSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
-                                    <td>{{!this.beforeVersionSensorsData.keepAliveRcvYn? '': this.beforeVersionSensorsData.keepAliveRcvYn===1?'정상':this.beforeVersionSensorsData.keepAliveRcvYn===0?'비정상':'미수신'}}</td>
+                                    <td>{{!this.beforeVersionSensorsData.keepAliveRcvYn? '': this.beforeVersionSensorsData.keepAliveRcvYn===0?'정상':this.beforeVersionSensorsData.keepAliveRcvYn===1?'비정상':'미수신'}}</td>
                                     <td>{{!this.beforeVersionSensorsData.stateMeasureDtime? '': this.beforeVersionSensorsData.stateMeasureDtime}}</td>
                                     <td>{{!this.beforeVersionSensorsData.updDtime? '': this.beforeVersionSensorsData.updDtime}}</td>
                                 </tr>
@@ -659,6 +672,7 @@ import axios from "axios";
       firmwarelist:[], reverseCheckpopup:false, cmdA4postpopup:false,
       firmwareCData:'', beforeGWpopup:false, beforeGWItems:[], 
       saveChangeData:'', changeIncomeNm:'',changeIncomeNm2:'', changeSensorId:'', changeSensorData:'', radiocheck:'', inputCheck:'',
+      emphasisValue:'',
     }
    },
    created() {
@@ -679,14 +693,13 @@ import axios from "axios";
        async getCSensers(){
         //    this.pending = false;
         let tmpData = null;
+        this.emphasisValue = ''
         const url  = this.$store.state.serverApi + `/admin/sensors?recipientId=${this.recipientId}&recordCountPerPage=30` 
          await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
           .then(res => {
             tmpData = res.data.data
             this.getCSensorsData = tmpData
             this.getBSensorsData = tmpData[0]
-            console.log(this.getCSensorsData)
-            console.log(this.getCSensorsData.length)
           })
           .catch(error => {
               console.log("fail to load")
@@ -746,6 +759,7 @@ import axios from "axios";
     },
     // 센서 클릭 시 '장비상태정보' 변경 함수
     getBSensers(input,time){
+        this.emphasisValue = input
         if(!input) input =0;
         if(!time) time =0;
         if(time===0){
@@ -1221,14 +1235,17 @@ import axios from "axios";
         if(this.radiocheck === this.getCSensorsData[index]){
             this.saveChangeData = ''
         }
-        if(this.getCSensorsData[index].incomeNm){
+        /*if(this.getCSensorsData[index].incomeNm){
             this.changeIncomeNm = this.getCSensorsData[index].incomeNm.padStart(6, 0)
             this.changeIncomeNm2 = this.getCSensorsData[index].incomeNm.padStart(6, 0)
         }else if(!this.getCSensorsData[index].incomeNm){
             this.changeIncomeNm = String(this.getCSensorsData[index].sensorId)
             this.changeIncomeNm = this.changeIncomeNm.padStart(6, 0)
             this.changeIncomeNm2 = this.changeIncomeNm.padStart(6, 0)
-        }
+        }*/
+        this.changeIncomeNm = this.getCSensorsData[index].incomeNm
+        this.changeIncomeNm2 = this.getCSensorsData[index].incomeNm
+
         this.changeSensorData = {  
             sensorId: this.getCSensorsData[index].sensorId,
             orgId: this.getCSensorsData[index].orgId,
@@ -1285,7 +1302,7 @@ import axios from "axios";
             alert("센서ID는 여섯자리까지 입력 가능합니다.")
             return false
         }
-        if(this.changeIncomeNm.length === 6){
+        /*if(this.changeIncomeNm.length === 6){
             this.changeIncomeNm
         }else if(this.changeIncomeNm.length < 6){
             alert("센서ID를 여섯자리까지 입력하여 주세요.")
@@ -1305,17 +1322,37 @@ import axios from "axios";
             }else{
                 check3 = 0
             }
+        }*/
+        check = this.getCSensorsData.filter(cd=>{
+            return cd.incomeNm === this.changeIncomeNm
+        })
+        check2 = this.getCSensorsData.filter(cd=>{
+            return cd.incomeNm === null || cd.incomeNm === '' || cd.incomeNm === undefined
+        })
+        console.log(check)
+        console.log(check2)
+        for(let i =0; i<check2.length; i++){
+            if(check2[i].sensorId === this.changeIncomeNm){
+                check3 = 1
+                break;
+            }else{
+                check3 = 0
+            }
         }
-        if(check.length === 1 || check3 === 1){
+        if(check.length !== 0 || check3 === 1){
             alert("이미 등록된 센서ID 입니다.")
             this.changeIncomeNm = this.changeIncomeNm2
             return false
         }
+
+
         this.changeSensorData.incomeNm = this.changeIncomeNm
-        let url = this.$store.state.serverApi+`/admin//sensors/${this.changeSensorData.sensorId}`
+        console.log(this.changeSensorData)
+        let url = this.$store.state.serverApi+`/admin/sensors/${this.changeSensorData.sensorId}`
         await axios.post(url,this.changeSensorData, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
             .then(res => {
               let resData = res.data.data
+              console.log(res)
               if(resData){
                 alert("성공적으로 변경되었습니다.")
                 this.saveChangeData = ''

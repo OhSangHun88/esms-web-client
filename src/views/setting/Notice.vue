@@ -303,9 +303,9 @@ export default {
     },
     handleFileChange(e){
       console.log(e.target.files)
-      if(e.target.files[0].type !== 'audio/midi' && e.target.files[0].type !== 'audio/mpeg' && e.target.files[0].type !== 'audio/x-m4a' 
+      if(e.target.files[0].type !== 'audio/midi' && e.target.files[0].type !== 'audio/mpeg' && e.target.files[0].type !== 'audio/x-m4a' && e.target.files[0].type !== 'audio/mp3' 
       && e.target.files[0].type !== 'audio/webm' && e.target.files[0].type !== 'audio/ogg' && e.target.files[0].type !== 'audio/wav'){
-          alert("음성 파일을 다시 확인하여 주세요")
+          alert("음성 파일은 midi/mpeg/mp3/m4a/webm/ogg/wav 파일만 가능합니다.\n음성 파일을 다시 확인하여 주세요")
           return false
       }
       

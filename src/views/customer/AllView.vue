@@ -98,7 +98,7 @@
                 </div>
             </div>
             <div class="popbtn_area">
-              <button type="button" class="btn form2" @click="regUser()">회원가입</button>
+              <button type="button" class="btn form2" @click="regUser()">등록</button>
               <button type="button" class="btn" @click="closeModal">취 소</button>
             </div>
         </div>
@@ -309,7 +309,6 @@
                 <colgroup>
                     <col style="width:5%;">
                     <col style="width:5%;">
-                    <col style="width:5%;">
                     <col style="width:8%;">
                     <col style="width:4%;">
                     <col style="width:4%;">
@@ -325,7 +324,6 @@
                     <tr>
                         <th scope="col">선택</th>
                         <th scope="col">대상자명<a href="#"><img @click="sortList(1)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
-                        <th scope="col">대상자ID<a href="#"><img @click="sortList(2)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
                         <th scope="col">생년월일<a href="#"><img @click="sortList(3)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
                         <th scope="col">나이<a href="#"><img @click="sortList(4)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
                         <th scope="col">성별<a href="#"><img @click="sortList(5)" src = "@/assets/images/sortArrow.png" style="width: 18px; height: 50%"/></a></th>
@@ -342,7 +340,6 @@
             <div class="tbody">
                 <table>
                     <colgroup>
-                        <col style="width:5%;">
                         <col style="width:5%;">
                         <col style="width:5%;">
                         <col style="width:8%;">
@@ -365,7 +362,6 @@
                               </div>
                             </td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.recipientNm}}</a></td>
-                            <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.recipientId}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.birthday}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{makeAge(item.birthday)}}</a></td>
                             <td><a href="#" @click="goToDetailView(item.recipientId)">{{item.sex==="M"?'남':'여'}}</a></td>
@@ -1070,7 +1066,7 @@ export default {
   },
   async changeData(){
     if(this.saveChangeData===null||this.saveChangeData===undefined){
-        alert("변경하시고자 하는 값을 선택해 주세요"); 
+        alert("변경하시고자 하는 대상자를 선택해 주세요"); 
         return;
     }
     let changeDatatmp = this.recipientItems[this.saveChangeData]

@@ -392,7 +392,7 @@ import pagination from "../../pages/pagination.vue"
                         tmp = res.data.data[i].measureValue.split(',')
                         for(let j=tmp.length-1; j >=0 ;j-- ){
                             this.sensorsData.push({
-                                sensorIndex: tmpData.sensorIndex,
+                            sensorIndex: tmpData.sensorIndex,
                             sensorId: tmpData.sensorId,
                             sensorTypeCd: tmpData.sensorTypeCd,
                             measureValue: tmp[j] + this.codeText,
