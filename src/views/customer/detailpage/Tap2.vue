@@ -43,8 +43,9 @@
                 <div class="list">
                     <table>
                         <colgroup>
-                            <col style="width:10%;">
-                            <col style="width:10%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
+                            <col style="width:14%;">
                             <col style="width:10%;">
                             <col style="width:10%;">
                             <col style="width:auto;">
@@ -55,6 +56,7 @@
                             <tr>
                                 <th scope="col">순번</th>
                                 <th scope="col">응급구분</th>
+                                <th scope="col">MAC Addr</th>
                                 <th scope="col">상태</th>
                                 <th scope="col">테스트구분</th>
                                 <th scope="col">신호발생일시</th>
@@ -67,8 +69,9 @@
                     <div class="tbody htype-01">
                         <table>
                             <colgroup>
-                                <col style="width:10%;">
-                                <col style="width:10%;">
+                                <col style="width:8%;">
+                                <col style="width:8%;">
+                                <col style="width:14%;">
                                 <col style="width:10%;">
                                 <col style="width:10%;">
                                 <col style="width:auto;">
@@ -80,6 +83,7 @@
                                 <tr v-for="(item,index) in listData" v-bind:key="index">
                                     <td>{{num(index+1)}}</td>
                                     <td>{{item.typeNm}}</td>
+                                    <td>{{item.macAddr}}</td>
                                     <td>{{item.signalStateNm}}</td>
                                     <td>{{!item.testYn ? '실제상황':'테스트'}}</td> 
                                     <td>{{item.occurDtime}}</td>

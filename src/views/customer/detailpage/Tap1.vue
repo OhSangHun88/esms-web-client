@@ -176,8 +176,9 @@ import pagination from "../../pages/pagination.vue"
         codeText:'°C',
         envData:[{text: '환경 정보', value:''},{text: '온도', value: 2},{text: '조도', value: 3},{text: '습도', value: 4}, ],
         bioData:[{text: '바이오 정보', value: ''},{text: '심장박동', value: 6},{text: '호흡', value: 7},{text: '활동량', value: 8}, ],
-        actPData:[{text: '활동감지기(P) 정보', value: ''},{text: '전체', value: 9},{text: '거실', value: 11},{text: '화장실', value: 10}, ],
-        doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value: 12},{text: '현관', value: 13},{text: '뒷문', value: 14}, ],
+        actPData:[{text: '활동감지기(P) 정보', value: ''},{text: '전체', value: 9},{text: '거실', value: 10},{text: '거실2', value: 11},{text: '안방', value: 12},{text: '안방2', value: 13}
+        ,{text: '화장실', value: 14},{text: '화장실2', value: 15},{text: '주방', value: 16},{text: '주방2', value: 17},{text: '작은방', value: 18},{text: '작은방2', value: 19} ],
+        doorData:[{text: '도어감지기 정보', value: ''},{text: '전체', value:20},{text: '현관', value: 21},{text: '뒷문', value: 22}, ],
         selectedValue : null,
         sensorsTmp1Data: [],
         sensorsTmp2Data: [],
@@ -264,6 +265,22 @@ import pagination from "../../pages/pagination.vue"
     async getSensorsData(input,input2,input3,input4){
         let code = input ? input : input2 ? input2 : input3 ? input3 :  input4 
         //드롭다운 코드화 및 값 설정
+        // switch (code){
+        //   case 1 : this.selectedValue = 'all'; break;
+        //   case 2 : this.selectedValue = 'TPE006'; break;
+        //   case 3 : this.selectedValue = 'TPE008'; break;
+        //   case 4 : this.selectedValue = 'TPE007'; break;
+        //   case 6 : this.selectedValue = 'TPE005'; break;
+        //   case 7 : this.selectedValue = 'TPE011'; break;
+        //   case 8 : this.selectedValue = 'TPE012'; break;
+        //   case 9 : this.selectedValue = 'TPE002'; break;
+        //   case 10 : this.selectedValue = 'TPE002'; break;
+        //   case 11 : this.selectedValue = 'TPE002'; break;
+        //   case 12 : this.selectedValue = 'TPE004'; break;
+        //   case 13 : this.selectedValue = 'TPE004'; break;
+        //   case 14 : this.selectedValue = 'TPE004'; break;
+        // }
+        console.log(code)
         switch (code){
           case 1 : this.selectedValue = 'all'; break;
           case 2 : this.selectedValue = 'TPE006'; break;
@@ -275,13 +292,35 @@ import pagination from "../../pages/pagination.vue"
           case 9 : this.selectedValue = 'TPE002'; break;
           case 10 : this.selectedValue = 'TPE002'; break;
           case 11 : this.selectedValue = 'TPE002'; break;
-          case 12 : this.selectedValue = 'TPE004'; break;
-          case 13 : this.selectedValue = 'TPE004'; break;
-          case 14 : this.selectedValue = 'TPE004'; break;
+          case 12 : this.selectedValue = 'TPE002'; break;
+          case 13 : this.selectedValue = 'TPE002'; break;
+          case 14 : this.selectedValue = 'TPE002'; break;
+          case 15 : this.selectedValue = 'TPE002'; break;
+          case 16 : this.selectedValue = 'TPE002'; break;
+          case 17 : this.selectedValue = 'TPE002'; break;
+          case 18 : this.selectedValue = 'TPE002'; break;
+          case 19 : this.selectedValue = 'TPE002'; break;
+          case 20 : this.selectedValue = 'TPE004'; break;
+          case 21 : this.selectedValue = 'TPE004'; break;
+          case 22 : this.selectedValue = 'TPE004'; break;
         }
         
         //드롭다운 코드화 및 라벨 설정
-        switch (code){
+    //     switch (code){
+    //       case 2 : this.labelText="온도"; this.codeText=" °C"; break;
+    //       case 3 : this.labelText="조도"; this.codeText=" lx"; break;
+    //       case 4 : this.labelText="습도"; this.codeText=" %"; break;
+    //       case 6 : this.labelText="심장박동"; this.codeText=" 회"; break;
+    //       case 7 : this.labelText="호흡"; this.codeText=" 회"; break;
+    //       case 8 : this.labelText="활동량"; this.codeText=" "; break;
+    //       case 9 : this.labelText="횟수"; this.codeText=" 회"; break; // 활동감지기 전체
+    //       case 10 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC005"; break; //화장실
+    //       case 11 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC001"; break; //거실
+    //       case 12 : this.labelText="상태"; this.codeText=" "; break; //도어감지기 전체
+    //       case 13 : this.labelText="상태"; this.codeText=" "; this.locCode="LOC007"; break; //현관
+    //       case 14 : this.labelText="상태"; this.codeText=" "; this.locCode="LOC008"; break;  //뒷문
+    //   }
+      switch (code){
           case 2 : this.labelText="온도"; this.codeText=" °C"; break;
           case 3 : this.labelText="조도"; this.codeText=" lx"; break;
           case 4 : this.labelText="습도"; this.codeText=" %"; break;
@@ -289,13 +328,21 @@ import pagination from "../../pages/pagination.vue"
           case 7 : this.labelText="호흡"; this.codeText=" 회"; break;
           case 8 : this.labelText="활동량"; this.codeText=" "; break;
           case 9 : this.labelText="횟수"; this.codeText=" 회"; break; // 활동감지기 전체
-          case 10 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC005"; break; //화장실
-          case 11 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC001"; break; //거실
-          case 12 : this.labelText="상태"; this.codeText=" "; break; //도어감지기 전체
-          case 13 : this.labelText="상태"; this.codeText=" "; this.locCode="LOC007"; break; //현관
-          case 14 : this.labelText="상태"; this.codeText=" "; this.locCode="LOC008"; break;  //뒷문
+          case 10 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC001"; break; //거실
+          case 11 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC002"; break; //거실2
+          case 12 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC003"; break; //안방
+          case 13 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC004"; break; //안방2
+          case 14 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC005"; break; //화장실
+          case 15 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC006"; break; //화장실2
+          case 16 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC009"; break; //주방
+          case 17 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC0010"; break; //주방2
+          case 18 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC0011"; break; //작은방
+          case 19 : this.labelText="횟수"; this.codeText=" 회"; this.locCode="LOC0012"; break; //작은방2
+          case 20 : this.labelText="상태"; this.codeText=" "; break; //도어감지기 전체
+          case 21 : this.labelText="상태"; this.codeText=" "; this.locCode="LOC007"; break; //현관
+          case 22 : this.labelText="상태"; this.codeText=" "; this.locCode="LOC008"; break;  //뒷문
       }
-        
+        console.log(this.locCode)
         //TPE011
         //&sensorLocCd=${code2}
 
@@ -315,12 +362,14 @@ import pagination from "../../pages/pagination.vue"
         let url=''
         if(code ===8 ){
             url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/actmeasures?sensorTypeCd=${this.selectedValue}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
-        }else if(code ===10 || code ===11|| code ===13||code ===14){
+        }else if(code ===10 || code ===11 || code ===12 || code ===13 || code ===14 || code ===15
+         || code ===16 || code ===17 || code ===18 || code ===19 || code ===21 || code ===22){
             url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${this.selectedValue}&sensorLocCd=${this.locCode}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
         }else{
             url = this.$store.state.serverApi + `/admin/recipients/${this.recipientId}/sensors/measures?sensorTypeCd=${this.selectedValue}&measureStartDate=${this.measureStartDate}&measureEndDate=${this.measureEndDate}`
         }
-        console.log(code)    
+        console.log(code)
+        console.log(url)
         //const url  = `/admin/recipients/${this.recipientId}/sensors`
         if(code !== 1 &&code !== 5){
             await axios.get(url, {headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -408,6 +457,7 @@ import pagination from "../../pages/pagination.vue"
                     for(let i=0; i <lengthTmp.totalCount ;i++ ){
                         tmpData = res.data.data[i]
                         tmp = res.data.data[i].measureValue.split(',')
+                        console.log(url)
                         for(let j=tmp.length-1; j >=0 ;j-- ){
                             this.sensorsData.push({
                                 sensorIndex: tmpData.sensorIndex,

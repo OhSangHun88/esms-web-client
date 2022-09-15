@@ -18,7 +18,7 @@
               <div class="input_area">
                 <p class="input_tit"> 사용자ID *</p>
                 <div class="add_btn_input">
-                  <input type="text"  v-model="selectedUpdateUserId" />
+                  <input type="text"  v-model="selectedUpdateUserId"/>
                   <button type="button" class="input_btn" @click="checkId()">ID 중복 체크</button>
                 </div>
               </div>
@@ -65,6 +65,25 @@
             </div>
             <div class="input_wrap">
               <div class="input_area">
+                <p class="input_tit">우편번호 *</p>
+                <div class="add_btn_input">
+                  <input type="text" value=""  v-model="selectedUpdateZipcode">
+                  <button type="button" class="input_btn" @click="search">검색</button>
+                </div>
+              </div>
+              <div class="input_area">
+                <p class="input_tit">주소 *</p>
+                <input type="text" value="" v-model="selectedUpdateAddr">
+              </div>
+            </div>
+            <div class="input_wrap type-02">
+              <div class="input_area" >
+                <p class="input_tit">상세주소</p>
+                <input type="text" value="" v-model="selectedUpdateDetailAddr">
+              </div>
+            </div> 
+            <div class="input_wrap">
+              <div class="input_area">
                 <p class="input_tit">시/도 *</p>
                 <select v-model="selectedUpdateSidoItems" @change="onChangeSgg($event)">
                   <option v-for="(sido, index) in sidoItems" :value="sido.value" v-bind:key="index">{{sido.label}}</option>
@@ -91,25 +110,7 @@
                 </select>
               </div> -->
             </div>
-            <div class="input_wrap">
-              <div class="input_area">
-                <p class="input_tit">우편번호 *</p>
-                <div class="add_btn_input">
-                  <input type="text" value=""  v-model="selectedUpdateZipcode">
-                  <button type="button" class="input_btn" @click="search">검색</button>
-                </div>
-              </div>
-              <div class="input_area">
-                <p class="input_tit">주소 *</p>
-                <input type="text" value="" v-model="selectedUpdateAddr">
-              </div>
-            </div>
-            <div class="input_wrap type-02">
-              <div class="input_area" >
-                <p class="input_tit">상세주소</p>
-                <input type="text" value="" v-model="selectedUpdateDetailAddr">
-              </div>
-            </div>            
+                       
             <!-- <div class="input_wrap col3"> -->
               <div class="input_wrap">
                 <div class="input_area">
@@ -363,6 +364,25 @@
                           </div>
                         </div>
                         <div class="input_wrap">
+                          <div class="input_area">
+                            <p class="input_tit">우편번호 *</p>
+                            <div class="add_btn_input">
+                              <input type="text" value="" v-model="selectedChangeZipcode">
+                              <button type="button" class="input_btn" @click="search">검색</button>
+                            </div>
+                          </div>
+                          <div class="input_area">
+                            <p class="input_tit">주소 *</p>
+                            <input type="text" value="" v-model="selectedChangeAddr">
+                          </div>
+                        </div>
+                        <div class="input_wrap type-02">
+                            <div class="input_area" >
+                                <p class="input_tit">상세주소</p>
+                                <input type="text" value="" v-model="selectedChangeDetailAddr">
+                            </div>
+                        </div>
+                        <div class="input_wrap">
                             <div class="input_area">
                                 <p class="input_tit">시/도 *</p>
                                 <select v-model="selectedChangeSidoItems" @change="onChangeSgg($event)">
@@ -390,26 +410,6 @@
                                 </select>
                             </div> -->
                         </div>
-                        <div class="input_wrap">
-                          <div class="input_area">
-                            <p class="input_tit">우편번호 *</p>
-                            <div class="add_btn_input">
-                              <input type="text" value="" v-model="selectedChangeZipcode">
-                              <button type="button" class="input_btn" @click="search">검색</button>
-                            </div>
-                          </div>
-                          <div class="input_area">
-                            <p class="input_tit">주소 *</p>
-                            <input type="text" value="" v-model="selectedChangeAddr">
-                          </div>
-                        </div>
-                        <div class="input_wrap type-02">
-                            <div class="input_area" >
-                                <p class="input_tit">상세주소</p>
-                                <input type="text" value="" v-model="selectedChangeDetailAddr">
-                            </div>
-                        </div>
-                        
                         <!-- <div class="input_wrap col3"> -->
                           <div class="input_wrap">
                             <div class="input_area">
@@ -617,7 +617,7 @@ import HeaderComp from "../pages/HeaderComp.vue";
 import axios from "axios";
 import moment from "moment";
 import pagination from "../pages/pagination.vue"
-import { cilAlignCenter } from '@coreui/icons';
+//import { cilAlignCenter } from '@coreui/icons';
 
 
 export default {
@@ -625,6 +625,12 @@ export default {
     components : {
         HeaderComp,
         pagination
+    },
+    watch:{
+      selectedUpdateAddr:"onChangeSgg",
+      selectedChangeAddr:"onChangeSgg",
+      selectedUpdateSggItems:"onChangeOrg",
+      selectedChangeSggItems:"onChangeOrg"
     },
     data(){
       return{
@@ -668,6 +674,9 @@ export default {
         check:'',
         birthdayHyphen:'', e_date: '',
         searchCheck1 : 1, searchCheck2 : 0,
+
+        UpdateAddr:[], UpdateAddr1:'', UpdateAddr2:'', UpdateAddr3:'',
+        ChangeAddr:[], ChangeAddr1:'', ChangeAddr2:'', ChangeAddr3:'',
 
         listData: [],
         total: '',
@@ -775,7 +784,9 @@ export default {
           });
           
           this.sggItems = [...tmpResult2,...tmpResult]
+          console.log(this.sggItems)
           this.chargeRegionItems = [...tmpResult2,...tmpResult]
+          this.autoUpdateSgg()
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -883,15 +894,48 @@ export default {
       
     },
     onChangeSgg(event){
-      console.log(this.selectedUpdateSidoItems)
-      this.sidoCd = event.target.value
+      let address = []
+      if(typeof event === 'object'){
+        this.sidoCd = event.target.value
+      }else if(typeof event === 'string'){
+      console.log(event)
+      address = event.split(' ')
+      let address1 = address[0]
+      if(address1 === '서울'){
+        address1 += '특별시'
+      }else if(address1 === '부산' || address1 === '대구' || address1 === '인천' || address1 === '광주' || address1 === '대전' || address1 === '울산'){
+        address1 += '광역시'
+      }else if(address1 === '경기' || address1 === '강원'){
+        address1 += '도'
+      }else if(address1 === '충북'){
+        address1 = '충청북도'
+      }else if(address1 === '충남'){
+        address1 = '충청남도'
+      }else if(address1 === '전북'){
+        address1 = '전라북도'
+      }else if(address1 === '전남'){
+        address1 = '전라남도'
+      }else if(address1 === '경북'){
+        address1 = '경상북도'
+      }else if(address1 === '경남'){
+        address1 = '경상남도'
+      }  
+      let addressSido = []
+      addressSido = this.sidoItems.filter(cd=>{
+        return cd.label === address1
+      })
+        this.sidoCd = addressSido[0].value
+      }
       this.getSggData()
       this.sggCd = ''
       this.getOrgmData()
     },
     onChangeOrg(event) {
-      this.sggCd = event.target.value
-      console.log(this.sggCd)
+      if(typeof event === 'object'){
+        this.sggCd = event.target.value
+      }else if(typeof event === 'string'){
+        this.sggCd = event
+      }
       this.getOrgmData()
     },
     // 등록 시 등록 변수 초기화
@@ -1450,10 +1494,6 @@ export default {
         }
       }
     },
-    autoAddr(event){
-      let addr = event.target.value
-      console.log(addr)
-    },
     getMask(birthday){
       let res = ''
       console.log("this ok")
@@ -1535,41 +1575,57 @@ export default {
         this.selectedChangeZipcode = data.zonecode;
         this.selectedUpdateAddr = data.roadAddress;
         this.selectedChangeAddr = data.roadAddress;
-        console.log(this.selectedUpdateAddr)
-        let addr = []
-        let addr1 = ''
-        let addr2 = ''
-        addr = this.selectedUpdateAddr.split(' ')
-        addr1 = addr[0]
-        addr2 = addr[1]
-        if(addr1 === '서울'){
-          addr1 = addr1 + '특별시'
-        }else if(addr1 === '부산' || addr1 === '대구' || addr1 === '인천' || addr1 === '광주' || addr1 === '대전' || addr1 === '울산'){
-          addr1 = addr1 + '광역시'
-        }else if(addr1 === '경기' || addr1 === '강원'){
-          addr1 = addr1 + '도'
-        }else if(addr1 === '충북'){
-          addr1 = '충청북도'
-        }else if(addr1 === '충남'){
-          addr1 = '충청남도'
-        }else if(addr1 === '전북'){
-          addr1 = '전라북도'
-        }else if(addr1 === '전남'){
-          addr1 = '전라남도'
-        }else if(addr1 === '경북'){
-          addr1 = '경상북도'
-        }else if(addr1 === '경남'){
-          addr1 = '경상남도'
-        }
-        let autoSido = []
-        autoSido = this.sidoItems.filter(cd=>{
-          return cd.label === addr1
+
+        this.selectedUpdateSidoItems = ''
+        this.selectedChangeSidoItems = ''
+
+        this.UpdateAddr = this.selectedUpdateAddr.split(' ')
+        this.UpdateAddr1 = this.UpdateAddr[0]
+        this.UpdateAddr2 = this.UpdateAddr[1]
+        this.UpdateAddr3 = this.UpdateAddr[2]
+        this.ChangeAddr = this.selectedChangeAddr.split(' ')
+        this.ChangeAddr1 = this.ChangeAddr[0]
+        this.ChangeAddr2 = this.ChangeAddr[1]
+        this.ChangeAddr3 = this.ChangeAddr[2]
+        if(this.UpdateAddr1 === '서울' || this.ChangeAddr1 === '서울'){
+          this.UpdateAddr1 += '특별시'
+          this.ChangeAddr1 += '특별시'
+        }else if(this.UpdateAddr1 === '부산' || this.UpdateAddr1 === '대구' || this.UpdateAddr1 === '인천' || this.UpdateAddr1 === '광주' || this.UpdateAddr1 === '대전' || this.UpdateAddr1 === '울산'
+         || this.ChangeAddr1 === '부산' || this.ChangeAddr1 === '대구' || this.ChangeAddr1 === '인천' || this.ChangeAddr1 === '광주' || this.ChangeAddr1 === '대전' || this.ChangeAddr1 === '울산'){
+          this.UpdateAddr1 += '광역시'
+          this.ChangeAddr1 += '광역시'
+        }else if(this.UpdateAddr1 === '경기' || this.UpdateAddr1 === '강원' || this.ChangeAddr1 === '경기' || this.ChangeAddr1 === '강원'){
+          this.UpdateAddr1 += '도'
+          this.ChangeAddr1 += '도'
+        }else if(this.UpdateAddr1 === '충북' || this.ChangeAddr1 === '충북'){
+          this.UpdateAddr1 = '충청북도'
+          this.ChangeAddr1 = '충청북도'
+        }else if(this.UpdateAddr1 === '충남' || this.ChangeAddr1 === '충남'){
+          this.UpdateAddr1 = '충청남도'
+          this.ChangeAddr1 = '충청남도'
+        }else if(this.UpdateAddr1 === '전북' || this.ChangeAddr1 === '전북'){
+          this.UpdateAddr1 = '전라북도'
+          this.ChangeAddr1 = '전라북도'
+        }else if(this.UpdateAddr1 === '전남' || this.ChangeAddr1 === '전남'){
+          this.UpdateAddr1 = '전라남도'
+          this.ChangeAddr1 = '전라남도'
+        }else if(this.UpdateAddr1 === '경북' || this.ChangeAddr1 === '경북'){
+          this.UpdateAddr1 = '경상북도'
+          this.ChangeAddr1 = '경상북도'
+        }else if(this.UpdateAddr1 === '경남' || this.ChangeAddr1 === '경남'){
+          this.UpdateAddr1 = '경상남도'
+          this.ChangeAddr1 = '경상남도'
+        }  
+        let UpdateAutoSido = []
+        let ChangeAutoSido = []
+        UpdateAutoSido = this.sidoItems.filter(cd=>{
+          return cd.label === this.UpdateAddr1
         })
-        //this.selectedUpdateSidoItems = autoSido[0].value
-        console.log(addr)
-        console.log(addr1)
-        console.log(addr2)
-        console.log(this.selectedUpdateSidoItems)
+        ChangeAutoSido = this.sidoItems.filter(cd=>{
+          return cd.label === this.ChangeAddr1
+        })
+        this.selectedUpdateSidoItems = UpdateAutoSido[0].value
+        this.selectedChangeSidoItems = ChangeAutoSido[0].value
 //        this.selectedAddr = data.jibunAddress;
         
         // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
@@ -1597,6 +1653,25 @@ export default {
     
     }
     }).open();
+    },
+    autoUpdateSgg(){
+      let UpdateAutoSgg = []
+      let ChangeAutoSgg = []
+      if(this.UpdateAddr3.substr(-1) === '구'){
+            this.UpdateAddr2 = this.UpdateAddr2+' '+this.UpdateAddr3
+      }
+      if(this.ChangeAddr3.substr(-1) === '구'){
+            this.ChangeAddr2 = this.ChangeAddr2+' '+this.ChangeAddr3  
+      }
+      UpdateAutoSgg = this.sggItems.filter(cd=>{
+        return cd.label === this.UpdateAddr2
+      })
+      ChangeAutoSgg = this.sggItems.filter(cd=>{
+        return cd.label === this.ChangeAddr2
+      })
+      this.selectedUpdateSggItems = UpdateAutoSgg[0].value
+      this.selectedChangeSggItems = ChangeAutoSgg[0].value
+      console.log(this.selectedChangeSggItems)
     },
     },
     mounted(){

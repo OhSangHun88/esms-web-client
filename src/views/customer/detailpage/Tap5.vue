@@ -149,10 +149,10 @@
                                     <td> {{locationCode(item.sensorLocCd)}}</td>
                                     <td>{{item.macAddr}}</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
-                                        <div class="input_area" v-if="sensorsDetect===index">
+                                        <!-- <div class="input_area" v-if="sensorsDetect===index">
                                             <input type="text" name="" v-model="sensorDetectCycle" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">초
-                                        </div>
-                                        <div v-else>{{item.sensorDetectCycle}}</div>
+                                        </div> -->
+                                        <div>{{item.sensorDetectCycle}}</div>
                                     </td>
                                     <td v-else>실시간</td>
                                     <td v-if="item.sensorTypeCd !=='TPE001' && item.sensorTypeCd !=='TPE003'&& item.sensorTypeCd !=='TPE004'&& item.sensorTypeCd !=='TPE009'&& item.sensorTypeCd !=='TPE010' ">
@@ -173,7 +173,7 @@
                                         <div class="input_area" v-if="sensorsDetect===index">
                                             <input type="text" name=""  v-model="svrSendCycle" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">분
                                         </div>
-                                        <div v-else>{{item.svrSendCycle}}</div>
+                                        <div v-else>{{item.svrSendCycle === 0? 60 : item.svrSendCycle}}</div>
                                     </td>
                                     <td v-else>실시간</td>
                                 </tr>
@@ -386,6 +386,7 @@ import axios from "axios";
         //     element.stateSvrSendCycle = Math.ceil(element.stateSvrSendCycle/3600)
         // })
         this.getCSensorsData = tmpData
+        console.log(this.getCSensorsData)
         this.sensorData = tmpData.filter(cd=>{
             return cd.sensorTypeCd === 'TPE001' || cd.sensorTypeCd === 'TPE002' || cd.sensorTypeCd === 'TPE003' || cd.sensorTypeCd === 'TPE004' 
         })
@@ -480,18 +481,18 @@ import axios from "axios";
     this.sensorDetectCycle = this.getCSensorsData[index].sensorDetectCycle
     this.gwSendCycle = this.getCSensorsData[index].gwSendCycle
     this.gwAppSendCycle = this.getCSensorsData[index].gwAppSendCycle
-    this.svrSendCycle = this.getCSensorsData[index].svrSendCycle
+    this.svrSendCycle = this.getCSensorsData[index].svrSendCycle?0:60
     //센서 상태값 전송 주기 model 값
     this.stateGwSendCycle = this.getCSensorsData[index].stateGwSendCycle
     this.stateSvrSendCycle = this.getCSensorsData[index].stateSvrSendCycle
 
     this.svrsendCheck = this.getCSensorsData[index].svrSendCycle
     this.gwsendCheck = this.getCSensorsData[index].gwSendCycle
-    this.detsendCheck = this.getCSensorsData[index].sensorDetectCycle
+    //this.detsendCheck = this.getCSensorsData[index].sensorDetectCycle
     this.appsendCheck = this.getCSensorsData[index].gwAppSendCycle
     this.statesvrsendCheck = this.getCSensorsData[index].stateSvrSendCycle
     this.stategwsendCheck = this.getCSensorsData[index].stateGwSendCycle
-    this.statedetsendCheck = this.getCSensorsData[index].sensorDetectCycle
+    //this.statedetsendCheck = this.getCSensorsData[index].sensorDetectCycle
     this.stateappsendCheck = this.getCSensorsData[index].gwAppSendCycle
 
 
@@ -513,7 +514,7 @@ import axios from "axios";
         let sensorsDetectData = this.getCSensorsData[this.sensorsDetect]
         let sensorsId= this.getCSensorsData[this.sensorsDetect].sensorId
         //sensorsDetectData.svrSendCycle = 
-        console.log(this.sensorDetectCycle)
+        //console.log(this.sensorDetectCycle)
         console.log(this.gwSendCycle)
         console.log(this.gwAppSendCycle)
         console.log(this.svrSendCycle)
@@ -548,7 +549,8 @@ import axios from "axios";
             this.svrSendCycle = this.svrsendCheck
             return false;
         }
-
+        console.log(this.gwSendCycle)
+        console.log(this.sensorDetectCycle)
         if(this.gwSendCycle%this.sensorDetectCycle != 0){
             alert('G/W 전송주기는 감지주기의 배수여야 합니다.')
             return false
@@ -559,35 +561,35 @@ import axios from "axios";
             alert('서버 전송주기는 APP 전송주기의 배수여야 합니다.')
             return false
         }
-        const urlD = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/sensor-detect-cycle` 
+        //const urlD = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/sensor-detect-cycle` 
         const urlS  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/svr-send-cycle`
         const urlA = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/app-send-cycle`
         const urlG  = this.$store.state.serverApi + `/admin/sensors/${sensorsId}/gw-send-cycle`
         sensorsDetectData.gwSendCycle = this.gwSendCycle
         sensorsDetectData.svrSendCycle = this.svrSendCycle
-        sensorsDetectData.sensorDetectCycle = this.sensorDetectCycle
+        //sensorsDetectData.sensorDetectCycle = this.sensorDetectCycle
         sensorsDetectData.gwAppSendCycle = this.gwAppSendCycle
         
-        if(this.detsendCheck != sensorsDetectData.sensorDetectCycle){
-            console.log("this 111 ok")
-        await axios.patch(urlD,sensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
-          .then(res => {
-            let resData = res.data.data
-            this.resCheck1 = resData
-            // this.getCSensorsData = res.data.data
-            // console.log("sensors ")
-            // console.log(this.getCSensorsData)
-            // if(resData){
-            //     alert("저장이 완료되었습니다.")
-            // }
+        // if(this.detsendCheck != sensorsDetectData.sensorDetectCycle){
+        //     console.log("this 111 ok")
+        // await axios.patch(urlD,sensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
+        //   .then(res => {
+        //     let resData = res.data.data
+        //     this.resCheck1 = resData
+        //     // this.getCSensorsData = res.data.data
+        //     // console.log("sensors ")
+        //     // console.log(this.getCSensorsData)
+        //     // if(resData){
+        //     //     alert("저장이 완료되었습니다.")
+        //     // }
 
-          })
-          .catch(error => {
-              console.log("fail to load")
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-         }
+        //   })
+        //   .catch(error => {
+        //       console.log("fail to load")
+        //     this.errorMessage = error.message;
+        //     console.error("There was an error!", error);
+        //   });
+        //  }
          if(this.appsendCheck != sensorsDetectData.gwAppSendCycle){
             console.log("this 222 ok")
         await axios.patch(urlA,sensorsDetectData,{headers: {"Authorization": "Bearer " + sessionStorage.getItem("token")}})
@@ -648,8 +650,6 @@ import axios from "axios";
             console.error("There was an error!", error);
           });
         }
-        console.log("svr => "+this.resCheck1)
-        console.log('gw =>'+this.resCheck2)
         // if(this.resCheck1 === true && !this.resCheck2 && !this.resCheck3 && !this.resCheck4){
         //     alert("저장이 완료되었습니다.")
         //     this.sensorsDetect = ''
@@ -691,10 +691,10 @@ import axios from "axios";
         //     this.resCheck4 = ''
         //     this.getCSensers()
         // }
-        if(this.resCheck1 || this.resCheck2 || this.resCheck3 || this.resCheck4){
+        if(this.resCheck2 || this.resCheck3 || this.resCheck4){
             alert("성공적으로 저장되었습니다.")
             this.sensorsDetect = ''
-            this.resCheck1 = ''
+            //this.resCheck1 = ''
             this.resCheck2 = ''
             this.resCheck3 = ''
             this.resCheck4 = ''

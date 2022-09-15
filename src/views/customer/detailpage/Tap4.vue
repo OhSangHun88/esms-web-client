@@ -615,7 +615,7 @@
                                     <td>{{!this.getBSensorsData? '':this.getBSensorsData.batteryValue+"("+changeSensorBattery(this.getBSensorsData.batteryValue)+")"}}</td>
                                     <td>{{!this.getBSensorsData? '': this.getBSensorsData.rssi===null? '' : this.getBSensorsData.rssi+"("+changeRssi(this.getBSensorsData.rssi)+")"}}</td>
                                     <td>{{this.getBSensorsData.checkYnCd ===null|| this.getBSensorsData.checkYnCd ===undefined ? '' : this.getBSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
-                                    <td>{{!this.getBSensorsData.keepAliveRcvYn? '':this.getBSensorsData.keepAliveRcvYn===0?'정상':this.getBSensorsData.keepAliveRcvYn===1?'비정상':'미수신'}}</td>
+                                    <td>{{!this.getBSensorsData? '':this.getBSensorsData.keepAliveRcvYn===0?'정상':this.getBSensorsData.keepAliveRcvYn===1?'비정상':'미수신'}}</td>
                                     <td>{{!this.getBSensorsData.stateMeasureDtime? '':this.getBSensorsData.stateMeasureDtime}}</td>
                                     <td>{{!this.getBSensorsData.updDtime? '':this.getBSensorsData.updDtime}}</td>
                                 </tr>
@@ -627,7 +627,7 @@
                                     <td>{{!this.beforeVersionSensorsData.batteryValue? '':this.beforeVersionSensorsData.batteryValue==='0'?'0': this.beforeVersionSensorsData.batteryValue+"("+changeSensorBattery(this.beforeVersionSensorsData.batteryValue)+")"}}</td>
                                     <td>{{!this.beforeVersionSensorsData? '': this.beforeVersionSensorsData.rssi===null? '': this.beforeVersionSensorsData.rssi+"("+changeRssi(this.beforeVersionSensorsData.rssi)+")"}}</td>
                                     <td>{{this.beforeVersionSensorsData.checkYnCd ===null|| this.beforeVersionSensorsData.checkYnCd ===undefined ? '' : this.beforeVersionSensorsData.checkYnCd===0?'정상':'점검대상'}}</td>
-                                    <td>{{!this.beforeVersionSensorsData.keepAliveRcvYn? '': this.beforeVersionSensorsData.keepAliveRcvYn===0?'정상':this.beforeVersionSensorsData.keepAliveRcvYn===1?'비정상':'미수신'}}</td>
+                                    <td>{{!this.beforeVersionSensorsData? '': this.beforeVersionSensorsData.keepAliveRcvYn===0?'정상':this.beforeVersionSensorsData.keepAliveRcvYn===1?'비정상':'미수신'}}</td>
                                     <td>{{!this.beforeVersionSensorsData.stateMeasureDtime? '': this.beforeVersionSensorsData.stateMeasureDtime}}</td>
                                     <td>{{!this.beforeVersionSensorsData.updDtime? '': this.beforeVersionSensorsData.updDtime}}</td>
                                 </tr>

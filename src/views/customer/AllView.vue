@@ -45,6 +45,18 @@
                 </div>
                 <div class="input_wrap">
                   <div class="input_area">
+                    <p class="input_tit">휴대폰번호 *</p>
+                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="selectedUpdatePhoneNumber" maxlength="11">
+                  </div>
+                  <div class="input_area">
+                        <p class="input_tit">사용자 구분 *</p>
+                        <select v-model="selectedUpdateUserType">
+                          <option v-for="(recipetype, index) in TypeItems2" :value="recipetype.value" v-bind:key="index">{{recipetype.label}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input_wrap">
+                  <div class="input_area">
                     <p class="input_tit">우편번호 *</p>
                     <div class="add_btn_input">
                       <input type="text" value="" v-model="selectedUpdateZipCode">
@@ -60,18 +72,6 @@
                     <div class="input_area" >
                         <p class="input_tit">상세주소 *</p>
                         <input type="text" value="" v-model="selectedUpdateAddrDetail">
-                    </div>
-                </div>
-                <div class="input_wrap">
-                  <div class="input_area">
-                    <p class="input_tit">휴대폰번호 *</p>
-                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  v-model="selectedUpdatePhoneNumber" maxlength="11">
-                  </div>
-                  <div class="input_area">
-                        <p class="input_tit">사용자 구분 *</p>
-                        <select v-model="selectedUpdateUserType">
-                          <option v-for="(recipetype, index) in TypeItems2" :value="recipetype.value" v-bind:key="index">{{recipetype.label}}</option>
-                        </select>
                     </div>
                 </div>
                 <div class="input_wrap">
@@ -139,13 +139,13 @@
                   <div class="input_area">
                     <p class="input_tit">우편번호 *</p>
                     <div class="add_btn_input">
-                      <input type="text" value="" v-model="selectChangeZipCode">
-                      <button type="button" class="input_btn" @click="search">검색</button>
+                      <input type="text" value="" v-model="selectChangeZipCode" disabled>
+                      <button type="button" class="input_btn" @click="search" disabled>검색</button>
                     </div>
                   </div>
                   <div class="input_area">
                     <p class="input_tit">주소 *</p>
-                    <input type="text" value="" v-model="selectChangeAddr">
+                    <input type="text" value="" v-model="selectChangeAddr" disabled>
                   </div>
                 </div>
                 <div class="input_wrap type-02">
@@ -613,6 +613,10 @@ export default {
     HeaderComp,
     pagination
   },
+  watch:{
+      selectedUpdateAddr:"onChangeSgg",
+      selectedUpdateSggItems:"onChangeOrg",
+    },
   data () {
     return {
       pending:true, cName: '', cBirthday: '', cPhone: '', cSex: '', cSocial: '', cPart: '', cStatus: '', cCycle: '', cAddr: '', cDetail: '',
@@ -659,6 +663,8 @@ export default {
       searchCheck2:0,
       NCount:'',
       sortCount:0, sortNmCount:0,
+
+      UpdateAddr:[], UpdateAddr1:'', UpdateAddr2:'', UpdateAddr3:'',
       
       listData: [],
       total: '',
@@ -779,6 +785,7 @@ export default {
           this.sggItems = [...tmpResult2,...tmpResult]
           this.sggItems2 = [...tmpResult3,...tmpResult]
           this.sggItems3 = tempArr
+          this.autoUpdateSgg()
         })
         .catch(error => {
           this.errorMessage = error.message;
@@ -889,13 +896,47 @@ export default {
            });
      },
   onChangeSgg(event){
+    let address = []
+    if(typeof event === 'object'){
       this.sidoCd = event.target.value
-      this.getSggData()
-      this.sggCd = ''
-      this.getOrgmData()
+    }else if(typeof event === 'string'){
+    address = event.split(' ')
+    let address1 = address[0]
+    if(address1 === '서울'){
+      address1 += '특별시'
+    }else if(address1 === '부산' || address1 === '대구' || address1 === '인천' || address1 === '광주' || address1 === '대전' || address1 === '울산'){
+      address1 += '광역시'
+    }else if(address1 === '경기' || address1 === '강원'){
+      address1 += '도'
+    }else if(address1 === '충북'){
+      address1 = '충청북도'
+    }else if(address1 === '충남'){
+      address1 = '충청남도'
+    }else if(address1 === '전북'){
+      address1 = '전라북도'
+    }else if(address1 === '전남'){
+      address1 = '전라남도'
+    }else if(address1 === '경북'){
+      address1 = '경상북도'
+    }else if(address1 === '경남'){
+      address1 = '경상남도'
+    }  
+    let addressSido = []
+    addressSido = this.sidoItems.filter(cd=>{
+      return cd.label === address1
+    })
+      this.sidoCd = addressSido[0].value
+    }
+    this.getSggData()
+    this.sggCd = ''
+    this.getOrgmData()
     },
     onChangeOrg(event) {
-      this.sggCd = event.target.value
+      if(typeof event === 'object'){
+        this.sggCd = event.target.value
+      }else if(typeof event === 'string'){
+        this.sggCd = event
+      }
       this.getOrgmData()
     },    
     onChangeSido(event){
@@ -1153,6 +1194,44 @@ export default {
         this.selectChangeZipCode = data.zonecode;
         this.selectedUpdateAddr = data.roadAddress;
         this.selectChangeAddr = data.roadAddress;
+
+        this.selectedUpdateSidoItems = ''
+        
+
+        this.UpdateAddr = this.selectedUpdateAddr.split(' ')
+        this.UpdateAddr1 = this.UpdateAddr[0]
+        this.UpdateAddr2 = this.UpdateAddr[1]
+        this.UpdateAddr3 = this.UpdateAddr[2]
+
+        if(this.UpdateAddr1 === '서울'){
+          this.UpdateAddr1 += '특별시'
+
+        }else if(this.UpdateAddr1 === '부산' || this.UpdateAddr1 === '대구' || this.UpdateAddr1 === '인천' || this.UpdateAddr1 === '광주' || this.UpdateAddr1 === '대전' || this.UpdateAddr1 === '울산'){
+          this.UpdateAddr1 += '광역시'
+        }else if(this.UpdateAddr1 === '경기' || this.UpdateAddr1 === '강원'){
+          this.UpdateAddr1 += '도'
+        }else if(this.UpdateAddr1 === '충북'){
+          this.UpdateAddr1 = '충청북도'
+        }else if(this.UpdateAddr1 === '충남'){
+          this.UpdateAddr1 = '충청남도'
+        }else if(this.UpdateAddr1 === '전북'){
+          this.UpdateAddr1 = '전라북도'
+        }else if(this.UpdateAddr1 === '전남'){
+          this.UpdateAddr1 = '전라남도'
+        }else if(this.UpdateAddr1 === '경북'){
+          this.UpdateAddr1 = '경상북도'
+        }else if(this.UpdateAddr1 === '경남'){
+          this.UpdateAddr1 = '경상남도'
+        }  
+        let UpdateAutoSido = []
+
+        UpdateAutoSido = this.sidoItems.filter(cd=>{
+          return cd.label === this.UpdateAddr1
+        })
+        this.selectedUpdateSidoItems = UpdateAutoSido[0].value
+
+
+
 //        this.selectedAddr = data.jibunAddress;
         
         // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
@@ -1180,8 +1259,18 @@ export default {
     
     }
     }).open();
-    
-    
+    },
+    autoUpdateSgg(){
+      let UpdateAutoSgg = []
+      if(this.UpdateAddr3.substr(-1) === '구'){
+            this.UpdateAddr2 = this.UpdateAddr2+' '+this.UpdateAddr3
+      }
+
+      UpdateAutoSgg = this.sggItems.filter(cd=>{
+        return cd.label === this.UpdateAddr2
+      })
+
+      this.selectedUpdateSggItems = UpdateAutoSgg[0].value
     },
     async regUser(){
       //여기
