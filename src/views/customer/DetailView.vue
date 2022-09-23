@@ -9,14 +9,15 @@
       <div class="box_search_wrap box_style">
           <table>
               <colgroup>
-                  <col style="width:7.8%;">
-                  <col style="width:7.8%;">
+                  <col style="width:4%;">
+                  <col style="width:5%;">
+                  <col style="width:4%;">
+                  <col style="width:24%;">
+                  <col style="width:3.5%;">
                   <col style="width:6%;">
-                  <col style="width:auto;">
-                  <col style="width:6.82%;">
-                  <col style="width:9.091%;">
-                  <col style="width:6.82%;">
-                  <col style="width:18.17%;">
+                  <col style="width:4.5%;">
+                  <col style="width:7.5%;">
+                  <col style="width:5.3%;">
               </colgroup>
               <thead>
                   <th scope="row">대상자 이름</th>
@@ -27,6 +28,7 @@
                   <th scope="row">전화번호</th>
                   <th scope="col">활동미감지(분)</th>
                   <th scope="col">관리기관</th>
+                  <th scope="col">바이오 센서</th>
               </thead>
               <tbody>
                 <tr>
@@ -45,8 +47,8 @@
                     </td>
                     <td>
                         <div class="btn_area">
-                            <button type="button" :class="this.bodyData && this.bodyData.sex === 'M'? 'btn on' :'btn'">남</button>
-                            <button type="button" :class="this.bodyData && this.bodyData.sex === 'F'? 'btn on' :'btn'">여</button>
+                          <button type="button" :class="this.bodyData && this.bodyData.sex === 'M'? 'btn on' :'btn'">남</button>
+                          <button type="button" :class="this.bodyData && this.bodyData.sex === 'F'? 'btn on' :'btn'">여</button>
                         </div>
                     </td>
                     <td>
@@ -57,6 +59,12 @@
                     </td>
                     <td>
                         <input type="text" class="size-3" :value="this.bodyData? this.bodyData.orgNm : ''">
+                    </td>
+                    <td>
+                        <div class="btn_area">
+                          <button type="button" :class="this.bodyData && this.bodyData.radorSensorYn === 'Y'? 'btn on' :'btn'">사용</button>
+                          <button type="button" :class="this.bodyData && this.bodyData.radorSensorYn === 'N'? 'btn on' :'btn'">미사용</button>
+                        </div>
                     </td>
                 </tr>
             </tbody>

@@ -481,7 +481,7 @@ import axios from "axios";
     this.sensorDetectCycle = this.getCSensorsData[index].sensorDetectCycle
     this.gwSendCycle = this.getCSensorsData[index].gwSendCycle
     this.gwAppSendCycle = this.getCSensorsData[index].gwAppSendCycle
-    this.svrSendCycle = this.getCSensorsData[index].svrSendCycle?0:60
+    this.svrSendCycle = this.getCSensorsData[index].svrSendCycle === 0 ? 60 : this.getCSensorsData[index].svrSendCycle
     //센서 상태값 전송 주기 model 값
     this.stateGwSendCycle = this.getCSensorsData[index].stateGwSendCycle
     this.stateSvrSendCycle = this.getCSensorsData[index].stateSvrSendCycle

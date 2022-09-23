@@ -1,5 +1,11 @@
 module.exports = {
   devServer: {
+    proxy: {
+      '/socket' : {
+        target : 'http://210.122.45.47:3000',
+        changeOrigin: true,
+      }
+    }
     // proxy: this.$store.state.serverApi
     //   {
     //    '/api':{
