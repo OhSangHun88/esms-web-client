@@ -10,13 +10,7 @@ import axios from 'axios'
 import moment from 'vue-moment'
 import * as VueGoogleMaps from "vue2-google-maps"
 
-// websocket
-import io from 'socket.io-client';
-const socket = io('http://210.122.45.47:3000', {
-  transports: ["websocket"]
-});
-Vue.prototype.$socket = socket;
-console.log(socket)
+
 
 //import CoreuiVue from '@coreui/vue'
 

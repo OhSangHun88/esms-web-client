@@ -44,10 +44,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "chart.js": "^3.7.1",
     "chartjs-plugin-doughnutlabel": "^2.0.3",
-    "express": "^4.18.1",
     "install": "^0.13.0",
-    "socket.io": "^4.5.2",
-    "socket.io-client": "^4.5.2",
     "store": "^2.0.12",
     "tui-chart": "^3.11.3",
     "vue": "~2.6.12",
@@ -56,7 +53,6 @@
     "vue-loading-template": "^1.3.2",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.5.1",
-    "vue-socket.io": "^3.0.10",
     "vue2-google-maps": "^0.10.7",
     "vuex": "~3.6.2"
   },
@@ -91,12 +87,5 @@
   "engines": {
     "node": ">= 12.x",
     "npm": ">= 6.x"
-  },
-  "bugs": {
-    "url": "https://github.com/coreui/coreui-free-vue-admin-template/issues"
-  },
-  "main": ".eslintrc.js",
-  "directories": {
-    "test": "tests"
   }
 }
