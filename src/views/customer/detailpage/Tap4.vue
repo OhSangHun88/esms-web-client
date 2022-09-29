@@ -738,7 +738,6 @@ import axios from "axios";
           if(this.getBSensorsData.comStateCd){
                 this.getSensorTakeData();
             }
-          
     },
     // 센서 통신상태 이름 변경 함수
     async getSensorTakeData(){
@@ -878,13 +877,16 @@ import axios from "axios";
     },
     // 현재버전 게이트웨이 호출
     getNowGatewayToggle(){
+        this.getCGatewayReal()
         this.beforeGatewayToggle = 0
     },
     getNowTabletToggle(){
+        this.getCTablet()
         this.beforeTabletToggle = 0
     },
     //현재버전 센서 호출
     getNowSensorToggle(){
+        this.getCSensers()
         this.beforeSensorToggle= 0
         this.checkCorB = false
     },
@@ -1056,6 +1058,7 @@ import axios from "axios";
             revData = res.data
             if(revData.data === true){
                 alert("성공적으로 요청 되었습니다")
+                this.reverseCheckpopup = false
             }
         })
         .catch(error => {
@@ -1079,6 +1082,7 @@ import axios from "axios";
           cmdData = res.data
           if(cmdData.data === true){
               alert("성공적으로 전송되었습니다")
+              this.cmdA4postpopup = false
           }
         })
         .catch(error => {

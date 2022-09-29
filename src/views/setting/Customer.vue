@@ -1463,8 +1463,6 @@ export default {
       axios.get(url, {headers: {"Authorization": sessionStorage.getItem("token")}})
         .then(response => {
           const tmpArr = [{label: '전체', value: ''}];
-          let tmpResult1 = [{label: '전체', value: ''}];
-          let tmpResult2 = [{label: '전체', value: ''}];
           this.userTypeItems=[];
           for(let i=0; i<response.data.data.length; i++) {
             tmpArr.push({
