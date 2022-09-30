@@ -50,8 +50,10 @@
         </li>
       </ul>
       <div class="emerg_area">
-        <button type="button" style="margin-right:10px;" :class="Emeventtoggle===0 ? 'btn': 'btn on' " @click="clickEmergency()"><i></i>응급상황 수신</button> <!--응급상황일때 on 클래스 추가-->
-        <button type="button" :class="Eqeventtoggle===0 ? 'btn': 'btn on' " @click="clickEquipmentEvent()"><i></i>장비 이벤트</button> <!--응급상황일때 on 클래스 추가-->
+        <button type="button" style="margin-right:10px;" :class="Emeventtoggle===0 ? 'btn': 'btn on' " @click="clickEmergency()"><i></i>응급상황 수신</button> 
+        <button type="button" :class="Eqeventtoggle===0 ? 'btn': 'btn on' " @click="clickEquipmentEvent()"><i></i>장비 이벤트</button>
+        <!--<button type="button" style="margin-right:10px;" :class="this.socketData==='ALL' || this.socketData==='ALARM' ? 'btn on': 'btn' " @click="clickEmergency()"><i></i>응급상황 수신</button> 
+        <button type="button" :class="this.socketData==='ALL' || this.socketData==='EVENT' ? 'btn on': 'btn' " @click="clickEquipmentEvent()"><i></i>장비 이벤트</button> -->
       </div>
     </nav>
   </header>
@@ -78,6 +80,10 @@ export default {
     Eqeventtoggle:0,
     timerId:'',
     EqtimerId:'',
+    socketData:'',
+    oldsocketData:'',
+    newsocketData:'',
+    socketCount:0,
   }),
   created(){
     this.s_date=moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm:ss');
@@ -85,8 +91,32 @@ export default {
     this.getUserId();
     this.checkCount();
     this.checkEqCount();
+    // this.$socket.on('chat', (data)=>{
+    //   console.log("=================socket=======================")
+    //   console.log(data.message)
+    //   this.socketData = data.message
+    //   this.oldsocketData = moment().format('YYYY-MM-DD HH:mm:ss')
+    //   this.newsocketData = moment().format('YYYY-MM-DD HH:mm:ss')
+    //   console.log(this.oldsocketData)
+    //   console.log(this.newsocketData)
+    //   console.log("=================socket=======================")
+    //   this.socketCount = 1
+    //   setTimeout(() => {
+    //     this.socketCheck()
+    //   }, 20000);
+    // })
   },
   methods:{
+    // socketCheck(){
+    //   console.log("====================socketCheck========================")
+    //   console.log("socket test")
+    //   this.newsocketData = moment().format('YYYY-MM-DD HH:mm:ss')
+    //   console.log('newsocket = '+this.newsocketData)
+    //   if(this.newsocketData !== this.oldsocketData){
+    //     this.socketData = ''
+    //   }
+    //   console.log("====================socketCheck========================")
+    // },
     getUserId(){
       this.userId = sessionStorage.getItem("userId");
       console.log("this.userId")
